@@ -1,0 +1,41 @@
+{
+  "ikp_version": "1.0.0",
+  "institution": "University of Pretoria",
+  "institution_code": "UP",
+  "academic_year": "2026",
+  "pilot_scope": "EBIT Faculty — CS, Informatics, and Information Science departments",
+  "extraction_method": "manual_curation",
+  "pipeline_version": "ADIP v1.0 (manual curation phase)",
+  "generated_at": "2026-07-01T12:00:00Z",
+  "scope_rationale": "EBIT is the most IT-relevant faculty for AQAA's academic quality assurance mission. Computer Science (COS modules) and Informatics (INF modules) offer well-documented module codes and publicly available programme structures, making them ideal for the pilot IKP.",
+  "entity_counts": {
+    "institution": 1,
+    "campuses": 4,
+    "faculties": 10,
+    "departments_total": 7,
+    "departments_in_pilot_scope": 3,
+    "programmes_total": 10,
+    "programmes_in_pilot_scope": 10,
+    "modules_total": 15,
+    "modules_in_pilot_scope": 15,
+    "admission_requirements": 3
+  },
+  "ai_outputs": {
+    "knowledge_chunks": 27,
+    "retrieval_index": "up_2026_v1_0_0",
+    "qa_context_summary": true
+  },
+  "data_quality": {
+    "fully_verified_entities": 12,
+    "pending_verification_entities": 46,
+    "confidence_gate_90_plus": 28,
+    "confidence_gate_70_89": 31
+  },
+  "next_steps": [
+    "Download UP Yearbook 2026 from up.ac.za/yearbooks/2026",
+    "Run ADIP PDF extraction pipeline against yearbook PDFs",
+    "Verify qualification codes against SAQA database",
+    "Verify APS requirements against 2026 prospectus",
+    "Expand module list to cover all 3 years of each undergraduate programme"
+  ]
+}

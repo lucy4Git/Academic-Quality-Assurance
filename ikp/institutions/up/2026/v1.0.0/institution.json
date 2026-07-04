@@ -1,0 +1,84 @@
+{
+  "entity_type": "institution",
+  "entity_key": "UP",
+  "fields": {
+    "name": {
+      "value": "University of Pretoria",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "name_afrikaans": {
+      "value": "Universiteit van Pretoria",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "code": {
+      "value": "UP",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "country": {
+      "value": "South Africa",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "address": {
+      "value": "Lynnwood Road, Hatfield, Pretoria, 0002",
+      "confidence": 0.98,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "website": {
+      "value": "https://www.up.ac.za",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "founded": {
+      "value": "1908",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "type": {
+      "value": "Comprehensive University",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "accreditation_body": {
+      "value": "Council on Higher Education (CHE)",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "nsfas_accredited": {
+      "value": "true",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "total_faculties": {
+      "value": "10",
+      "confidence": 1.0,
+      "source_id": "UP-WEB-001",
+      "verification_status": "verified"
+    },
+    "student_population_approx": {
+      "value": "56000",
+      "confidence": 0.85,
+      "source_id": "UP-WEB-001",
+      "verification_status": "pending_verification",
+      "note": "Approximate figure; verify against 2026 UP Annual Report"
+    }
+  },
+  "provenance": {
+    "source_id": "UP-WEB-001",
+    "extraction_method": "manual_curation",
+    "extracted_at": "2026-07-01T12:00:00Z"
+  }
+}

@@ -1,0 +1,113 @@
+[
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-EBIT",
+    "pilot_scope": true,
+    "fields": {
+      "name": { "value": "Faculty of Engineering, Built Environment and Information Technology", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "code": { "value": "EBIT", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "website": { "value": "https://www.up.ac.za/ebit", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-002", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-EMS",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Economic and Management Sciences", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "EMS", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-EDUCATION",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Education", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "EDUC", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-HEALTH",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Health Sciences", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "HEALTH", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "campus": { "value": "Prinshof Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-HUMANITIES",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Humanities", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "HUM", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-LAW",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Law", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "LAW", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-NAS",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Natural and Agricultural Sciences", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "NAS", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-THEOLOGY",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Theology and Religion", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "THEOL", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "campus": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-VET",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Faculty of Veterinary Science", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "VETSC", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "campus": { "value": "Onderstepoort Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "faculty",
+    "entity_key": "UP-GIBS",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Gordon Institute of Business Science", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "code": { "value": "GIBS", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "campus": { "value": "Illovo, Johannesburg", "confidence": 0.95, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

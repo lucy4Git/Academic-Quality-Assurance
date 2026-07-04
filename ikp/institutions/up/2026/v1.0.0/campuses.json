@@ -1,0 +1,46 @@
+[
+  {
+    "entity_type": "campus",
+    "entity_key": "UP-HATFIELD",
+    "fields": {
+      "name": { "value": "Hatfield Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "address": { "value": "Lynnwood Road, Hatfield, Pretoria, 0002", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "is_main_campus": { "value": "true", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "faculties_hosted": { "value": "EBIT, EMS, Humanities, Law, NAS, Education", "confidence": 0.95, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "campus",
+    "entity_key": "UP-PRINSHOF",
+    "fields": {
+      "name": { "value": "Prinshof Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "address": { "value": "Bophelo Road, Prinshof, Pretoria", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "is_main_campus": { "value": "false", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "faculties_hosted": { "value": "Health Sciences", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "campus",
+    "entity_key": "UP-ONDERSTEPOORT",
+    "fields": {
+      "name": { "value": "Onderstepoort Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "address": { "value": "Old Soutpan Road, Onderstepoort, Pretoria", "confidence": 0.9, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "is_main_campus": { "value": "false", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "faculties_hosted": { "value": "Veterinary Science", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "campus",
+    "entity_key": "UP-MAMELODI",
+    "fields": {
+      "name": { "value": "Mamelodi Campus", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "address": { "value": "Mamelodi, Pretoria", "confidence": 0.85, "source_id": "UP-WEB-001", "verification_status": "pending_verification" },
+      "is_main_campus": { "value": "false", "confidence": 1.0, "source_id": "UP-WEB-001", "verification_status": "verified" },
+      "faculties_hosted": { "value": "Education (selected programmes)", "confidence": 0.85, "source_id": "UP-WEB-001", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-001", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

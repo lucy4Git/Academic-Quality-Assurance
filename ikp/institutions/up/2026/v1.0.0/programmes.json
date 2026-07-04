@@ -1,0 +1,153 @@
+[
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "BSc (Computer Science)", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "qualification_code": { "value": "02130105", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Science", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "nqf_level": { "value": "7", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "total_credits": { "value": "360", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "duration_years": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "language_of_instruction": { "value": "English and Afrikaans", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-CS-BSC-EXT",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "BSc (Computer Science) Extended Programme", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Science", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "nqf_level": { "value": "7", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "total_credits": { "value": "480", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "duration_years": { "value": "4", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-CS-BSC-HONS",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "BSc Hons (Computer Science)", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Science Honours", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "nqf_level": { "value": "8", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "total_credits": { "value": "120", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "duration_years": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-CS-MSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "MSc (Computer Science)", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Master of Science", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "nqf_level": { "value": "9", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "total_credits": { "value": "180", "confidence": 0.8, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "duration_years": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "mode_of_delivery": { "value": "Contact/Research", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-CS-PHD",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "PhD (Computer Science)", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Doctor of Philosophy", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "nqf_level": { "value": "10", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "total_credits": { "value": "360", "confidence": 0.8, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "duration_years": { "value": "3", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "mode_of_delivery": { "value": "Research", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-INF-BCOM",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "BCom (Informatics)", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Commerce", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "nqf_level": { "value": "7", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "total_credits": { "value": "360", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "duration_years": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-INF-BCOM-HONS",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "BCom Hons (Informatics)", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Commerce Honours", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "nqf_level": { "value": "8", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "total_credits": { "value": "120", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "duration_years": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-INF-MIT",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "MIT (Master of Information Technology)", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Master of Information Technology", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "nqf_level": { "value": "9", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "total_credits": { "value": "180", "confidence": 0.8, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "duration_years": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-IS-BIS",
+    "department_key": "UP-EBIT-IS",
+    "fields": {
+      "name": { "value": "BIS (Bachelor of Information Science)", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Information Science", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "nqf_level": { "value": "7", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "total_credits": { "value": "360", "confidence": 0.9, "source_id": "UP-WEB-005", "verification_status": "pending_verification" },
+      "duration_years": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-005", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "programme",
+    "entity_key": "UP-EBIT-IS-BIS-HONS",
+    "department_key": "UP-EBIT-IS",
+    "fields": {
+      "name": { "value": "BIS Hons (Information Science)", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "qualification_code": { "value": "pending_verification", "confidence": 0.0, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "qualification_type": { "value": "Bachelor of Information Science Honours", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "nqf_level": { "value": "8", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "total_credits": { "value": "120", "confidence": 0.9, "source_id": "UP-WEB-005", "verification_status": "pending_verification" },
+      "duration_years": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "mode_of_delivery": { "value": "Contact", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-005", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

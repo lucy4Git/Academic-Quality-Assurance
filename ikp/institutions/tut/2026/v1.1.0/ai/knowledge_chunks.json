@@ -1,0 +1,2376 @@
+[
+  {
+    "chunk_id": "tut-prog-001",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Computer Science",
+    "text": "Programme: Diploma In Computer Science. NQF Level: 6. Credits: 360. Qualification Code: DPRS20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": "DPRS20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-002",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Computer Science (Extended Curriculum)",
+    "text": "Programme: Diploma In Computer Science (Extended Curriculum). NQF Level: 6. Credits: 360. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": null
+    }
+  },
+  {
+    "chunk_id": "tut-prog-003",
+    "entity_type": "programme",
+    "entity_key": "Advanced Diploma In Computer Science",
+    "text": "Programme: Advanced Diploma In Computer Science. NQF Level: 7. Credits: 120. Qualification Code: ADRS20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "7",
+      "total_credits": "120",
+      "qualification_code": "ADRS20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-004",
+    "entity_type": "programme",
+    "entity_key": "Postgraduate Diploma In Computer Science",
+    "text": "Programme: Postgraduate Diploma In Computer Science. NQF Level: 8. Credits: 120. Qualification Code: PDRS21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "8",
+      "total_credits": "120",
+      "qualification_code": "PDRS21"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-005",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Multimedia Computing",
+    "text": "Programme: Diploma In Multimedia Computing. NQF Level: 6. Credits: 360. Qualification Code: DPMC20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": "DPMC20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-006",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Multimedia Computing (Extended Curriculum)",
+    "text": "Programme: Diploma In Multimedia Computing (Extended Curriculum). NQF Level: 6. Credits: 360. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": null
+    }
+  },
+  {
+    "chunk_id": "tut-prog-007",
+    "entity_type": "programme",
+    "entity_key": "Advanced Diploma In Multimedia Computing",
+    "text": "Programme: Advanced Diploma In Multimedia Computing. NQF Level: 7. Credits: 120. Qualification Code: ADMC20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "7",
+      "total_credits": "120",
+      "qualification_code": "ADMC20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-008",
+    "entity_type": "programme",
+    "entity_key": "Postgraduate Diploma In Multimedia Computing",
+    "text": "Programme: Postgraduate Diploma In Multimedia Computing. NQF Level: 8. Credits: 120. Qualification Code: PDMC21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "8",
+      "total_credits": "120",
+      "qualification_code": "PDMC21"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-009",
+    "entity_type": "programme",
+    "entity_key": "Master Of Computing",
+    "text": "Programme: Master Of Computing. NQF Level: 9. Credits: 180. Qualification Code: MDCO17. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "9",
+      "total_credits": "180",
+      "qualification_code": "MDCO17"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-010",
+    "entity_type": "programme",
+    "entity_key": "Doctor Of Computing",
+    "text": "Programme: Doctor Of Computing. NQF Level: 10. Credits: 360. Qualification Code: DDCO01. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "10",
+      "total_credits": "360",
+      "qualification_code": "DDCO01"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-011",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Computer Systems Engineering",
+    "text": "Programme: Diploma In Computer Systems Engineering. NQF Level: 6. Credits: 360. Qualification Code: DPYE20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": "DPYE20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-012",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Computer Systems Engineering (Extended Curriculum)",
+    "text": "Programme: Diploma In Computer Systems Engineering (Extended Curriculum). NQF Level: 6. Credits: 360. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": null
+    }
+  },
+  {
+    "chunk_id": "tut-prog-013",
+    "entity_type": "programme",
+    "entity_key": "Advanced Diploma In Computer Systems Engineering",
+    "text": "Programme: Advanced Diploma In Computer Systems Engineering. NQF Level: 7. Credits: 140. Qualification Code: ADYE20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "7",
+      "total_credits": "140",
+      "qualification_code": "ADYE20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-014",
+    "entity_type": "programme",
+    "entity_key": "Postgraduate Diploma In Computer Systems Engineering",
+    "text": "Programme: Postgraduate Diploma In Computer Systems Engineering. NQF Level: 8. Credits: 120. Qualification Code: PDYE21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "8",
+      "total_credits": "120",
+      "qualification_code": "PDYE21"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-015",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Informatics",
+    "text": "Programme: Diploma In Informatics. NQF Level: 6. Credits: 360. Qualification Code: DPIF20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": "DPIF20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-016",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Informatics (Extended Curriculum)",
+    "text": "Programme: Diploma In Informatics (Extended Curriculum). NQF Level: 6. Credits: 360. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": null
+    }
+  },
+  {
+    "chunk_id": "tut-prog-017",
+    "entity_type": "programme",
+    "entity_key": "Advanced Diploma In Informatics",
+    "text": "Programme: Advanced Diploma In Informatics. NQF Level: 7. Credits: 120. Qualification Code: ADIF20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "7",
+      "total_credits": "120",
+      "qualification_code": "ADIF20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-018",
+    "entity_type": "programme",
+    "entity_key": "Postgraduate Diploma In Informatics",
+    "text": "Programme: Postgraduate Diploma In Informatics. NQF Level: 8. Credits: 120. Qualification Code: PDIF21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "8",
+      "total_credits": "120",
+      "qualification_code": "PDIF21"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-019",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Information Technology",
+    "text": "Programme: Diploma In Information Technology. NQF Level: 6. Credits: 360. Qualification Code: DPIT20. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": "DPIT20"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-020",
+    "entity_type": "programme",
+    "entity_key": "Diploma In Information Technology (Extended Curriculum)",
+    "text": "Programme: Diploma In Information Technology (Extended Curriculum). NQF Level: 6. Credits: 360. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "6",
+      "total_credits": "360",
+      "qualification_code": null
+    }
+  },
+  {
+    "chunk_id": "tut-prog-021",
+    "entity_type": "programme",
+    "entity_key": "Advanced Diploma In Information Technology",
+    "text": "Programme: Advanced Diploma In Information Technology. NQF Level: 7. Credits: 120. Qualification Code: ADIT21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "7",
+      "total_credits": "120",
+      "qualification_code": "ADIT21"
+    }
+  },
+  {
+    "chunk_id": "tut-prog-022",
+    "entity_type": "programme",
+    "entity_key": "Postgraduate Diploma In Information Technology",
+    "text": "Programme: Postgraduate Diploma In Information Technology. NQF Level: 8. Credits: 120. Qualification Code: PDIT21. Campus: Soshanguve South.",
+    "metadata": {
+      "confidence": 0.92,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "nqf_level": "8",
+      "total_credits": "120",
+      "qualification_code": "PDIT21"
+    }
+  },
+  {
+    "chunk_id": "tut-mod-001",
+    "entity_type": "module",
+    "entity_key": "CFA115D",
+    "text": "Module: Computing Fundamentals A. Module Code: CFA115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-002",
+    "entity_type": "module",
+    "entity_key": "COH115D",
+    "text": "Module: Computational Mathematics. Module Code: COH115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-003",
+    "entity_type": "module",
+    "entity_key": "PPA115D",
+    "text": "Module: Principles of Programming A. Module Code: PPA115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-004",
+    "entity_type": "module",
+    "entity_key": "CFB115D",
+    "text": "Module: Computing Fundamentals B. Module Code: CFB115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-005",
+    "entity_type": "module",
+    "entity_key": "DCT115D",
+    "text": "Module: Discrete Structures. Module Code: DCT115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-006",
+    "entity_type": "module",
+    "entity_key": "PPB115D",
+    "text": "Module: Principles of Programming B. Module Code: PPB115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-007",
+    "entity_type": "module",
+    "entity_key": "WEB115D",
+    "text": "Module: Web Computing. Module Code: WEB115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-008",
+    "entity_type": "module",
+    "entity_key": "ADS216D",
+    "text": "Module: Advanced Discrete Structures. Module Code: ADS216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-009",
+    "entity_type": "module",
+    "entity_key": "CAO216D",
+    "text": "Module: Computer Architecture and. Module Code: CAO216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-010",
+    "entity_type": "module",
+    "entity_key": "DTP216D",
+    "text": "Module: Database Principles. Module Code: DTP216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-011",
+    "entity_type": "module",
+    "entity_key": "OOP216D",
+    "text": "Module: Object-Oriented Programming. Module Code: OOP216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-012",
+    "entity_type": "module",
+    "entity_key": "AOP216D",
+    "text": "Module: Advanced Object-Oriented. Module Code: AOP216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-013",
+    "entity_type": "module",
+    "entity_key": "ISC216D",
+    "text": "Module: Information Security. Module Code: ISC216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-014",
+    "entity_type": "module",
+    "entity_key": "ORS216D",
+    "text": "Module: Operating Systems. Module Code: ORS216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-015",
+    "entity_type": "module",
+    "entity_key": "SEF216D",
+    "text": "Module: Software Engineering. Module Code: SEF216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-016",
+    "entity_type": "module",
+    "entity_key": "INT316D",
+    "text": "Module: Internet Programming. Module Code: INT316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-017",
+    "entity_type": "module",
+    "entity_key": "MOB316D",
+    "text": "Module: Mobile Computing. Module Code: MOB316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-018",
+    "entity_type": "module",
+    "entity_key": "SWP316D",
+    "text": "Module: Software Project. Module Code: SWP316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-019",
+    "entity_type": "module",
+    "entity_key": "DBP316D",
+    "text": "Module: Database Programming. Module Code: DBP316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-020",
+    "entity_type": "module",
+    "entity_key": "DIS316D",
+    "text": "Module: Distributed Systems. Module Code: DIS316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-021",
+    "entity_type": "module",
+    "entity_key": "WEM316D",
+    "text": "Module: Web Server Management. Module Code: WEM316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-022",
+    "entity_type": "module",
+    "entity_key": "WOC316D",
+    "text": "Module: Work-Integrated Learning. Module Code: WOC316D. Credits: 60.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "60",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-023",
+    "entity_type": "module",
+    "entity_key": "ISJ107V",
+    "text": "Module: Integrated Software Project. Module Code: ISJ107V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-024",
+    "entity_type": "module",
+    "entity_key": "ISJ117R",
+    "text": "Module: Integrated Software Project. Module Code: ISJ117R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-025",
+    "entity_type": "module",
+    "entity_key": "DTD117V",
+    "text": "Module: Data Structures and Algorithms. Module Code: DTD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-026",
+    "entity_type": "module",
+    "entity_key": "HMD117V",
+    "text": "Module: Human Computer Interaction. Module Code: HMD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-027",
+    "entity_type": "module",
+    "entity_key": "SEC117V",
+    "text": "Module: Service-Oriented Computing. Module Code: SEC117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-028",
+    "entity_type": "module",
+    "entity_key": "SFG117V",
+    "text": "Module: Software Engineering. Module Code: SFG117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-029",
+    "entity_type": "module",
+    "entity_key": "DSD117V",
+    "text": "Module: Distributed Programming. Module Code: DSD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-030",
+    "entity_type": "module",
+    "entity_key": "IDA117V",
+    "text": "Module: Introduction to Data Science. Module Code: IDA117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-031",
+    "entity_type": "module",
+    "entity_key": "TCR117V",
+    "text": "Module: Theoretical Computer Science. Module Code: TCR117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-032",
+    "entity_type": "module",
+    "entity_key": "RRS108G",
+    "text": "Module: Research Project. Module Code: RRS108G. Credits: 30.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "30",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-033",
+    "entity_type": "module",
+    "entity_key": "MSI118G",
+    "text": "Module: Modelling and Simulations. Module Code: MSI118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-034",
+    "entity_type": "module",
+    "entity_key": "RMR118G",
+    "text": "Module: Research Methodologies. Module Code: RMR118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-035",
+    "entity_type": "module",
+    "entity_key": "DSC118G",
+    "text": "Module: Data Science and Big Data. Module Code: DSC118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-036",
+    "entity_type": "module",
+    "entity_key": "NTT118G",
+    "text": "Module: New Technological Trends. Module Code: NTT118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-037",
+    "entity_type": "module",
+    "entity_key": "OEN118G",
+    "text": "Module: Ontology Engineering. Module Code: OEN118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-038",
+    "entity_type": "module",
+    "entity_key": "ACX118G",
+    "text": "Module: Algorithms and Complexity. Module Code: ACX118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-039",
+    "entity_type": "module",
+    "entity_key": "FRD118G",
+    "text": "Module: Formal Aspects of Computing. Module Code: FRD118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-040",
+    "entity_type": "module",
+    "entity_key": "MTE216D",
+    "text": "Module: Multimedia Technology. Module Code: MTE216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-041",
+    "entity_type": "module",
+    "entity_key": "TMO216D",
+    "text": "Module: 3D Modelling. Module Code: TMO216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-042",
+    "entity_type": "module",
+    "entity_key": "GMP216D",
+    "text": "Module: Games Programming. Module Code: GMP216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-043",
+    "entity_type": "module",
+    "entity_key": "MUA216D",
+    "text": "Module: Multimedia Applications. Module Code: MUA216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-044",
+    "entity_type": "module",
+    "entity_key": "TAN216D",
+    "text": "Module: 3D Animation. Module Code: TAN216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-045",
+    "entity_type": "module",
+    "entity_key": "IVE316D",
+    "text": "Module: Interactive Virtual Environments. Module Code: IVE316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-046",
+    "entity_type": "module",
+    "entity_key": "MGV316D",
+    "text": "Module: Motion Graphics and Visual. Module Code: MGV316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-047",
+    "entity_type": "module",
+    "entity_key": "MMD316D",
+    "text": "Module: Multimedia for Mobile Devices. Module Code: MMD316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-048",
+    "entity_type": "module",
+    "entity_key": "SOD316D",
+    "text": "Module: Sound Design. Module Code: SOD316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-049",
+    "entity_type": "module",
+    "entity_key": "WCM316D",
+    "text": "Module: WIL. Module Code: WCM316D. Credits: 60.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "60",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-050",
+    "entity_type": "module",
+    "entity_key": "MCP107V",
+    "text": "Module: Multimedia Project. Module Code: MCP107V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-051",
+    "entity_type": "module",
+    "entity_key": "GMD117V",
+    "text": "Module: Games Engineering. Module Code: GMD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-052",
+    "entity_type": "module",
+    "entity_key": "INP117V",
+    "text": "Module: Internet Programming. Module Code: INP117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-053",
+    "entity_type": "module",
+    "entity_key": "CGH117V",
+    "text": "Module: Computer Graphics. Module Code: CGH117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-054",
+    "entity_type": "module",
+    "entity_key": "ISE117V",
+    "text": "Module: Introduction to Software. Module Code: ISE117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-055",
+    "entity_type": "module",
+    "entity_key": "GPR117V",
+    "text": "Module: Advanced Games Programming. Module Code: GPR117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-056",
+    "entity_type": "module",
+    "entity_key": "IMD117V",
+    "text": "Module: Instructional Multimedia Design. Module Code: IMD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-057",
+    "entity_type": "module",
+    "entity_key": "MPD117V",
+    "text": "Module: Multimedia Project Design. Module Code: MPD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-058",
+    "entity_type": "module",
+    "entity_key": "MRP108G",
+    "text": "Module: Multimedia Research Project. Module Code: MRP108G. Credits: 30.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "30",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-059",
+    "entity_type": "module",
+    "entity_key": "MRP118R",
+    "text": "Module: Multimedia Research Project. Module Code: MRP118R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-060",
+    "entity_type": "module",
+    "entity_key": "RMC118G",
+    "text": "Module: Research Methodologies. Module Code: RMC118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-061",
+    "entity_type": "module",
+    "entity_key": "VED118G",
+    "text": "Module: Virtual Environment Design. Module Code: VED118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-062",
+    "entity_type": "module",
+    "entity_key": "VEA118G",
+    "text": "Module: Virtual Environment Application. Module Code: VEA118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-063",
+    "entity_type": "module",
+    "entity_key": "AIG118G",
+    "text": "Module: Artificial Intelligence Games. Module Code: AIG118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-064",
+    "entity_type": "module",
+    "entity_key": "ARI118G",
+    "text": "Module: Artificial Intelligence. Module Code: ARI118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-065",
+    "entity_type": "module",
+    "entity_key": "MMM109M",
+    "text": "Module: Dissertation: Multimedia. Module Code: MMM109M. Credits: 180.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "180",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-066",
+    "entity_type": "module",
+    "entity_key": "MMM109R",
+    "text": "Module: Dissertation: Multimedia. Module Code: MMM109R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-067",
+    "entity_type": "module",
+    "entity_key": "MCS109M",
+    "text": "Module: Dissertation: Computer Science. Module Code: MCS109M. Credits: 180.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "180",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-068",
+    "entity_type": "module",
+    "entity_key": "MCS109R",
+    "text": "Module: Dissertation: Computer Science. Module Code: MCS109R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-069",
+    "entity_type": "module",
+    "entity_key": "CMS115D",
+    "text": "Module: Communication Science 165. Module Code: CMS115D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-070",
+    "entity_type": "module",
+    "entity_key": "EIP115D",
+    "text": "Module: Electrical Principles 115. Module Code: EIP115D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-071",
+    "entity_type": "module",
+    "entity_key": "NWS115D",
+    "text": "Module: Network Systems 125. Module Code: NWS115D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-072",
+    "entity_type": "module",
+    "entity_key": "PCO115D",
+    "text": "Module: Project Construction 125. Module Code: PCO115D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-073",
+    "entity_type": "module",
+    "entity_key": "CAG216D",
+    "text": "Module: Computer Architecture and. Module Code: CAG216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-074",
+    "entity_type": "module",
+    "entity_key": "DAB215D",
+    "text": "Module: Databases 215. Module Code: DAB215D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-075",
+    "entity_type": "module",
+    "entity_key": "DEL216D",
+    "text": "Module: Digital Electronics 216. Module Code: DEL216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-076",
+    "entity_type": "module",
+    "entity_key": "MHS216D",
+    "text": "Module: Mathematics 216. Module Code: MHS216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-077",
+    "entity_type": "module",
+    "entity_key": "PGM216D",
+    "text": "Module: Programming 216. Module Code: PGM216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-078",
+    "entity_type": "module",
+    "entity_key": "LOD216D",
+    "text": "Module: Logic Design 226. Module Code: LOD216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-079",
+    "entity_type": "module",
+    "entity_key": "OPS216D",
+    "text": "Module: Operating Systems 226. Module Code: OPS216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-080",
+    "entity_type": "module",
+    "entity_key": "PLC216D",
+    "text": "Module: Programmable Logic. Module Code: PLC216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-081",
+    "entity_type": "module",
+    "entity_key": "ARI216D",
+    "text": "Module: Artificial Intelligence 226. Module Code: ARI216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-082",
+    "entity_type": "module",
+    "entity_key": "MRO216D",
+    "text": "Module: Mobile Robotics 226. Module Code: MRO216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-083",
+    "entity_type": "module",
+    "entity_key": "NWS216D",
+    "text": "Module: Network Systems 226. Module Code: NWS216D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-084",
+    "entity_type": "module",
+    "entity_key": "WYE306D",
+    "text": "Module: Work-Integrated Learning 326. Module Code: WYE306D. Credits: 60.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "60",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-085",
+    "entity_type": "module",
+    "entity_key": "EMS316D",
+    "text": "Module: Embedded Systems 316. Module Code: EMS316D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-086",
+    "entity_type": "module",
+    "entity_key": "PBS316D",
+    "text": "Module: Probability and Statistics 316. Module Code: PBS316D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-087",
+    "entity_type": "module",
+    "entity_key": "SFE316D",
+    "text": "Module: Software Engineering 316. Module Code: SFE316D. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-088",
+    "entity_type": "module",
+    "entity_key": "EGD107V",
+    "text": "Module: Engineering Project Design. Module Code: EGD107V. Credits: 30.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "30",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-089",
+    "entity_type": "module",
+    "entity_key": "EGD117R",
+    "text": "Module: Engineering Project Design. Module Code: EGD117R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-090",
+    "entity_type": "module",
+    "entity_key": "AIS117V",
+    "text": "Module: Artificial Intelligent Systems. Module Code: AIS117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-091",
+    "entity_type": "module",
+    "entity_key": "CMD116V",
+    "text": "Module: Computational Mathematics. Module Code: CMD116V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-092",
+    "entity_type": "module",
+    "entity_key": "DSR117V",
+    "text": "Module: Digital Signal Processing. Module Code: DSR117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-093",
+    "entity_type": "module",
+    "entity_key": "EPM117V",
+    "text": "Module: Engineering Project Management. Module Code: EPM117V. Credits: 10.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "10",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-094",
+    "entity_type": "module",
+    "entity_key": "EBD117V",
+    "text": "Module: Embedded Systems Design. Module Code: EBD117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-095",
+    "entity_type": "module",
+    "entity_key": "CNT117V",
+    "text": "Module: Computer Networks. Module Code: CNT117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-096",
+    "entity_type": "module",
+    "entity_key": "IES117V",
+    "text": "Module: Intelligent Electro-Mechanical. Module Code: IES117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-097",
+    "entity_type": "module",
+    "entity_key": "CAO117V",
+    "text": "Module: Computer Architecture and. Module Code: CAO117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-098",
+    "entity_type": "module",
+    "entity_key": "CES117V",
+    "text": "Module: Computer Emerging Technologies. Module Code: CES117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-099",
+    "entity_type": "module",
+    "entity_key": "IIS117V",
+    "text": "Module: Intelligent Industrial Systems. Module Code: IIS117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-100",
+    "entity_type": "module",
+    "entity_key": "SRG117V",
+    "text": "Module: Systems Resources Management. Module Code: SRG117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-101",
+    "entity_type": "module",
+    "entity_key": "IDD108G",
+    "text": "Module: Industrial Research Project. Module Code: IDD108G. Credits: 30.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "30",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-102",
+    "entity_type": "module",
+    "entity_key": "IDD118R",
+    "text": "Module: Industrial Research Project. Module Code: IDD118R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-103",
+    "entity_type": "module",
+    "entity_key": "ESD118G",
+    "text": "Module: Advanced Embedded Systems. Module Code: ESD118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-104",
+    "entity_type": "module",
+    "entity_key": "DSR118G",
+    "text": "Module: Advanced Digital Signal. Module Code: DSR118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-105",
+    "entity_type": "module",
+    "entity_key": "AIS118G",
+    "text": "Module: Advanced Artificial Intelligent. Module Code: AIS118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-106",
+    "entity_type": "module",
+    "entity_key": "IES118G",
+    "text": "Module: Advanced Intelligent Electro-. Module Code: IES118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-107",
+    "entity_type": "module",
+    "entity_key": "IIS118G",
+    "text": "Module: Advanced Intelligent Industrial. Module Code: IIS118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-108",
+    "entity_type": "module",
+    "entity_key": "CES118G",
+    "text": "Module: Advanced Computer Emerging. Module Code: CES118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-109",
+    "entity_type": "module",
+    "entity_key": "CNE118G",
+    "text": "Module: Advanced Computer Networks. Module Code: CNE118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-110",
+    "entity_type": "module",
+    "entity_key": "CGA115D",
+    "text": "Module: Computing Fundamentals A. Module Code: CGA115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-111",
+    "entity_type": "module",
+    "entity_key": "BCM115D",
+    "text": "Module: Business Cost Management. Module Code: BCM115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-112",
+    "entity_type": "module",
+    "entity_key": "BFS115D",
+    "text": "Module: Business Fundamentals. Module Code: BFS115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-113",
+    "entity_type": "module",
+    "entity_key": "CGB115D",
+    "text": "Module: Computing Fundamentals B. Module Code: CGB115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-114",
+    "entity_type": "module",
+    "entity_key": "BUA216D",
+    "text": "Module: Business Analysis A. Module Code: BUA216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-115",
+    "entity_type": "module",
+    "entity_key": "DBA216D",
+    "text": "Module: Database Management. Module Code: DBA216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-116",
+    "entity_type": "module",
+    "entity_key": "SIS216D",
+    "text": "Module: Introduction to Strategic. Module Code: SIS216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-117",
+    "entity_type": "module",
+    "entity_key": "SYA216D",
+    "text": "Module: System Analysis A. Module Code: SYA216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-118",
+    "entity_type": "module",
+    "entity_key": "BUB216D",
+    "text": "Module: Business Analysis B. Module Code: BUB216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-119",
+    "entity_type": "module",
+    "entity_key": "DBB216D",
+    "text": "Module: Database Management. Module Code: DBB216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-120",
+    "entity_type": "module",
+    "entity_key": "SYB216D",
+    "text": "Module: System Analysis B. Module Code: SYB216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-121",
+    "entity_type": "module",
+    "entity_key": "IEA316D",
+    "text": "Module: Introduction to Enterprise. Module Code: IEA316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-122",
+    "entity_type": "module",
+    "entity_key": "ISD316D",
+    "text": "Module: Information System Deployment. Module Code: ISD316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-123",
+    "entity_type": "module",
+    "entity_key": "ITP316D",
+    "text": "Module: IT Project Management B. Module Code: ITP316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-124",
+    "entity_type": "module",
+    "entity_key": "PCT316D",
+    "text": "Module: Process Testing. Module Code: PCT316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-125",
+    "entity_type": "module",
+    "entity_key": "WII316D",
+    "text": "Module: Work-Integrated Learning. Module Code: WII316D. Credits: 60.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "60",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-126",
+    "entity_type": "module",
+    "entity_key": "BAA117V",
+    "text": "Module: Business Analysis and. Module Code: BAA117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-127",
+    "entity_type": "module",
+    "entity_key": "ITM117V",
+    "text": "Module: Information and Technology. Module Code: ITM117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-128",
+    "entity_type": "module",
+    "entity_key": "KWM117V",
+    "text": "Module: Knowledge Management. Module Code: KWM117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-129",
+    "entity_type": "module",
+    "entity_key": "PIF117V",
+    "text": "Module: Principles of Research. Module Code: PIF117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-130",
+    "entity_type": "module",
+    "entity_key": "ISR117V",
+    "text": "Module: Information System Research. Module Code: ISR117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-131",
+    "entity_type": "module",
+    "entity_key": "ISR117R",
+    "text": "Module: Information System Research. Module Code: ISR117R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-132",
+    "entity_type": "module",
+    "entity_key": "ITP117V",
+    "text": "Module: Information Technology Project. Module Code: ITP117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-133",
+    "entity_type": "module",
+    "entity_key": "SIS117V",
+    "text": "Module: Strategic Information Systems. Module Code: SIS117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-134",
+    "entity_type": "module",
+    "entity_key": "ARP108G",
+    "text": "Module: Advanced Research Project. Module Code: ARP108G. Credits: 24.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "24",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-135",
+    "entity_type": "module",
+    "entity_key": "ARP118R",
+    "text": "Module: Advanced Research Project. Module Code: ARP118R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-136",
+    "entity_type": "module",
+    "entity_key": "KWM118G",
+    "text": "Module: Advanced Knowledge. Module Code: KWM118G. Credits: 24.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "24",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-137",
+    "entity_type": "module",
+    "entity_key": "RIF118G",
+    "text": "Module: Research Methodology. Module Code: RIF118G. Credits: 24.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "24",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-138",
+    "entity_type": "module",
+    "entity_key": "MIN109R",
+    "text": "Module: Dissertation: Informatics. Module Code: MIN109R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-139",
+    "entity_type": "module",
+    "entity_key": "CHO115D",
+    "text": "Module: Computational Mathematics*. Module Code: CHO115D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-140",
+    "entity_type": "module",
+    "entity_key": "CAT116D",
+    "text": "Module: Computer Architecture 125R. Module Code: CAT116D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-141",
+    "entity_type": "module",
+    "entity_key": "DSM116D",
+    "text": "Module: Discrete Mathematics 115R. Module Code: DSM116D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-142",
+    "entity_type": "module",
+    "entity_key": "OOR216D",
+    "text": "Module: Object-Oriented. Module Code: OOR216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-143",
+    "entity_type": "module",
+    "entity_key": "OSY216D",
+    "text": "Module: Operating Systems 226R. Module Code: OSY216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-144",
+    "entity_type": "module",
+    "entity_key": "AOR216D",
+    "text": "Module: Advanced Object-Oriented. Module Code: AOR216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-145",
+    "entity_type": "module",
+    "entity_key": "VMA216D",
+    "text": "Module: Virtual Machines 216R. Module Code: VMA216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-146",
+    "entity_type": "module",
+    "entity_key": "WOR216D",
+    "text": "Module: Web Organisation 226R. Module Code: WOR216D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-147",
+    "entity_type": "module",
+    "entity_key": "CNT316D",
+    "text": "Module: Computer Networks 316R. Module Code: CNT316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-148",
+    "entity_type": "module",
+    "entity_key": "NMG316D",
+    "text": "Module: Network Management 316R. Module Code: NMG316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-149",
+    "entity_type": "module",
+    "entity_key": "WNE316D",
+    "text": "Module: Wireless Networks 316R. Module Code: WNE316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-150",
+    "entity_type": "module",
+    "entity_key": "CSY316D",
+    "text": "Module: Computer Security 316R. Module Code: CSY316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-151",
+    "entity_type": "module",
+    "entity_key": "RAL316D",
+    "text": "Module: Resource Allocation 316R. Module Code: RAL316D. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-152",
+    "entity_type": "module",
+    "entity_key": "IEX316D",
+    "text": "Module: Industrial Exposure 326R. Module Code: IEX316D. Credits: 60.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "60",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-153",
+    "entity_type": "module",
+    "entity_key": "NWG117V",
+    "text": "Module: Network Management IV. Module Code: NWG117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-154",
+    "entity_type": "module",
+    "entity_key": "NWP117V",
+    "text": "Module: Network Applications IV. Module Code: NWP117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-155",
+    "entity_type": "module",
+    "entity_key": "PIT117V",
+    "text": "Module: Principles of Research. Module Code: PIT117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-156",
+    "entity_type": "module",
+    "entity_key": "SAM117V",
+    "text": "Module: System Administration and. Module Code: SAM117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-157",
+    "entity_type": "module",
+    "entity_key": "RIT117V",
+    "text": "Module: Research Project IV. Module Code: RIT117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-158",
+    "entity_type": "module",
+    "entity_key": "RIT117R",
+    "text": "Module: Research Project IV. Module Code: RIT117R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-159",
+    "entity_type": "module",
+    "entity_key": "WNE117V",
+    "text": "Module: Wireless Networks IV. Module Code: WNE117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-160",
+    "entity_type": "module",
+    "entity_key": "PNA117V",
+    "text": "Module: Computer Networks IVA. Module Code: PNA117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-161",
+    "entity_type": "module",
+    "entity_key": "SEA117V",
+    "text": "Module: Computer Security IVA. Module Code: SEA117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-162",
+    "entity_type": "module",
+    "entity_key": "PNB117V",
+    "text": "Module: Computer Networks IVB. Module Code: PNB117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-163",
+    "entity_type": "module",
+    "entity_key": "SEB117V",
+    "text": "Module: Computer Security IVB. Module Code: SEB117V. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-164",
+    "entity_type": "module",
+    "entity_key": "NWR108G",
+    "text": "Module: Network Research Project V. Module Code: NWR108G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-165",
+    "entity_type": "module",
+    "entity_key": "NWR118R",
+    "text": "Module: Network Research Project V. Module Code: NWR118R. Credits: 0.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "0",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-166",
+    "entity_type": "module",
+    "entity_key": "PIT118G",
+    "text": "Module: Principles of Research V. Module Code: PIT118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-167",
+    "entity_type": "module",
+    "entity_key": "SCN118G",
+    "text": "Module: Social Engineering and New. Module Code: SCN118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-168",
+    "entity_type": "module",
+    "entity_key": "CRG118G",
+    "text": "Module: Cryptography 502. Module Code: CRG118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-169",
+    "entity_type": "module",
+    "entity_key": "DFO118G",
+    "text": "Module: Digital Forensics V. Module Code: DFO118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-170",
+    "entity_type": "module",
+    "entity_key": "CSY118G",
+    "text": "Module: Computer Security 501. Module Code: CSY118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-171",
+    "entity_type": "module",
+    "entity_key": "NWA118G",
+    "text": "Module: Network Management 501. Module Code: NWA118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-172",
+    "entity_type": "module",
+    "entity_key": "SPG118G",
+    "text": "Module: Security Policy and. Module Code: SPG118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-173",
+    "entity_type": "module",
+    "entity_key": "EHA118G",
+    "text": "Module: Ethical Hacking 502. Module Code: EHA118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  },
+  {
+    "chunk_id": "tut-mod-174",
+    "entity_type": "module",
+    "entity_key": "SDN118G",
+    "text": "Module: Software Defined Networks 502. Module Code: SDN118G. Credits: 15.",
+    "metadata": {
+      "confidence": 0.7618,
+      "source": "ea19be11-8749-417d-8e62-7ea3540ae470",
+      "credits": "15",
+      "semester": null
+    }
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "entity_type": "admission_requirement",
+    "entity_key": "UP-EBIT-CS-BSC-ADM",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "fields": {
+      "aps_minimum": { "value": "32", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification", "note": "APS requirements change annually; verify against 2026 prospectus" },
+      "mathematics_minimum": { "value": "60", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification", "note": "Percentage in Mathematics (not Mathematical Literacy)" },
+      "mathematics_literacy_accepted": { "value": "false", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "physical_science_minimum": { "value": "50", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "english_minimum": { "value": "50", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "nbt_required": { "value": "true", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification", "note": "National Benchmark Tests (AL and QL) required" },
+      "selection_test": { "value": "false", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "admission_requirement",
+    "entity_key": "UP-EBIT-INF-BCOM-ADM",
+    "programme_key": "UP-EBIT-INF-BCOM",
+    "fields": {
+      "aps_minimum": { "value": "30", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "mathematics_minimum": { "value": "50", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "mathematics_literacy_accepted": { "value": "false", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "english_minimum": { "value": "50", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "nbt_required": { "value": "true", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "admission_requirement",
+    "entity_key": "UP-EBIT-IS-BIS-ADM",
+    "programme_key": "UP-EBIT-IS-BIS",
+    "fields": {
+      "aps_minimum": { "value": "30", "confidence": 0.8, "source_id": "UP-WEB-005", "verification_status": "pending_verification" },
+      "mathematics_minimum": { "value": "50", "confidence": 0.8, "source_id": "UP-WEB-005", "verification_status": "pending_verification" },
+      "mathematics_literacy_accepted": { "value": "false", "confidence": 0.85, "source_id": "UP-WEB-005", "verification_status": "pending_verification" },
+      "english_minimum": { "value": "50", "confidence": 0.85, "source_id": "UP-WEB-005", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-005", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

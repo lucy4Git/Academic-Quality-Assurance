@@ -1,0 +1,254 @@
+[
+  {
+    "chunk_id": "UP-2026-INST-001",
+    "chunk_type": "institution",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP",
+    "text": "University of Pretoria (Universiteit van Pretoria) is a comprehensive South African university founded in 1908, located at Lynnwood Road, Hatfield, Pretoria, 0002. It is accredited by the Council on Higher Education (CHE) and offers programmes across 10 faculties. The university is NSFAS-accredited and has a student population of approximately 56,000. Website: https://www.up.ac.za",
+    "metadata": { "source_id": "UP-WEB-001", "confidence": 0.95, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-CAMPUS-001",
+    "chunk_type": "campus",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-HATFIELD",
+    "text": "Hatfield Campus is the main campus of the University of Pretoria, located at Lynnwood Road, Hatfield, Pretoria, 0002. It hosts the faculties of EBIT, Economic and Management Sciences, Humanities, Law, Natural and Agricultural Sciences, and Education.",
+    "metadata": { "source_id": "UP-WEB-001", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-FAC-EBIT",
+    "chunk_type": "faculty",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT",
+    "text": "The Faculty of Engineering, Built Environment and Information Technology (EBIT) at the University of Pretoria is located on the Hatfield Campus. It includes departments for Computer Science, Informatics, Information Science, Electrical/Electronic/Computer Engineering, Civil Engineering, Mechanical and Aeronautical Engineering, and Architecture. Website: https://www.up.ac.za/ebit",
+    "metadata": { "source_id": "UP-WEB-002", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-DEPT-CS",
+    "chunk_type": "department",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS",
+    "text": "The Department of Computer Science (CS) at the University of Pretoria, EBIT Faculty, uses module code prefix COS. It offers BSc (Computer Science), BSc Hons (Computer Science), MSc (Computer Science), and PhD (Computer Science). Website: https://www.up.ac.za/computer-science",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-DEPT-INF",
+    "chunk_type": "department",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-INF",
+    "text": "The Department of Informatics (INF) at the University of Pretoria, EBIT Faculty, uses module code prefix INF. It offers BCom (Informatics), BCom Hons (Informatics), and MIT (Master of Information Technology). Website: https://www.up.ac.za/informatics",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-DEPT-IS",
+    "chunk_type": "department",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-IS",
+    "text": "The Department of Information Science (IS) at the University of Pretoria, EBIT Faculty. It offers BIS (Bachelor of Information Science) and BIS Hons (Information Science). Website: https://www.up.ac.za/information-science",
+    "metadata": { "source_id": "UP-WEB-005", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-CS-BSC",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-BSC",
+    "text": "BSc (Computer Science) at the University of Pretoria, Department of Computer Science. NQF Level 7, approximately 360 credits, 3-year contact programme. Delivered in English and Afrikaans. Part of the EBIT Faculty on Hatfield Campus.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.95, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-CS-BSC-EXT",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-BSC-EXT",
+    "text": "BSc (Computer Science) Extended Programme at the University of Pretoria, Department of Computer Science. NQF Level 7, approximately 480 credits, 4-year contact programme. Extended curriculum for students who require additional support.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-CS-HONS",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-BSC-HONS",
+    "text": "BSc Hons (Computer Science) at the University of Pretoria, Department of Computer Science. NQF Level 8, approximately 120 credits, 1-year contact programme. Postgraduate qualification; requires BSc Computer Science or equivalent.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-CS-MSC",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-MSC",
+    "text": "MSc (Computer Science) at the University of Pretoria, Department of Computer Science. NQF Level 9, research/contact programme. Requires BSc Hons Computer Science or equivalent NQF 8 qualification.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.85, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-CS-PHD",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-PHD",
+    "text": "PhD (Computer Science) at the University of Pretoria, Department of Computer Science. NQF Level 10, research programme. Requires Master's degree in Computer Science or related field.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.85, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-INF-BCOM",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-INF-BCOM",
+    "text": "BCom (Informatics) at the University of Pretoria, Department of Informatics. NQF Level 7, approximately 360 credits, 3-year contact programme. Combines information systems with business and management.",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-INF-BCOM-HONS",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-INF-BCOM-HONS",
+    "text": "BCom Hons (Informatics) at the University of Pretoria, Department of Informatics. NQF Level 8, approximately 120 credits, 1-year contact programme.",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-INF-MIT",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-INF-MIT",
+    "text": "MIT (Master of Information Technology) at the University of Pretoria, Department of Informatics. NQF Level 9 postgraduate programme focusing on advanced information technology and management.",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 0.85, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-IS-BIS",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-IS-BIS",
+    "text": "BIS (Bachelor of Information Science) at the University of Pretoria, Department of Information Science. NQF Level 7, approximately 360 credits, 3-year contact programme. Focuses on information management, records management, and library sciences.",
+    "metadata": { "source_id": "UP-WEB-005", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-PROG-IS-BIS-HONS",
+    "chunk_type": "programme",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-IS-BIS-HONS",
+    "text": "BIS Hons (Information Science) at the University of Pretoria, Department of Information Science. NQF Level 8, approximately 120 credits, 1-year postgraduate contact programme.",
+    "metadata": { "source_id": "UP-WEB-005", "confidence": 0.9, "verification_status": "pending_verification" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS110",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS110",
+    "text": "COS 110 — Introduction to Computer Programming at the University of Pretoria, Department of Computer Science. Year 1, Semester 1. Language: C++. Topics: algorithms, control structures, functions, arrays, pointers, and basic object-oriented programming. Part of BSc (Computer Science).",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS132",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS132",
+    "text": "COS 132 — Imperative Programming at the University of Pretoria, Department of Computer Science. Year 1, Semester 2. Language: C++. Topics: dynamic memory, templates, file I/O, exception handling, STL containers.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS212",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS212",
+    "text": "COS 212 — Data Structures and Algorithms at the University of Pretoria, Department of Computer Science. Year 2, Semester 1. Topics: linked lists, stacks, queues, trees, heaps, hash tables, graphs; sorting and searching algorithms; algorithm analysis (Big-O notation).",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS220",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS220",
+    "text": "COS 220 — Object-Oriented Software Design at the University of Pretoria, Department of Computer Science. Year 2, Semester 2. Topics: object-oriented design principles, design patterns, UML, Java programming, software architecture.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS301",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS301",
+    "text": "COS 301 — Software Engineering at the University of Pretoria, Department of Computer Science. Year 3, Semester 1. Topics: software development lifecycle, requirements engineering, software testing, project management, agile methodologies.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS330",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS330",
+    "text": "COS 330 — Computer Networks at the University of Pretoria, Department of Computer Science. Year 3, Semester 2. Topics: OSI model, TCP/IP, routing, network programming, security fundamentals, wireless networks.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS332",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS332",
+    "text": "COS 332 — Databases at the University of Pretoria, Department of Computer Science. Year 3, Semester 1. Topics: relational model, SQL, database design and normalisation, transaction processing, NoSQL databases.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS344",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS344",
+    "text": "COS 344 — Computer Graphics at the University of Pretoria, Department of Computer Science. Year 3, Semester 2. Topics: 2D/3D rendering, OpenGL, rasterisation, ray tracing, transformations, shading, texture mapping.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-COS360",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-COS360",
+    "text": "COS 360 — Operating Systems at the University of Pretoria, Department of Computer Science. Year 3. Topics: process management, scheduling, memory management, file systems, concurrency, inter-process communication.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-INF154",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-INF154",
+    "text": "INF 154 — Introduction to Informatics at the University of Pretoria, Department of Informatics. Year 1, Semester 1. Topics: information systems, business information processing, spreadsheets, databases, programming fundamentals. Part of BCom (Informatics).",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-MOD-INF263",
+    "chunk_type": "module",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-INF263",
+    "text": "INF 263 — Database Modelling at the University of Pretoria, Department of Informatics. Year 2, Semester 1. Topics: entity-relationship modelling, relational database design, SQL, normalisation, database administration.",
+    "metadata": { "source_id": "UP-WEB-004", "confidence": 1.0, "verification_status": "verified" }
+  },
+  {
+    "chunk_id": "UP-2026-ADM-CS-BSC",
+    "chunk_type": "admission_requirement",
+    "institution_code": "UP",
+    "academic_year": "2026",
+    "entity_key": "UP-EBIT-CS-BSC-ADM",
+    "text": "Admission requirements for BSc (Computer Science) at the University of Pretoria: Minimum APS of approximately 32. Mathematics minimum 60% (Mathematical Literacy not accepted). Physical Science minimum approximately 50%. English minimum approximately 50%. NBT (National Benchmark Tests: AL and QL) required. Verify exact requirements against 2026 UP prospectus.",
+    "metadata": { "source_id": "UP-WEB-003", "confidence": 0.85, "verification_status": "pending_verification" }
+  }
+]

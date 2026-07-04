@@ -1,0 +1,15 @@
+{
+  "batch_id": "bootstrap",
+  "exported_at": "2026-07-01T10:16:29.885813+00:00",
+  "total_approved": 212,
+  "by_entity_type": {
+    "programme": 22,
+    "module": 174,
+    "admission_requirement": 16
+  },
+  "confidence_distribution": {
+    "high_ge_90": 83,
+    "medium_70_89": 753,
+    "low_lt_70": 0
+  }
+}

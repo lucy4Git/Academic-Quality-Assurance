@@ -1,0 +1,215 @@
+{
+  "institution": "Tshwane University of Technology",
+  "institution_code": "TUT",
+  "faculty": "Faculty of Information and Communication Technology",
+  "academic_year": "2026",
+  "ikp_version": "1.1.0",
+  "programmes": [
+    {
+      "name": "Diploma In Computer Science",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": "DPRS20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Computer Science (Extended Curriculum)",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": null,
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Advanced Diploma In Computer Science",
+      "nqf_level": 7,
+      "credits": 120,
+      "qualification_code": "ADRS20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Postgraduate Diploma In Computer Science",
+      "nqf_level": 8,
+      "credits": 120,
+      "qualification_code": "PDRS21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Multimedia Computing",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": "DPMC20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Multimedia Computing (Extended Curriculum)",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": null,
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Advanced Diploma In Multimedia Computing",
+      "nqf_level": 7,
+      "credits": 120,
+      "qualification_code": "ADMC20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Postgraduate Diploma In Multimedia Computing",
+      "nqf_level": 8,
+      "credits": 120,
+      "qualification_code": "PDMC21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Master Of Computing",
+      "nqf_level": 9,
+      "credits": 180,
+      "qualification_code": "MDCO17",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Doctor Of Computing",
+      "nqf_level": 10,
+      "credits": 360,
+      "qualification_code": "DDCO01",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Computer Systems Engineering",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": "DPYE20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Computer Systems Engineering (Extended Curriculum)",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": null,
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Advanced Diploma In Computer Systems Engineering",
+      "nqf_level": 7,
+      "credits": 140,
+      "qualification_code": "ADYE20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Postgraduate Diploma In Computer Systems Engineering",
+      "nqf_level": 8,
+      "credits": 120,
+      "qualification_code": "PDYE21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Informatics",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": "DPIF20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Informatics (Extended Curriculum)",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": null,
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Advanced Diploma In Informatics",
+      "nqf_level": 7,
+      "credits": 120,
+      "qualification_code": "ADIF20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Postgraduate Diploma In Informatics",
+      "nqf_level": 8,
+      "credits": 120,
+      "qualification_code": "PDIF21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Information Technology",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": "DPIT20",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Diploma In Information Technology (Extended Curriculum)",
+      "nqf_level": 6,
+      "credits": 360,
+      "qualification_code": null,
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Advanced Diploma In Information Technology",
+      "nqf_level": 7,
+      "credits": 120,
+      "qualification_code": "ADIT21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    },
+    {
+      "name": "Postgraduate Diploma In Information Technology",
+      "nqf_level": 8,
+      "credits": 120,
+      "qualification_code": "PDIT21",
+      "aps_math": null,
+      "aps_ml": null,
+      "module_count": 174
+    }
+  ],
+  "total_modules": 174,
+  "data_quality": {
+    "total_approved": 212,
+    "auto_approved": 0,
+    "human_reviewed": 212,
+    "pending": 0
+  },
+  "created_at": "2026-07-01T10:16:36.318276+00:00"
+}

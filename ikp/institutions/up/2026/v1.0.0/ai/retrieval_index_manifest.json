@@ -1,0 +1,21 @@
+{
+  "collection_name": "up_2026_v1_0_0",
+  "institution_code": "UP",
+  "academic_year": "2026",
+  "ikp_version": "1.0.0",
+  "vector_dimensions": 1536,
+  "embedding_model": "text-embedding-3-small",
+  "distance_metric": "cosine",
+  "total_chunks": 27,
+  "chunk_type_counts": {
+    "institution": 1,
+    "campus": 1,
+    "faculty": 1,
+    "department": 3,
+    "programme": 10,
+    "module": 10,
+    "admission_requirement": 1
+  },
+  "index_status": "pending_vectorisation",
+  "notes": "Requires Qdrant Sprint 2 to index. Collection name: up_2026_v1_0_0. Payload filters: institution_code, chunk_type, entity_key, confidence."
+}

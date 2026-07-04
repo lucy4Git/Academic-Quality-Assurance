@@ -1,0 +1,5396 @@
+[
+  {
+    "entity_key": "CFA115D",
+    "fields": {
+      "code": {
+        "value": "CFA115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computing Fundamentals A",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "COH115D",
+    "fields": {
+      "code": {
+        "value": "COH115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computational Mathematics",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PPA115D",
+    "fields": {
+      "code": {
+        "value": "PPA115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Principles of Programming A",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CFB115D",
+    "fields": {
+      "code": {
+        "value": "CFB115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computing Fundamentals B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DCT115D",
+    "fields": {
+      "code": {
+        "value": "DCT115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Discrete Structures",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PPB115D",
+    "fields": {
+      "code": {
+        "value": "PPB115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Principles of Programming B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WEB115D",
+    "fields": {
+      "code": {
+        "value": "WEB115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Web Computing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ADS216D",
+    "fields": {
+      "code": {
+        "value": "ADS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Discrete Structures",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CAO216D",
+    "fields": {
+      "code": {
+        "value": "CAO216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Architecture and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DTP216D",
+    "fields": {
+      "code": {
+        "value": "DTP216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Database Principles",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "OOP216D",
+    "fields": {
+      "code": {
+        "value": "OOP216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Object-Oriented Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "AOP216D",
+    "fields": {
+      "code": {
+        "value": "AOP216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Object-Oriented",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISC216D",
+    "fields": {
+      "code": {
+        "value": "ISC216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information Security",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ORS216D",
+    "fields": {
+      "code": {
+        "value": "ORS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Operating Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SEF216D",
+    "fields": {
+      "code": {
+        "value": "SEF216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Software Engineering",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "INT316D",
+    "fields": {
+      "code": {
+        "value": "INT316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Internet Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MOB316D",
+    "fields": {
+      "code": {
+        "value": "MOB316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Mobile Computing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SWP316D",
+    "fields": {
+      "code": {
+        "value": "SWP316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Software Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DBP316D",
+    "fields": {
+      "code": {
+        "value": "DBP316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Database Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DIS316D",
+    "fields": {
+      "code": {
+        "value": "DIS316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Distributed Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WEM316D",
+    "fields": {
+      "code": {
+        "value": "WEM316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Web Server Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WOC316D",
+    "fields": {
+      "code": {
+        "value": "WOC316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Work-Integrated Learning",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "60",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISJ107V",
+    "fields": {
+      "code": {
+        "value": "ISJ107V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Integrated Software Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISJ117R",
+    "fields": {
+      "code": {
+        "value": "ISJ117R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Integrated Software Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DTD117V",
+    "fields": {
+      "code": {
+        "value": "DTD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Data Structures and Algorithms",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "HMD117V",
+    "fields": {
+      "code": {
+        "value": "HMD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Human Computer Interaction",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SEC117V",
+    "fields": {
+      "code": {
+        "value": "SEC117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Service-Oriented Computing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SFG117V",
+    "fields": {
+      "code": {
+        "value": "SFG117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Software Engineering",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DSD117V",
+    "fields": {
+      "code": {
+        "value": "DSD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Distributed Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IDA117V",
+    "fields": {
+      "code": {
+        "value": "IDA117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Introduction to Data Science",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "TCR117V",
+    "fields": {
+      "code": {
+        "value": "TCR117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Theoretical Computer Science",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RRS108G",
+    "fields": {
+      "code": {
+        "value": "RRS108G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "30",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MSI118G",
+    "fields": {
+      "code": {
+        "value": "MSI118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Modelling and Simulations",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RMR118G",
+    "fields": {
+      "code": {
+        "value": "RMR118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Methodologies",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DSC118G",
+    "fields": {
+      "code": {
+        "value": "DSC118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Data Science and Big Data",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NTT118G",
+    "fields": {
+      "code": {
+        "value": "NTT118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "New Technological Trends",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "OEN118G",
+    "fields": {
+      "code": {
+        "value": "OEN118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Ontology Engineering",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ACX118G",
+    "fields": {
+      "code": {
+        "value": "ACX118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Algorithms and Complexity",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "FRD118G",
+    "fields": {
+      "code": {
+        "value": "FRD118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Formal Aspects of Computing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MTE216D",
+    "fields": {
+      "code": {
+        "value": "MTE216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Technology",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "TMO216D",
+    "fields": {
+      "code": {
+        "value": "TMO216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "3D Modelling",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "GMP216D",
+    "fields": {
+      "code": {
+        "value": "GMP216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Games Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MUA216D",
+    "fields": {
+      "code": {
+        "value": "MUA216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Applications",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "TAN216D",
+    "fields": {
+      "code": {
+        "value": "TAN216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "3D Animation",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IVE316D",
+    "fields": {
+      "code": {
+        "value": "IVE316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Interactive Virtual Environments",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MGV316D",
+    "fields": {
+      "code": {
+        "value": "MGV316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Motion Graphics and Visual",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MMD316D",
+    "fields": {
+      "code": {
+        "value": "MMD316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia for Mobile Devices",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SOD316D",
+    "fields": {
+      "code": {
+        "value": "SOD316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Sound Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WCM316D",
+    "fields": {
+      "code": {
+        "value": "WCM316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "WIL",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "60",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MCP107V",
+    "fields": {
+      "code": {
+        "value": "MCP107V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "GMD117V",
+    "fields": {
+      "code": {
+        "value": "GMD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Games Engineering",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "INP117V",
+    "fields": {
+      "code": {
+        "value": "INP117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Internet Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CGH117V",
+    "fields": {
+      "code": {
+        "value": "CGH117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Graphics",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISE117V",
+    "fields": {
+      "code": {
+        "value": "ISE117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Introduction to Software",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "GPR117V",
+    "fields": {
+      "code": {
+        "value": "GPR117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Games Programming",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IMD117V",
+    "fields": {
+      "code": {
+        "value": "IMD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Instructional Multimedia Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MPD117V",
+    "fields": {
+      "code": {
+        "value": "MPD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Project Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MRP108G",
+    "fields": {
+      "code": {
+        "value": "MRP108G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "30",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MRP118R",
+    "fields": {
+      "code": {
+        "value": "MRP118R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Multimedia Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RMC118G",
+    "fields": {
+      "code": {
+        "value": "RMC118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Methodologies",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "VED118G",
+    "fields": {
+      "code": {
+        "value": "VED118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Virtual Environment Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "VEA118G",
+    "fields": {
+      "code": {
+        "value": "VEA118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Virtual Environment Application",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "AIG118G",
+    "fields": {
+      "code": {
+        "value": "AIG118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Artificial Intelligence Games",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ARI118G",
+    "fields": {
+      "code": {
+        "value": "ARI118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Artificial Intelligence",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MMM109M",
+    "fields": {
+      "code": {
+        "value": "MMM109M",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Dissertation: Multimedia",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "180",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MMM109R",
+    "fields": {
+      "code": {
+        "value": "MMM109R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Dissertation: Multimedia",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MCS109M",
+    "fields": {
+      "code": {
+        "value": "MCS109M",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Dissertation: Computer Science",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "180",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MCS109R",
+    "fields": {
+      "code": {
+        "value": "MCS109R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Dissertation: Computer Science",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CMS115D",
+    "fields": {
+      "code": {
+        "value": "CMS115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Communication Science 165",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EIP115D",
+    "fields": {
+      "code": {
+        "value": "EIP115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Electrical Principles 115",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWS115D",
+    "fields": {
+      "code": {
+        "value": "NWS115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Systems 125",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PCO115D",
+    "fields": {
+      "code": {
+        "value": "PCO115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Project Construction 125",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CAG216D",
+    "fields": {
+      "code": {
+        "value": "CAG216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Architecture and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DAB215D",
+    "fields": {
+      "code": {
+        "value": "DAB215D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Databases 215",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DEL216D",
+    "fields": {
+      "code": {
+        "value": "DEL216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Digital Electronics 216",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MHS216D",
+    "fields": {
+      "code": {
+        "value": "MHS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Mathematics 216",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PGM216D",
+    "fields": {
+      "code": {
+        "value": "PGM216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Programming 216",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "LOD216D",
+    "fields": {
+      "code": {
+        "value": "LOD216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Logic Design 226",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "OPS216D",
+    "fields": {
+      "code": {
+        "value": "OPS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Operating Systems 226",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PLC216D",
+    "fields": {
+      "code": {
+        "value": "PLC216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Programmable Logic",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ARI216D",
+    "fields": {
+      "code": {
+        "value": "ARI216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Artificial Intelligence 226",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MRO216D",
+    "fields": {
+      "code": {
+        "value": "MRO216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Mobile Robotics 226",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWS216D",
+    "fields": {
+      "code": {
+        "value": "NWS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Systems 226",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WYE306D",
+    "fields": {
+      "code": {
+        "value": "WYE306D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Work-Integrated Learning 326",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "60",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EMS316D",
+    "fields": {
+      "code": {
+        "value": "EMS316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Embedded Systems 316",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PBS316D",
+    "fields": {
+      "code": {
+        "value": "PBS316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Probability and Statistics 316",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SFE316D",
+    "fields": {
+      "code": {
+        "value": "SFE316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Software Engineering 316",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EGD107V",
+    "fields": {
+      "code": {
+        "value": "EGD107V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Engineering Project Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "30",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EGD117R",
+    "fields": {
+      "code": {
+        "value": "EGD117R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Engineering Project Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "AIS117V",
+    "fields": {
+      "code": {
+        "value": "AIS117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Artificial Intelligent Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CMD116V",
+    "fields": {
+      "code": {
+        "value": "CMD116V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computational Mathematics",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DSR117V",
+    "fields": {
+      "code": {
+        "value": "DSR117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Digital Signal Processing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EPM117V",
+    "fields": {
+      "code": {
+        "value": "EPM117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Engineering Project Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "10",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EBD117V",
+    "fields": {
+      "code": {
+        "value": "EBD117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Embedded Systems Design",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CNT117V",
+    "fields": {
+      "code": {
+        "value": "CNT117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Networks",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IES117V",
+    "fields": {
+      "code": {
+        "value": "IES117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Intelligent Electro-Mechanical",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CAO117V",
+    "fields": {
+      "code": {
+        "value": "CAO117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Architecture and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CES117V",
+    "fields": {
+      "code": {
+        "value": "CES117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Emerging Technologies",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IIS117V",
+    "fields": {
+      "code": {
+        "value": "IIS117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Intelligent Industrial Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SRG117V",
+    "fields": {
+      "code": {
+        "value": "SRG117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Systems Resources Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IDD108G",
+    "fields": {
+      "code": {
+        "value": "IDD108G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Industrial Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "30",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IDD118R",
+    "fields": {
+      "code": {
+        "value": "IDD118R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Industrial Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ESD118G",
+    "fields": {
+      "code": {
+        "value": "ESD118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Embedded Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DSR118G",
+    "fields": {
+      "code": {
+        "value": "DSR118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Digital Signal",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "AIS118G",
+    "fields": {
+      "code": {
+        "value": "AIS118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Artificial Intelligent",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IES118G",
+    "fields": {
+      "code": {
+        "value": "IES118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Intelligent Electro-",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IIS118G",
+    "fields": {
+      "code": {
+        "value": "IIS118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Intelligent Industrial",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CES118G",
+    "fields": {
+      "code": {
+        "value": "CES118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Computer Emerging",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CNE118G",
+    "fields": {
+      "code": {
+        "value": "CNE118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Computer Networks",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CGA115D",
+    "fields": {
+      "code": {
+        "value": "CGA115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computing Fundamentals A",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "BCM115D",
+    "fields": {
+      "code": {
+        "value": "BCM115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Business Cost Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "BFS115D",
+    "fields": {
+      "code": {
+        "value": "BFS115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Business Fundamentals",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CGB115D",
+    "fields": {
+      "code": {
+        "value": "CGB115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computing Fundamentals B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "BUA216D",
+    "fields": {
+      "code": {
+        "value": "BUA216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Business Analysis A",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DBA216D",
+    "fields": {
+      "code": {
+        "value": "DBA216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Database Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SIS216D",
+    "fields": {
+      "code": {
+        "value": "SIS216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Introduction to Strategic",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SYA216D",
+    "fields": {
+      "code": {
+        "value": "SYA216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "System Analysis A",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "BUB216D",
+    "fields": {
+      "code": {
+        "value": "BUB216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Business Analysis B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DBB216D",
+    "fields": {
+      "code": {
+        "value": "DBB216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Database Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SYB216D",
+    "fields": {
+      "code": {
+        "value": "SYB216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "System Analysis B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IEA316D",
+    "fields": {
+      "code": {
+        "value": "IEA316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Introduction to Enterprise",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISD316D",
+    "fields": {
+      "code": {
+        "value": "ISD316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information System Deployment",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ITP316D",
+    "fields": {
+      "code": {
+        "value": "ITP316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "IT Project Management B",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PCT316D",
+    "fields": {
+      "code": {
+        "value": "PCT316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Process Testing",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WII316D",
+    "fields": {
+      "code": {
+        "value": "WII316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Work-Integrated Learning",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "60",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "BAA117V",
+    "fields": {
+      "code": {
+        "value": "BAA117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Business Analysis and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ITM117V",
+    "fields": {
+      "code": {
+        "value": "ITM117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information and Technology",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "KWM117V",
+    "fields": {
+      "code": {
+        "value": "KWM117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Knowledge Management",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PIF117V",
+    "fields": {
+      "code": {
+        "value": "PIF117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Principles of Research",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISR117V",
+    "fields": {
+      "code": {
+        "value": "ISR117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information System Research",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ISR117R",
+    "fields": {
+      "code": {
+        "value": "ISR117R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information System Research",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ITP117V",
+    "fields": {
+      "code": {
+        "value": "ITP117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Information Technology Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SIS117V",
+    "fields": {
+      "code": {
+        "value": "SIS117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Strategic Information Systems",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ARP108G",
+    "fields": {
+      "code": {
+        "value": "ARP108G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "24",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "ARP118R",
+    "fields": {
+      "code": {
+        "value": "ARP118R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Research Project",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "KWM118G",
+    "fields": {
+      "code": {
+        "value": "KWM118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Knowledge",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "24",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RIF118G",
+    "fields": {
+      "code": {
+        "value": "RIF118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Methodology",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "24",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "MIN109R",
+    "fields": {
+      "code": {
+        "value": "MIN109R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Dissertation: Informatics",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CHO115D",
+    "fields": {
+      "code": {
+        "value": "CHO115D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computational Mathematics*",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "5",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CAT116D",
+    "fields": {
+      "code": {
+        "value": "CAT116D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Architecture 125R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DSM116D",
+    "fields": {
+      "code": {
+        "value": "DSM116D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Discrete Mathematics 115R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "OOR216D",
+    "fields": {
+      "code": {
+        "value": "OOR216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Object-Oriented",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "OSY216D",
+    "fields": {
+      "code": {
+        "value": "OSY216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Operating Systems 226R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "AOR216D",
+    "fields": {
+      "code": {
+        "value": "AOR216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Advanced Object-Oriented",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "VMA216D",
+    "fields": {
+      "code": {
+        "value": "VMA216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Virtual Machines 216R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WOR216D",
+    "fields": {
+      "code": {
+        "value": "WOR216D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Web Organisation 226R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CNT316D",
+    "fields": {
+      "code": {
+        "value": "CNT316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Networks 316R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NMG316D",
+    "fields": {
+      "code": {
+        "value": "NMG316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Management 316R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WNE316D",
+    "fields": {
+      "code": {
+        "value": "WNE316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Wireless Networks 316R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CSY316D",
+    "fields": {
+      "code": {
+        "value": "CSY316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Security 316R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RAL316D",
+    "fields": {
+      "code": {
+        "value": "RAL316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Resource Allocation 316R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "IEX316D",
+    "fields": {
+      "code": {
+        "value": "IEX316D",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Industrial Exposure 326R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "60",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWG117V",
+    "fields": {
+      "code": {
+        "value": "NWG117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Management IV",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWP117V",
+    "fields": {
+      "code": {
+        "value": "NWP117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Applications IV",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PIT117V",
+    "fields": {
+      "code": {
+        "value": "PIT117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Principles of Research",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SAM117V",
+    "fields": {
+      "code": {
+        "value": "SAM117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "System Administration and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RIT117V",
+    "fields": {
+      "code": {
+        "value": "RIT117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Project IV",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "RIT117R",
+    "fields": {
+      "code": {
+        "value": "RIT117R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Research Project IV",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "WNE117V",
+    "fields": {
+      "code": {
+        "value": "WNE117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Wireless Networks IV",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PNA117V",
+    "fields": {
+      "code": {
+        "value": "PNA117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Networks IVA",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SEA117V",
+    "fields": {
+      "code": {
+        "value": "SEA117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Security IVA",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PNB117V",
+    "fields": {
+      "code": {
+        "value": "PNB117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Networks IVB",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SEB117V",
+    "fields": {
+      "code": {
+        "value": "SEB117V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Security IVB",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWR108G",
+    "fields": {
+      "code": {
+        "value": "NWR108G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Research Project V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWR118R",
+    "fields": {
+      "code": {
+        "value": "NWR118R",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Research Project V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "0",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "PIT118G",
+    "fields": {
+      "code": {
+        "value": "PIT118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Principles of Research V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SCN118G",
+    "fields": {
+      "code": {
+        "value": "SCN118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Social Engineering and New",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CRG118G",
+    "fields": {
+      "code": {
+        "value": "CRG118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Cryptography 502",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "DFO118G",
+    "fields": {
+      "code": {
+        "value": "DFO118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Digital Forensics V",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "CSY118G",
+    "fields": {
+      "code": {
+        "value": "CSY118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Computer Security 501",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "NWA118G",
+    "fields": {
+      "code": {
+        "value": "NWA118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Network Management 501",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SPG118G",
+    "fields": {
+      "code": {
+        "value": "SPG118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Security Policy and",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "EHA118G",
+    "fields": {
+      "code": {
+        "value": "EHA118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Ethical Hacking 502",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  },
+  {
+    "entity_key": "SDN118G",
+    "fields": {
+      "code": {
+        "value": "SDN118G",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "name": {
+        "value": "Software Defined Networks 502",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "credits": {
+        "value": "15",
+        "confidence": 0.7618,
+        "extraction_method": "tab_format_modules",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885745+00:00"
+  }
+]

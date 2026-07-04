@@ -1,0 +1,120 @@
+version: "3.9"
+
+# AQAA local development stack.
+#
+# Brings up the three datastores the backend depends on (PostgreSQL, Redis,
+# Qdrant) plus the FastAPI backend itself, wired together on a shared bridge
+# network. MongoDB is part of AQAA's long-term architecture (see CLAUDE.md)
+# but is not yet consumed by any backend module, so it is intentionally not
+# included here -- add it in the stage that introduces its first consumer.
+#
+# Usage:
+#   docker compose up -d postgres redis qdrant   # datastores only
+#   docker compose up -d --build                 # everything, including backend
+#   docker compose down                          # stop (data persists in volumes)
+#   docker compose down -v                       # stop AND wipe all data volumes
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aqaa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aqaa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aqaa}
+      POSTGRES_DB: ${POSTGRES_DB:-aqaa}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - aqaa_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aqaa} -d ${POSTGRES_DB:-aqaa}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - aqaa-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: aqaa-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - aqaa_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - aqaa-network
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: aqaa-qdrant
+    restart: unless-stopped
+    ports:
+      - "${QDRANT_HTTP_PORT:-6333}:6333"   # REST API
+      - "${QDRANT_GRPC_PORT:-6334}:6334"   # gRPC API
+    volumes:
+      - aqaa_qdrant_data:/qdrant/storage
+    healthcheck:
+      # The qdrant/qdrant image is Debian-based but does not include wget or
+      # curl, so an HTTP-based healthcheck (`wget ... /healthz`) always fails
+      # with "wget: not found" even when Qdrant itself is up and serving on
+      # 6333/6334. Use bash's built-in /dev/tcp to do a plain TCP connect
+      # check against the REST port instead -- bash is present in the image.
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/6333' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - aqaa-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aqaa-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      # Inside the compose network, the backend reaches the datastores by
+      # service name rather than localhost. These override whatever host-based
+      # values are set in backend/.env for local (non-Docker) development.
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-aqaa}:${POSTGRES_PASSWORD:-aqaa}@postgres:5432/${POSTGRES_DB:-aqaa}
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - aqaa_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    networks:
+      - aqaa-network
+
+networks:
+  aqaa-network:
+    name: aqaa-network
+    driver: bridge
+
+volumes:
+  aqaa_postgres_data:
+    name: aqaa_postgres_data
+  aqaa_redis_data:
+    name: aqaa_redis_data
+  aqaa_qdrant_data:
+    name: aqaa_qdrant_data
+  aqaa_storage:
+    name: aqaa_storage

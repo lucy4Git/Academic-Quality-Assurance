@@ -1,0 +1,86 @@
+[
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-CS",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": true,
+    "fields": {
+      "name": { "value": "Department of Computer Science", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "code": { "value": "CS", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "website": { "value": "https://www.up.ac.za/computer-science", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code_prefix": { "value": "COS", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-INF",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": true,
+    "fields": {
+      "name": { "value": "Department of Informatics", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "code": { "value": "INF", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "website": { "value": "https://www.up.ac.za/informatics", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "module_code_prefix": { "value": "INF", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-IS",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": true,
+    "fields": {
+      "name": { "value": "Department of Information Science", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "code": { "value": "IS", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "website": { "value": "https://www.up.ac.za/information-science", "confidence": 1.0, "source_id": "UP-WEB-005", "verification_status": "verified" },
+      "module_code_prefix": { "value": "IMS", "confidence": 0.9, "source_id": "UP-WEB-005", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-005", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-EECE",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Department of Electrical, Electronic and Computer Engineering", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "code": { "value": "EECE", "confidence": 0.9, "source_id": "UP-WEB-002", "verification_status": "pending_verification" },
+      "module_code_prefix": { "value": "ELE", "confidence": 0.8, "source_id": "UP-WEB-002", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-002", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-CIVIL",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Department of Civil Engineering", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "code": { "value": "CE", "confidence": 0.9, "source_id": "UP-WEB-002", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-002", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-MECH",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Department of Mechanical and Aeronautical Engineering", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "code": { "value": "MAE", "confidence": 0.9, "source_id": "UP-WEB-002", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-002", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "department",
+    "entity_key": "UP-EBIT-ARCH",
+    "faculty_key": "UP-EBIT",
+    "pilot_scope": false,
+    "fields": {
+      "name": { "value": "Department of Architecture", "confidence": 1.0, "source_id": "UP-WEB-002", "verification_status": "verified" },
+      "code": { "value": "ARCH", "confidence": 0.9, "source_id": "UP-WEB-002", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-002", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

@@ -1,0 +1,294 @@
+[
+  {
+    "entity_key": "Diploma In Computer Science",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Science (Extended Curriculum)",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "23",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "25",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Computer Science",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Computer Science",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Multimedia Computing",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Multimedia Computing (Extended Curriculum)",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "23",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "25",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Systems Engineering",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Systems Engineering (Extended Curriculum)",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "23",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Computer Systems Engineering",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Master Of Computing",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Doctor Of Computing",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Informatics",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Informatics (Extended Curriculum)",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "23",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "25",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Informatics",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Information Technology",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "26",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "28",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  },
+  {
+    "entity_key": "Diploma In Information Technology (Extended Curriculum)",
+    "fields": {
+      "aps_minimum_math": {
+        "value": "23",
+        "confidence": 0.874,
+        "extraction_method": "aps_math_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "aps_minimum_math_literacy": {
+        "value": "25",
+        "confidence": 0.874,
+        "extraction_method": "aps_ml_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885808+00:00"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "institution_code": "UP",
+  "institution_name": "University of Pretoria",
+  "academic_year": "2026",
+  "ikp_version": "1.0.0",
+  "generated_at": "2026-07-01T12:00:00Z",
+  "pilot_scope_summary": "EBIT Faculty — CS (COS modules), Informatics (INF modules), Information Science departments",
+  "quick_facts": {
+    "founded": "1908",
+    "type": "Comprehensive University",
+    "accreditor": "Council on Higher Education (CHE)",
+    "main_campus": "Hatfield, Pretoria",
+    "total_faculties": 10,
+    "pilot_faculty": "EBIT",
+    "pilot_departments": 3,
+    "pilot_programmes": 10,
+    "pilot_modules": 15
+  },
+  "qa_relevant_context": {
+    "accreditation_framework": "South African Qualifications Authority (SAQA) and CHE",
+    "nqf_range": "NQF 5 (first year modules) to NQF 10 (PhD)",
+    "typical_undergraduate_credits": "360 (3 years) or 480 (4 years extended)",
+    "typical_honours_credits": "120 (1 year)",
+    "assessment_language": "English and Afrikaans",
+    "nbt_required": true,
+    "nsfas_accredited": true
+  },
+  "pending_actions": [
+    "Download and parse UP Yearbook 2026 for complete module codes",
+    "Verify qualification codes via SAQA database",
+    "Confirm 2026 APS requirements",
+    "Expand module coverage to all 3+ year levels per programme",
+    "Index knowledge chunks into Qdrant (Sprint 2)"
+  ]
+}

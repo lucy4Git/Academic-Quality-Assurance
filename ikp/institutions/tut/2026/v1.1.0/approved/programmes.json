@@ -1,0 +1,816 @@
+[
+  {
+    "entity_key": "Diploma In Computer Science",
+    "fields": {
+      "name": {
+        "value": "Diploma In Computer Science",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DPRS20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Science (Extended Curriculum)",
+    "fields": {
+      "name": {
+        "value": "Diploma In Computer Science (Extended Curriculum)",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "has_extended_curriculum": {
+        "value": "true",
+        "confidence": 0.874,
+        "extraction_method": "extended_curriculum_detection",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Computer Science",
+    "fields": {
+      "name": {
+        "value": "Advanced Diploma In Computer Science",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "ADRS20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Computer Science",
+    "fields": {
+      "name": {
+        "value": "Postgraduate Diploma In Computer Science",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "PDRS21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Multimedia Computing",
+    "fields": {
+      "name": {
+        "value": "Diploma In Multimedia Computing",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DPMC20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Multimedia Computing (Extended Curriculum)",
+    "fields": {
+      "name": {
+        "value": "Diploma In Multimedia Computing (Extended Curriculum)",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "has_extended_curriculum": {
+        "value": "true",
+        "confidence": 0.874,
+        "extraction_method": "extended_curriculum_detection",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Multimedia Computing",
+    "fields": {
+      "name": {
+        "value": "Advanced Diploma In Multimedia Computing",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "ADMC20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Multimedia Computing",
+    "fields": {
+      "name": {
+        "value": "Postgraduate Diploma In Multimedia Computing",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "PDMC21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Master Of Computing",
+    "fields": {
+      "name": {
+        "value": "Master Of Computing",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "MDCO17",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "9",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "180",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Doctor Of Computing",
+    "fields": {
+      "name": {
+        "value": "Doctor Of Computing",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DDCO01",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "10",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Systems Engineering",
+    "fields": {
+      "name": {
+        "value": "Diploma In Computer Systems Engineering",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DPYE20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Computer Systems Engineering (Extended Curriculum)",
+    "fields": {
+      "name": {
+        "value": "Diploma In Computer Systems Engineering (Extended Curriculum)",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "has_extended_curriculum": {
+        "value": "true",
+        "confidence": 0.874,
+        "extraction_method": "extended_curriculum_detection",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Computer Systems Engineering",
+    "fields": {
+      "name": {
+        "value": "Advanced Diploma In Computer Systems Engineering",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "ADYE20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "140",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Computer Systems Engineering",
+    "fields": {
+      "name": {
+        "value": "Postgraduate Diploma In Computer Systems Engineering",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "PDYE21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Informatics",
+    "fields": {
+      "name": {
+        "value": "Diploma In Informatics",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DPIF20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Informatics (Extended Curriculum)",
+    "fields": {
+      "name": {
+        "value": "Diploma In Informatics (Extended Curriculum)",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "has_extended_curriculum": {
+        "value": "true",
+        "confidence": 0.874,
+        "extraction_method": "extended_curriculum_detection",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Informatics",
+    "fields": {
+      "name": {
+        "value": "Advanced Diploma In Informatics",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "ADIF20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Informatics",
+    "fields": {
+      "name": {
+        "value": "Postgraduate Diploma In Informatics",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "PDIF21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Information Technology",
+    "fields": {
+      "name": {
+        "value": "Diploma In Information Technology",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "DPIT20",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Diploma In Information Technology (Extended Curriculum)",
+    "fields": {
+      "name": {
+        "value": "Diploma In Information Technology (Extended Curriculum)",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "6",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "360",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "has_extended_curriculum": {
+        "value": "true",
+        "confidence": 0.874,
+        "extraction_method": "extended_curriculum_detection",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Advanced Diploma In Information Technology",
+    "fields": {
+      "name": {
+        "value": "Advanced Diploma In Information Technology",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "ADIT21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "7",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  },
+  {
+    "entity_key": "Postgraduate Diploma In Information Technology",
+    "fields": {
+      "name": {
+        "value": "Postgraduate Diploma In Information Technology",
+        "confidence": 0.92,
+        "extraction_method": "section_heading_match",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "qualification_code": {
+        "value": "PDIT21",
+        "confidence": 0.92,
+        "extraction_method": "qual_code_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "nqf_level": {
+        "value": "8",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "total_credits": {
+        "value": "120",
+        "confidence": 0.92,
+        "extraction_method": "nqf_credits_pattern",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      },
+      "campus_primary": {
+        "value": "Soshanguve South",
+        "confidence": 0.874,
+        "extraction_method": "campus_extraction",
+        "source_document": "ea19be11-8749-417d-8e62-7ea3540ae470"
+      }
+    },
+    "approval_status": "approved",
+    "reviewed_at": "2026-07-01T10:16:29.885736+00:00"
+  }
+]

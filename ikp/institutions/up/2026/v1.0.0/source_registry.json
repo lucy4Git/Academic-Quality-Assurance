@@ -1,0 +1,57 @@
+[
+  {
+    "source_id": "UP-WEB-001",
+    "source_type": "official_website",
+    "title": "University of Pretoria — Main Website",
+    "url": "https://www.up.ac.za",
+    "accessed_date": "2026-07-01",
+    "reliability": "authoritative",
+    "coverage": ["institution_profile", "faculties", "campuses"]
+  },
+  {
+    "source_id": "UP-WEB-002",
+    "source_type": "faculty_website",
+    "title": "Faculty of Engineering, Built Environment and Information Technology (EBIT)",
+    "url": "https://www.up.ac.za/ebit",
+    "accessed_date": "2026-07-01",
+    "reliability": "authoritative",
+    "coverage": ["faculty_profile", "departments", "programmes"]
+  },
+  {
+    "source_id": "UP-WEB-003",
+    "source_type": "department_website",
+    "title": "Department of Computer Science",
+    "url": "https://www.up.ac.za/computer-science",
+    "accessed_date": "2026-07-01",
+    "reliability": "authoritative",
+    "coverage": ["programmes", "modules", "module_codes"]
+  },
+  {
+    "source_id": "UP-WEB-004",
+    "source_type": "department_website",
+    "title": "Department of Informatics",
+    "url": "https://www.up.ac.za/informatics",
+    "accessed_date": "2026-07-01",
+    "reliability": "authoritative",
+    "coverage": ["programmes", "modules"]
+  },
+  {
+    "source_id": "UP-WEB-005",
+    "source_type": "department_website",
+    "title": "Department of Information Science",
+    "url": "https://www.up.ac.za/information-science",
+    "accessed_date": "2026-07-01",
+    "reliability": "authoritative",
+    "coverage": ["programmes", "modules"]
+  },
+  {
+    "source_id": "UP-YB-2026",
+    "source_type": "yearbook",
+    "title": "University of Pretoria Yearbook 2026",
+    "url": "https://www.up.ac.za/yearbooks/2026",
+    "accessed_date": "pending",
+    "reliability": "authoritative_pending",
+    "coverage": ["all"],
+    "note": "Full yearbook download required for complete module credit/NQF verification"
+  }
+]

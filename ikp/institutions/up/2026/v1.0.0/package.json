@@ -1,0 +1,37 @@
+{
+  "ikp_version": "1.0.0",
+  "schema_version": "2.0",
+  "institution_code": "UP",
+  "institution_name": "University of Pretoria",
+  "academic_year": "2026",
+  "pilot_scope": "EBIT — Faculty of Engineering, Built Environment and Information Technology (Computer Science, Informatics, Information Science departments)",
+  "created_at": "2026-07-01T12:00:00Z",
+  "created_by": "AQAA ADIP Pipeline v1.0 (manual curation from official UP sources)",
+  "status": "pilot_active",
+  "files": [
+    "institution.json",
+    "campuses.json",
+    "faculties.json",
+    "departments.json",
+    "programmes.json",
+    "modules.json",
+    "admission_requirements.json",
+    "provenance_index.json",
+    "source_registry.json",
+    "extraction_summary.json",
+    "ai/knowledge_chunks.json",
+    "ai/retrieval_index_manifest.json",
+    "ai/qa_context_summary.json"
+  ],
+  "provenance": {
+    "sources": [
+      "https://www.up.ac.za",
+      "https://www.up.ac.za/ebit",
+      "https://www.up.ac.za/computer-science",
+      "https://www.up.ac.za/informatics",
+      "https://www.up.ac.za/information-science",
+      "UP Yearbook 2026 (pending official download)"
+    ],
+    "confidence_note": "Data collected from official UP website and programme pages. Fields marked pending_verification require cross-check with 2026 UP Yearbook/Prospectus."
+  }
+}

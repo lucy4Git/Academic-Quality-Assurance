@@ -1,0 +1,240 @@
+[
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS110",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Introduction to Computer Programming", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 110", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "5", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "language": { "value": "C++", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "description": { "value": "Fundamental programming concepts in C++: algorithms, control structures, functions, arrays, pointers, and basic object-oriented programming.", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS132",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Imperative Programming", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 132", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "5", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "language": { "value": "C++", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "description": { "value": "Advanced imperative programming: dynamic memory, templates, file I/O, exception handling, STL containers.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS212",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Data Structures and Algorithms", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 212", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "6", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "2", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "Linked lists, stacks, queues, trees, heaps, hash tables, graphs; sorting and searching algorithms; algorithm analysis (Big-O).", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS220",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Object-Oriented Software Design", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 220", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "6", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "2", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "Object-oriented design principles, design patterns, UML, Java programming, software architecture.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS301",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Software Engineering", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 301", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "Software development lifecycle, requirements engineering, software testing, project management, agile methodologies.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS326",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Functional Programming", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "module_code": { "value": "COS 326", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "credits": { "value": "16", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "semester": { "value": "1", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS330",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Computer Networks", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 330", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "OSI model, TCP/IP, routing, network programming, security fundamentals, wireless networks.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS332",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Databases", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 332", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "Relational model, SQL, database design and normalisation, transaction processing, NoSQL databases.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS344",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Computer Graphics", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 344", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "credits": { "value": "16", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "2", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "2D/3D rendering, OpenGL, rasterisation, ray tracing, transformations, shading, texture mapping.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS352",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Theory of Computation", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "module_code": { "value": "COS 352", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "credits": { "value": "16", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "semester": { "value": "2", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS360",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Operating Systems", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "module_code": { "value": "COS 360", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "credits": { "value": "16", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 1.0, "source_id": "UP-WEB-003", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "description": { "value": "Process management, scheduling, memory management, file systems, concurrency, inter-process communication.", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-COS365",
+    "programme_key": "UP-EBIT-CS-BSC",
+    "department_key": "UP-EBIT-CS",
+    "fields": {
+      "name": { "value": "Introduction to Artificial Intelligence", "confidence": 0.95, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "module_code": { "value": "COS 365", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "credits": { "value": "16", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 0.9, "source_id": "UP-WEB-003", "verification_status": "pending_verification" },
+      "semester": { "value": "2", "confidence": 0.85, "source_id": "UP-WEB-003", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-003", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-INF154",
+    "programme_key": "UP-EBIT-INF-BCOM",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "Introduction to Informatics", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "module_code": { "value": "INF 154", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "credits": { "value": "12", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "5", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "1", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "description": { "value": "Introduction to information systems, business information processing, spreadsheets, databases, programming fundamentals.", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-INF263",
+    "programme_key": "UP-EBIT-INF-BCOM",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "Database Modelling", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "module_code": { "value": "INF 263", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "credits": { "value": "12", "confidence": 0.85, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "6", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "2", "confidence": 1.0, "source_id": "UP-WEB-004", "verification_status": "verified" },
+      "semester": { "value": "1", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "description": { "value": "Entity-relationship modelling, relational database design, SQL, normalisation, database administration.", "confidence": 0.85, "source_id": "UP-WEB-004", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  },
+  {
+    "entity_type": "module",
+    "entity_key": "UP-INF370",
+    "programme_key": "UP-EBIT-INF-BCOM",
+    "department_key": "UP-EBIT-INF",
+    "fields": {
+      "name": { "value": "Information Systems Project Management", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "module_code": { "value": "INF 370", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "credits": { "value": "12", "confidence": 0.8, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "nqf_level": { "value": "7", "confidence": 0.9, "source_id": "UP-YB-2026", "verification_status": "pending_verification" },
+      "year_of_study": { "value": "3", "confidence": 0.9, "source_id": "UP-WEB-004", "verification_status": "pending_verification" },
+      "semester": { "value": "1", "confidence": 0.8, "source_id": "UP-WEB-004", "verification_status": "pending_verification" }
+    },
+    "provenance": { "source_id": "UP-WEB-004", "extraction_method": "manual_curation", "extracted_at": "2026-07-01T12:00:00Z" }
+  }
+]

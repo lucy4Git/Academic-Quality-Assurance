@@ -1,0 +1,70 @@
+# =============================================================================
+# AQAA — .gitignore
+# =============================================================================
+
+# --- Environment files (NEVER commit populated .env files) ---
+.env
+.env.*
+*.env
+*.env.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
+# Keep example templates in source control
+!*.env.example
+!.env.example
+
+# --- Private keys and certificates ---
+*.key
+*.pem
+*.pfx
+*.crt
+*.cer
+*.p12
+*.p8
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+env/
+.env/
+*.egg-info/
+dist/
+build/
+htmlcov/
+.coverage
+.mypy_cache/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Storage (local file uploads — keep directory structure, not uploads) ---
+storage/uploads/*
+storage/processed/*
+storage/reports/*
+!storage/uploads/.gitkeep
+!storage/processed/.gitkeep
+!storage/reports/.gitkeep
+
+# --- Editor / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.directory

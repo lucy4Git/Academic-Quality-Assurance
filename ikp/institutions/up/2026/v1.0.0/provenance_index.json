@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "institution_code": "UP",
+  "generated_at": "2026-07-01T12:00:00Z",
+  "entities": {
+    "institution": 1,
+    "campuses": 4,
+    "faculties": 10,
+    "departments": 7,
+    "programmes": 10,
+    "modules": 15,
+    "admission_requirements": 3
+  },
+  "pilot_scope": {
+    "faculty": "EBIT",
+    "departments": ["CS", "INF", "IS"],
+    "programmes_in_scope": 10,
+    "modules_in_scope": 15
+  },
+  "confidence_distribution": {
+    "verified_1_0": 28,
+    "high_0_9_to_0_99": 52,
+    "medium_0_7_to_0_89": 31,
+    "low_below_0_7": 0,
+    "pending_verification": 47
+  },
+  "sources_used": [
+    "UP-WEB-001",
+    "UP-WEB-002",
+    "UP-WEB-003",
+    "UP-WEB-004",
+    "UP-WEB-005",
+    "UP-YB-2026"
+  ],
+  "verification_needed": [
+    "Qualification codes (saqa.org.za or UP yearbook)",
+    "Exact credit values per module",
+    "Current APS requirements for 2026 intake",
+    "Complete module list for all year levels",
+    "Postgraduate programme credits and structure"
+  ]
+}

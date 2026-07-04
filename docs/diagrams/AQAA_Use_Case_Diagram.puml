@@ -1,0 +1,156 @@
+@startuml
+title AQAA - Academic Quality Assurance Agent Use Case Diagram
+
+left to right direction
+
+actor "Lecturer" as Lecturer
+actor "Programme Coordinator" as Coordinator
+actor "Head of Department" as HOD
+actor "Faculty Dean" as Dean
+actor "Quality Assurance Officer" as QA
+actor "System Administrator" as Admin
+actor "Student" as Student
+actor "External Moderator" as Moderator
+actor "Accreditation Body" as Accreditor
+
+rectangle "AQAA System" {
+
+  usecase "Login / Authenticate" as UC1
+  usecase "Manage Profile" as UC2
+
+  usecase "Upload Module Documents" as UC3
+  usecase "Upload Evidence Files" as UC4
+  usecase "View Module Compliance" as UC5
+  usecase "Resolve Audit Findings" as UC6
+
+  usecase "Manage Institution Structure" as UC7
+  usecase "Manage Faculties" as UC8
+  usecase "Manage Departments" as UC9
+  usecase "Manage Programmes" as UC10
+  usecase "Manage Modules" as UC11
+
+  usecase "Run Module Folder Audit" as UC12
+  usecase "Run Assessment Compliance Audit" as UC13
+  usecase "Run Moderation Compliance Audit" as UC14
+  usecase "Run Attendance Compliance Audit" as UC15
+  usecase "Run Evidence Verification Audit" as UC16
+  usecase "Run Outcome Alignment Audit" as UC17
+  usecase "Run Accreditation Readiness Audit" as UC18
+
+  usecase "Extract and Classify Documents" as UC19
+  usecase "Generate Audit Findings" as UC20
+  usecase "Calculate Compliance Score" as UC21
+  usecase "Generate QA Reports" as UC22
+
+  usecase "View Programme Dashboard" as UC23
+  usecase "View Department Dashboard" as UC24
+  usecase "View Faculty Dashboard" as UC25
+  usecase "View Institutional Dashboard" as UC26
+
+  usecase "Configure QA Rules" as UC27
+  usecase "Manage Users and Roles" as UC28
+  usecase "Manage RBAC Permissions" as UC29
+  usecase "View Audit Logs" as UC30
+
+  usecase "Review Moderation Evidence" as UC31
+  usecase "Review Accreditation Evidence Pack" as UC32
+}
+
+Lecturer --> UC1
+Lecturer --> UC2
+Lecturer --> UC3
+Lecturer --> UC4
+Lecturer --> UC5
+Lecturer --> UC6
+Lecturer --> UC12
+Lecturer --> UC13
+Lecturer --> UC14
+Lecturer --> UC15
+Lecturer --> UC22
+
+Coordinator --> UC1
+Coordinator --> UC5
+Coordinator --> UC6
+Coordinator --> UC11
+Coordinator --> UC12
+Coordinator --> UC13
+Coordinator --> UC14
+Coordinator --> UC15
+Coordinator --> UC16
+Coordinator --> UC17
+Coordinator --> UC23
+Coordinator --> UC22
+
+HOD --> UC1
+HOD --> UC9
+HOD --> UC10
+HOD --> UC23
+HOD --> UC24
+HOD --> UC22
+
+Dean --> UC1
+Dean --> UC8
+Dean --> UC24
+Dean --> UC25
+Dean --> UC22
+
+QA --> UC1
+QA --> UC12
+QA --> UC13
+QA --> UC14
+QA --> UC15
+QA --> UC16
+QA --> UC17
+QA --> UC18
+QA --> UC20
+QA --> UC21
+QA --> UC22
+QA --> UC26
+QA --> UC30
+QA --> UC32
+
+Admin --> UC1
+Admin --> UC7
+Admin --> UC8
+Admin --> UC9
+Admin --> UC10
+Admin --> UC11
+Admin --> UC27
+Admin --> UC28
+Admin --> UC29
+Admin --> UC30
+
+Student --> UC1
+Student --> UC2
+Student --> UC4
+Student --> UC5
+
+Moderator --> UC1
+Moderator --> UC31
+Moderator --> UC14
+Moderator --> UC22
+
+Accreditor --> UC1
+Accreditor --> UC18
+Accreditor --> UC32
+
+UC12 .> UC19 : includes
+UC13 .> UC19 : includes
+UC14 .> UC19 : includes
+UC15 .> UC19 : includes
+UC16 .> UC19 : includes
+UC17 .> UC19 : includes
+UC18 .> UC19 : includes
+
+UC12 .> UC20 : includes
+UC13 .> UC20 : includes
+UC14 .> UC20 : includes
+UC15 .> UC20 : includes
+UC16 .> UC20 : includes
+UC17 .> UC20 : includes
+UC18 .> UC20 : includes
+
+UC20 .> UC21 : includes
+UC21 .> UC22 : includes
+
+@enduml

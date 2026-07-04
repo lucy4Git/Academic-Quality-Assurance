@@ -1,0 +1,12 @@
+{
+  "batch_id": "bootstrap",
+  "batch_name": "TUT ICT 2026 v1.1.0 (bootstrapped)",
+  "institution_id": "tut-pilot-00000000-0000-0000-0000-000000000001",
+  "ikp_version": "1.1.0",
+  "academic_year": "2026",
+  "exported_at": "2026-07-01T10:16:29.885813+00:00",
+  "total_approved": 212,
+  "programmes_count": 22,
+  "modules_count": 174,
+  "admission_requirements_count": 16
+}

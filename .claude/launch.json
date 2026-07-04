@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Frontend (Next.js)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "frontend",
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "Backend (FastAPI / uvicorn)",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--reload", "--port", "8000"],
+      "cwd": "backend",
+      "port": 8000
+    },
+    {
+      "name": "Docker Stack (all services)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "-d"],
+      "cwd": ".",
+      "port": null
+    },
+    {
+      "name": "Docker Datastores only (postgres + redis + qdrant)",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up", "-d", "postgres", "redis", "qdrant"],
+      "cwd": ".",
+      "port": null
+    }
+  ]
+}

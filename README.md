@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AQAA — Academic Quality Assurance Agent
 
 **Version:** 1.0.0-rc4  
@@ -191,3 +192,6 @@ See `docs/00_Project/PHASE_TRACKER.md` for full status.
 7. Every change updates `CHANGELOG.md`
 
 Full rules: `docs/00_Project/CLAUDE_DEVELOPMENT_STANDARD.md`
+=======
+# Academic-Quality-Assurance
+>>>>>>> a763da20102243611b74fce53300898a0ad77289

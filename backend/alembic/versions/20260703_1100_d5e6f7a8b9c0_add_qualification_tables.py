@@ -26,7 +26,6 @@ def upgrade() -> None:
             postgresql.UUID(as_uuid=True),
             sa.ForeignKey("users.id", ondelete="CASCADE"),
             nullable=False,
-            index=True,
         ),
         sa.Column("student_name", sa.String(255), nullable=False),
         sa.Column("institution_name", sa.String(255), nullable=False),

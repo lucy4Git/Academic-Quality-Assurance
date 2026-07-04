@@ -1,7 +1,8 @@
 """Idempotent seed script — AQAA pilot institution users.
 
-Creates one user per role for TUT and UP. Safe to re-run; existing users
-are updated (name/role/is_active) but passwords are never overwritten.
+Creates one user per role for TUT and UP, plus the system admin account.
+Safe to re-run; existing users are updated (name/role/is_active/is_verified/
+approval_status) but passwords are never overwritten.
 
 Roles seeded per institution:
   - QUALITY_ASSURANCE_OFFICER
@@ -11,7 +12,7 @@ Roles seeded per institution:
   - LECTURER
   - STUDENT
 
-(SYSTEM_ADMIN is institution-independent and already exists as admin@test.com)
+System admin (no institution) is seeded at the bottom.
 
 Usage (from repo root):
     python database/seed_data/seed_pilot_users.py
@@ -144,6 +145,8 @@ def seed_pilot_users() -> None:
                     existing.role = ud["role"]
                     existing.institution_id = institution.id
                     existing.is_active = True
+                    existing.is_verified = True
+                    existing.approval_status = "approved"
                     session.flush()
                     print(f"  [EXISTS] {ud['email']} ({ud['role'].value})")
                     skipped_total += 1
@@ -155,11 +158,45 @@ def seed_pilot_users() -> None:
                         role=ud["role"],
                         institution_id=institution.id,
                         is_active=True,
+                        is_verified=True,
+                        approval_status="approved",
                     )
                     session.add(user)
                     session.flush()
                     print(f"  [CREATED] {ud['email']} ({ud['role'].value})")
                     created_total += 1
+
+        # --- System admin (institution-independent) ---
+        print("\n[PILOT USERS] Seeding system admin…")
+        admin_email = "admin@test.com"
+        admin = session.execute(
+            select(User).where(User.email == admin_email)
+        ).scalar_one_or_none()
+
+        if admin is not None:
+            admin.full_name = "AQAA System Administrator"
+            admin.role = UserRole.SYSTEM_ADMIN
+            admin.is_active = True
+            admin.is_verified = True
+            admin.approval_status = "approved"
+            session.flush()
+            print(f"  [EXISTS] {admin_email} (SYSTEM_ADMIN)")
+            skipped_total += 1
+        else:
+            admin_user = User(
+                email=admin_email,
+                full_name="AQAA System Administrator",
+                hashed_password=hash_password(DEFAULT_PASSWORD),
+                role=UserRole.SYSTEM_ADMIN,
+                institution_id=None,
+                is_active=True,
+                is_verified=True,
+                approval_status="approved",
+            )
+            session.add(admin_user)
+            session.flush()
+            print(f"  [CREATED] {admin_email} (SYSTEM_ADMIN)")
+            created_total += 1
 
         session.commit()
 

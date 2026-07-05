@@ -58,6 +58,33 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [2.0.0-sprint2] — 2026-07-05
+
+### Added
+- **Executive Dashboard** — AI-first executive dashboard replacing the traditional admin panel
+- **ExecutiveHero** — animated SVG health ring (CSS stroke-dasharray), personalized greeting, institution badge, AI summary sentence, quick action buttons
+- **TodaysPriorities** — priority task cards (HIGH/MEDIUM/LOW) derived from workflow API, Framer Motion stagger
+- **AIInsights** — 6 animated counter metrics using custom `useCounter()` RAF hook (no library dependency)
+- **RecentAIActivity** — vertical event timeline with 8 AI event types, colour-coded icons
+- **InstitutionHealth** — Recharts `RadialBarChart` with 5 quality dimensions, Framer Motion animated bars; lazy-loaded
+- **FacultyOverview** — faculty cards with health%, module count, missing evidence, open risks, mini sparkline (Recharts AreaChart); lazy-loaded
+- **KnowledgeBaseHealth** — service status cards for Qdrant, Redis, Postgres, OpenAI, Ollama, MinIO with Tailwind `animate-ping` pulse dots
+- **AISuggestions** — 6 Claude-style rounded pill buttons, role-filtered, Framer Motion scale-in
+- **MiniAIWidget** — embedded AI assistant preview with input, suggested prompts, and full workspace CTA
+- **framer-motion** added to frontend dependencies for card/counter/hover animations
+- `docs/02_Implementation/EXECUTIVE_DASHBOARD_IMPLEMENTATION_GUIDE.md`
+- `docs/04_User_Guides/EXECUTIVE_DASHBOARD_USER_GUIDE.md`
+
+### Changed
+- `DashboardView.tsx` — fully rewritten as role-aware section orchestrator; `React.memo` wrapping prevents unnecessary re-renders
+- Dashboard layout is now responsive across desktop/laptop/tablet with CSS grid breakpoints
+
+### Performance
+- Recharts components lazy-loaded via `React.lazy()` + `Suspense` (bundle split)
+- `MiniSparkline` in FacultyOverview wrapped in `React.memo`
+- Counter animation uses `requestAnimationFrame` (no `setInterval` timer)
+- Dashboard summary staleTime 60 s — no unnecessary refetches
+
 ---
 
 ## [1.0.0-rc3] — 2026-07-04

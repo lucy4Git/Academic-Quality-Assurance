@@ -25,9 +25,9 @@ import {
   Bell,
   ClipboardCheck,
   BrainCircuit,
+  Brain,
   FileBarChart,
   Package,
-  GraduationCap as GraduationCap2,
   Calculator,
   type LucideIcon,
 } from "lucide-react";
@@ -64,6 +64,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Bell,
   ClipboardCheck,
   BrainCircuit,
+  Brain,
   FileBarChart,
   Package,
   Calculator,

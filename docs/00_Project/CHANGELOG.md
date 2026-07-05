@@ -56,6 +56,33 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - `buttonVariants` unused import removed from landing page
 
+## [1.0.0-rc5] — 2026-07-05
+
+### Added
+- **AI Workspace — 3-panel Claude-style layout** (`/ai-workspace`) — Left session sidebar, centre conversation thread, right sources & context panel (collapsible via toggle)
+- **Agent thinking animation** — Sequential Framer Motion steps (Understanding request → Searching institutional knowledge → Consulting QA agents → Checking evidence database → Generating recommendation) with live step progression during streaming
+- **NotebookLM-style source panel** — Source cards in right panel with entity type, relevance score, text snippet, Search and Cite actions; shows sources from the last assistant response
+- **Multi-agent contribution cards** — Per-agent confidence scores and summaries shown inline below multi-agent responses
+- **Slash command composer** (`/audit`, `/policy`, `/evidence`, `/report`, `/qualification`) — Pop-up menu on `/` keystroke, applies command label to input
+- **Message action buttons** — Copy, Export (.txt download) on every assistant response; timestamps on all messages
+- **Session memory UX** — Session title, message count, institution badge, and Clear chat in composer meta row; session delete with icon button in sidebar
+- **Beautiful empty state** — 6 animated suggestion cards by category (Audit, Accreditation, Evidence, Qualification, Policy, Reporting), powered by `useSuggestedPrompts()`
+- **Right panel animated entrance** — Framer Motion slide-in/slide-out with `AnimatePresence`
+- **Admin institution selector** — Dropdown in left sidebar for `system_admin` role; warning badge in centre topbar when no institution selected
+- **Tenant guard** — `disabled` prop on composer blocks sending when admin has no institution selected
+- **Quick access links** in left sidebar — Knowledge Search, File Library, Audit Centre, Reports
+- **`?q=` pre-fill support** — Workspace reads `?q=` query param on mount and pre-fills the composer (wired from MiniAIWidget and AISuggestions on dashboard)
+
+### Changed
+- `AiWorkspaceView.tsx` fully rewritten — 2-panel layout → 3-panel, all existing API hooks and logic preserved, visual layer completely replaced
+- User messages: right-aligned indigo bubble with timestamp below
+- Assistant responses: card with AQAA brain header, confidence bar, inline source chips (up to 4 + overflow count), provider/model badge
+- Follow-up questions: rounded pill buttons below assistant card
+
+### Documentation
+- `docs/02_Implementation/AI_WORKSPACE_UI_IMPLEMENTATION_GUIDE.md` — Sprint 3 implementation reference
+- `docs/04_User_Guides/AI_WORKSPACE_COMMERCIAL_USER_GUIDE.md` — End-user workspace guide
+
 ## [Unreleased]
 
 ## [2.0.0-sprint2] — 2026-07-05

@@ -1,16 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import { Command as CommandPrimitive } from "cmdk"
 
 import { cn } from "@/lib/utils"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import {
   InputGroup,
   InputGroupAddon,
@@ -38,32 +32,53 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
-  showCloseButton = false,
-  ...props
-}: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
+  open,
+  onOpenChange,
+}: {
   title?: string
   description?: string
   className?: string
   showCloseButton?: boolean
   children: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }) {
-  return (
-    <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
-      <DialogContent
+  // Close on Escape
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange?.(false)
+    }
+    document.addEventListener("keydown", handler)
+    return () => document.removeEventListener("keydown", handler)
+  }, [open, onOpenChange])
+
+  if (!open || typeof document === "undefined") return null
+
+  return createPortal(
+    <div data-slot="command-dialog">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-50 bg-black/20 backdrop-blur-[2px]"
+        onClick={() => onOpenChange?.(false)}
+        aria-hidden="true"
+      />
+      {/* Panel — portal-based, no @base-ui/react Dialog to avoid FloatingFocusManager crash */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        aria-description={description}
         className={cn(
-          "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
+          "fixed left-1/2 top-1/3 z-50 w-full max-w-lg -translate-x-1/2 overflow-hidden rounded-xl bg-popover shadow-2xl ring-1 ring-foreground/10",
           className
         )}
-        showCloseButton={showCloseButton}
       >
-        {children}
-      </DialogContent>
-    </Dialog>
-  )
+        <Command>{children}</Command>
+      </div>
+    </div>,
+    document.body
+  ) as React.ReactElement
 }
 
 function CommandInput({

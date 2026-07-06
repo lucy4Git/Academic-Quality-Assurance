@@ -220,6 +220,55 @@ def build_system_prompt(
     )
 
 
+def build_grounded_system_prompt(
+    institution_code: str,
+    mode: str,
+    context_block: str,
+    citation_count: int,
+    ikp_version: str = "v1.x.x",
+) -> str:
+    """Build an Advanced RAG system prompt requiring [SOURCE:N] inline citations."""
+    focus = _MODE_FOCUS.get(mode, _MODE_FOCUS["qa_assistant"])
+    mode_label = AGENT_MODE_LABELS.get(mode, "QA Assistant")
+
+    if citation_count > 0:
+        citation_instruction = (
+            "\nCITATION RULES (MANDATORY):\n"
+            "- Cite sources inline using [SOURCE:N] where N is the number from the knowledge base below.\n"
+            "- Example: 'The ICT programme has 360 credits [SOURCE:1] and runs over 3 years [SOURCE:2].'\n"
+            "- Every factual claim about programmes, modules, or policies MUST have a [SOURCE:N] citation.\n"
+            "- If no source supports a specific claim, write: "
+            "'No institutional source was found for this claim.'\n"
+            "- Never invent facts, policies, or module details not present in the sources.\n"
+        )
+        no_source_note = ""
+    else:
+        citation_instruction = ""
+        no_source_note = (
+            "\n⚠️ No institutional sources were retrieved. "
+            "State clearly that no institutional source was found. "
+            "Do NOT invent policy facts, programme details, or module information. "
+            "Use uncertainty language: 'I could not find institutional information about...'\n"
+        )
+
+    return (
+        f"You are AQAA — the Academic Quality Assurance Agent for {institution_code.upper()}.\n"
+        f"Current mode: {mode_label}\n\n"
+        f"{focus}\n\n"
+        "CORE RULES:\n"
+        "1. Base all factual answers strictly on the INSTITUTIONAL KNOWLEDGE PROVIDED BELOW.\n"
+        "2. Never invent facts about programmes, modules, policies, or accreditation.\n"
+        f"3. If asked about another institution, state you can only answer for {institution_code.upper()}.\n"
+        "4. When information is absent, say so clearly and suggest next steps.\n"
+        "5. Be professional, concise, and specific to academic quality assurance.\n"
+        "6. Do not reveal your internal reasoning or chain-of-thought.\n"
+        f"{citation_instruction}"
+        f"\nINSTITUTIONAL KNOWLEDGE BASE ({institution_code.upper()}, {ikp_version}):\n"
+        f"{context_block}"
+        f"{no_source_note}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Audit summary templates
 # ---------------------------------------------------------------------------

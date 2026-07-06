@@ -86,7 +86,7 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(return_value=mock_ask_result)),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(return_value=mock_ask_result)),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("assessment marks?", "TUT", 5, "qa_assistant")]
@@ -95,8 +95,8 @@ class TestStreamAskGenerator:
         types = [e["type"] for e in events]
 
         assert types[0] == "start"
-        assert "chunk" in types
-        assert types[-2] == "sources"
+        assert "token" in types
+        assert "sources" in types
         assert types[-1] == "done"
 
     @pytest.mark.asyncio
@@ -132,7 +132,7 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(return_value=mock_result)),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(return_value=mock_result)),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("evidence query", "TUT", 5, "qa_assistant")]
@@ -172,17 +172,17 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(return_value=mock_result)),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(return_value=mock_result)),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("hello?", "TUT", 5, "qa_assistant")]
 
-        chunk_events = [
+        token_events = [
             json.loads(line[len("data: "):]) for line in lines
-            if line.startswith("data: ") and json.loads(line[len("data: "):])["type"] == "chunk"
+            if line.startswith("data: ") and json.loads(line[len("data: "):])["type"] == "token"
         ]
-        assert len(chunk_events) > 0
-        for ev in chunk_events:
+        assert len(token_events) > 0
+        for ev in token_events:
             assert "content" in ev
             assert len(ev["content"]) > 0
 
@@ -214,7 +214,7 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(return_value=mock_result)),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(return_value=mock_result)),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("test?", "TUT", 5, "qa_assistant")]
@@ -241,7 +241,7 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(side_effect=RuntimeError("LLM timeout"))),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(side_effect=RuntimeError("LLM timeout"))),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("query?", "TUT", 5, "qa_assistant")]
@@ -279,7 +279,7 @@ class TestStreamAskGenerator:
         with (
             patch("app.routes.ai_assistant.llm_route_prompt", AsyncMock(return_value=mock_router)),
             patch("app.routes.ai_assistant.get_provider_manager", return_value=mock_manager),
-            patch("app.routes.ai_assistant.assistant_service.ask", AsyncMock(return_value=mock_result)),
+            patch("app.routes.ai_assistant.advanced_ask", AsyncMock(return_value=mock_result)),
         ):
             from app.routes.ai_assistant import _stream_ask
             lines = [line async for line in _stream_ask("generate report", "TUT", 5, "reporting")]

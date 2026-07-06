@@ -21,8 +21,15 @@ export interface StreamStartEvent {
   used_llm: boolean;
 }
 
+/** @deprecated Use StreamTokenEvent. Kept for backward compatibility with older SSE consumers. */
 export interface StreamChunkEvent {
   type: "chunk";
+  content: string;
+}
+
+/** Incremental answer text — replaces StreamChunkEvent in the Advanced RAG pipeline. */
+export interface StreamTokenEvent {
+  type: "token";
   content: string;
 }
 
@@ -33,6 +40,23 @@ export interface StreamSourcesEvent {
   suggested_followups: string[];
   suggested_next_actions: string[];
   follow_up_questions: string[];
+}
+
+export interface Citation {
+  source_id: string;
+  title: string;
+  entity_type: string;
+  snippet: string;
+  relevance_score: number;
+  source_document: string;
+}
+
+/** Advanced RAG citation metadata — emitted after the sources event. */
+export interface StreamMetadataEvent {
+  type: "metadata";
+  citations: Citation[];
+  unsupported_claims: string[];
+  grounding_status: "grounded" | "partially_grounded" | "no_source_found";
 }
 
 export interface StreamDoneEvent {
@@ -51,7 +75,9 @@ export interface StreamErrorEvent {
 export type StreamEvent =
   | StreamStartEvent
   | StreamChunkEvent
+  | StreamTokenEvent
   | StreamSourcesEvent
+  | StreamMetadataEvent
   | StreamDoneEvent
   | StreamErrorEvent;
 

@@ -36,6 +36,27 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [3.0.0-p3s3] — 2026-07-06
+
+### Added
+- **Advanced RAG pipeline** (`backend/app/rag/`) — source re-ranking with cross-tenant isolation, numbered `[SOURCE:N]` context blocks, and citation verification
+- **`source_ranker.py`** — re-ranks Qdrant results by combined score (0.7 × relevance + 0.3 × confidence); rejects cross-tenant chunks; applies entity-type boost (+0.05) for intent-matched entities
+- **`context_builder.py`** — builds numbered `[SOURCE:N]` context blocks for LLM prompt injection and a citation index for verification
+- **`citation_verifier.py`** — extracts `[SOURCE:N]` refs from LLM answer, flags unsupported factual claims, assigns `grounding_status`: `grounded | partially_grounded | no_source_found`
+- **`advanced_ask()`** (`backend/app/rag/advanced_rag_service.py`) — orchestrates the full pipeline; used by `/ask` and `/ask-stream` endpoints
+- **`build_grounded_system_prompt()`** added to `prompt_templates.py` — requires mandatory `[SOURCE:N]` inline citations from the LLM
+- **`Citation` Pydantic model** and new `AskResponse` fields: `citations`, `unsupported_claims`, `grounding_status` (all optional with defaults for backward compatibility)
+- **SSE `token` event** replaces `chunk` in streaming — frontend handles both for graceful degradation
+- **SSE `metadata` event** emitted between `sources` and `done` — carries `citations`, `unsupported_claims`, `grounding_status`
+- **Grounding status badge** in `MessageBubble` — green `Grounded`, amber `Partially Grounded`, grey `No Source Found`
+- **Citations section** in `MessageBubble` — lists cited sources with copy and knowledge-search links
+- 40 new backend tests (`test_p3s3_advanced_rag.py`, `test_p3s3_streaming_metadata.py`) — total: 1091 passing
+
+### Changed
+- `/ask` endpoint now calls `advanced_ask()` instead of `assistant_service.ask()`
+- `/ask-stream` endpoint now calls `advanced_ask()` and emits `token` + `metadata` events
+- `test_p3s2_streaming.py` updated to patch `advanced_ask` and assert `token` events (not `chunk`)
+
 ## [3.0.0-p3s2] — 2026-07-06
 
 ### Added

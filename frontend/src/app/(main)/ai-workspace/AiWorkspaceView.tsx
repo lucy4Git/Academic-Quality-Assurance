@@ -19,7 +19,7 @@ import {
 } from "@/hooks/useAiAssistant";
 import { useMultiAgent, type MultiAgentResponse } from "@/hooks/useWorkspace";
 import type { AskResponse, SourceChunk } from "@/types/ai-assistant";
-import { askStream, type StreamSource } from "@/lib/api/ai-assistant";
+import { askStream, type StreamSource, type Citation } from "@/lib/api/ai-assistant";
 import {
   Brain, Plus, Trash2, ChevronRight, Download, BookOpen, Zap, Shield,
   BarChart2, Search, GitBranch, GraduationCap, CheckSquare, Layers,
@@ -116,6 +116,9 @@ interface WorkspaceMessage {
   timestamp: Date;
   routerResult?: AgentRouterResponse;
   contributions?: { agent: string; confidence: number; summary?: string }[];
+  citations?: Citation[];
+  unsupportedClaims?: string[];
+  groundingStatus?: "grounded" | "partially_grounded" | "no_source_found";
 }
 
 // ── Thinking animation ───────────────────────────────────────────────────────
@@ -284,6 +287,67 @@ const MessageBubble = memo(function MessageBubble({
                 <div className={cn("h-full rounded-full", barColour)} style={{ width: `${pct}%` }} />
               </div>
               <span className={cn("text-xs font-medium", confColour)}>{pct}% confidence</span>
+            </div>
+          )}
+
+          {/* Grounding status badge */}
+          {msg.groundingStatus && (
+            <div className="mt-2 flex items-center gap-1.5">
+              {msg.groundingStatus === "grounded" ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300">
+                  <CheckCircle2 className="h-2.5 w-2.5" />
+                  Grounded
+                </span>
+              ) : msg.groundingStatus === "partially_grounded" ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[10px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-300">
+                  <AlertCircle className="h-2.5 w-2.5" />
+                  Partially Grounded
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-muted border border-border px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                  <Info className="h-2.5 w-2.5" />
+                  No Source Found
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Citations */}
+          {msg.citations && msg.citations.length > 0 && (
+            <div className="mt-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Citations ({msg.citations.length})
+              </p>
+              <div className="space-y-1">
+                {msg.citations.slice(0, 4).map((c, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 rounded-lg bg-muted/50 border border-border px-2.5 py-1.5"
+                  >
+                    <span className="shrink-0 rounded-md bg-indigo-100 dark:bg-indigo-950/60 px-1.5 py-0.5 text-[10px] font-mono font-bold text-indigo-700 dark:text-indigo-300">
+                      {c.source_id}
+                    </span>
+                    <span className="flex-1 text-[11px] text-foreground truncate">{c.title}</span>
+                    <button
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(`${c.source_id}: ${c.title} (${c.source_document})`);
+                        toast.success("Citation copied");
+                      }}
+                      aria-label="Copy citation"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Copy className="h-2.5 w-2.5" />
+                    </button>
+                    <a
+                      href={`/knowledge-search?q=${encodeURIComponent(c.title)}`}
+                      className="text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      aria-label="Search for this source"
+                    >
+                      <Search className="h-2.5 w-2.5" />
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -1140,11 +1204,24 @@ export function AiWorkspaceView() {
                   : m,
               ),
             );
-          } else if (event.type === "chunk") {
+          } else if (event.type === "chunk" || event.type === "token") {
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === streamMsgId
                   ? { ...m, content: m.content + event.content }
+                  : m,
+              ),
+            );
+          } else if (event.type === "metadata") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? {
+                      ...m,
+                      citations: event.citations,
+                      unsupportedClaims: event.unsupported_claims,
+                      groundingStatus: event.grounding_status,
+                    }
                   : m,
               ),
             );

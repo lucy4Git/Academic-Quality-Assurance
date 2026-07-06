@@ -52,6 +52,17 @@ class SourceChunk(BaseModel):
     relevance_score: float
 
 
+class Citation(BaseModel):
+    """One verified citation from the Advanced RAG pipeline."""
+
+    source_id: str
+    title: str
+    entity_type: str
+    snippet: str
+    relevance_score: float
+    source_document: str
+
+
 class AskResponse(BaseModel):
     """Full response from the AI QA Assistant."""
 
@@ -67,6 +78,9 @@ class AskResponse(BaseModel):
     model: str
     mode: str
     session_id: uuid.UUID | None = None
+    citations: list[Citation] = Field(default_factory=list)
+    unsupported_claims: list[str] = Field(default_factory=list)
+    grounding_status: str = Field(default="no_source_found")
 
 
 # ---------------------------------------------------------------------------

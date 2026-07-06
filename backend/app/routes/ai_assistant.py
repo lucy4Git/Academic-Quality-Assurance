@@ -42,6 +42,7 @@ from app.ai_assistant.llm_router_service import llm_route_prompt
 from app.ai_assistant.prompt_templates import AGENT_MODE_LABELS, AGENT_MODES
 from app.ai_assistant.recommendation_engine import get_recommendations
 from app.ai_providers.manager import get_provider_manager
+from app.rag.advanced_rag_service import advanced_ask
 from app.ai_providers.provider_factory import get_provider
 from app.database import get_db
 from app.dependencies import LecturerRequired
@@ -198,7 +199,7 @@ async def ask_assistant(
 ) -> dict[str, Any]:
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
-    result = await assistant_service.ask(
+    result = await advanced_ask(
         question=body.question,
         institution_code=institution_code,
         context_limit=body.context_limit,
@@ -272,12 +273,12 @@ async def _stream_ask(
     if effective_mode not in AGENT_MODES:
         effective_mode = "qa_assistant"
 
-    # 3. Get full LLM response (Qdrant retrieval + LLM call)
+    # 3. Get full LLM response via Advanced RAG pipeline
     try:
         manager = get_provider_manager()
         provider = await manager.get_healthy_provider()
 
-        result = await assistant_service.ask(
+        result = await advanced_ask(
             question=question,
             institution_code=institution_code,
             context_limit=context_limit,
@@ -286,11 +287,11 @@ async def _stream_ask(
         )
     except Exception as exc:
         import logging
-        logging.getLogger(__name__).error("ask-stream: assistant_service.ask failed: %s", exc)
+        logging.getLogger(__name__).error("ask-stream: advanced_ask failed: %s", exc)
         yield _sse("error", {"message": "An error occurred while generating a response."})
         return
 
-    # 4. Simulate streaming: split answer into word-level chunks
+    # 4. Simulate streaming: split answer into word-level token events
     answer: str = result.get("answer", "")
     words = answer.split(" ")
     CHUNK_WORDS = 6
@@ -299,7 +300,7 @@ async def _stream_ask(
         content = " ".join(chunk_words)
         if i > 0:
             content = " " + content
-        yield _sse("chunk", {"content": content})
+        yield _sse("token", {"content": content})
         await asyncio.sleep(0.02)
 
     # 5. Sources event
@@ -311,7 +312,14 @@ async def _stream_ask(
         "follow_up_questions": router.get("follow_up_questions", []),
     })
 
-    # 6. Done event
+    # 6. Metadata event (Advanced RAG citation data)
+    yield _sse("metadata", {
+        "citations": result.get("citations", []),
+        "unsupported_claims": result.get("unsupported_claims", []),
+        "grounding_status": result.get("grounding_status", "no_source_found"),
+    })
+
+    # 7. Done event
     yield _sse("done", {
         "provider": result.get("provider", "unknown"),
         "model": result.get("model", "unknown"),

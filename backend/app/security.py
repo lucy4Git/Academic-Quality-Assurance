@@ -35,11 +35,20 @@ def hash_password(plain_password: str) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Return ``True`` if *plain_password* matches *hashed_password*."""
-    return bcrypt.checkpw(
-        plain_password.encode("utf-8"),
-        hashed_password.encode("utf-8"),
-    )
+    """Return ``True`` if *plain_password* matches *hashed_password*.
+
+    Returns ``False`` (never raises) if *hashed_password* is NULL, empty, or
+    not a valid bcrypt hash — prevents a corrupted DB row from producing HTTP 500.
+    """
+    if not hashed_password:
+        return False
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"),
+            hashed_password.encode("utf-8"),
+        )
+    except ValueError:
+        return False
 
 
 # ---------------------------------------------------------------------------

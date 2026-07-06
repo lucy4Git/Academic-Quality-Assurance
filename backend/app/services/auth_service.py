@@ -223,7 +223,8 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> User
     user = await get_user_by_email(db, email)
 
     # Use a dummy hash so the bcrypt work factor runs regardless (timing attack mitigation).
-    dummy = "$2b$12$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    # Must be exactly 60 chars: $2b$12$ (7) + 22-char salt + 31-char hash (53 more chars).
+    dummy = "$2b$12$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     hashed = user.hashed_password if user is not None else dummy
 
     password_ok = verify_password(password, hashed)

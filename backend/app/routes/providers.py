@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from app.ai_providers.manager import get_provider_manager
 from app.dependencies import AdminRequired
@@ -30,7 +30,7 @@ router = APIRouter(prefix="/providers", tags=["AI Providers"])
     response_model=dict[str, Any],
 )
 async def provider_health(
-    _: Any = Depends(AdminRequired),
+    _: Any = AdminRequired,
 ) -> dict[str, Any]:
     """Probe all configured providers and return health results."""
     manager = get_provider_manager()
@@ -52,7 +52,7 @@ async def provider_health(
     response_model=dict[str, Any],
 )
 async def provider_status(
-    _: Any = Depends(AdminRequired),
+    _: Any = AdminRequired,
 ) -> dict[str, Any]:
     """Return current provider configuration without probing external endpoints."""
     manager = get_provider_manager()

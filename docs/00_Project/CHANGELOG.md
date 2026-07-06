@@ -36,6 +36,28 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Split 1] — 2026-07-06
+
+South African University Foundation + UX Navigation Reorganisation.
+
+### Added
+- **SA public university registry** — `database/seed_data/institution_registry/south_africa_public_universities.json` with all 26 South African public universities (name, code, province, institution type, website, founding year, data-provenance metadata). Accompanied by `sources.json` and `README.md` documenting public-vs-synthetic data policy.
+- **Institution provenance fields** — `province`, `website`, `source_url`, `data_status`, `data_confidence`, `is_demo` added to the `Institution` model, schema (`InstitutionRead`), and via Alembic migration `f7a8b9c0d1e2`.
+- **`seed_sa_universities.py`** — idempotent seed that upserts the 26 university profiles without touching pilot data relationships; wired into `run_all.py` as step 4/4.
+- **Workspace landing pages** — `/institution`, `/quality`, `/knowledge`, `/ai`, `/administration`, each a role-filtered card grid linking to underlying features.
+- **AI error UX** — `AiErrorCard` in the AI Workspace surfaces friendly error messages (auth / service unavailable / no institution / no sources) with Try Again (retry last prompt), Browse Knowledge, Open AI Workspace, and AI Settings (System Admin) actions.
+- **10 registry tests** — `backend/tests/test_split1_sa_registry.py` (count, uniqueness, required fields, types, confidence range, is_demo, model columns).
+
+### Changed
+- **Sidebar reorganised** — 8 verbose sections replaced by a single 7-item workspace navigation (Home, Institution, Quality, Knowledge, AI, Analytics, Administration); `Home` icon added.
+- **Dashboard** — replaced with an executive-focused view (greeting, 3 KPI cards clearly labelled "Demo data", quick actions).
+- **RBAC** — added route permissions for the 5 new workspace landing routes.
+
+### Migration
+- `python -m alembic upgrade head` applies `f7a8b9c0d1e2`.
+
+---
+
 ## [3.0.0-p3s3] — 2026-07-06
 
 ### Added

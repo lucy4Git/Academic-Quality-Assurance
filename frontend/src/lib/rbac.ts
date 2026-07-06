@@ -114,6 +114,13 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/reports":             HOD_AND_ABOVE,
   "/accreditation":       DEAN_AND_ABOVE,
 
+  // ── Workspace landing pages (Split 1 navigation) ───────────────────────────
+  "/institution":         QA_AND_ABOVE,
+  "/quality":             COORDINATOR_AND_ABOVE,
+  "/knowledge":           STAFF,
+  "/ai":                  STAFF,
+  "/administration":      SA_ONLY,
+
   // ── Administration (SA only) ───────────────────────────────────────────────
   "/users":               SA_ONLY,
   "/settings/system":     SA_ONLY,
@@ -170,67 +177,13 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "",
     items: [
-      { label: "Dashboard",       href: "/dashboard",        icon: "LayoutDashboard", roles: ALL },
-    ],
-  },
-  {
-    title: "INSTITUTION",
-    items: [
-      { label: "Institutions",    href: "/institutions",     icon: "Building2",      roles: QA_AND_ABOVE },
-      { label: "Faculties",       href: "/faculties",        icon: "GraduationCap",  roles: DEAN_AND_ABOVE },
-      { label: "Departments",     href: "/departments",      icon: "BookOpen",       roles: HOD_AND_ABOVE },
-      { label: "Programmes",      href: "/programmes",       icon: "Layers",         roles: ALL },
-      { label: "Modules",         href: "/modules",          icon: "Boxes",          roles: ALL },
-    ],
-  },
-  {
-    title: "KNOWLEDGE",
-    items: [
-      { label: "Knowledge Review",  href: "/knowledge-review",  icon: "ClipboardCheck", roles: QA_AND_ABOVE },
-      { label: "Knowledge Search",  href: "/knowledge-search",  icon: "SearchCheck",    roles: STAFF },
-      { label: "IKP Management",    href: "/ikp-management",    icon: "Package",        roles: QA_AND_ABOVE },
-    ],
-  },
-  {
-    title: "QUALITY",
-    items: [
-      { label: "File Library",    href: "/files",            icon: "Library",        roles: STAFF },
-      { label: "Upload Evidence", href: "/files/upload",     icon: "Upload",         roles: STAFF },
-      { label: "Audit Centre",    href: "/audits",           icon: "SearchCheck",    roles: COORDINATOR_AND_ABOVE },
-      { label: "Findings",        href: "/findings",         icon: "AlertTriangle",  roles: STAFF },
-    ],
-  },
-  {
-    title: "WORKFLOW",
-    items: [
-      { label: "Workflow",        href: "/workflow",         icon: "GitBranch",      roles: COORDINATOR_AND_ABOVE },
-      { label: "Approvals",       href: "/approvals",        icon: "ShieldCheck",    roles: QA_AND_ABOVE },
-      { label: "Calendar",        href: "/calendar",         icon: "CalendarDays",   roles: COORDINATOR_AND_ABOVE },
-      { label: "Notifications",   href: "/notifications",    icon: "Bell",           roles: STAFF },
-    ],
-  },
-  {
-    title: "AI ASSISTANT",
-    items: [
-      { label: "AI Workspace",             href: "/ai-workspace",              icon: "Brain",        roles: STAFF },
-      { label: "AI QA Assistant",          href: "/ai-assistant",              icon: "BrainCircuit", roles: STAFF },
-      { label: "Qualification Intelligence", href: "/qualification-intelligence", icon: "Calculator",   roles: STAFF },
-      { label: "Institution Workspace",    href: "/workspace",                 icon: "Building2",    roles: STAFF },
-    ],
-  },
-  {
-    title: "ANALYTICS",
-    items: [
-      { label: "Analytics",       href: "/analytics",         icon: "BarChart2",      roles: HOD_AND_ABOVE },
-      { label: "Reports",         href: "/reports",           icon: "FileBarChart",   roles: HOD_AND_ABOVE },
-      { label: "Accreditation",   href: "/accreditation",    icon: "Shield",         roles: DEAN_AND_ABOVE },
-    ],
-  },
-  {
-    title: "ADMINISTRATION",
-    items: [
-      { label: "Users",           href: "/users",            icon: "Users",          roles: SA_ONLY },
-      { label: "Settings",        href: "/settings/system",  icon: "Settings",       roles: SA_ONLY },
+      { label: "Home",           href: "/dashboard",      icon: "Home",       roles: ALL },
+      { label: "Institution",    href: "/institution",    icon: "Building2",  roles: QA_AND_ABOVE },
+      { label: "Quality",        href: "/quality",        icon: "ShieldCheck", roles: COORDINATOR_AND_ABOVE },
+      { label: "Knowledge",      href: "/knowledge",      icon: "BookOpen",   roles: STAFF },
+      { label: "AI",             href: "/ai",             icon: "Brain",      roles: STAFF },
+      { label: "Analytics",      href: "/analytics",      icon: "BarChart2",  roles: HOD_AND_ABOVE },
+      { label: "Administration", href: "/administration", icon: "Settings",   roles: SA_ONLY },
     ],
   },
 ];

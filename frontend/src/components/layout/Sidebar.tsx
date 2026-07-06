@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Home,
   LayoutDashboard,
   Building2,
   GraduationCap,
@@ -44,6 +45,7 @@ import { useInstitutions } from "@/hooks/useInstitutions";
 
 // Map icon name strings → lucide components
 const ICON_MAP: Record<string, LucideIcon> = {
+  Home,
   LayoutDashboard,
   Building2,
   GraduationCap,

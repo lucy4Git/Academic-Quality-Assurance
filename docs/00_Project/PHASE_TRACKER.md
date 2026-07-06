@@ -63,6 +63,7 @@
 | **P3 Sprint 1** | **Production AI Provider Orchestration** | **✅** | **2026-07-06** | **2026-07-06** | **P2 Sprint 3** | **Engineering** | **1017 tests, ProviderManager cascade fallback, health endpoints (System Admin only), Gemini scaffold, AI Provider Settings page, Dashboard AI Health widget (SA only)** |
 | **P3 Sprint 2** | **Real LLM Orchestrator + Streaming AI Responses** | **✅** | **2026-07-06** | **2026-07-06** | **P3 Sprint 1** | **Engineering** | **1051 tests (+34), LLM-assisted router, /ask-stream SSE endpoint, streaming workspace UI, simulated word-level chunking, non-stream fallback** |
 | **P3 Sprint 3** | **Advanced RAG + Citation Verification** | **✅** | **2026-07-06** | **2026-07-06** | **P3 Sprint 2** | **Engineering** | **1091 tests (+40), source re-ranker, [SOURCE:N] context builder, citation verifier, grounding_status, metadata SSE event, grounding badge + citations UI** |
+| **Split 1** | **SA University Foundation + UX Navigation Reorganisation** | **✅** | **2026-07-06** | **2026-07-06** | **P3 Sprint 3** | **Engineering** | **26 SA public university registry, institution provenance fields + migration, 7-item workspace sidebar, 5 workspace landing pages, executive dashboard, AI error UX with retry, 10 registry tests** |
 | 6 | IKP Management + Full PDF Extraction | ⏳ | — | — | Sprint 1 | Engineering | |
 | 7 | AI Knowledge Base Integration | ⏳ | — | — | 6 | Engineering | |
 | 8 | Multi-Institution Production | ⏳ | — | — | 7 | Engineering | |

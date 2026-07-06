@@ -3,6 +3,7 @@
 import {
   useState, useRef, useEffect, useCallback, memo,
 } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,7 +27,7 @@ import {
   Copy, Send, MessageSquare, Clock, Building2, X, PanelRightClose,
   PanelRightOpen, CheckCircle2, Loader2, ArrowRight, FileText, Upload,
   ClipboardCheck, RotateCcw, Star, ExternalLink, AlertCircle, Info,
-  Sparkles, Hash,
+  Sparkles, Hash, Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -119,6 +120,60 @@ interface WorkspaceMessage {
   citations?: Citation[];
   unsupportedClaims?: string[];
   groundingStatus?: "grounded" | "partially_grounded" | "no_source_found";
+  isError?: boolean;
+  errorMessage?: string;
+}
+
+// ── AI error card ────────────────────────────────────────────────────────────
+
+function AiErrorCard({
+  message,
+  onRetry,
+  isSystemAdmin,
+}: {
+  message: string;
+  onRetry?: () => void;
+  isSystemAdmin?: boolean;
+}) {
+  const friendlyMessage = message.includes("401") || message.includes("403")
+    ? "Authentication required. Please sign in again."
+    : /\b5\d\d\b/.test(message)
+    ? "The AI service is temporarily unavailable. Please try again in a moment."
+    : message.includes("No institution") || message.includes("institution_code")
+    ? "No institution context was found. Please ensure your account has an institution assigned."
+    : message.includes("No sources") || message.includes("no_source_found")
+    ? "No institutional knowledge sources were found for your query."
+    : "The AI assistant could not complete the request. Please try again.";
+
+  return (
+    <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 space-y-3">
+      <div className="flex items-start gap-3">
+        <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="font-medium text-destructive text-sm">AI Assistant Error</p>
+          <p className="text-sm text-muted-foreground mt-1">{friendlyMessage}</p>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {onRetry && (
+          <button onClick={onRetry} className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors">
+            <RotateCcw className="h-3.5 w-3.5" /> Try Again
+          </button>
+        )}
+        <Link href="/knowledge-search" className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors">
+          <BookOpen className="h-3.5 w-3.5" /> Browse Knowledge
+        </Link>
+        <Link href="/ai-workspace" className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors">
+          <Brain className="h-3.5 w-3.5" /> Open AI Workspace
+        </Link>
+        {isSystemAdmin && (
+          <Link href="/settings/ai-providers" className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-accent transition-colors">
+            <Settings className="h-3.5 w-3.5" /> AI Settings
+          </Link>
+        )}
+      </div>
+    </div>
+  );
 }
 
 // ── Thinking animation ───────────────────────────────────────────────────────
@@ -180,11 +235,15 @@ const MessageBubble = memo(function MessageBubble({
   onFollowUp,
   onExport,
   isLatest,
+  onRetry,
+  isSystemAdmin,
 }: {
   msg: WorkspaceMessage;
   onFollowUp: (q: string) => void;
   onExport: (content: string) => void;
   isLatest: boolean;
+  onRetry?: () => void;
+  isSystemAdmin?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -212,6 +271,25 @@ const MessageBubble = memo(function MessageBubble({
               {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </span>
           </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  if (msg.isError) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex justify-start"
+      >
+        <div className="max-w-[84%] w-full">
+          <AiErrorCard
+            message={msg.errorMessage ?? msg.content}
+            onRetry={isLatest ? onRetry : undefined}
+            isSystemAdmin={isSystemAdmin}
+          />
         </div>
       </motion.div>
     );
@@ -1051,6 +1129,7 @@ export function AiWorkspaceView() {
   const [useMultiAgentMode, setUseMultiAgentMode] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(true);
   const [isStreamLoading, setIsStreamLoading] = useState(false);
+  const [lastPrompt, setLastPrompt] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { data: suggestedData } = useSuggestedPrompts(institutionCode || undefined);
@@ -1130,6 +1209,7 @@ export function AiWorkspaceView() {
       };
       setMessages((prev) => [...prev, userMsg]);
       setInput("");
+      setLastPrompt(q);
       if (showRightPanel === false) setShowRightPanel(true);
 
       if (useMultiAgentMode) {
@@ -1161,10 +1241,12 @@ export function AiWorkspaceView() {
             contributions,
           };
           setMessages((prev) => [...prev, assistantMsg]);
-        } catch {
+        } catch (err) {
           setMessages((prev) => [...prev, {
             id: crypto.randomUUID(), role: "assistant",
             content: "An error occurred. Please try again.",
+            isError: true,
+            errorMessage: err instanceof Error ? err.message : String(err),
             timestamp: new Date(),
           }]);
         }
@@ -1291,14 +1373,17 @@ export function AiWorkspaceView() {
                 : m,
             ),
           );
-        } catch {
+        } catch (err) {
+          const errMsg = err instanceof Error ? err.message : String(err);
           setMessages((prev) =>
             prev.map((m) =>
               m.id === streamMsgId
                 ? {
                     ...m,
                     isStreaming: false,
-                    content: "An error occurred. Please try again.",
+                    content: errMsg,
+                    isError: true,
+                    errorMessage: errMsg,
                   }
                 : m,
             ),
@@ -1313,6 +1398,18 @@ export function AiWorkspaceView() {
     },
     [ask, multiAgent, institutionCode, isAdmin, activeSessionId, isLoading, useMultiAgentMode, queryClient, showRightPanel]
   );
+
+  const handleRetry = useCallback(() => {
+    if (lastPrompt) {
+      // Drop the trailing error message before retrying.
+      setMessages((prev) => {
+        const next = [...prev];
+        if (next.length && next[next.length - 1].isError) next.pop();
+        return next;
+      });
+      handleSubmit(lastPrompt);
+    }
+  }, [lastPrompt, handleSubmit]);
 
   return (
     <div className="flex h-[calc(100vh-3rem)] overflow-hidden bg-background">
@@ -1377,6 +1474,8 @@ export function AiWorkspaceView() {
                   onFollowUp={handleSubmit}
                   onExport={exportAnswer}
                   isLatest={i === messages.length - 1}
+                  onRetry={handleRetry}
+                  isSystemAdmin={isAdmin}
                 />
               ))}
               {multiAgent.isPending && (

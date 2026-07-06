@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, String
+from sqlalchemy import Boolean, Float, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
@@ -27,6 +27,12 @@ class Institution(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     logo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     institution_type: Mapped[str] = mapped_column(String(50), nullable=False, default="production")
+    province: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    website: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    data_status: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    data_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    is_demo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     faculties: Mapped[list["Faculty"]] = relationship(
         back_populates="institution",

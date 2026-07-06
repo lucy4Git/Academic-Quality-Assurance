@@ -1,0 +1,41 @@
+{
+  "description": "Data sources used to compile the South African public university registry. All data is publicly available and does not include any institution's private/internal QA records.",
+  "compiled_on": "2026-07-06",
+  "sources": [
+    {
+      "name": "Department of Higher Education and Training (DHET)",
+      "url": "https://www.dhet.gov.za",
+      "used_for": "Official list of recognised public higher education institutions, institution types, and provinces.",
+      "confidence": "high"
+    },
+    {
+      "name": "Universities South Africa (USAf)",
+      "url": "https://www.usaf.ac.za",
+      "used_for": "Cross-verification of the 26 public universities and their classifications.",
+      "confidence": "high"
+    },
+    {
+      "name": "Council on Higher Education (CHE)",
+      "url": "https://www.che.ac.za",
+      "used_for": "Quality assurance body reference (HEQSF national framework, accreditation context).",
+      "confidence": "high"
+    },
+    {
+      "name": "Institutional websites (per-university)",
+      "url": "see each entry's `website` field",
+      "used_for": "Official institution names and web addresses.",
+      "confidence": "high"
+    },
+    {
+      "name": "Wikipedia",
+      "url": "https://en.wikipedia.org",
+      "used_for": "Year of establishment / founding dates only, where not otherwise published.",
+      "confidence": "medium"
+    }
+  ],
+  "notes": [
+    "Institution profiles (name, code, province, type, website, established) are public and verified: data_status = 'public_verified'.",
+    "No QA/audit data for these institutions is real. Any faculty, department, programme, module, audit, or finding data associated with them is synthetic/demo and marked is_demo = true.",
+    "data_confidence reflects confidence in the PUBLIC PROFILE data only, not any QA data."
+  ]
+}

@@ -67,6 +67,12 @@ class InstitutionRead(BaseModel):
     logo_url: str | None
     is_active: bool
     institution_type: str
+    province: str | None = None
+    website: str | None = None
+    source_url: str | None = None
+    data_status: str | None = None
+    data_confidence: float | None = None
+    is_demo: bool = False
     created_at: datetime
     updated_at: datetime
 

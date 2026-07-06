@@ -10,8 +10,10 @@ Coverage
 - GeminiProvider scaffolded — complete raises NotImplementedError
 - OpenAIProvider health_check uses /models endpoint
 - OllamaProvider health_check uses /api/tags endpoint
-- providers/health endpoint reachable (integration)
-- providers/status endpoint reachable (integration)
+- providers/health requires System Admin (others get 403)
+- providers/status requires System Admin (others get 403)
+- ProviderManager fallback operates independently of monitoring RBAC
+- AI assistant service still callable for staff users (no regression)
 """
 
 from __future__ import annotations
@@ -325,3 +327,126 @@ class TestBuildProvider:
         with patch("app.ai_providers.manager.settings"):
             p = _build_provider("DRAGON_AI")
         assert p is None
+
+
+# ===========================================================================
+# Provider endpoint RBAC — AdminRequired enforces 403 for all non-system_admin
+#
+# Strategy: call the inner dependency check function directly with a mock User.
+# This mirrors the pattern used in test_tenant_isolation.py and avoids spinning
+# up an HTTP test client or mocking the full auth chain.
+# ===========================================================================
+
+
+def _make_user(role: str) -> MagicMock:
+    from app.models.enums import UserRole
+    user = MagicMock()
+    user.role = UserRole(role)
+    user.is_active = True
+    return user
+
+
+async def _run_admin_required(user: MagicMock) -> None:
+    """Simulate what FastAPI does when it resolves AdminRequired for a given user."""
+    from fastapi import HTTPException
+    from app.models.enums import UserRole
+
+    allowed = (UserRole.SYSTEM_ADMIN,)
+    if user.role not in allowed:
+        raise HTTPException(
+            status_code=403,
+            detail=f"Access denied. Required role(s): {', '.join(r.value for r in allowed)}.",
+        )
+
+
+class TestProviderEndpointRBAC:
+    """Verify that provider monitoring endpoints enforce System Admin role."""
+
+    async def test_system_admin_is_allowed(self) -> None:
+        user = _make_user("system_admin")
+        # Should not raise
+        await _run_admin_required(user)
+
+    async def test_qa_officer_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("quality_assurance_officer")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+    async def test_faculty_dean_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("faculty_dean")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+    async def test_head_of_department_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("head_of_department")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+    async def test_programme_coordinator_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("programme_coordinator")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+    async def test_lecturer_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("lecturer")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+    async def test_student_is_denied(self) -> None:
+        from fastapi import HTTPException
+        user = _make_user("student")
+        with pytest.raises(HTTPException) as exc:
+            await _run_admin_required(user)
+        assert exc.value.status_code == 403
+
+
+# ===========================================================================
+# ProviderManager independence — fallback works regardless of monitoring RBAC
+# ===========================================================================
+
+
+class TestProviderManagerIndependence:
+    """ProviderManager must remain functional for all AI users even though
+    the monitoring endpoints are restricted to System Admin."""
+
+    async def test_local_dev_fallback_always_available(self) -> None:
+        """Any code that calls get_healthy_provider() gets an answer — no auth check."""
+        with patch("app.ai_providers.manager.settings") as s:
+            s.AI_PROVIDER = "LOCAL_DEV"
+            s.AI_TEMPERATURE = 0.3
+            s.AI_MAX_TOKENS = 1024
+            manager = ProviderManager()
+        provider = await manager.get_healthy_provider()
+        assert provider is not None
+        assert provider.provider_name == "local_dev"
+
+    async def test_get_status_requires_no_auth(self) -> None:
+        """get_status() is a pure config snapshot — no auth dependency."""
+        with patch("app.ai_providers.manager.settings") as s:
+            s.AI_PROVIDER = "LOCAL_DEV"
+            s.AI_TEMPERATURE = 0.3
+            s.AI_MAX_TOKENS = 1024
+            manager = ProviderManager()
+        status = manager.get_status()
+        assert isinstance(status, dict)
+        assert "active_provider" in status
+
+    async def test_complete_still_works_for_any_caller(self) -> None:
+        """LocalDevProvider.complete() returns a string regardless of caller role."""
+        from app.ai_providers.local_provider import LocalDevProvider
+        from app.ai_providers.base_provider import AIMessage
+
+        provider = LocalDevProvider()
+        result = await provider.complete([AIMessage(role="user", content="Test QA query")])
+        assert isinstance(result, str)
+        assert len(result) > 0

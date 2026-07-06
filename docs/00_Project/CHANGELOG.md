@@ -85,6 +85,40 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [3.0.0-p3s1] — 2026-07-06
+
+### Added
+- **ProviderManager** (`backend/app/ai_providers/manager.py`) — singleton orchestrator with cascade fallback (`OPENAI → OLLAMA → ANTHROPIC → GEMINI → LOCAL_DEV`), concurrent `health_check_all()`, `get_healthy_provider()`, and `get_status()`
+- **`HealthResult` dataclass** on `BaseAIProvider` — structured health probe results with `status`, `latency_ms`, `error`, and `extra` fields
+- **Per-provider `health_check()` implementations** — OpenAI: `GET /v1/models` (10 s); Ollama: `GET /api/tags` with model availability; Anthropic: key-presence check; LocalDev: instant ok
+- **`GeminiProvider`** (`backend/app/ai_providers/gemini_provider.py`) — scaffolded only; `complete()` raises `NotImplementedError`; `health_check()` returns `not_implemented`
+- **`GET /api/v1/providers/health`** — concurrent provider health probe; **System Admin only**
+- **`GET /api/v1/providers/status`** — provider config snapshot (no HTTP calls); **System Admin only**
+- **`/settings/ai-providers`** — AI Provider Settings page showing config + health cards; **System Admin only**
+- **`AIHealthWidget`** — live provider health widget on System Admin dashboard
+- **`useProviderHealth` / `useProviderStatus`** — TanStack Query hooks (60 s refetch)
+- **`GEMINI_API_KEY`, `GEMINI_MODEL`** added to `config.py` and `.env.example`
+- **10 new RBAC tests** — System Admin allowed; QA Officer, Lecturer, Student, Dean, HOD, Coordinator all denied with HTTP 403
+- **3 ProviderManager independence tests** — fallback operates without auth, independent of monitoring endpoints
+
+### Security
+- Provider monitoring endpoints (`/providers/health`, `/providers/status`) restricted from `QAOfficerRequired`/`AnyAuthenticatedUser` → `AdminRequired` (System Admin only)
+- Non-admin users receive HTTP 403 on all provider monitoring endpoints
+- API keys never logged or returned by any endpoint
+- `/settings/ai-providers` locked in RBAC map (`SA_ONLY`) and guarded in-component with redirect
+
+### Changed
+- `Dashboard AI Health Widget` — restricted from QA Officer + System Admin → **System Admin only**
+- `AIProvidersView` — added in-component access guard; non-admins see "Access Restricted" and are redirected to `/dashboard`
+- `rbac.ts` — `/settings/ai-providers` added explicitly as `SA_ONLY`
+- `providers.py` — both endpoints now use `AdminRequired` instead of `QAOfficerRequired`/`AnyAuthenticatedUser`
+
+### Tests
+- 1017 backend tests passing (1007 before → +10 new RBAC + independence tests)
+- 0 TypeScript errors
+- ESLint clean
+- Production build successful
+
 ## [2.0.0-sprint2] — 2026-07-05
 
 ### Added

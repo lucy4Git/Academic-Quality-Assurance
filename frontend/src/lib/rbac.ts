@@ -117,6 +117,7 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   // ── Administration (SA only) ───────────────────────────────────────────────
   "/users":               SA_ONLY,
   "/settings/system":     SA_ONLY,
+  "/settings/ai-providers": SA_ONLY,          // AI provider monitoring — sysadmin only
   "/settings":            SA_ONLY,            // root /settings → SA; sub-paths checked separately
 };
 

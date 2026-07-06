@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Brain,
@@ -10,6 +12,7 @@ import {
   Info,
   Zap,
   Shield,
+  Lock,
 } from "lucide-react";
 import { useProviderStatus, useProviderHealth } from "@/hooks/useProviderHealth";
 import { useRole } from "@/hooks/useRole";
@@ -176,7 +179,8 @@ function ProviderCard({
 }
 
 export function AIProvidersView() {
-  const { isSysAdmin, isQAOfficer } = useRole();
+  const router = useRouter();
+  const { isSysAdmin } = useRole();
   const { data: status, isLoading: statusLoading } = useProviderStatus();
   const {
     data: health,
@@ -186,7 +190,28 @@ export function AIProvidersView() {
     error: healthError,
   } = useProviderHealth();
 
-  const canViewHealth = isSysAdmin || isQAOfficer;
+  // Redirect non-admins immediately — middleware also enforces this server-side
+  useEffect(() => {
+    if (isSysAdmin === false) {
+      router.replace("/dashboard");
+    }
+  }, [isSysAdmin, router]);
+
+  // Show access-denied while the redirect is in-flight (isSysAdmin briefly undefined on mount)
+  if (!isSysAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
+        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
+          <Lock className="h-6 w-6 text-muted-foreground" />
+        </div>
+        <h2 className="text-lg font-semibold">Access Restricted</h2>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          AI Provider Settings are only accessible to System Administrators.
+        </p>
+      </div>
+    );
+  }
+
   const isLoading = statusLoading || healthLoading;
 
   return (
@@ -237,8 +262,7 @@ export function AIProvidersView() {
       </section>
 
       {/* Provider health */}
-      {canViewHealth && (
-        <section>
+      <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-semibold">Provider Health</h2>
             <button
@@ -303,7 +327,6 @@ export function AIProvidersView() {
             </div>
           )}
         </section>
-      )}
 
       {/* Config help */}
       <section className="rounded-xl border border-border bg-card p-5">

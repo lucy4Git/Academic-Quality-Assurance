@@ -6,7 +6,7 @@ import logging
 
 import httpx
 
-from app.ai_providers.base_provider import AIMessage, BaseAIProvider
+from app.ai_providers.base_provider import AIMessage, BaseAIProvider, HealthResult
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +66,12 @@ class AnthropicProvider(BaseAIProvider):
         response.raise_for_status()
         data = response.json()
         return data["content"][0]["text"]
+
+    async def health_check(self) -> HealthResult:
+        """Anthropic is scaffolded for health checks — API key presence only."""
+        if not self._api_key:
+            return HealthResult(status="not_configured", error="ANTHROPIC_API_KEY not set")
+        return HealthResult(status="ok", latency_ms=0.0, extra={"note": "key-only check"})
 
     @property
     def provider_name(self) -> str:

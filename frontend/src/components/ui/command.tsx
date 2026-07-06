@@ -55,6 +55,8 @@ function CommandDialog({
 
   if (!open || typeof document === "undefined") return null
 
+  const descId = `cmd-dialog-desc-${title.replace(/\s+/g, "-").toLowerCase()}`
+
   return createPortal(
     <div data-slot="command-dialog">
       {/* Backdrop */}
@@ -68,12 +70,13 @@ function CommandDialog({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        aria-description={description}
+        aria-describedby={descId}
         className={cn(
           "fixed left-1/2 top-1/3 z-50 w-full max-w-lg -translate-x-1/2 overflow-hidden rounded-xl bg-popover shadow-2xl ring-1 ring-foreground/10",
           className
         )}
       >
+        <span id={descId} className="sr-only">{description}</span>
         <Command>{children}</Command>
       </div>
     </div>,

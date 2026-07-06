@@ -9,7 +9,7 @@ Never makes external HTTP calls.
 
 from __future__ import annotations
 
-from app.ai_providers.base_provider import AIMessage, BaseAIProvider
+from app.ai_providers.base_provider import AIMessage, BaseAIProvider, HealthResult
 
 
 class LocalDevProvider(BaseAIProvider):
@@ -37,6 +37,9 @@ class LocalDevProvider(BaseAIProvider):
     @property
     def model_name(self) -> str:
         return "template"
+
+    async def health_check(self) -> HealthResult:
+        return HealthResult(status="ok", latency_ms=0.0, extra={"note": "local_dev always available"})
 
     @property
     def is_local_dev(self) -> bool:

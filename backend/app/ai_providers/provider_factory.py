@@ -18,7 +18,7 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
-_KNOWN_PROVIDERS = {"OPENAI", "ANTHROPIC", "OLLAMA", "LOCAL_DEV"}
+_KNOWN_PROVIDERS = {"OPENAI", "ANTHROPIC", "OLLAMA", "GEMINI", "LOCAL_DEV"}
 
 
 def get_provider() -> BaseAIProvider:
@@ -59,6 +59,17 @@ def get_provider() -> BaseAIProvider:
         return OllamaProvider(
             base_url=getattr(settings, "OLLAMA_BASE_URL", "http://localhost:11434"),
             model=getattr(settings, "OLLAMA_MODEL", "llama3"),
+        )
+
+    if provider_name == "GEMINI":
+        api_key = getattr(settings, "GEMINI_API_KEY", None)
+        if not api_key:
+            logger.warning("AI_PROVIDER=GEMINI but GEMINI_API_KEY is missing. Falling back to LOCAL_DEV.")
+            return LocalDevProvider()
+        from app.ai_providers.gemini_provider import GeminiProvider
+        return GeminiProvider(
+            api_key=api_key,
+            model=getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash"),
         )
 
     return LocalDevProvider()

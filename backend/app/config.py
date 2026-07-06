@@ -53,13 +53,15 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 50            # per-file cap sent to validate_upload
 
     # --- AI Provider ---
-    AI_PROVIDER: str = "LOCAL_DEV"        # OPENAI | ANTHROPIC | OLLAMA | LOCAL_DEV
+    AI_PROVIDER: str = "LOCAL_DEV"        # OPENAI | ANTHROPIC | OLLAMA | GEMINI | LOCAL_DEV
     OPENAI_API_KEY: str | None = None
     OPENAI_MODEL: str = "gpt-4o-mini"
     ANTHROPIC_API_KEY: str | None = None
     ANTHROPIC_MODEL: str = "claude-haiku-4-5-20251001"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3"
+    GEMINI_API_KEY: str | None = None
+    GEMINI_MODEL: str = "gemini-2.5-flash"
     LOCAL_MODEL_PATH: str | None = None   # reserved for future local model support
     AI_TEMPERATURE: float = 0.3
     AI_MAX_TOKENS: int = 1024

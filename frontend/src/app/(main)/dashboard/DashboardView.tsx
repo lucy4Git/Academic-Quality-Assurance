@@ -13,6 +13,7 @@ import { FacultyOverview }    from "./components/FacultyOverview";
 import { KnowledgeBaseHealth} from "./components/KnowledgeBaseHealth";
 import { AISuggestions }      from "./components/AISuggestions";
 import { MiniAIWidget }       from "./components/MiniAIWidget";
+import { AIHealthWidget }     from "./components/AIHealthWidget";
 
 // Build a one-sentence AI health summary from dashboard data
 function buildAISummary(
@@ -48,6 +49,7 @@ const DashboardViewInner = memo(function DashboardViewInner() {
   const showFaculty       = isDean;
   const showInstHealth    = isQAOfficer;
   const showKBHealth      = isQAOfficer;
+  const showAIHealth      = isSysAdmin || isQAOfficer;
   const showRecentActivity= isLecturer;
   const showInsights      = isLecturer;
   const showSuggestions   = isLecturer;
@@ -75,11 +77,12 @@ const DashboardViewInner = memo(function DashboardViewInner() {
         </div>
       )}
 
-      {/* Section 5 — Institution Health + KB Health */}
-      {(showInstHealth || showKBHealth) && (
+      {/* Section 5 — Institution Health + KB Health + AI Health */}
+      {(showInstHealth || showKBHealth || showAIHealth) && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {showInstHealth && <InstitutionHealth />}
           {showKBHealth   && <KnowledgeBaseHealth />}
+          {showAIHealth   && <AIHealthWidget />}
         </div>
       )}
 

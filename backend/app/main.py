@@ -38,6 +38,7 @@ from app.routes.knowledge_index import router as knowledge_index_router
 from app.routes.knowledge_index import search_router as knowledge_search_router
 from app.routes.ikp import router as ikp_router
 from app.routes.ai_assistant import router as ai_assistant_router
+from app.routes.providers import router as providers_router
 from app.routes.reporting import router as reporting_router
 from app.routes.qualification import router as qualification_router
 from app.routes.admin import router as admin_router
@@ -139,6 +140,7 @@ def create_app() -> FastAPI:
     app.include_router(knowledge_search_router, prefix=prefix)
     app.include_router(ikp_router, prefix=prefix)
     app.include_router(ai_assistant_router, prefix=prefix)
+    app.include_router(providers_router, prefix=prefix)
     app.include_router(reporting_router, prefix=prefix)
     app.include_router(qualification_router, prefix=prefix)
     app.include_router(admin_router, prefix=prefix)

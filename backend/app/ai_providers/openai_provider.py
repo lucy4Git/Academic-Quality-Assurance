@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import logging
+import time
 
 import httpx
 
-from app.ai_providers.base_provider import AIMessage, BaseAIProvider
+from app.ai_providers.base_provider import AIMessage, BaseAIProvider, HealthResult
 
 logger = logging.getLogger(__name__)
 
 _OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+_OPENAI_MODELS_URL = "https://api.openai.com/v1/models"
 
 
 class OpenAIProvider(BaseAIProvider):
@@ -43,6 +45,28 @@ class OpenAIProvider(BaseAIProvider):
         response.raise_for_status()
         data = response.json()
         return data["choices"][0]["message"]["content"]
+
+    async def health_check(self) -> HealthResult:
+        """Probe the OpenAI API via a lightweight models list request."""
+        t0 = time.monotonic()
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json",
+        }
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(_OPENAI_MODELS_URL, headers=headers)
+            response.raise_for_status()
+            return HealthResult(
+                status="ok",
+                latency_ms=(time.monotonic() - t0) * 1000,
+            )
+        except Exception as exc:
+            return HealthResult(
+                status="error",
+                latency_ms=(time.monotonic() - t0) * 1000,
+                error=type(exc).__name__,
+            )
 
     @property
     def provider_name(self) -> str:

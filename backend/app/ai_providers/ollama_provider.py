@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import logging
+import time
 
 import httpx
 
-from app.ai_providers.base_provider import AIMessage, BaseAIProvider
+from app.ai_providers.base_provider import AIMessage, BaseAIProvider, HealthResult
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,28 @@ class OllamaProvider(BaseAIProvider):
 
         response.raise_for_status()
         return response.json()["message"]["content"]
+
+    async def health_check(self) -> HealthResult:
+        """Probe Ollama via its tags endpoint — fast, no model load required."""
+        t0 = time.monotonic()
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                response = await client.get(f"{self._base_url}/api/tags")
+            response.raise_for_status()
+            data = response.json()
+            models = [m.get("name", "") for m in data.get("models", [])]
+            model_available = any(self._model in m for m in models)
+            return HealthResult(
+                status="ok",
+                latency_ms=(time.monotonic() - t0) * 1000,
+                extra={"model_available": model_available, "available_models": models},
+            )
+        except Exception as exc:
+            return HealthResult(
+                status="error",
+                latency_ms=(time.monotonic() - t0) * 1000,
+                error=type(exc).__name__,
+            )
 
     @property
     def provider_name(self) -> str:

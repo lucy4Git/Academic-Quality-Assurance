@@ -19,6 +19,7 @@ import {
 } from "@/hooks/useAiAssistant";
 import { useMultiAgent, type MultiAgentResponse } from "@/hooks/useWorkspace";
 import type { AskResponse, SourceChunk } from "@/types/ai-assistant";
+import { askStream, type StreamSource } from "@/lib/api/ai-assistant";
 import {
   Brain, Plus, Trash2, ChevronRight, Download, BookOpen, Zap, Shield,
   BarChart2, Search, GitBranch, GraduationCap, CheckSquare, Layers,
@@ -103,8 +104,11 @@ interface WorkspaceMessage {
   content: string;
   agents?: string[];
   isMultiAgent?: boolean;
+  isStreaming?: boolean;
   confidence?: number;
-  sources?: (SourceChunk | string)[];
+  // SourceChunk (from /ask), string (from agent router), or StreamSource (from /ask-stream)
+  // biome-ignore lint: intentional union — three source shapes from different endpoints
+  sources?: unknown[];
   nextActions?: string[];
   followUps?: string[];
   provider?: string;
@@ -266,7 +270,12 @@ const MessageBubble = memo(function MessageBubble({
             )}
           </div>
 
-          <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+          <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+            {msg.content}
+            {msg.isStreaming && (
+              <span className="inline-block w-0.5 h-4 bg-indigo-500 ml-0.5 align-middle animate-pulse" />
+            )}
+          </p>
 
           {/* Confidence bar */}
           {pct !== null && (
@@ -286,8 +295,9 @@ const MessageBubble = memo(function MessageBubble({
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {msg.sources.slice(0, 4).map((s, i) => {
-                  const label = typeof s === "string" ? s : (s.title || s.entity_key);
-                  const score = typeof s === "string" ? null : s.relevance_score;
+                  const obj = s as Record<string, unknown>;
+                  const label = typeof s === "string" ? s : ((obj.title || obj.entity_key) as string | undefined);
+                  const score = typeof s === "string" ? null : (obj.relevance_score as number | undefined);
                   return (
                     <span
                       key={i}
@@ -295,7 +305,7 @@ const MessageBubble = memo(function MessageBubble({
                     >
                       <BookOpen className="h-2.5 w-2.5 flex-shrink-0" />
                       <span className="truncate max-w-[120px]">{label}</span>
-                      {score !== null && (
+                      {score != null && (
                         <span className="text-blue-400 ml-0.5">({(score * 100).toFixed(0)}%)</span>
                       )}
                     </span>
@@ -391,15 +401,16 @@ const MessageBubble = memo(function MessageBubble({
 
 // ── Right panel (sources + agents + actions) ─────────────────────────────────
 
-function SourceCard({ source, index }: { source: SourceChunk | string; index: number }) {
+function SourceCard({ source, index }: { source: unknown; index: number }) {
   const router = useRouter();
-  const title = typeof source === "string" ? source : (source.title || source.entity_key || "Source");
-  const entityType = typeof source === "string" ? "document" : (source.entity_type ?? "document");
-  const snippet = typeof source === "string" ? null : (source.text ?? null);
-  const score = typeof source === "string" ? null : (source.relevance_score ?? null);
+  const obj = typeof source === "object" && source !== null ? source as Record<string, unknown> : null;
+  const title = typeof source === "string" ? source : (obj?.title as string || obj?.entity_key as string || "Source");
+  const entityType = typeof source === "string" ? "document" : ((obj?.entity_type as string) ?? "document");
+  const snippet = typeof source === "string" ? null : (obj?.text as string ?? null);
+  const score = typeof source === "string" ? null : (obj?.relevance_score as number ?? null);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(typeof source === "string" ? source : source.entity_key);
+    await navigator.clipboard.writeText(typeof source === "string" ? source : (obj?.entity_key as string ?? title));
     toast.success("Citation copied");
   };
 
@@ -975,6 +986,7 @@ export function AiWorkspaceView() {
   const [input, setInput] = useState("");
   const [useMultiAgentMode, setUseMultiAgentMode] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(true);
+  const [isStreamLoading, setIsStreamLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { data: suggestedData } = useSuggestedPrompts(institutionCode || undefined);
@@ -984,7 +996,7 @@ export function AiWorkspaceView() {
   const createSession = useCreateSession();
   const deleteSession = useDeleteSession();
 
-  const isLoading = ask.isPending || agentRouter.isPending || multiAgent.isPending;
+  const isLoading = ask.isPending || agentRouter.isPending || multiAgent.isPending || isStreamLoading;
   const lastAssistantMsg = [...messages].reverse().find((m) => m.role === "assistant") ?? null;
 
   useEffect(() => {
@@ -1095,50 +1107,134 @@ export function AiWorkspaceView() {
         return;
       }
 
-      // Single-agent path
-      let routerResult: AgentRouterResponse | undefined;
-      let effectiveMode = "qa_assistant";
-      try {
-        routerResult = await agentRouter.mutateAsync(q);
-        effectiveMode = routerResult.agent_mode;
-      } catch { /* non-fatal */ }
+      // Single-agent path — streaming
+      const streamMsgId = crypto.randomUUID();
+      const pendingMsg: WorkspaceMessage = {
+        id: streamMsgId,
+        role: "assistant",
+        content: "",
+        agents: [],
+        isMultiAgent: false,
+        isStreaming: true,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, pendingMsg]);
+      setIsStreamLoading(true);
 
       try {
-        const result = await ask.mutateAsync({
-          question: q,
-          institution_code: institutionCode || null,
-          context_limit: 5,
-          mode: effectiveMode,
-          session_id: activeSessionId,
-        });
-        const assistantMsg: WorkspaceMessage = {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          content: result.answer,
-          agents: routerResult ? [routerResult.intent] : [],
-          isMultiAgent: false,
-          confidence: result.confidence_score,
-          sources: result.sources,
-          nextActions: routerResult?.suggested_next_actions,
-          followUps: routerResult?.follow_up_questions,
-          provider: result.provider,
-          model: result.model,
-          timestamp: new Date(),
-          routerResult,
-        };
-        setMessages((prev) => [...prev, assistantMsg]);
+        const abortCtrl = new AbortController();
+        for await (const event of askStream(
+          {
+            question: q,
+            institution_code: institutionCode || null,
+            context_limit: 5,
+            mode: "qa_assistant",
+          },
+          abortCtrl.signal,
+        )) {
+          if (event.type === "start") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? { ...m, agents: event.agents }
+                  : m,
+              ),
+            );
+          } else if (event.type === "chunk") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? { ...m, content: m.content + event.content }
+                  : m,
+              ),
+            );
+          } else if (event.type === "sources") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? {
+                      ...m,
+                      sources: event.sources,
+                      confidence: event.confidence_score,
+                      nextActions: event.suggested_next_actions,
+                      followUps: event.follow_up_questions,
+                    }
+                  : m,
+              ),
+            );
+          } else if (event.type === "done") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? {
+                      ...m,
+                      isStreaming: false,
+                      provider: event.provider,
+                      model: event.model,
+                    }
+                  : m,
+              ),
+            );
+          } else if (event.type === "error") {
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === streamMsgId
+                  ? {
+                      ...m,
+                      isStreaming: false,
+                      content: m.content || "An error occurred. Please try again.",
+                    }
+                  : m,
+              ),
+            );
+          }
+        }
+      } catch {
+        // Non-stream fallback
+        try {
+          const result = await ask.mutateAsync({
+            question: q,
+            institution_code: institutionCode || null,
+            context_limit: 5,
+            mode: "qa_assistant",
+            session_id: activeSessionId,
+          });
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === streamMsgId
+                ? {
+                    ...m,
+                    isStreaming: false,
+                    content: result.answer,
+                    confidence: result.confidence_score,
+                    sources: result.sources,
+                    provider: result.provider,
+                    model: result.model,
+                  }
+                : m,
+            ),
+          );
+        } catch {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === streamMsgId
+                ? {
+                    ...m,
+                    isStreaming: false,
+                    content: "An error occurred. Please try again.",
+                  }
+                : m,
+            ),
+          );
+        }
+      } finally {
+        setIsStreamLoading(false);
         if (activeSessionId) {
           queryClient.invalidateQueries({ queryKey: ["chat-sessions"] });
         }
-      } catch {
-        setMessages((prev) => [...prev, {
-          id: crypto.randomUUID(), role: "assistant",
-          content: "An error occurred. Please try again.",
-          timestamp: new Date(),
-        }]);
       }
     },
-    [ask, agentRouter, multiAgent, institutionCode, isAdmin, activeSessionId, isLoading, useMultiAgentMode, queryClient, showRightPanel]
+    [ask, multiAgent, institutionCode, isAdmin, activeSessionId, isLoading, useMultiAgentMode, queryClient, showRightPanel]
   );
 
   return (
@@ -1206,8 +1302,8 @@ export function AiWorkspaceView() {
                   isLatest={i === messages.length - 1}
                 />
               ))}
-              {isLoading && (
-                <ThinkingAnimation isMultiAgent={useMultiAgentMode} />
+              {multiAgent.isPending && (
+                <ThinkingAnimation isMultiAgent={true} />
               )}
               <div ref={bottomRef} />
             </>

@@ -25,18 +25,23 @@ Tenant isolation
 
 from __future__ import annotations
 
+import asyncio
+import json
 import uuid
 from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai_assistant import assistant_service
+from app.ai_assistant.llm_router_service import llm_route_prompt
 from app.ai_assistant.prompt_templates import AGENT_MODE_LABELS, AGENT_MODES
 from app.ai_assistant.recommendation_engine import get_recommendations
+from app.ai_providers.manager import get_provider_manager
 from app.ai_providers.provider_factory import get_provider
 from app.database import get_db
 from app.dependencies import LecturerRequired
@@ -210,6 +215,145 @@ async def ask_assistant(
             logging.getLogger(__name__).warning("Failed to persist to session %s: %s", body.session_id, exc)
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# POST /ai-assistant/ask-stream  (Server-Sent Events)
+# ---------------------------------------------------------------------------
+
+
+def _sse(event_type: str, data: dict[str, Any]) -> str:
+    """Format a single SSE data line."""
+    return f"data: {json.dumps({'type': event_type, **data})}\n\n"
+
+
+async def _stream_ask(
+    question: str,
+    institution_code: str,
+    context_limit: int,
+    mode: str,
+) -> Any:
+    """Async generator that yields SSE lines for one ask-stream request.
+
+    Stream shape:
+        start   — routing decision (intent, agents, confidence, routing_reason)
+        chunk   — incremental answer text (simulated from full LLM response)
+        sources — Qdrant sources and follow-up data
+        done    — provider/model metadata
+        error   — emitted instead of chunk/sources/done on failure
+    """
+    # 1. LLM-assisted routing (with keyword fallback built-in)
+    try:
+        router = await llm_route_prompt(question)
+    except Exception as exc:
+        import logging
+        logging.getLogger(__name__).error("ask-stream: llm_route_prompt failed: %s", exc)
+        router = {
+            "intent": "qa_general",
+            "agents": ["QA General Assistant"],
+            "confidence": 0.5,
+            "routing_reason": "Routing failed — using default QA assistant.",
+            "agent_mode": "general",
+            "suggested_next_actions": [],
+            "follow_up_questions": [],
+            "used_llm": False,
+        }
+
+    yield _sse("start", {
+        "intent": router["intent"],
+        "agents": router["agents"],
+        "confidence": router["confidence"],
+        "routing_reason": router["routing_reason"],
+        "used_llm": router["used_llm"],
+    })
+
+    # 2. Resolve effective mode from router (override request body mode)
+    effective_mode = router.get("agent_mode", mode)
+    if effective_mode not in AGENT_MODES:
+        effective_mode = "qa_assistant"
+
+    # 3. Get full LLM response (Qdrant retrieval + LLM call)
+    try:
+        manager = get_provider_manager()
+        provider = await manager.get_healthy_provider()
+
+        result = await assistant_service.ask(
+            question=question,
+            institution_code=institution_code,
+            context_limit=context_limit,
+            mode=effective_mode,
+            provider=provider,
+        )
+    except Exception as exc:
+        import logging
+        logging.getLogger(__name__).error("ask-stream: assistant_service.ask failed: %s", exc)
+        yield _sse("error", {"message": "An error occurred while generating a response."})
+        return
+
+    # 4. Simulate streaming: split answer into word-level chunks
+    answer: str = result.get("answer", "")
+    words = answer.split(" ")
+    CHUNK_WORDS = 6
+    for i in range(0, len(words), CHUNK_WORDS):
+        chunk_words = words[i : i + CHUNK_WORDS]
+        content = " ".join(chunk_words)
+        if i > 0:
+            content = " " + content
+        yield _sse("chunk", {"content": content})
+        await asyncio.sleep(0.02)
+
+    # 5. Sources event
+    yield _sse("sources", {
+        "sources": result.get("sources", []),
+        "confidence_score": result.get("confidence_score", 0.0),
+        "suggested_followups": result.get("suggested_followups", []),
+        "suggested_next_actions": router.get("suggested_next_actions", []),
+        "follow_up_questions": router.get("follow_up_questions", []),
+    })
+
+    # 6. Done event
+    yield _sse("done", {
+        "provider": result.get("provider", "unknown"),
+        "model": result.get("model", "unknown"),
+        "query_mode": result.get("query_mode", effective_mode),
+        "is_placeholder_mode": result.get("is_placeholder_mode", False),
+    })
+
+
+@router.post(
+    "/ask-stream",
+    summary="Ask the AI QA Assistant — streaming SSE response",
+    response_model=None,
+)
+async def ask_assistant_stream(
+    body: AskRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = LecturerRequired,
+):
+    """POST /ai-assistant/ask-stream
+
+    Returns a text/event-stream response.  Each SSE event is a JSON object
+    with a 'type' field: start | chunk | sources | done | error.
+
+    Client usage (fetch + ReadableStream):
+        const res = await fetch('/api/proxy/ai-assistant/ask-stream', {
+            method: 'POST', credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ question, institution_code, context_limit, mode }),
+        });
+        const reader = res.body.getReader();
+    """
+    institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
+    effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
+
+    return StreamingResponse(
+        _stream_ask(body.question, institution_code, body.context_limit, effective_mode),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -519,6 +663,7 @@ async def ask_in_session(
 @router.delete(
     "/sessions/{session_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    response_model=None,
     summary="Soft-delete a chat session",
 )
 async def delete_session(

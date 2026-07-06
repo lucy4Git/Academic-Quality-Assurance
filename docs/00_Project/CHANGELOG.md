@@ -36,6 +36,29 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [3.0.0-p3s2] — 2026-07-06
+
+### Added
+- **LLM-assisted intent router** (`backend/app/ai_assistant/llm_router_service.py`) — uses ProviderManager to classify user prompts via structured JSON; falls back to keyword regex when provider is unavailable or returns invalid JSON
+- **Streaming AI endpoint** `POST /api/v1/ai-assistant/ask-stream` — Server-Sent Events response with event sequence: `start → chunk(s) → sources → done → error`; simulated word-level streaming from full LLM response
+- **Frontend streaming** — `AiWorkspaceView.tsx` now streams single-agent responses; agent badges appear at `start` event, text accumulates on `chunk` events, sources shown after `done` event, animated cursor during stream
+- **`askStream()` API function** (`frontend/src/lib/api/ai-assistant.ts`) — async generator consuming SSE via `fetch` + `ReadableStream`; AbortSignal support; non-stream fallback on error
+- **`StreamSource`, `StreamStartEvent`, `StreamChunkEvent`, `StreamSourcesEvent`, `StreamDoneEvent`, `StreamErrorEvent`** TypeScript interfaces
+- 34 new backend tests (`test_p3s2_llm_router.py`, `test_p3s2_streaming.py`) — total: 1051 passing
+- 3 new documentation files: `LLM_ORCHESTRATOR_ARCHITECTURE.md`, `LLM_ORCHESTRATOR_IMPLEMENTATION_GUIDE.md`, `STREAMING_AI_WORKSPACE_USER_GUIDE.md`
+
+### Fixed
+- `@router.delete` 204 route in `ai_assistant.py` now has explicit `response_model=None` to comply with FastAPI 0.136.3 strict route validation
+- Streaming cursor shown via `animate-pulse` inline span while `isStreaming: true`
+
+### Security
+- `/ask-stream` enforces `LecturerRequired` — students (and unauthenticated users) receive 403
+- Tenant isolation preserved: `_resolve_institution_code()` runs before streaming starts
+- Institution code is not passed to the LLM router (routing stage only sees raw prompt)
+- Provider monitoring endpoints (`/providers/health`, `/providers/status`) remain System Admin only — not regressed
+
+---
+
 ## [1.0.0-rc4] — 2026-07-04
 
 ### Added

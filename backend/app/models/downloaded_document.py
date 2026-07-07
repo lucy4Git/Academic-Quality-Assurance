@@ -41,3 +41,10 @@ class DownloadedDocument(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     institution_document_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("institution_documents.id", ondelete="SET NULL"), nullable=True
     )
+    # Wave 3 — intelligent extraction fields
+    extraction_status: Mapped[str] = mapped_column(
+        String(50), nullable=False, default="pending"
+    )  # pending | running | completed | needs_review | failed
+    cleaned_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    meaningful_title: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    title_source: Mapped[str | None] = mapped_column(String(50), nullable=True)

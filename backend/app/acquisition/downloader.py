@@ -107,3 +107,59 @@ def download_metadata(url: str) -> DownloadResult:
             content_length=None, checksum=None,
             error=str(exc)[:500],
         )
+
+
+def download_with_content(url: str) -> tuple[DownloadResult, bytes | None]:
+    """Like download_metadata but also returns the raw content bytes.
+
+    Returns (DownloadResult, content_bytes). content_bytes is None on failure.
+    """
+    if not is_allowed(url):
+        logger.info("robots.txt blocks %s", url)
+        result = DownloadResult(
+            url=url, success=False, status_code=None,
+            content_type=None, file_type="unknown",
+            content_length=None, checksum=None,
+            error="Blocked by robots.txt", robots_blocked=True,
+        )
+        return result, None
+    try:
+        headers = {"User-Agent": USER_AGENT}
+        with httpx.Client(
+            timeout=REQUEST_TIMEOUT, follow_redirects=True, headers=headers
+        ) as client:
+            response = client.get(url)
+            response.raise_for_status()
+            content_type = response.headers.get("content-type")
+            file_type = detect_file_type(content_type)
+            content = response.content[:MAX_CONTENT_BYTES]
+            checksum = compute_sha256(content)
+            title = _extract_title(content) if file_type == "html" else None
+            result = DownloadResult(
+                url=url,
+                success=True,
+                status_code=response.status_code,
+                content_type=content_type,
+                file_type=file_type,
+                content_length=len(content),
+                checksum=checksum,
+                error=None,
+                title=title,
+            )
+            return result, content
+    except httpx.HTTPStatusError as exc:
+        result = DownloadResult(
+            url=url, success=False, status_code=exc.response.status_code,
+            content_type=None, file_type="unknown",
+            content_length=None, checksum=None,
+            error=f"HTTP {exc.response.status_code}",
+        )
+        return result, None
+    except Exception as exc:  # noqa: BLE001
+        result = DownloadResult(
+            url=url, success=False, status_code=None,
+            content_type=None, file_type="unknown",
+            content_length=None, checksum=None,
+            error=str(exc)[:500],
+        )
+        return result, None

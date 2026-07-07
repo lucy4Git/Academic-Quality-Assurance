@@ -80,6 +80,10 @@ class DownloadedDocumentRead(BaseModel):
     checksum: str | None
     is_duplicate: bool
     created_at: datetime
+    # Wave 3 extraction fields
+    extraction_status: str = "pending"
+    meaningful_title: str | None = None
+    title_source: str | None = None
 
     class Config:
         from_attributes = True

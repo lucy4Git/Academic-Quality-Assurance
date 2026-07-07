@@ -9,6 +9,8 @@ from app.models.acquisition_log import AcquisitionLog
 from app.models.acquisition_source import AcquisitionSource
 from app.models.document_version import DocumentVersion
 from app.models.downloaded_document import DownloadedDocument
+from app.models.extraction_run import ExtractionRun
+from app.models.extraction_candidate import ExtractionCandidate
 from app.models.audit_comment import AuditComment
 from app.models.audit_evidence import AuditEvidence
 from app.models.audit_finding import AuditFinding
@@ -68,6 +70,8 @@ __all__ = [
     "AcquisitionSource",
     "DocumentVersion",
     "DownloadedDocument",
+    "ExtractionRun",
+    "ExtractionCandidate",
     "JobStatus",
     "AgentType",
     "Campus",

@@ -36,6 +36,47 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Integration Sprint] — 2026-07-07 — Wave 1 Live Data Wiring
+
+### Added
+- Four new tenant-isolated read-only endpoints under `/api/v1/institution-knowledge/`:
+  `GET /live-counts`, `GET /provenance-summary`, `GET /coverage-summary`,
+  `GET /institutions/{id}/full-profile`. System Admin may pass `institution_id`
+  to scope; all other roles are locked to their own institution.
+- RAG and crawler readiness scoring on the coverage summary (`ready`/`partial`/`not_ready`)
+  plus missing-data warnings.
+- Frontend: `LiveCountsResponse`, `CoverageSummaryResponse`, `FullInstitutionProfile`
+  types; `getLiveCounts`/`getCoverageSummary`/`getFullInstitutionProfile` API clients;
+  `useInstitutionKnowledgeLiveCounts`, `useCoverageSummary`, `useFullInstitutionProfile` hooks.
+- Read-only DB verification script `database/seed_data/verify_institution_knowledge_foundation.py`.
+- 13 integration-sprint tests (`backend/tests/test_integration_sprint.py`).
+
+### Changed
+- Dashboard KPI cards now render live institutional-knowledge counts (Modules, Policies,
+  Documents) with a loading placeholder and a "Live" indicator, replacing the hardcoded
+  demo values.
+- Knowledge Foundation page now drives entity counts from `/live-counts` and shows
+  RAG/crawler readiness badges and missing-data warnings from `/coverage-summary`.
+- Institution Profile page now uses `/full-profile` (campuses, faculties with department
+  counts, recent policies/documents, accreditations, contacts) with a System Admin
+  institution selector and per-record provenance badges.
+
+### Fixed
+- Non-streaming `POST /api/v1/ai-assistant/ask` now wraps the RAG call in a safe handler:
+  failures are logged server-side and returned as HTTP 503 "AI service temporarily
+  unavailable" instead of leaking exception detail. (Streaming path already emitted a
+  safe `error` SSE event; frontend `AiErrorCard` wiring verified correct.)
+
+### Security
+- All new endpoints enforce tenant isolation; students receive only public profile data
+  (basic profile, public campuses, public contacts) on `full-profile`. No cross-tenant leakage.
+
+### Documentation
+- Added `docs/02_Implementation/INTEGRATION_SPRINT_LIVE_DATA_WIRING.md` and
+  `docs/05_Testing/INTEGRATION_SPRINT_TESTING_GUIDE.md`.
+
+---
+
 ## [Split 2 Wave 1] — 2026-07-07 — Institutional Knowledge Foundation
 
 ### Added

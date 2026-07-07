@@ -199,13 +199,21 @@ async def ask_assistant(
 ) -> dict[str, Any]:
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
-    result = await advanced_ask(
-        question=body.question,
-        institution_code=institution_code,
-        context_limit=body.context_limit,
-        mode=body.mode if body.mode in AGENT_MODES else "qa_assistant",
-        provider=get_provider(),
-    )
+    try:
+        result = await advanced_ask(
+            question=body.question,
+            institution_code=institution_code,
+            context_limit=body.context_limit,
+            mode=body.mode if body.mode in AGENT_MODES else "qa_assistant",
+            provider=get_provider(),
+        )
+    except Exception as exc:  # noqa: BLE001 — convert to a safe 503, no stack trace leak
+        import logging
+        logging.getLogger(__name__).exception("AI ask failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI service temporarily unavailable. Please try again.",
+        )
 
     if body.session_id:
         try:

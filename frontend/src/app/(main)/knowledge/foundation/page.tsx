@@ -6,7 +6,11 @@
 import { useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useInstitutions } from "@/hooks/useInstitutions";
-import { useInstitutionCoverage } from "@/hooks/useInstitutionKnowledge";
+import {
+  useInstitutionCoverage,
+  useInstitutionKnowledgeLiveCounts,
+  useCoverageSummary,
+} from "@/hooks/useInstitutionKnowledge";
 import {
   Card,
   CardContent,
@@ -28,9 +32,20 @@ const ENTITY_LABELS: Record<string, string> = {
   learning_outcomes: "Learning Outcomes",
   graduate_attributes: "Graduate Attributes",
   policies: "Policies",
+  policy_versions: "Policy Versions",
   institution_documents: "Documents",
+  accreditation_bodies: "Accreditation Bodies",
   accreditations: "Accreditations",
   contacts: "Contacts",
+};
+
+const READINESS_STYLES: Record<
+  string,
+  { label: string; className: string }
+> = {
+  ready: { label: "Ready", className: "bg-green-600" },
+  partial: { label: "Partial", className: "bg-amber-500" },
+  not_ready: { label: "Not Ready", className: "bg-muted text-foreground" },
 };
 
 const PROVENANCE = [
@@ -52,6 +67,9 @@ export default function KnowledgeFoundationPage() {
   }, [isAdmin, selectedId, user?.institution_id]);
 
   const { data: coverage, isLoading } = useInstitutionCoverage(institutionId);
+  const { data: liveCounts, isLoading: countsLoading } =
+    useInstitutionKnowledgeLiveCounts(institutionId);
+  const { data: summary } = useCoverageSummary(institutionId);
 
   const provenanceTotal = coverage
     ? PROVENANCE.reduce(
@@ -113,29 +131,66 @@ export default function KnowledgeFoundationPage() {
 
       {coverage && (
         <>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <h2 className="text-lg font-medium">
               {coverage.institution_code} — {coverage.institution_name}
             </h2>
-            {coverage.ready_for_rag ? (
-              <Badge className="bg-green-600">Ready for RAG</Badge>
-            ) : (
-              <Badge variant="secondary">Not RAG-ready</Badge>
+            {summary && (
+              <>
+                <Badge
+                  className={
+                    READINESS_STYLES[summary.rag_readiness].className
+                  }
+                >
+                  RAG: {READINESS_STYLES[summary.rag_readiness].label}
+                </Badge>
+                <Badge
+                  className={
+                    READINESS_STYLES[summary.crawler_readiness].className
+                  }
+                >
+                  Crawler: {READINESS_STYLES[summary.crawler_readiness].label}
+                </Badge>
+              </>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {Object.entries(ENTITY_LABELS).map(([key, label]) => (
-              <Card key={key}>
-                <CardHeader className="pb-2">
-                  <CardDescription>{label}</CardDescription>
-                  <CardTitle className="text-3xl">
-                    {coverage.counts[key] ?? 0}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-            ))}
+            {Object.entries(ENTITY_LABELS).map(([key, label]) => {
+              const value =
+                (liveCounts as Record<string, number> | undefined)?.[key] ??
+                coverage.counts[key] ??
+                0;
+              return (
+                <Card key={key}>
+                  <CardHeader className="pb-2">
+                    <CardDescription>{label}</CardDescription>
+                    <CardTitle className="text-3xl">
+                      {countsLoading ? "—" : value}
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+              );
+            })}
           </div>
+
+          {summary && summary.missing_data_warnings.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Missing data warnings</CardTitle>
+                <CardDescription>
+                  These gaps may reduce RAG or crawler readiness.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                  {summary.missing_data_warnings.map((w) => (
+                    <li key={w}>{w}</li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>

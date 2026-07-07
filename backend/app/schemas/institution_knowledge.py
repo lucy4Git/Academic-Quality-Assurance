@@ -5,7 +5,9 @@ from __future__ import annotations
 import uuid
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict
+from typing import Any
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class _ORMModel(BaseModel):
@@ -135,3 +137,77 @@ class KnowledgeOverview(BaseModel):
     accreditations: int
     contacts: int
     provenance: ProvenanceBreakdown
+
+
+# ── Integration Sprint — live data wiring ────────────────────────────────────
+
+
+class LiveCountsResponse(BaseModel):
+    """Per-entity counts scoped to a single institution (or all for System Admin)."""
+
+    institution_id: uuid.UUID | None = None
+    campuses: int = 0
+    faculties: int = 0
+    schools: int = 0
+    departments: int = 0
+    programmes: int = 0
+    qualifications: int = 0
+    modules: int = 0
+    learning_outcomes: int = 0
+    graduate_attributes: int = 0
+    policies: int = 0
+    policy_versions: int = 0
+    institution_documents: int = 0
+    accreditation_bodies: int = 0
+    accreditations: int = 0
+    contacts: int = 0
+
+
+class ProvenanceSummaryResponse(BaseModel):
+    """data_status breakdown per entity type for the scoped institution."""
+
+    institution_id: uuid.UUID | None = None
+    by_entity: dict[str, dict[str, int]] = Field(default_factory=dict)
+    # e.g. {"campuses": {"public_verified": 10, "synthetic_demo": 36}, ...}
+
+
+class CoverageSummaryResponse(BaseModel):
+    """Structured coverage summary: totals, provenance percentages, readiness."""
+
+    institution_id: uuid.UUID | None = None
+    total_entities: int = 0
+    public_verified_pct: float = 0.0
+    needs_review_pct: float = 0.0
+    synthetic_demo_pct: float = 0.0
+    customer_data_pct: float = 0.0
+    rag_readiness: str = "not_ready"  # "ready" | "partial" | "not_ready"
+    crawler_readiness: str = "not_ready"
+    missing_data_warnings: list[str] = Field(default_factory=list)
+
+
+class FacultyWithDeptCount(_ORMModel):
+    id: uuid.UUID
+    name: str
+    code: str
+    department_count: int = 0
+
+
+class FullInstitutionProfile(BaseModel):
+    """Complete institutional profile assembled in a single payload."""
+
+    id: uuid.UUID
+    name: str
+    code: str
+    country: str | None = None
+    province: str | None = None
+    website: str | None = None
+    logo_url: str | None = None
+    data_status: str | None = None
+    is_demo: bool = False
+    campuses: list[CampusRead] = Field(default_factory=list)
+    faculties: list[FacultyWithDeptCount] = Field(default_factory=list)
+    policies: list[PolicyRead] = Field(default_factory=list)
+    documents: list[InstitutionDocumentRead] = Field(default_factory=list)
+    accreditations: list[AccreditationRead] = Field(default_factory=list)
+    contacts: list[ContactRead] = Field(default_factory=list)
+    coverage: dict[str, Any] = Field(default_factory=dict)

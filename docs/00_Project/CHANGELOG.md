@@ -36,6 +36,34 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Split 2 Wave 2] — 2026-07-07 — Public Knowledge Acquisition Engine
+
+### Added
+- **Acquisition package** (`backend/app/acquisition/`): SHA-256 checksum utilities,
+  robots.txt checker (fail-open), content-type detector, rule-based document
+  classifier, safe HTTP downloader (httpx, 15s timeout, 10 MB cap, no persisted
+  bytes), URL+checksum deduplicator, and a background job orchestrator that opens
+  its own DB session and caps downloads at 5 per job (local-dev safety).
+- **Five new tables/models**: `acquisition_sources`, `acquisition_jobs`,
+  `acquisition_logs`, `downloaded_documents`, `document_versions`
+  (migration `c3d4e5f6a7b8`).
+- **`/api/v1/acquisition` router**: source registry CRUD, job start/retry/status,
+  logs, downloads, and statistics — all tenant-isolated (System Admin sees all;
+  students excluded from writes).
+- **Seed registry** of official public websites for all 26 SA public universities
+  plus the GFU/RCT demo institutions (`seed_knowledge_acquisition_sources.py`,
+  wired as step 6/6 in `run_all.py`).
+- **Frontend**: `acquisition.ts` API client, `useAcquisition.ts` hooks, and the
+  `/knowledge/acquisition` workspace (statistics cards, source registry, jobs,
+  and downloaded-documents tables) with a "Public Knowledge Acquisition" card on
+  the Knowledge landing page. RBAC restricts the route to QA officers and above.
+
+### Notes
+- Robots.txt is always honoured; blocked URLs are logged and skipped.
+- Only public institutional sources are registered — no invented URLs.
+
+---
+
 ## [Integration Sprint] — 2026-07-07 — Wave 1 Live Data Wiring
 
 ### Added

@@ -4,6 +4,11 @@ from app.adip.models.candidate import ADIPExtractionCandidate
 from app.adip.models.chunk import ADIPDocumentChunk
 from app.adip.models.document import ADIPDocument
 from app.adip.models.provenance import ADIPProvenanceAnchor
+from app.models.acquisition_job import AcquisitionJob, JobStatus
+from app.models.acquisition_log import AcquisitionLog
+from app.models.acquisition_source import AcquisitionSource
+from app.models.document_version import DocumentVersion
+from app.models.downloaded_document import DownloadedDocument
 from app.models.audit_comment import AuditComment
 from app.models.audit_evidence import AuditEvidence
 from app.models.audit_finding import AuditFinding
@@ -58,6 +63,12 @@ __all__ = [
     "ADIPProvenanceAnchor",
     "Accreditation",
     "AccreditationBody",
+    "AcquisitionJob",
+    "AcquisitionLog",
+    "AcquisitionSource",
+    "DocumentVersion",
+    "DownloadedDocument",
+    "JobStatus",
     "AgentType",
     "Campus",
     "Contact",

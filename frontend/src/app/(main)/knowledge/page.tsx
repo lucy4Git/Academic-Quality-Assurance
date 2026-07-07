@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ClipboardCheck, SearchCheck, Package, Database } from "lucide-react";
+import { ClipboardCheck, SearchCheck, Package, Database, Download } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import type { UserRole } from "@/types";
 
@@ -10,6 +10,7 @@ const QA_AND_ABOVE: UserRole[] = ["system_admin", "quality_assurance_officer"];
 
 const CARDS = [
   { label: "Knowledge Foundation", href: "/knowledge/foundation", icon: Database, description: "Institutional knowledge coverage and data provenance across all entities", roles: STAFF },
+  { label: "Public Knowledge Acquisition", href: "/knowledge/acquisition", icon: Download, description: "Register and crawl official public institutional sources", roles: QA_AND_ABOVE },
   { label: "Knowledge Review", href: "/knowledge-review", icon: ClipboardCheck, description: "Review and approve knowledge base submissions", roles: QA_AND_ABOVE },
   { label: "Knowledge Search", href: "/knowledge-search", icon: SearchCheck, description: "Search institutional knowledge and policies", roles: STAFF },
   { label: "IKP Management", href: "/ikp-management", icon: Package, description: "Manage the Institutional Knowledge Profile", roles: QA_AND_ABOVE },

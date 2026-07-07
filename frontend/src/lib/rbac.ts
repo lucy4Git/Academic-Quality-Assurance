@@ -92,6 +92,7 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/knowledge-search":    STAFF,
   "/ikp-management":      QA_AND_ABOVE,
   "/knowledge/foundation": STAFF,
+  "/knowledge/acquisition": QA_AND_ABOVE,
   "/institution/profile":  STAFF,
 
   // ── Quality / Evidence / Audit ────────────────────────────────────────────

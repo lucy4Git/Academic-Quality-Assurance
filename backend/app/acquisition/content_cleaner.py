@@ -9,7 +9,7 @@ import re
 import urllib.parse
 from dataclasses import dataclass, field
 
-from bs4 import BeautifulSoup, Comment, Tag
+from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 
 # Tags that are purely presentational or structural noise
 _NOISE_TAGS = {
@@ -29,6 +29,8 @@ _NOISE_CLASSES = _NOISE_IDS  # same pattern applied to class strings
 
 
 def _is_noise_element(el: Tag) -> bool:
+    if not el.attrs:  # attrs can be None on some synthetic Tag objects
+        return False
     role = el.get("role", "")
     if role in _NOISE_ROLES:
         return True
@@ -173,8 +175,10 @@ def clean_html(content: bytes, url: str = "", raw_title: str | None = None) -> C
         for el in soup.find_all(tag_name):
             el.decompose()
 
-    # Remove layout chrome by role/id/class
+    # Remove layout chrome by role/id/class (only real Tag elements, not NavigableStrings)
     for el in soup.find_all(True):
+        if not isinstance(el, Tag):
+            continue
         if _is_noise_element(el):
             el.decompose()
 

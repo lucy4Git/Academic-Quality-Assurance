@@ -16,6 +16,7 @@ from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
     from app.models.file import File
+    from app.models.learning_outcome import LearningOutcome
     from app.models.programme import Programme
     from app.models.user import User
 
@@ -53,6 +54,9 @@ class Module(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         back_populates="module",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    learning_outcomes: Mapped[list["LearningOutcome"]] = relationship(
+        back_populates="module", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:

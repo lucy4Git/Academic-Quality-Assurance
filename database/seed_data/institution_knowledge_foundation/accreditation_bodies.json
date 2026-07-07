@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Council on Higher Education",
+    "abbreviation": "CHE",
+    "country": "South Africa",
+    "website": "https://www.che.ac.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "South African Qualifications Authority",
+    "abbreviation": "SAQA",
+    "country": "South Africa",
+    "website": "https://www.saqa.org.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "Engineering Council of South Africa",
+    "abbreviation": "ECSA",
+    "country": "South Africa",
+    "website": "https://www.ecsa.co.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "South African Council for Social Service Professions",
+    "abbreviation": "SACSSP",
+    "country": "South Africa",
+    "website": "https://www.sacssp.co.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "Health Professions Council of South Africa",
+    "abbreviation": "HPCSA",
+    "country": "South Africa",
+    "website": "https://www.hpcsa.co.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "South African Nursing Council",
+    "abbreviation": "SANC",
+    "country": "South Africa",
+    "website": "https://www.sanc.co.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "South African Institute of Chartered Accountants",
+    "abbreviation": "SAICA",
+    "country": "South Africa",
+    "website": "https://www.saica.co.za",
+    "data_status": "public_verified"
+  },
+  {
+    "name": "Association for Computing Machinery",
+    "abbreviation": "ACM",
+    "country": "International",
+    "website": "https://www.acm.org",
+    "data_status": "public_verified"
+  }
+]

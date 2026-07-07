@@ -12,6 +12,7 @@ from app.models.enums import ProgrammeLevel
 
 if TYPE_CHECKING:
     from app.models.department import Department
+    from app.models.institution_qualification import Qualification
     from app.models.module import Module
     from app.models.user import User
 
@@ -70,6 +71,9 @@ class Programme(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         back_populates="programme",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    qualifications: Mapped[list["Qualification"]] = relationship(
+        back_populates="programme", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:

@@ -44,6 +44,7 @@ from app.routes.qualification import router as qualification_router
 from app.routes.admin import router as admin_router
 from app.routes.workspace import router as workspace_router
 from app.routes.workspace import notification_router as notification_unread_router
+from app.routes.institution_knowledge import router as institution_knowledge_router
 
 
 @asynccontextmanager
@@ -146,6 +147,7 @@ def create_app() -> FastAPI:
     app.include_router(admin_router, prefix=prefix)
     app.include_router(workspace_router, prefix=prefix)
     app.include_router(notification_unread_router, prefix=prefix)
+    app.include_router(institution_knowledge_router, prefix=prefix)
 
     return app
 

@@ -12,6 +12,7 @@ from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 if TYPE_CHECKING:
     from app.models.faculty import Faculty
     from app.models.programme import Programme
+    from app.models.school import School
     from app.models.user import User
 
 
@@ -35,9 +36,16 @@ class Department(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
     )
+    school_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("schools.id"),
+        nullable=True,
+        index=True,
+    )
 
     faculty: Mapped["Faculty"] = relationship(back_populates="departments")
     head: Mapped["User | None"] = relationship(foreign_keys=[head_id])
+    school: Mapped["School | None"] = relationship(back_populates="departments")
     programmes: Mapped[list["Programme"]] = relationship(
         back_populates="department",
         cascade="all, delete-orphan",

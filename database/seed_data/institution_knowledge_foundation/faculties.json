@@ -1,0 +1,1412 @@
+[
+  {
+    "institution_code": "CPUT",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CPUT",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CPUT",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CPUT",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CPUT",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CUT",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CUT",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CUT",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CUT",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "CUT",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "DUT",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "DUT",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "DUT",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "DUT",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "DUT",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "MUT",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "MUT",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "MUT",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "MUT",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "MUT",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NMU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NMU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NMU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NMU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NMU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NWU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NWU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NWU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NWU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "NWU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "RU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "RU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "RU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "RU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "RU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SMU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SMU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SMU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SMU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SMU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SPU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SPU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SPU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SPU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SPU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Arts and Social Sciences",
+    "code": "ASS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Science",
+    "code": "SCI",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Engineering",
+    "code": "ENG",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Economic and Management Sciences",
+    "code": "EMS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Medicine and Health Sciences",
+    "code": "MHS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Law",
+    "code": "LAW",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "Education",
+    "code": "EDU",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "SU",
+    "name": "AgriSciences",
+    "code": "AGR",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.su.ac.za",
+    "source_name": "SU Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Arts and Design",
+    "code": "ARTS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Engineering and the Built Environment",
+    "code": "EBE",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Humanities",
+    "code": "HUM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Information and Communication Technology",
+    "code": "ICT",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Management Sciences",
+    "code": "MGT",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "TUT",
+    "name": "Science",
+    "code": "SCI",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.tut.ac.za",
+    "source_name": "TUT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Commerce",
+    "code": "COM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Engineering and the Built Environment",
+    "code": "EBE",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Health Sciences",
+    "code": "HSC",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Humanities",
+    "code": "HUM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Law",
+    "code": "LAW",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UCT",
+    "name": "Science",
+    "code": "SCI",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uct.ac.za",
+    "source_name": "UCT Official Website"
+  },
+  {
+    "institution_code": "UFH",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFH",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFH",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFH",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFH",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFS",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFS",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFS",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFS",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UFS",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UJ",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UJ",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UJ",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UJ",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UJ",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UKZN",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UKZN",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UKZN",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UKZN",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UKZN",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UL",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UL",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UL",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UL",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UL",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UMP",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UMP",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UMP",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UMP",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UMP",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Engineering, Built Environment and IT",
+    "code": "EBIT",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Humanities",
+    "code": "HUM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Law",
+    "code": "LAW",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Health Sciences",
+    "code": "HSC",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Natural and Agricultural Sciences",
+    "code": "NAS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Economic and Management Sciences",
+    "code": "EMS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Education",
+    "code": "EDU",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Theology and Religion",
+    "code": "THE",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UP",
+    "name": "Veterinary Science",
+    "code": "VET",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.up.ac.za",
+    "source_name": "UP Official Website"
+  },
+  {
+    "institution_code": "UNISA",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNISA",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNISA",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNISA",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNISA",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Arts and Humanities",
+    "code": "ART",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Community and Health Sciences",
+    "code": "CHS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Economic and Management Sciences",
+    "code": "EMS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Education",
+    "code": "EDU",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Law",
+    "code": "LAW",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Natural Sciences",
+    "code": "NAS",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "UWC",
+    "name": "Dentistry",
+    "code": "DEN",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.uwc.ac.za",
+    "source_name": "UWC Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "name": "Commerce, Law and Management",
+    "code": "CLM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "name": "Engineering and the Built Environment",
+    "code": "EBE",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "name": "Health Sciences",
+    "code": "HSC",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "name": "Humanities",
+    "code": "HUM",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "name": "Science",
+    "code": "SCI",
+    "data_status": "public_verified",
+    "data_confidence": 0.9,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "UNIVEN",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIVEN",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIVEN",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIVEN",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIVEN",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIZULU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIZULU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIZULU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIZULU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "UNIZULU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "VUT",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "VUT",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "VUT",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "VUT",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "VUT",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "WSU",
+    "name": "Faculty of Humanities",
+    "code": "HUM",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "WSU",
+    "name": "Faculty of Science",
+    "code": "SCI",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "WSU",
+    "name": "Faculty of Management Sciences",
+    "code": "MGT",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "WSU",
+    "name": "Faculty of Engineering",
+    "code": "ENG",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  },
+  {
+    "institution_code": "WSU",
+    "name": "Faculty of Education",
+    "code": "EDU",
+    "data_status": "synthetic_demo",
+    "data_confidence": null,
+    "is_synthetic": true,
+    "source_url": null,
+    "source_name": "AQAA synthetic demo data"
+  }
+]

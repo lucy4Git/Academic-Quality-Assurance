@@ -1,0 +1,1302 @@
+[
+  {
+    "institution_code": "CPUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CPUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CPUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CPUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CPUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "CUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "DUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "DUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "DUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "DUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "DUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "MUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "MUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "MUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "MUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "MUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NMU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NMU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NMU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NMU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NMU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NWU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NWU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NWU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NWU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "NWU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "RU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "RU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "RU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "RU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "RU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SMU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SMU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SMU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SMU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SMU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SPU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SPU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SPU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SPU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SPU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "SU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "TUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "TUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "TUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "TUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "TUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UCT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UCT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UCT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UCT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UCT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFH",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFH",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFH",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFH",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFH",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFS",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFS",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFS",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFS",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UFS",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UJ",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UJ",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UJ",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UJ",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UJ",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UKZN",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UKZN",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UKZN",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UKZN",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UKZN",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UL",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UL",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UL",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UL",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UL",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UMP",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UMP",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UMP",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UMP",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UMP",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UP",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UP",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UP",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UP",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UP",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNISA",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNISA",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNISA",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNISA",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNISA",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UWC",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UWC",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UWC",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UWC",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UWC",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WITS",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WITS",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WITS",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WITS",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WITS",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIVEN",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIVEN",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIVEN",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIVEN",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIVEN",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIZULU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIZULU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIZULU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIZULU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "UNIZULU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "VUT",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "VUT",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "VUT",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "VUT",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "VUT",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WSU",
+    "policy_title": "Teaching and Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WSU",
+    "policy_title": "Assessment Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WSU",
+    "policy_title": "Academic Integrity Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WSU",
+    "policy_title": "Recognition of Prior Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  },
+  {
+    "institution_code": "WSU",
+    "policy_title": "Work-Integrated Learning Policy",
+    "version_number": "1.0",
+    "effective_date": "2023-01-01",
+    "summary": "Initial demo version (synthetic content).",
+    "is_current": true,
+    "data_status": "synthetic_demo",
+    "is_synthetic": true
+  }
+]

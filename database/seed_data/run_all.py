@@ -24,29 +24,34 @@ from seed import seed
 from seed_audit_history import seed_audit_history
 from seed_extended import seed_extended
 from seed_sa_universities import seed_sa_universities
+from seed_institution_knowledge_foundation import seed_institution_knowledge_foundation
 
 
 async def run_all() -> None:
     print("=" * 70)
-    print("Step 1/4: seed.py -- minimal core hierarchy")
+    print("Step 1/5: seed.py -- minimal core hierarchy")
     print("=" * 70)
     await seed()
 
     print("\n" + "=" * 70)
-    print("Step 2/4: seed_extended.py -- multi-institution / multi-campus expansion")
+    print("Step 2/5: seed_extended.py -- multi-institution / multi-campus expansion")
     print("=" * 70)
     await seed_extended()
 
     print("\n" + "=" * 70)
-    print("Step 3/4: seed_audit_history.py -- sample audit history & compliance reports")
+    print("Step 3/5: seed_audit_history.py -- sample audit history & compliance reports")
     print("=" * 70)
     await seed_audit_history()
 
     print("\n" + "=" * 70)
-    print("Step 4/4: seed_sa_universities.py -- 26 SA public university profiles")
+    print("Step 4/5: seed_sa_universities.py -- 26 SA public university profiles")
     print("=" * 70)
-    # Sync seed — call directly (not awaited).
     seed_sa_universities()
+
+    print("\n" + "=" * 70)
+    print("Step 5/5: seed_institution_knowledge_foundation.py -- institutional knowledge foundation")
+    print("=" * 70)
+    seed_institution_knowledge_foundation()
 
     print("\nAll seed scripts completed.")
 

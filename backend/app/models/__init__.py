@@ -8,8 +8,11 @@ from app.models.audit_comment import AuditComment
 from app.models.audit_evidence import AuditEvidence
 from app.models.audit_finding import AuditFinding
 from app.models.audit_history import AuditHistory
+from app.models.accreditation import Accreditation, AccreditationBody
 from app.models.audit_run import AuditRun
 from app.models.base import Base
+from app.models.campus import Campus
+from app.models.contact import Contact
 from app.models.department import Department
 from app.models.document_record import DocumentRecord
 from app.models.enums import (
@@ -34,12 +37,18 @@ from app.models.enums import (
 from app.models.faculty import Faculty
 from app.models.file import File
 from app.models.file_version import FileVersion
+from app.models.graduate_attribute import GraduateAttribute
 from app.models.institution import Institution
+from app.models.institution_document import InstitutionDocument
+from app.models.institution_qualification import Qualification
+from app.models.learning_outcome import LearningOutcome
 from app.models.module import Module
 from app.models.knowledge_review import KnowledgeReviewBatch, KnowledgeReviewItem
 from app.models.module_audit import AuditChecklistItem, ModuleAudit
 from app.models.notification import Notification
+from app.models.policy import Policy, PolicyVersion
 from app.models.programme import Programme
+from app.models.school import School
 from app.models.user import User
 
 __all__ = [
@@ -47,7 +56,18 @@ __all__ = [
     "ADIPDocumentChunk",
     "ADIPExtractionCandidate",
     "ADIPProvenanceAnchor",
+    "Accreditation",
+    "AccreditationBody",
     "AgentType",
+    "Campus",
+    "Contact",
+    "GraduateAttribute",
+    "InstitutionDocument",
+    "LearningOutcome",
+    "Policy",
+    "PolicyVersion",
+    "Qualification",
+    "School",
     "AuditChecklistItem",
     "AuditComment",
     "AuditEvidence",

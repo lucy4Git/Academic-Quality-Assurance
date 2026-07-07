@@ -36,6 +36,40 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Split 2 Wave 1] — 2026-07-07 — Institutional Knowledge Foundation
+
+### Added
+- **11 institutional-knowledge ORM models**: `Campus`, `School`, `Qualification`,
+  `LearningOutcome`, `GraduateAttribute`, `Policy`, `PolicyVersion`,
+  `InstitutionDocument`, `AccreditationBody`, `Accreditation`, `Contact`. Each
+  carries data-provenance columns (`data_status`, `is_synthetic`, `source_url`).
+- **Alembic migration `b2c3d4e5f6a7`** creating all 11 tables and adding a
+  nullable `school_id` FK to `departments`.
+- **Data package** `database/seed_data/institution_knowledge_foundation/`:
+  15 provenance-tagged JSON files covering all 26 SA public universities
+  (public_verified / needs_review / synthetic_demo) + README.
+- **Idempotent seed pipeline** `seed_institution_knowledge_foundation.py`
+  (wired into `run_all.py` as step 5/5). Never overwrites `customer_data`; never
+  downgrades `public_verified` with `synthetic_demo`.
+- **6 read-only, tenant-isolated API endpoints** under `/institution-knowledge`
+  (`/overview` admin-only, `/institutions/{id}/profile`,
+  `/institutions/{id}/coverage`, `/policies`, `/documents`, `/accreditations`).
+- **Frontend**: `/knowledge/foundation` coverage dashboard (provenance
+  breakdown + Ready-for-RAG badge) and `/institution/profile` page; new
+  `useInstitutionKnowledge` hook + API client; RBAC route entries.
+- **11 new tests** in `test_split2_wave1_foundation.py`.
+
+### Security
+- Students are limited to public institution profile data (public contacts only,
+  internal documents excluded); coverage/overview/policy/document/accreditation
+  endpoints require Lecturer+ and enforce institution isolation.
+
+### Migration
+- Run `python -m alembic upgrade head` (applies `b2c3d4e5f6a7`), then
+  `python ../database/seed_data/seed_institution_knowledge_foundation.py`.
+
+---
+
 ## [Split 1] — 2026-07-06
 
 South African University Foundation + UX Navigation Reorganisation.

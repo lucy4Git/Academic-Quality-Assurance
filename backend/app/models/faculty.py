@@ -12,6 +12,7 @@ from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 if TYPE_CHECKING:
     from app.models.department import Department
     from app.models.institution import Institution
+    from app.models.school import School
     from app.models.user import User
 
 
@@ -48,6 +49,9 @@ class Faculty(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         back_populates="faculty",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    schools: Mapped[list["School"]] = relationship(
+        back_populates="faculty", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:

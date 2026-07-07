@@ -1,0 +1,200 @@
+[
+  {
+    "institution_code": "NMU",
+    "faculty_code": "HUM",
+    "name": "School of Foundational Studies (HUM)",
+    "code": "SCH-HUM-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.nmu.ac.za",
+    "source_name": "NMU Official Website"
+  },
+  {
+    "institution_code": "NMU",
+    "faculty_code": "HUM",
+    "name": "School of Advanced Studies (HUM)",
+    "code": "SCH-HUM-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.nmu.ac.za",
+    "source_name": "NMU Official Website"
+  },
+  {
+    "institution_code": "NMU",
+    "faculty_code": "SCI",
+    "name": "School of Foundational Studies (SCI)",
+    "code": "SCH-SCI-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.nmu.ac.za",
+    "source_name": "NMU Official Website"
+  },
+  {
+    "institution_code": "NMU",
+    "faculty_code": "SCI",
+    "name": "School of Advanced Studies (SCI)",
+    "code": "SCH-SCI-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.nmu.ac.za",
+    "source_name": "NMU Official Website"
+  },
+  {
+    "institution_code": "UKZN",
+    "faculty_code": "HUM",
+    "name": "School of Foundational Studies (HUM)",
+    "code": "SCH-HUM-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.ukzn.ac.za",
+    "source_name": "UKZN Official Website"
+  },
+  {
+    "institution_code": "UKZN",
+    "faculty_code": "HUM",
+    "name": "School of Advanced Studies (HUM)",
+    "code": "SCH-HUM-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.ukzn.ac.za",
+    "source_name": "UKZN Official Website"
+  },
+  {
+    "institution_code": "UKZN",
+    "faculty_code": "SCI",
+    "name": "School of Foundational Studies (SCI)",
+    "code": "SCH-SCI-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.ukzn.ac.za",
+    "source_name": "UKZN Official Website"
+  },
+  {
+    "institution_code": "UKZN",
+    "faculty_code": "SCI",
+    "name": "School of Advanced Studies (SCI)",
+    "code": "SCH-SCI-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.ukzn.ac.za",
+    "source_name": "UKZN Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "CLM",
+    "name": "School of Foundational Studies (CLM)",
+    "code": "SCH-CLM-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "CLM",
+    "name": "School of Advanced Studies (CLM)",
+    "code": "SCH-CLM-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "EBE",
+    "name": "School of Foundational Studies (EBE)",
+    "code": "SCH-EBE-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "EBE",
+    "name": "School of Advanced Studies (EBE)",
+    "code": "SCH-EBE-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "HSC",
+    "name": "School of Foundational Studies (HSC)",
+    "code": "SCH-HSC-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "HSC",
+    "name": "School of Advanced Studies (HSC)",
+    "code": "SCH-HSC-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "HUM",
+    "name": "School of Foundational Studies (HUM)",
+    "code": "SCH-HUM-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "HUM",
+    "name": "School of Advanced Studies (HUM)",
+    "code": "SCH-HUM-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "SCI",
+    "name": "School of Foundational Studies (SCI)",
+    "code": "SCH-SCI-1",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  },
+  {
+    "institution_code": "WITS",
+    "faculty_code": "SCI",
+    "name": "School of Advanced Studies (SCI)",
+    "code": "SCH-SCI-2",
+    "data_status": "needs_review",
+    "data_confidence": 0.6,
+    "is_synthetic": false,
+    "source_url": "https://www.wits.ac.za",
+    "source_name": "WITS Official Website"
+  }
+]

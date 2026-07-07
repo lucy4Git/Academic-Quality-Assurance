@@ -50,6 +50,10 @@ export interface DownloadedDocument {
   checksum: string | null;
   is_duplicate: boolean;
   created_at: string;
+  // Wave 3 extraction fields
+  extraction_status?: string;
+  meaningful_title?: string | null;
+  title_source?: string | null;
 }
 
 export interface AcquisitionStatistics {

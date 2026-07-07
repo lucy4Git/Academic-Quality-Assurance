@@ -5,6 +5,7 @@
 // are scoped to their own institution.
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { useInstitutions } from "@/hooks/useInstitutions";
 import {
@@ -309,11 +310,21 @@ export function KnowledgeAcquisitionView() {
 
           {/* Downloaded documents */}
           <Card>
-            <CardHeader>
-              <CardTitle>Downloaded Documents</CardTitle>
-              <CardDescription>
-                Documents acquired from registered sources.
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Downloaded Documents</CardTitle>
+                <CardDescription>
+                  Documents acquired from registered sources. Wave 3 extraction runs automatically after download.
+                </CardDescription>
+              </div>
+              {institutionId && (
+                <Link
+                  href="/knowledge/acquisition/extraction"
+                  className="inline-flex items-center rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  Extraction Review →
+                </Link>
+              )}
             </CardHeader>
             <CardContent>
               {!downloads || downloads.length === 0 ? (
@@ -328,17 +339,33 @@ export function KnowledgeAcquisitionView() {
                         <th className="py-2 pr-4 font-medium">Title</th>
                         <th className="py-2 pr-4 font-medium">File Type</th>
                         <th className="py-2 pr-4 font-medium">Doc Type</th>
-                        <th className="py-2 pr-4 font-medium">Status</th>
+                        <th className="py-2 pr-4 font-medium">Extraction</th>
                         <th className="py-2 pr-4 font-medium">Created</th>
                       </tr>
                     </thead>
                     <tbody>
                       {downloads.map((d) => (
                         <tr key={d.id} className="border-b last:border-0">
-                          <td className="py-2 pr-4">{d.title}</td>
+                          <td className="py-2 pr-4">
+                            <p className="font-medium">{d.meaningful_title || d.title}</p>
+                            {d.meaningful_title && d.meaningful_title !== d.title && (
+                              <p className="text-xs text-muted-foreground">orig: {d.title}</p>
+                            )}
+                          </td>
                           <td className="py-2 pr-4">{d.file_type}</td>
-                          <td className="py-2 pr-4">{d.document_type}</td>
-                          <td className="py-2 pr-4">{d.data_status}</td>
+                          <td className="py-2 pr-4">
+                            <Badge variant="outline">{d.document_type}</Badge>
+                          </td>
+                          <td className="py-2 pr-4">
+                            <Badge className={
+                              d.extraction_status === "completed" ? "bg-green-600" :
+                              d.extraction_status === "failed" ? "bg-red-600" :
+                              d.extraction_status === "running" ? "bg-amber-500" :
+                              "bg-muted text-foreground"
+                            }>
+                              {d.extraction_status ?? "pending"}
+                            </Badge>
+                          </td>
                           <td className="py-2 pr-4">{fmt(d.created_at)}</td>
                         </tr>
                       ))}

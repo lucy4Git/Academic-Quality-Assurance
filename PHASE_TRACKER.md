@@ -16,11 +16,26 @@
 - [x] Dark mode verified
 - [x] All 5 workspaces live-tested in browser
 
-### Wave 2: AI Conversation Layer (Planned)
-- [ ] Persistent AI chat sessions
-- [ ] Message history + citation tracking
-- [ ] Streaming responses with source attribution
-- [ ] Session naming and pinning
+### Wave 2: AI Workspace & Conversational Experience ✅ COMPLETE (2026-07-08)
+- [x] Three-panel workspace layout (conversation sidebar, main chat, context panel)
+- [x] SSE streaming responses via `askStream()` async generator
+- [x] MarkdownMessage — GFM markdown + code blocks + streaming cursor
+- [x] CitationChip — [SOURCE:N] → numbered inline chip with hover tooltip
+- [x] ContextPanel — Grounding Score donut gauge, knowledge sources, agents, next actions
+- [x] RichCards — 9 domain card types (Policy, Module, Programme, Finding, etc.)
+- [x] 10 slash commands (/new /audit /policy /module /programme /evidence /finding /report /qualification /help)
+- [x] Conversation search, pinning, and session history
+- [x] Institution selector for admin scope switching
+- [x] Follow-up suggestions after every AI response
+- [x] Thinking animation (5-step checklist)
+- [x] Export response as .md download
+- [x] Stop generation (AbortController)
+- [x] Premium empty state with contextual suggested tasks
+- [x] AI error cards (auth, server, no-sources) with retry
+- [x] Dark mode verified ✅
+- [x] Live streaming verified (92% grounding score) ✅
+- [x] TypeScript 0 errors · ESLint 0 warnings · Build clean ✅
+- [x] Docs: AI_WORKSPACE_ARCHITECTURE.md, AI_CONVERSATION_GUIDE.md, AI_COMPONENT_LIBRARY.md
 
 ### Wave 3: Advanced Analytics (Planned)
 - [ ] Institution health dashboard

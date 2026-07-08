@@ -2,9 +2,19 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PanelLeftClose, PanelLeftOpen, Bell, Sun, Moon, Monitor, Search, Zap, LogOut, User } from "lucide-react";
+import {
+  Bell,
+  Sun,
+  Moon,
+  Monitor,
+  Search,
+  Zap,
+  LogOut,
+  User,
+  Settings,
+  Menu,
+} from "lucide-react";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Breadcrumb } from "./Breadcrumb";
 import { useUIStore } from "@/store/ui.store";
@@ -12,7 +22,6 @@ import { useAuthStore } from "@/store/auth.store";
 import { useAuth } from "@/hooks/useAuth";
 import { useUnreadCount } from "@/hooks/useWorkspace";
 import { useInstitutions } from "@/hooks/useInstitutions";
-import { ROLE_LABELS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -20,34 +29,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { ROLE_LABELS } from "@/lib/constants";
 import type { UserRole } from "@/types";
 
-function InstitutionBadge({ code }: { code?: string }) {
-  if (!code) {
-    return (
-      <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-        <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 flex-shrink-0" />
-        AQAA Platform
-      </span>
-    );
-  }
-  const isTUT = code === "TUT";
-  return (
-    <span className={cn(
-      "hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border",
-      isTUT
-        ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border-blue-200 dark:border-blue-800"
-        : "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300 border-red-200 dark:border-red-800"
-    )}>
-      <span className={cn("h-1.5 w-1.5 rounded-full flex-shrink-0", isTUT ? "bg-blue-500" : "bg-red-600")} />
-      {code}
-    </span>
-  );
-}
-
 export function Topbar() {
-  const { sidebarOpen, toggleSidebar, toggleCommandPalette } = useUIStore();
+  const { toggleCommandPalette, toggleSidebar } = useUIStore();
   const { setTheme } = useTheme();
   const { logout } = useAuth();
   const router = useRouter();
@@ -63,109 +51,166 @@ export function Topbar() {
     ? user.full_name.split(" ").slice(0, 2).map((n) => n[0]).join("").toUpperCase()
     : "?";
 
-  return (
-    <header className="flex items-center gap-2 h-12 px-3 border-b bg-background border-border flex-shrink-0">
-      {/* Sidebar toggle */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
-        onClick={toggleSidebar}
-        aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-      >
-        {sidebarOpen ? (
-          <PanelLeftClose className="h-4 w-4" />
-        ) : (
-          <PanelLeftOpen className="h-4 w-4" />
-        )}
-      </Button>
+  const institutionLabel = isSystemAdmin
+    ? "AQAA Platform"
+    : userInstitution?.code ?? "AQAA";
 
-      {/* Breadcrumb */}
+  return (
+    <header
+      className="flex items-center gap-3 h-14 px-4 border-b border-border/60 bg-background/95 backdrop-blur-sm flex-shrink-0 sticky top-0 z-20"
+      role="banner"
+    >
+      {/* Mobile hamburger */}
+      <button
+        type="button"
+        onClick={toggleSidebar}
+        aria-label="Toggle navigation"
+        className="md:hidden flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+      >
+        <Menu className="h-4 w-4" />
+      </button>
+
+      {/* Breadcrumb — fills remaining space */}
       <div className="flex-1 min-w-0">
         <Breadcrumb />
       </div>
 
-      {/* Utility rail */}
+      {/* Right utility rail */}
       <div className="flex items-center gap-1.5 flex-shrink-0">
-        {/* Search / command palette — desktop */}
+        {/* Universal search / command palette */}
         <button
           type="button"
           onClick={toggleCommandPalette}
-          className="hidden md:flex items-center gap-2 h-8 px-3 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border border-border/60"
-          aria-label="Open command palette"
+          aria-label="Open command palette (⌘K)"
+          className="topbar-search hidden md:flex min-w-[180px]"
         >
-          <Search className="h-3.5 w-3.5 flex-shrink-0" />
-          <span>Search…</span>
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-80">
+          <Search className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          <span className="flex-1 text-left">Search…</span>
+          <kbd className="pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             ⌘K
           </kbd>
         </button>
-        {/* Search — mobile icon only */}
+        {/* Mobile search icon */}
         <button
           type="button"
           onClick={toggleCommandPalette}
-          className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           aria-label="Search"
+          className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4" aria-hidden="true" />
         </button>
 
         {/* Institution context badge */}
-        <InstitutionBadge code={isSystemAdmin ? undefined : userInstitution?.code} />
+        <span
+          className="status-pill hidden sm:inline-flex bg-primary/6 text-primary border-primary/20"
+          title={isSystemAdmin ? "All Institutions" : userInstitution?.name}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" aria-hidden="true" />
+          {institutionLabel}
+        </span>
 
-        {/* AI status badge */}
-        <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-          <Zap className="h-3 w-3 flex-shrink-0" />
+        {/* AI status */}
+        <span className="status-pill hidden lg:inline-flex bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900">
+          <Zap className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
           AI Ready
         </span>
 
-        {/* Notification bell */}
+        {/* Notifications */}
         <Link
           href="/notifications"
-          className="relative flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-          aria-label="Notifications"
+          aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
+          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-4 w-4" aria-hidden="true" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white leading-none">
+            <span
+              aria-hidden="true"
+              className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white leading-none"
+            >
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
         </Link>
 
-        {/* User avatar + dropdown menu */}
+        {/* User profile dropdown */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Avatar className="h-8 w-8 cursor-pointer">
-              <AvatarFallback className="bg-primary text-white text-xs font-medium">
+          <DropdownMenuTrigger
+            className="flex items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-label="User menu"
+          >
+            <Avatar className="h-8 w-8 cursor-pointer ring-2 ring-transparent hover:ring-primary/30 transition-all">
+              <AvatarFallback className="bg-primary text-white text-[11px] font-semibold">
                 {initials}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <div className="px-2 py-2 border-b border-border mb-1">
-              <p className="text-sm font-semibold text-foreground truncate">{user?.full_name ?? "User"}</p>
-              <p className="text-xs text-muted-foreground truncate">{role ? ROLE_LABELS[role] : ""}</p>
+
+          <DropdownMenuContent align="end" className="w-60 p-1.5">
+            {/* Identity header */}
+            <div className="px-2 py-2.5 mb-1">
+              <p className="text-sm font-semibold text-foreground truncate">
+                {user?.full_name ?? "User"}
+              </p>
+              <p className="text-xs text-muted-foreground truncate mt-0.5">
+                {role ? ROLE_LABELS[role] : ""}
+              </p>
+              {isSystemAdmin ? (
+                <span className="inline-flex items-center mt-1.5 gap-1 text-[10.5px] font-medium text-primary">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  All Institutions
+                </span>
+              ) : userInstitution ? (
+                <span className="inline-flex items-center mt-1.5 gap-1 text-[10.5px] text-muted-foreground">
+                  {userInstitution.name}
+                </span>
+              ) : null}
             </div>
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              <Sun className="mr-2 h-4 w-4" />
+
+            <DropdownMenuSeparator className="my-1" />
+
+            <DropdownMenuLabel className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground/60 px-2 py-1">
+              Appearance
+            </DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setTheme("light")} className="text-sm">
+              <Sun className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
               Light Mode
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              <Moon className="mr-2 h-4 w-4" />
+            <DropdownMenuItem onClick={() => setTheme("dark")} className="text-sm">
+              <Moon className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
               Dark Mode
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              <Monitor className="mr-2 h-4 w-4" />
+            <DropdownMenuItem onClick={() => setTheme("system")} className="text-sm">
+              <Monitor className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
               System Theme
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push("/settings/profile")}>
-              <User className="mr-2 h-4 w-4" />
-              View Profile
+
+            <DropdownMenuSeparator className="my-1" />
+
+            <DropdownMenuItem
+              onClick={() => router.push("/settings/profile")}
+              className="text-sm"
+            >
+              <User className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
+              Profile Settings
             </DropdownMenuItem>
-            <DropdownMenuItem variant="destructive" onClick={logout}>
-              <LogOut className="mr-2 h-4 w-4" />
+            {role === "system_admin" && (
+              <DropdownMenuItem
+                onClick={() => router.push("/settings/system")}
+                className="text-sm"
+              >
+                <Settings className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
+                System Settings
+              </DropdownMenuItem>
+            )}
+
+            <DropdownMenuSeparator className="my-1" />
+
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={logout}
+              className="text-sm"
+            >
+              <LogOut className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
               Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>

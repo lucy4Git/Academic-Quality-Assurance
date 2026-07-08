@@ -5,28 +5,25 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { CommandPalette } from "./CommandPalette";
-import { FloatingAIButton } from "./FloatingAIButton";
 import { useAuth } from "@/hooks/useAuth";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useUIStore } from "@/store/ui.store";
 import { cn } from "@/lib/utils";
 
-interface AppShellProps {
-  children: React.ReactNode;
-}
-
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
-  const { sidebarOpen, toggleCommandPalette } = useUIStore();
+  const { sidebarOpen, toggleCommandPalette, setSidebarOpen } = useUIStore();
   const router = useRouter();
 
+  // Close sidebar on mobile by default
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push("/login");
-    }
+    if (window.innerWidth < 768) setSidebarOpen(false);
+  }, [setSidebarOpen]);
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) router.push("/login");
   }, [isLoading, isAuthenticated, router]);
 
-  // Global Ctrl+K / Cmd+K handler for command palette
+  // Global ⌘K / Ctrl+K
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -40,27 +37,39 @@ export function AppShell({ children }: AppShellProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen bg-background">
-        <div className="w-64 border-r border-border flex flex-col gap-3 p-4 bg-sidebar">
-          <Skeleton className="h-10 w-full rounded-lg bg-sidebar-accent" />
-          <div className="space-y-2 pt-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-8 w-full rounded-lg bg-sidebar-accent" />
+      <div className="flex h-screen bg-background overflow-hidden">
+        {/* Sidebar skeleton */}
+        <div className="w-[220px] border-r border-border/60 flex flex-col gap-0 bg-sidebar flex-shrink-0">
+          <div className="h-14 border-b border-sidebar-border px-4 flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-sidebar-accent animate-pulse" />
+            <div className="h-3.5 w-16 rounded bg-sidebar-accent/60 animate-pulse" />
+          </div>
+          <div className="flex-1 p-3 space-y-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-10 rounded-lg bg-sidebar-accent/40 animate-pulse" />
             ))}
           </div>
-        </div>
-        <div className="flex-1 flex flex-col">
-          <div className="h-12 border-b border-border px-4 flex items-center gap-3">
-            <Skeleton className="h-5 w-48" />
+          <div className="border-t border-sidebar-border p-3 space-y-1">
+            <div className="h-10 rounded-lg bg-sidebar-accent/40 animate-pulse" />
           </div>
-          <div className="flex-1 p-6 space-y-4">
-            <Skeleton className="h-8 w-64" />
-            <div className="grid grid-cols-4 gap-4">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-24 rounded-xl" />
+        </div>
+
+        {/* Content skeleton */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="h-14 border-b border-border/60 px-4 flex items-center gap-3">
+            <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+            <div className="flex-1" />
+            <div className="h-9 w-44 rounded-lg bg-muted animate-pulse" />
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
+          </div>
+          <div className="flex-1 p-8 space-y-6">
+            <div className="h-10 w-64 rounded-lg bg-muted animate-pulse" />
+            <div className="grid grid-cols-3 gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-28 rounded-2xl bg-muted animate-pulse" />
               ))}
             </div>
-            <Skeleton className="h-64 rounded-xl" />
+            <div className="h-64 rounded-2xl bg-muted animate-pulse" />
           </div>
         </div>
       </div>
@@ -70,20 +79,21 @@ export function AppShell({ children }: AppShellProps) {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-background relative">
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
         <main
           id="main-content"
-          className={cn("flex-1 overflow-y-auto", "focus:outline-none")}
+          className={cn("flex-1 overflow-y-auto focus:outline-none")}
           tabIndex={-1}
         >
-          <div className="max-w-[1440px] mx-auto p-6">{children}</div>
+          <div className="max-w-[1440px] mx-auto px-6 py-8">
+            {children}
+          </div>
         </main>
       </div>
       <CommandPalette />
-      <FloatingAIButton />
     </div>
   );
 }

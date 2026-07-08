@@ -117,11 +117,12 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/reports":             HOD_AND_ABOVE,
   "/accreditation":       DEAN_AND_ABOVE,
 
-  // ── Workspace landing pages (Split 1 navigation) ───────────────────────────
+  // ── Primary workspace landing pages ───────────────────────────────────────
   "/institution":         QA_AND_ABOVE,
   "/quality":             COORDINATOR_AND_ABOVE,
   "/knowledge":           STAFF,
   "/ai":                  STAFF,
+  "/workspace":           STAFF,           // AI Workspace landing (Phase 4)
   "/administration":      SA_ONLY,
 
   // ── Administration (SA only) ───────────────────────────────────────────────
@@ -176,17 +177,19 @@ export interface NavSection {
   items: NavItem[];
 }
 
+/**
+ * Primary navigation — exactly 5 workspaces.
+ * Everything else lives inside each workspace.
+ */
 export const NAV_SECTIONS: NavSection[] = [
   {
     title: "",
     items: [
-      { label: "Home",           href: "/dashboard",      icon: "Home",       roles: ALL },
-      { label: "Institution",    href: "/institution",    icon: "Building2",  roles: QA_AND_ABOVE },
-      { label: "Quality",        href: "/quality",        icon: "ShieldCheck", roles: COORDINATOR_AND_ABOVE },
-      { label: "Knowledge",      href: "/knowledge",      icon: "BookOpen",   roles: STAFF },
-      { label: "AI",             href: "/ai",             icon: "Brain",      roles: STAFF },
-      { label: "Analytics",      href: "/analytics",      icon: "BarChart2",  roles: HOD_AND_ABOVE },
-      { label: "Administration", href: "/administration", icon: "Settings",   roles: SA_ONLY },
+      { label: "Home",           href: "/dashboard",      icon: "Home",          roles: ALL },
+      { label: "Workspace",      href: "/workspace",      icon: "LayoutGrid",    roles: STAFF },
+      { label: "Knowledge",      href: "/knowledge",      icon: "BookOpen",      roles: STAFF },
+      { label: "Quality",        href: "/quality",        icon: "ShieldCheck",   roles: COORDINATOR_AND_ABOVE },
+      { label: "Administration", href: "/administration", icon: "Settings2",     roles: SA_ONLY },
     ],
   },
 ];

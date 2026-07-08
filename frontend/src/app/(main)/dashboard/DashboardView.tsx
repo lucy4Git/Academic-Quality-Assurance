@@ -354,7 +354,7 @@ const DashboardViewInner = memo(function DashboardViewInner() {
           />
           <StatTile
             label="Evidence Files"
-            value={data?.files ?? "—"}
+            value="—"
             trend="Ready for audit"
             icon={ShieldCheck}
             iconColor="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50"
@@ -418,7 +418,7 @@ const DashboardViewInner = memo(function DashboardViewInner() {
             <div className="flex items-center justify-between px-4 py-4 border-b border-border/60">
               <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Clock className="h-4 w-4 text-amber-500" aria-hidden="true" />
-                Today's Priorities
+                Today&apos;s Priorities
               </h2>
               <span className="text-[11px] text-muted-foreground">3 pending</span>
             </div>

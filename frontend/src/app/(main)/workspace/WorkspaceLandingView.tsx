@@ -123,7 +123,7 @@ export function WorkspaceLandingView() {
           What would you like to explore?
         </h1>
         <p className="text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-          Ask AQAA anything about your institution's quality, knowledge, compliance, and accreditation.
+          Ask AQAA anything about your institution&apos;s quality, knowledge, compliance, and accreditation.
         </p>
       </div>
 

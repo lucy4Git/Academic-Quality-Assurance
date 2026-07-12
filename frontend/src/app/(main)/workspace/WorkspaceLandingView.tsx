@@ -18,17 +18,44 @@ import {
   Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRole } from "@/hooks/useRole";
+import type { UserRole } from "@/types";
 
-// ── Suggested prompts ────────────────────────────────────────────────────────
+// ── Role-specific suggested prompts ──────────────────────────────────────────
 
-const PROMPTS = [
-  { category: "Quality",      icon: "✅", prompt: "What are the top audit findings across all modules this semester?" },
-  { category: "Knowledge",    icon: "📚", prompt: "Summarise the institutional knowledge gaps from the latest extraction run" },
-  { category: "Accreditation", icon: "🎓", prompt: "Is the Faculty of Engineering ready for CHE accreditation?" },
-  { category: "Compliance",   icon: "📋", prompt: "Generate a compliance summary for all active programmes" },
-  { category: "Research",     icon: "🔬", prompt: "Compare NQF levels and credits across Computer Science modules" },
-  { category: "Governance",   icon: "🏛️", prompt: "What policy documents need to be updated before the next audit cycle?" },
-];
+type PromptItem = { category: string; icon: string; prompt: string };
+
+const ALL_PROMPTS: Partial<Record<UserRole, PromptItem[]>> & { default: PromptItem[] } = {
+  default: [
+    { category: "Quality",       icon: "✅", prompt: "What are the top audit findings across all modules this semester?" },
+    { category: "Knowledge",     icon: "📚", prompt: "Summarise the institutional knowledge gaps from the latest extraction run" },
+    { category: "Accreditation", icon: "🎓", prompt: "Is the Faculty of Engineering ready for CHE accreditation?" },
+    { category: "Compliance",    icon: "📋", prompt: "Generate a compliance summary for all active programmes" },
+    { category: "Research",      icon: "🔬", prompt: "Compare NQF levels and credits across Computer Science modules" },
+    { category: "Governance",    icon: "🏛️", prompt: "What policy documents need to be updated before the next audit cycle?" },
+  ],
+  system_admin: [
+    { category: "Admin",         icon: "🏛️", prompt: "Compare compliance scores across all institutions" },
+    { category: "Audit",         icon: "✅", prompt: "Which institution has the most open audit findings?" },
+    { category: "Providers",     icon: "🤖", prompt: "Summarise AI provider usage and token consumption" },
+    { category: "Accreditation", icon: "🎓", prompt: "Show accreditation readiness across all faculties" },
+    { category: "Users",         icon: "👥", prompt: "How many users are active across all institutions?" },
+    { category: "Knowledge",     icon: "📚", prompt: "What knowledge gaps exist across institutions?" },
+  ],
+  lecturer: [
+    { category: "Evidence",      icon: "📂", prompt: "What evidence do I need to upload for my modules?" },
+    { category: "Audit",         icon: "✅", prompt: "Summarise my module's audit findings this semester" },
+    { category: "Compliance",    icon: "📋", prompt: "What is the compliance status of my modules?" },
+    { category: "Policy",        icon: "📜", prompt: "Explain the assessment and moderation policy" },
+    { category: "NQF",           icon: "🎓", prompt: "What NQF level are my modules and what does that mean?" },
+    { category: "Knowledge",     icon: "📚", prompt: "What institutional knowledge is available for my faculty?" },
+  ],
+};
+
+function getPromptsForRole(role?: UserRole): PromptItem[] {
+  if (!role) return ALL_PROMPTS.default;
+  return (ALL_PROMPTS as Record<string, PromptItem[]>)[role] ?? ALL_PROMPTS.default;
+}
 
 // ── AI Tools ─────────────────────────────────────────────────────────────────
 
@@ -104,11 +131,13 @@ const PINNED_DOCS = [
 export function WorkspaceLandingView() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const { role } = useRole();
+  const prompts = getPromptsForRole(role);
 
   const handleAsk = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/ai-assistant?q=${encodeURIComponent(query.trim())}`);
+    router.push(`/ai-workspace?q=${encodeURIComponent(query.trim())}`);
   };
 
   return (
@@ -160,11 +189,11 @@ export function WorkspaceLandingView() {
           Suggested
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {PROMPTS.map((p) => (
+          {prompts.map((p) => (
             <button
               key={p.prompt}
               type="button"
-              onClick={() => router.push(`/ai-assistant?q=${encodeURIComponent(p.prompt)}`)}
+              onClick={() => router.push(`/ai-workspace?q=${encodeURIComponent(p.prompt)}`)}
               className="flex items-start gap-2.5 p-3 rounded-xl border border-border/60 bg-card/50 hover:bg-card hover:border-border hover:shadow-sm text-left transition-all group cursor-pointer"
             >
               <span className="text-base leading-none mt-0.5 flex-shrink-0" aria-hidden="true">{p.icon}</span>

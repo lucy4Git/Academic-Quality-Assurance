@@ -37,7 +37,24 @@
 - [x] TypeScript 0 errors · ESLint 0 warnings · Build clean ✅
 - [x] Docs: AI_WORKSPACE_ARCHITECTURE.md, AI_CONVERSATION_GUIDE.md, AI_COMPONENT_LIBRARY.md
 
-### Wave 3: Advanced Analytics (Planned)
+### Wave 3: Multi-Role Live UX Validation + Improvement ✅ COMPLETE (2026-07-12)
+- [x] Live-tested all 7 user roles through browser Preview
+- [x] Role-specific Home — Admin: cross-institution stats + admin quick actions
+- [x] Role-specific Home — QA Officer: institution-scoped stats, extraction review
+- [x] Role-specific Home — Lecturer: evidence-focused quick actions, no forbidden links
+- [x] Role-specific Home — Student: Getting Started + About AQAA panels, accessible-only links
+- [x] Role-specific AI suggested prompts (7 role variants, Home + Workspace)
+- [x] AskAQAAComposer shown for ALL roles (was lecturer-only)
+- [x] getContinueCards(role) — role-aware Continue Working section
+- [x] RBAC card hiding verified — students see Home only; lecturers no Quality; admins see Administration
+- [x] Workspace landing role-specific prompts (admin / QA / lecturer variants)
+- [x] All prompts now link to /ai-workspace (not /ai-assistant)
+- [x] TypeScript 0 errors · ESLint 0 warnings · Build clean ✅
+- [x] Backend: 1198 tests passed ✅
+- [x] Docs: MULTI_ROLE_LIVE_UX_VALIDATION_REPORT.md
+- [x] Docs: ROLE_SPECIFIC_USER_EXPERIENCE_GUIDE.md
+
+### Wave 4: Advanced Analytics (Planned)
 - [ ] Institution health dashboard
 - [ ] Compliance trend charts
 - [ ] Audit cycle comparisons

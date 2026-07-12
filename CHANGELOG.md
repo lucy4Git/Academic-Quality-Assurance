@@ -4,6 +4,33 @@ All notable changes to this project are documented here.
 
 ---
 
+## [4.2.0] — 2026-07-12 · Phase 4 Wave 3: Multi-Role Live UX Validation + Improvement
+
+### Added
+- **Role-specific Home page** — `DashboardView` renders distinct content per role: admin gets cross-institution stats + Institutions/Users/AI Providers quick actions; QA officer gets institution-scoped stats + audit activity; student gets Getting Started panel + About AQAA; lecturer gets evidence-focused actions
+- **Role-specific AI prompts** — `ROLE_PROMPTS` map in `DashboardView`; `ALL_PROMPTS` map in `WorkspaceLandingView`; 7 role variants covering admin, QA officer, dean, HOD, coordinator, lecturer, student
+- **Role-specific Continue Working** — `getContinueCards(role)` returns role-appropriate cards with only accessible routes
+- **Student Home** — Dedicated Getting Started panel, About AQAA explainer, Quick Actions limited to AI Workspace + Programmes
+- **Admin Home** — Institutions, Users, AI Providers quick actions; cross-institution stats (26 institutions, 2327 modules)
+- **Lecturer Home** — Upload Evidence + AI Workspace added to quick actions; Continue Working uses only STAFF-accessible routes
+- **Docs: `MULTI_ROLE_LIVE_UX_VALIDATION_REPORT.md`** — Full live test results, issues found, fixes applied, quality gates
+- **Docs: `ROLE_SPECIFIC_USER_EXPERIENCE_GUIDE.md`** — Role-by-role UX reference, RBAC quick reference table, prompt samples
+
+### Fixed
+- `AskAQAAComposer` previously hidden from students (was gated by `isLecturer`) — now shown for ALL roles
+- Workspace landing + Dashboard prompts linked to `/ai-assistant` (old route) — updated to `/ai-workspace`
+- Lecturer "Continue Working" included `/audits` (COORDINATOR_AND_ABOVE only) — replaced with accessible routes
+- Single hardcoded `SUGGESTED_PROMPTS` array served all roles — replaced with role-keyed maps
+
+### Quality Gates
+- `npx tsc --noEmit` — 0 errors ✅
+- `npx next lint` — 0 warnings ✅
+- `npx next build` — Clean build ✅
+- `python -m pytest -q` — 1198 passed ✅
+- Live preview — 4 roles verified (admin, QA officer, lecturer, student) ✅
+
+---
+
 ## [4.1.0] — 2026-07-08 · Phase 4 Wave 2: AI Workspace & Conversational Experience
 
 ### Added

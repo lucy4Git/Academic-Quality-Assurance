@@ -16,28 +16,35 @@ from app.models.enums import FindingStatus, UserRole
 from app.models.user import User
 
 # ---------------------------------------------------------------------------
-# State machine — valid transitions
+# State machine — canonical 12-status lifecycle
 # ---------------------------------------------------------------------------
 
 _TRANSITIONS: dict[str, set[str]] = {
     FindingStatus.OPEN: {
         FindingStatus.ACKNOWLEDGED,
-        FindingStatus.CLOSED_NO_ACTION,
+        FindingStatus.ASSIGNED,
         FindingStatus.ESCALATED,
+        FindingStatus.CLOSED,
     },
     FindingStatus.ACKNOWLEDGED: {
+        FindingStatus.ASSIGNED,
+        FindingStatus.IN_PROGRESS,
+        FindingStatus.DEFERRED,
+        FindingStatus.ESCALATED,
+    },
+    FindingStatus.ASSIGNED: {
         FindingStatus.IN_PROGRESS,
         FindingStatus.DEFERRED,
         FindingStatus.ESCALATED,
     },
     FindingStatus.IN_PROGRESS: {
-        FindingStatus.EVIDENCE_SUBMITTED,
+        FindingStatus.RESOLUTION_SUBMITTED,
         FindingStatus.DEFERRED,
         FindingStatus.ESCALATED,
     },
-    FindingStatus.EVIDENCE_SUBMITTED: {
+    FindingStatus.RESOLUTION_SUBMITTED: {
         FindingStatus.UNDER_REVIEW,
-        FindingStatus.IN_PROGRESS,  # retracted by submitter
+        FindingStatus.IN_PROGRESS,  # submitter retracts before review
     },
     FindingStatus.UNDER_REVIEW: {
         FindingStatus.RESOLVED,
@@ -47,22 +54,34 @@ _TRANSITIONS: dict[str, set[str]] = {
         FindingStatus.IN_PROGRESS,
         FindingStatus.ESCALATED,
     },
+    FindingStatus.RESOLVED: {
+        FindingStatus.REOPENED,
+        FindingStatus.CLOSED,
+    },
+    FindingStatus.REOPENED: {
+        FindingStatus.ASSIGNED,
+        FindingStatus.IN_PROGRESS,
+    },
+    FindingStatus.ESCALATED: {
+        FindingStatus.IN_PROGRESS,
+        FindingStatus.UNDER_REVIEW,
+        FindingStatus.RESOLVED,
+    },
     FindingStatus.DEFERRED: {
         FindingStatus.IN_PROGRESS,
         FindingStatus.ESCALATED,
     },
-    FindingStatus.ESCALATED: {
-        FindingStatus.IN_PROGRESS,
-        FindingStatus.RESOLVED,
-        FindingStatus.UNDER_REVIEW,
-    },
-    FindingStatus.RESOLVED: set(),          # terminal
-    FindingStatus.CLOSED_NO_ACTION: set(),  # terminal
+    FindingStatus.CLOSED: set(),   # terminal
 }
 
-# Roles that may initiate each transition (empty = any authenticated user in scope)
+# Roles that may initiate each destination status
 _TRANSITION_ROLES: dict[str, set[str]] = {
     FindingStatus.ACKNOWLEDGED: {
+        UserRole.PROGRAMME_COORDINATOR, UserRole.HEAD_OF_DEPARTMENT,
+        UserRole.FACULTY_DEAN, UserRole.QUALITY_ASSURANCE_OFFICER,
+        UserRole.SYSTEM_ADMIN,
+    },
+    FindingStatus.ASSIGNED: {
         UserRole.PROGRAMME_COORDINATOR, UserRole.HEAD_OF_DEPARTMENT,
         UserRole.FACULTY_DEAN, UserRole.QUALITY_ASSURANCE_OFFICER,
         UserRole.SYSTEM_ADMIN,
@@ -72,7 +91,7 @@ _TRANSITION_ROLES: dict[str, set[str]] = {
         UserRole.HEAD_OF_DEPARTMENT, UserRole.FACULTY_DEAN,
         UserRole.QUALITY_ASSURANCE_OFFICER, UserRole.SYSTEM_ADMIN,
     },
-    FindingStatus.EVIDENCE_SUBMITTED: {
+    FindingStatus.RESOLUTION_SUBMITTED: {
         UserRole.LECTURER, UserRole.PROGRAMME_COORDINATOR,
         UserRole.HEAD_OF_DEPARTMENT,
     },
@@ -85,6 +104,9 @@ _TRANSITION_ROLES: dict[str, set[str]] = {
     FindingStatus.REJECTED: {
         UserRole.QUALITY_ASSURANCE_OFFICER, UserRole.SYSTEM_ADMIN,
     },
+    FindingStatus.REOPENED: {
+        UserRole.QUALITY_ASSURANCE_OFFICER, UserRole.SYSTEM_ADMIN,
+    },
     FindingStatus.DEFERRED: {
         UserRole.PROGRAMME_COORDINATOR, UserRole.HEAD_OF_DEPARTMENT,
         UserRole.FACULTY_DEAN, UserRole.QUALITY_ASSURANCE_OFFICER,
@@ -95,7 +117,7 @@ _TRANSITION_ROLES: dict[str, set[str]] = {
         UserRole.FACULTY_DEAN, UserRole.QUALITY_ASSURANCE_OFFICER,
         UserRole.SYSTEM_ADMIN,
     },
-    FindingStatus.CLOSED_NO_ACTION: {
+    FindingStatus.CLOSED: {
         UserRole.QUALITY_ASSURANCE_OFFICER, UserRole.SYSTEM_ADMIN,
     },
 }
@@ -223,8 +245,8 @@ async def transition_finding(
 
     finding.status = to_status
     # Keep is_resolved in sync for backwards compatibility
-    finding.is_resolved = to_status == FindingStatus.RESOLVED
-    if to_status == FindingStatus.RESOLVED and note:
+    finding.is_resolved = to_status in (FindingStatus.RESOLVED, FindingStatus.CLOSED)
+    if to_status in (FindingStatus.RESOLVED, FindingStatus.CLOSED) and note:
         finding.resolved_note = note
 
     await db.commit()
@@ -266,9 +288,9 @@ async def assign_finding(
     )
     db.add(history)
 
-    # Auto-transition to ACKNOWLEDGED if still OPEN
-    if finding.status == FindingStatus.OPEN:
-        finding.status = FindingStatus.ACKNOWLEDGED
+    # Auto-transition: OPEN or ACKNOWLEDGED → ASSIGNED when first assigned
+    if finding.status in (FindingStatus.OPEN, FindingStatus.ACKNOWLEDGED):
+        finding.status = FindingStatus.ASSIGNED
 
     await db.commit()
     await db.refresh(finding)

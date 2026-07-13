@@ -1,22 +1,22 @@
-"""Findings lifecycle routes.
+"""Findings lifecycle routes — canonical 12-status state machine.
 
 Endpoints
 ---------
-GET   /findings                                   List findings (tenant/role scoped)
-GET   /findings/{id}                              Get finding detail + history
-POST  /findings/{id}/acknowledge                  OPEN → ACKNOWLEDGED
-POST  /findings/{id}/assign                       Assign to user + optional due-date
-POST  /findings/{id}/start                        ACKNOWLEDGED → IN_PROGRESS
-POST  /findings/{id}/submit-evidence              IN_PROGRESS → EVIDENCE_SUBMITTED
-POST  /findings/{id}/request-review               EVIDENCE_SUBMITTED → UNDER_REVIEW
-POST  /findings/{id}/approve                      UNDER_REVIEW → RESOLVED
-POST  /findings/{id}/reject                       UNDER_REVIEW → REJECTED
-POST  /findings/{id}/reopen                       RESOLVED → IN_PROGRESS (via reject path)
-POST  /findings/{id}/defer                        Any active state → DEFERRED
-POST  /findings/{id}/escalate                     Any active state → ESCALATED
-POST  /findings/{id}/close-no-action              OPEN → CLOSED_NO_ACTION (INFO findings)
-PATCH /findings/{id}                              Update due_date / recommendation
-GET   /findings/{id}/history                      Status transition audit trail
+GET   /findings                         List findings (tenant/role scoped)
+GET   /findings/{id}                    Get finding detail
+POST  /findings/{id}/acknowledge        OPEN → ACKNOWLEDGED
+POST  /findings/{id}/assign             Assign to user (auto-transitions to ASSIGNED)
+POST  /findings/{id}/start              ACKNOWLEDGED|ASSIGNED → IN_PROGRESS
+POST  /findings/{id}/submit-resolution  IN_PROGRESS → RESOLUTION_SUBMITTED
+POST  /findings/{id}/request-review     RESOLUTION_SUBMITTED → UNDER_REVIEW
+POST  /findings/{id}/approve            UNDER_REVIEW → RESOLVED
+POST  /findings/{id}/reject             UNDER_REVIEW → REJECTED  (note required)
+POST  /findings/{id}/reopen             RESOLVED → REOPENED
+POST  /findings/{id}/defer              Any active state → DEFERRED
+POST  /findings/{id}/escalate           Any active state → ESCALATED
+POST  /findings/{id}/close              OPEN|RESOLVED → CLOSED
+PATCH /findings/{id}                    Update due_date / recommendation
+GET   /findings/{id}/history            Status transition audit trail
 """
 
 from __future__ import annotations
@@ -189,47 +189,56 @@ async def start_progress(
     return await _do_transition(db, finding_id, FindingStatus.IN_PROGRESS, body.note, current_user)
 
 
-@router.post("/{finding_id}/submit-evidence", response_model=AuditFindingRead)
-async def submit_evidence(
-    finding_id: uuid.UUID, body: FindingTransitionRequest = FindingTransitionRequest(to_status=FindingStatus.EVIDENCE_SUBMITTED),
+@router.post("/{finding_id}/submit-resolution", response_model=AuditFindingRead,
+             summary="IN_PROGRESS → RESOLUTION_SUBMITTED")
+async def submit_resolution(
+    finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = LecturerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
-    return await _do_transition(db, finding_id, FindingStatus.EVIDENCE_SUBMITTED, body.note, current_user)
+    return await _do_transition(db, finding_id, FindingStatus.RESOLUTION_SUBMITTED, body.note, current_user)
 
 
-@router.post("/{finding_id}/request-review", response_model=AuditFindingRead)
+@router.post("/{finding_id}/request-review", response_model=AuditFindingRead,
+             summary="RESOLUTION_SUBMITTED → UNDER_REVIEW")
 async def request_review(
-    finding_id: uuid.UUID, body: FindingTransitionRequest = FindingTransitionRequest(to_status=FindingStatus.UNDER_REVIEW),
-    current_user: User = LecturerRequired, db: AsyncSession = Depends(get_db),
+    finding_id: uuid.UUID, body: FindingTransitionRequest,
+    current_user: User = QAOfficerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
     return await _do_transition(db, finding_id, FindingStatus.UNDER_REVIEW, body.note, current_user)
 
 
-@router.post("/{finding_id}/approve", response_model=AuditFindingRead)
+@router.post("/{finding_id}/approve", response_model=AuditFindingRead,
+             summary="UNDER_REVIEW → RESOLVED")
 async def approve_finding(
-    finding_id: uuid.UUID, body: FindingTransitionRequest = FindingTransitionRequest(to_status=FindingStatus.RESOLVED),
+    finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = QAOfficerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
     return await _do_transition(db, finding_id, FindingStatus.RESOLVED, body.note, current_user)
 
 
-@router.post("/{finding_id}/reject", response_model=AuditFindingRead)
+@router.post("/{finding_id}/reject", response_model=AuditFindingRead,
+             summary="UNDER_REVIEW → REJECTED (note required)")
 async def reject_finding(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = QAOfficerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
+    if not body.note:
+        from app.core.exceptions import DomainError
+        raise DomainError("A rejection reason (note) is required.")
     return await _do_transition(db, finding_id, FindingStatus.REJECTED, body.note, current_user)
 
 
-@router.post("/{finding_id}/reopen", response_model=AuditFindingRead)
+@router.post("/{finding_id}/reopen", response_model=AuditFindingRead,
+             summary="RESOLVED → REOPENED")
 async def reopen_finding(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = QAOfficerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
-    return await _do_transition(db, finding_id, FindingStatus.IN_PROGRESS, body.note, current_user)
+    return await _do_transition(db, finding_id, FindingStatus.REOPENED, body.note, current_user)
 
 
-@router.post("/{finding_id}/defer", response_model=AuditFindingRead)
+@router.post("/{finding_id}/defer", response_model=AuditFindingRead,
+             summary="Any active → DEFERRED")
 async def defer_finding(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = CoordinatorRequired, db: AsyncSession = Depends(get_db),
@@ -237,7 +246,8 @@ async def defer_finding(
     return await _do_transition(db, finding_id, FindingStatus.DEFERRED, body.note, current_user)
 
 
-@router.post("/{finding_id}/escalate", response_model=AuditFindingRead)
+@router.post("/{finding_id}/escalate", response_model=AuditFindingRead,
+             summary="Any active → ESCALATED")
 async def escalate_finding(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = CoordinatorRequired, db: AsyncSession = Depends(get_db),
@@ -245,12 +255,13 @@ async def escalate_finding(
     return await _do_transition(db, finding_id, FindingStatus.ESCALATED, body.note, current_user)
 
 
-@router.post("/{finding_id}/close-no-action", response_model=AuditFindingRead)
-async def close_no_action(
+@router.post("/{finding_id}/close", response_model=AuditFindingRead,
+             summary="OPEN|RESOLVED → CLOSED")
+async def close_finding(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = QAOfficerRequired, db: AsyncSession = Depends(get_db),
 ) -> AuditFindingRead:
-    return await _do_transition(db, finding_id, FindingStatus.CLOSED_NO_ACTION, body.note, current_user)
+    return await _do_transition(db, finding_id, FindingStatus.CLOSED, body.note, current_user)
 
 
 # ---------------------------------------------------------------------------

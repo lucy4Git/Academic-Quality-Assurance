@@ -65,14 +65,16 @@ export type FindingType =
 export type FindingStatus =
   | "open"
   | "acknowledged"
+  | "assigned"
   | "in_progress"
-  | "evidence_submitted"
+  | "resolution_submitted"
   | "under_review"
   | "resolved"
   | "rejected"
-  | "deferred"
+  | "reopened"
   | "escalated"
-  | "closed_no_action";
+  | "deferred"
+  | "closed";
 
 export type UploadState =
   | "pending"

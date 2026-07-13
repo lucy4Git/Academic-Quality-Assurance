@@ -32,6 +32,7 @@ from __future__ import annotations
 import uuid
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import DomainError, NotFoundError
@@ -40,6 +41,7 @@ from app.dependencies import (
     AnyAuthenticatedUser,
     CoordinatorRequired,
     PaginationParams,
+    QAOfficerRequired,
 )
 from app.models.audit_run import AuditRun
 from app.models.enums import AgentType, AuditRunStatus, UserRole
@@ -55,6 +57,7 @@ from app.schemas.accreditation_readiness import (
 from app.services import (
     accreditation_readiness_report_service,
     accreditation_readiness_service,
+    gap_promotion_service,
 )
 
 router = APIRouter(
@@ -315,3 +318,65 @@ async def resolve_accreditation_readiness_finding(
             detail=f"Finding {finding_id} not found.",
         )
     return ReadinessFindingRead.model_validate(finding)
+
+
+# ---------------------------------------------------------------------------
+# Promote gaps → operational findings (B9)
+# ---------------------------------------------------------------------------
+
+
+class GapPromotionRequest(BaseModel):
+    gap_finding_ids: list[uuid.UUID] | None = Field(
+        default=None,
+        description="Specific gap finding IDs to promote. Omit to promote all gaps.",
+    )
+
+
+class GapPromotionResponse(BaseModel):
+    promoted: list[str]
+    linked: list[str]
+    skipped: list[str]
+    errors: list[str]
+
+
+@router.post(
+    "/{run_id}/promote-gaps",
+    response_model=GapPromotionResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Promote accreditation gaps to operational findings (B9).",
+)
+async def promote_accreditation_gaps(
+    run_id: uuid.UUID,
+    body: GapPromotionRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = QAOfficerRequired,
+) -> GapPromotionResponse:
+    """Convert qualifying accreditation readiness gaps into AuditFindings.
+
+    Duplicate prevention: if an equivalent active finding already exists for
+    the same module + finding_type + title prefix, it is linked rather than
+    duplicated. The response lists promoted (new), linked (existing), and
+    skipped (no-op) finding IDs per gap.
+    """
+    from app.core.exceptions import DomainError, DomainPermissionError, NotFoundError
+
+    try:
+        result = await gap_promotion_service.promote_accreditation_gaps(
+            db,
+            run_id=run_id,
+            actor=current_user,
+            gap_finding_ids=body.gap_finding_ids,
+        )
+    except DomainPermissionError as exc:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc))
+    except NotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+    except DomainError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+
+    return GapPromotionResponse(
+        promoted=result.promoted,
+        linked=result.linked,
+        skipped=result.skipped,
+        errors=result.errors,
+    )

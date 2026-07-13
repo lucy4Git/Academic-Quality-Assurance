@@ -48,14 +48,16 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: "", label: "All statuses" },
   { value: "open", label: "Open" },
   { value: "acknowledged", label: "Acknowledged" },
+  { value: "assigned", label: "Assigned" },
   { value: "in_progress", label: "In Progress" },
-  { value: "evidence_submitted", label: "Evidence Submitted" },
+  { value: "resolution_submitted", label: "Resolution Submitted" },
   { value: "under_review", label: "Under Review" },
   { value: "resolved", label: "Resolved" },
   { value: "rejected", label: "Rejected" },
+  { value: "reopened", label: "Reopened" },
   { value: "deferred", label: "Deferred" },
   { value: "escalated", label: "Escalated" },
-  { value: "closed_no_action", label: "Closed – No Action" },
+  { value: "closed", label: "Closed" },
 ];
 
 const SEVERITY_OPTIONS = [
@@ -105,14 +107,15 @@ function FindingDetail({
   };
 
   const canAcknowledge = finding.status === "open" && isCoordinator;
-  const canStart = finding.status === "acknowledged";
+  const canStart = ["acknowledged", "assigned", "reopened"].includes(finding.status);
   const canSubmit = finding.status === "in_progress";
-  const canReview = finding.status === "evidence_submitted" && isQAOfficer;
+  const canReview = finding.status === "resolution_submitted" && isQAOfficer;
   const canApprove = finding.status === "under_review" && isQAOfficer;
   const canReject = finding.status === "under_review" && isQAOfficer;
   const canReopen = finding.status === "resolved" && isQAOfficer;
+  const canClose = ["open", "resolved"].includes(finding.status) && isQAOfficer;
   const canEscalate =
-    !["resolved", "closed_no_action"].includes(finding.status) && isCoordinator;
+    !["resolved", "closed", "escalated"].includes(finding.status) && isCoordinator;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-end">
@@ -218,7 +221,7 @@ function FindingDetail({
 
           {/* Actions */}
           {(canAcknowledge || canStart || canSubmit || canReview || canApprove ||
-            canReject || canReopen || canEscalate) && (
+            canReject || canReopen || canClose || canEscalate) && (
             <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 space-y-3">
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 Actions
@@ -249,10 +252,10 @@ function FindingDetail({
                 )}
                 {canSubmit && (
                   <ActionButton
-                    label="Submit Evidence"
+                    label="Submit Resolution"
                     colour="violet"
                     loading={transition.isPending}
-                    onClick={() => handleTransition("submit-evidence")}
+                    onClick={() => handleTransition("submit-resolution")}
                   />
                 )}
                 {canReview && (
@@ -285,6 +288,14 @@ function FindingDetail({
                     colour="orange"
                     loading={transition.isPending}
                     onClick={() => handleTransition("reopen")}
+                  />
+                )}
+                {canClose && (
+                  <ActionButton
+                    label="Close"
+                    colour="slate"
+                    loading={transition.isPending}
+                    onClick={() => handleTransition("close")}
                   />
                 )}
                 {canEscalate && (
@@ -361,6 +372,7 @@ function ActionButton({
     red: "bg-red-600 hover:bg-red-700 text-white",
     orange: "bg-orange-500 hover:bg-orange-600 text-white",
     rose: "bg-rose-600 hover:bg-rose-700 text-white",
+    slate: "bg-slate-500 hover:bg-slate-600 text-white",
   };
   return (
     <button
@@ -446,7 +458,7 @@ export function FindingsCentre() {
     total: findings?.length ?? 0,
     open: findings?.filter((f) => f.status === "open").length ?? 0,
     critical: findings?.filter((f) => f.severity === "critical").length ?? 0,
-    resolved: findings?.filter((f) => f.status === "resolved").length ?? 0,
+    resolved: findings?.filter((f) => f.status === "resolved" || f.status === "closed").length ?? 0,
   };
 
   return (

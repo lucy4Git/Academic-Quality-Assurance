@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -17,6 +17,7 @@ import { listModules } from "@/lib/api/modules";
 import {
   triggerAccreditationReadiness,
   getLatestAccreditationReadiness,
+  getAccreditationReadinessRun,
   getAccreditationReadinessReport,
   type AccreditationReadinessReport,
   type SubAgentReadinessRead,
@@ -229,8 +230,12 @@ function ReportView({ report }: { report: AccreditationReadinessReport }) {
 }
 
 // ---------------------------------------------------------------------------
-// Module run card
+// Module run card — with polling by run_id
 // ---------------------------------------------------------------------------
+
+const POLL_INTERVAL_MS = 4000;
+const POLL_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
+const TERMINAL_STATUSES = new Set(["completed", "failed"]);
 
 function ModuleRunCard({
   moduleId,
@@ -241,39 +246,71 @@ function ModuleRunCard({
   moduleName: string;
   moduleCode: string;
 }) {
-  const qc = useQueryClient();
   const [showReport, setShowReport] = useState(false);
+  // activeRunId tracks the in-flight run so we can poll by ID
+  const [activeRunId, setActiveRunId] = useState<string | null>(null);
+  const [pollStartedAt, setPollStartedAt] = useState<number | null>(null);
 
-  const { data: latestRun, isLoading: runLoading } = useQuery({
-    queryKey: ["accreditation-readiness-run", moduleId],
+  // Latest completed run (for the score display and initial state on mount)
+  const { data: latestRun, isLoading: runLoading, refetch: refetchLatest } = useQuery({
+    queryKey: ["accreditation-readiness-latest", moduleId],
     queryFn: () => getLatestAccreditationReadiness(moduleId).catch(() => null),
     retry: false,
+    staleTime: 30_000,
   });
 
-  const { data: report, isLoading: reportLoading } = useQuery({
-    queryKey: ["accreditation-readiness-report", latestRun?.id],
-    queryFn: () => getAccreditationReadinessReport(latestRun!.id),
-    enabled: showReport && latestRun?.run_status === "completed",
+  // Poll the specific active run by ID until terminal
+  const pollingTimedOut =
+    pollStartedAt != null && Date.now() - pollStartedAt > POLL_TIMEOUT_MS;
+  const { data: activeRun } = useQuery({
+    queryKey: ["accreditation-readiness-poll", activeRunId],
+    queryFn: () => getAccreditationReadinessRun(activeRunId!),
+    enabled: activeRunId != null && !pollingTimedOut,
+    refetchInterval: (query) => {
+      const status = query.state.data?.run_status;
+      return status && TERMINAL_STATUSES.has(status) ? false : POLL_INTERVAL_MS;
+    },
+    staleTime: 0,
   });
+
+  // When the polled run reaches a terminal state, sync back to latest and clear
+  useEffect(() => {
+    if (activeRunId && activeRun?.run_status && TERMINAL_STATUSES.has(activeRun.run_status)) {
+      setActiveRunId(null);
+      setPollStartedAt(null);
+      refetchLatest();
+    }
+  }, [activeRun?.run_status, activeRunId, refetchLatest]);
 
   const trigger = useMutation({
     mutationFn: () => triggerAccreditationReadiness(moduleId),
-    onSuccess: () => {
-      setTimeout(() => {
-        qc.invalidateQueries({ queryKey: ["accreditation-readiness-run", moduleId] });
-      }, 3000);
+    onSuccess: (data) => {
+      setActiveRunId(data.run_id);
+      setPollStartedAt(Date.now());
     },
   });
 
-  const status = latestRun?.run_status;
+  // Determine display state: prefer in-flight activeRun status, fall back to latestRun
+  const isActivelyPolling = activeRunId != null && !pollingTimedOut;
+  const displayStatus = isActivelyPolling
+    ? (activeRun?.run_status ?? "pending")
+    : latestRun?.run_status;
   const score = latestRun?.compliance_score;
   const auditStatus = latestRun?.audit_status;
+  const isRunning = isActivelyPolling || displayStatus === "running" || displayStatus === "pending";
 
   const scoreColour =
     score == null ? "text-slate-400"
     : score >= 80 ? "text-green-600"
     : score >= 60 ? "text-amber-600"
     : "text-red-600";
+
+  // Report query — only when completed and expanded
+  const { data: report, isLoading: reportLoading } = useQuery({
+    queryKey: ["accreditation-readiness-report", latestRun?.id],
+    queryFn: () => getAccreditationReadinessReport(latestRun!.id),
+    enabled: showReport && latestRun?.run_status === "completed",
+  });
 
   return (
     <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
@@ -285,56 +322,76 @@ function ModuleRunCard({
           <div className="text-xs text-slate-500">{moduleCode}</div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          {score != null && (
+          {score != null && !isRunning && (
             <span className={`text-xl font-bold ${scoreColour}`}>
               {Math.round(score)}
             </span>
           )}
           <button
             onClick={() => trigger.mutate()}
-            disabled={trigger.isPending || status === "running"}
+            disabled={trigger.isPending || isRunning}
             className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-700 dark:hover:bg-slate-300 disabled:opacity-50 transition-colors"
           >
-            {trigger.isPending || status === "running" ? (
+            {isRunning ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Play className="w-3.5 h-3.5" />
             )}
-            {status === "running" ? "Running…" : "Run"}
+            {isRunning ? (displayStatus === "pending" ? "Queued…" : "Running…") : "Run"}
           </button>
         </div>
       </div>
 
-      {runLoading && (
+      {runLoading && !isActivelyPolling && (
         <div className="text-xs text-slate-400 flex items-center gap-1.5">
           <Loader2 className="w-3 h-3 animate-spin" />
           Loading…
         </div>
       )}
 
-      {!runLoading && latestRun && (
+      {isActivelyPolling && (
+        <div className="flex items-center gap-2 text-xs text-blue-600">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          {displayStatus === "pending" ? "Queued — waiting to start…" : "Running assessment…"}
+        </div>
+      )}
+
+      {pollingTimedOut && (
+        <div className="text-xs text-amber-600 flex items-center gap-1.5">
+          Assessment is taking longer than expected.{" "}
+          <button
+            className="underline"
+            onClick={() => { setActiveRunId(null); setPollStartedAt(null); refetchLatest(); }}
+          >
+            Refresh
+          </button>
+        </div>
+      )}
+
+      {!runLoading && !isActivelyPolling && latestRun && (
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {status === "completed" && auditStatus && (
-              <span className="text-xs px-1.5 py-0.5 rounded border capitalize font-medium
-                text-slate-600 bg-slate-50 border-slate-200">
+            {displayStatus === "completed" && auditStatus && (
+              <span className="text-xs px-1.5 py-0.5 rounded border capitalize font-medium text-slate-600 bg-slate-50 border-slate-200">
                 {auditStatus.replace(/_/g, " ")}
               </span>
             )}
-            {status === "running" && (
-              <span className="text-xs text-blue-600 flex items-center gap-1">
-                <Loader2 className="w-3 h-3 animate-spin" />
-                Running
+            {displayStatus === "failed" && (
+              <span className="text-xs text-red-500 flex items-center gap-1">
+                Failed
+                <button
+                  className="underline ml-1"
+                  onClick={() => trigger.mutate()}
+                >
+                  Retry
+                </button>
               </span>
-            )}
-            {status === "failed" && (
-              <span className="text-xs text-red-500">Failed</span>
             )}
             <span className="text-xs text-slate-400">
               {new Date(latestRun.created_at).toLocaleDateString()}
             </span>
           </div>
-          {status === "completed" && (
+          {displayStatus === "completed" && (
             <button
               onClick={() => setShowReport(!showReport)}
               className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1"
@@ -346,7 +403,7 @@ function ModuleRunCard({
         </div>
       )}
 
-      {!runLoading && !latestRun && !trigger.isPending && (
+      {!runLoading && !isActivelyPolling && !latestRun && !trigger.isPending && (
         <p className="text-xs text-slate-400">No runs yet. Click Run to start.</p>
       )}
 

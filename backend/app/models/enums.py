@@ -144,31 +144,43 @@ class FindingType(str, enum.Enum):
 
 
 class FindingStatus(str, enum.Enum):
-    """Lifecycle status of an audit finding (10-state machine).
+    """Canonical lifecycle status of an audit finding (12-state machine).
 
-    Transitions:
-      open → acknowledged | closed_no_action
-      acknowledged → in_progress | deferred | escalated
-      in_progress → evidence_submitted | deferred | escalated
-      evidence_submitted → under_review
-      under_review → resolved | rejected
-      rejected → in_progress
-      deferred → in_progress | escalated
-      escalated → in_progress | resolved
-      resolved (terminal)
-      closed_no_action (terminal)
+    OPEN              → ACKNOWLEDGED | ASSIGNED | ESCALATED | CLOSED
+    ACKNOWLEDGED      → ASSIGNED | IN_PROGRESS | DEFERRED | ESCALATED
+    ASSIGNED          → IN_PROGRESS | DEFERRED | ESCALATED
+    IN_PROGRESS       → RESOLUTION_SUBMITTED | DEFERRED | ESCALATED
+    RESOLUTION_SUBMITTED → UNDER_REVIEW | IN_PROGRESS (retracted)
+    UNDER_REVIEW      → RESOLVED | REJECTED
+    REJECTED          → IN_PROGRESS | ESCALATED
+    RESOLVED          → REOPENED | CLOSED
+    REOPENED          → ASSIGNED | IN_PROGRESS
+    ESCALATED         → IN_PROGRESS | UNDER_REVIEW | RESOLVED
+    DEFERRED          → IN_PROGRESS | ESCALATED
+    CLOSED            (terminal)
+
+    ACKNOWLEDGED: institution has formally acknowledged the finding exists,
+      before a coordinator assigns it. ASSIGNED: explicitly allocated to an
+      individual for remediation. These are distinct — acknowledgement is a
+      governance gate; assignment is a workflow action.
+    DEFERRED: postponed to the next academic cycle (retained from earlier
+      implementation as a valid and regularly used state).
+    CLOSED: finding closed with or without corrective action (replaces the
+      former CLOSED_NO_ACTION). The note field records the reason.
     """
 
-    OPEN = "open"                         # finding raised by AI agent
-    ACKNOWLEDGED = "acknowledged"         # institution acknowledged
-    IN_PROGRESS = "in_progress"           # corrective action underway
-    EVIDENCE_SUBMITTED = "evidence_submitted"  # evidence uploaded for review
-    UNDER_REVIEW = "under_review"         # QA officer reviewing submitted evidence
-    RESOLVED = "resolved"                 # finding closed, satisfactory
-    REJECTED = "rejected"                 # corrective action insufficient, rework needed
-    DEFERRED = "deferred"                 # deferred to next academic cycle
-    ESCALATED = "escalated"              # escalated to dean/head of department
-    CLOSED_NO_ACTION = "closed_no_action"  # closed without corrective action (INFO)
+    OPEN = "open"                               # finding raised by AI agent
+    ACKNOWLEDGED = "acknowledged"               # institution acknowledged finding
+    ASSIGNED = "assigned"                       # allocated to responsible person
+    IN_PROGRESS = "in_progress"                 # corrective action underway
+    RESOLUTION_SUBMITTED = "resolution_submitted"  # evidence/resolution uploaded
+    UNDER_REVIEW = "under_review"               # QA officer reviewing submission
+    RESOLVED = "resolved"                       # finding closed satisfactorily
+    REJECTED = "rejected"                       # submission rejected — rework required
+    REOPENED = "reopened"                       # previously resolved; new evidence needed
+    ESCALATED = "escalated"                     # escalated to dean / HOD
+    DEFERRED = "deferred"                       # deferred to next academic cycle
+    CLOSED = "closed"                           # closed — note records reason
 
 
 class AttendanceRiskLevel(str, enum.Enum):

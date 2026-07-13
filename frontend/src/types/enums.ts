@@ -62,6 +62,18 @@ export type FindingType =
   | "recommendation"
   | "info";
 
+export type FindingStatus =
+  | "open"
+  | "acknowledged"
+  | "in_progress"
+  | "evidence_submitted"
+  | "under_review"
+  | "resolved"
+  | "rejected"
+  | "deferred"
+  | "escalated"
+  | "closed_no_action";
+
 export type UploadState =
   | "pending"
   | "scanning"

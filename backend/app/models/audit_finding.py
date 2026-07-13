@@ -1,17 +1,4 @@
-"""AuditFinding ORM model.
-
-One AuditFinding represents a single issue or observation raised during an
-AuditRun.  Findings are immutable once created — resolutions are tracked via
-the ``is_resolved`` flag rather than deletion, preserving the full audit trail.
-
-Finding types
--------------
-  MISSING_DOCUMENT   — a required category has no uploaded file.
-  MISCLASSIFIED      — a file's category may be wrong (machine suggestion differs).
-  QUALITY_ISSUE      — an uploaded document appears to have quality problems.
-  RECOMMENDATION     — an improvement suggestion (not a compliance failure).
-  INFO               — informational note (e.g. machine-classification suggestion).
-"""
+"""AuditFinding ORM model and FindingStatusHistory audit trail."""
 
 from __future__ import annotations
 
@@ -23,11 +10,12 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import FileCategory, FindingSeverity, FindingType
+from app.models.enums import FileCategory, FindingSeverity, FindingStatus, FindingType
 
 if TYPE_CHECKING:
     from app.models.audit_run import AuditRun
     from app.models.file import File
+    from app.models.user import User
 
 
 class AuditFinding(Base, UUIDPrimaryKeyMixin, TimestampMixin):
@@ -78,7 +66,30 @@ class AuditFinding(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     recommendation: Mapped[str] = mapped_column(Text, nullable=False)
 
     # ------------------------------------------------------------------
-    # Resolution tracking
+    # Lifecycle status (10-state machine)
+    # ------------------------------------------------------------------
+
+    status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default=FindingStatus.OPEN,
+        index=True,
+    )
+
+    # Optional user assigned to action this finding.
+    assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
+    # Due date for corrective action (ISO date stored as String for simplicity).
+    due_date: Mapped[str | None] = mapped_column(String(10), nullable=True)
+
+    # ------------------------------------------------------------------
+    # Legacy resolution tracking (kept for backwards compat)
+    # is_resolved is now derived: status == FindingStatus.RESOLVED
     # ------------------------------------------------------------------
 
     is_resolved: Mapped[bool] = mapped_column(
@@ -95,4 +106,41 @@ class AuditFinding(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     )
     file: Mapped[File | None] = relationship(
         "File", foreign_keys=[file_id], lazy="raise"
+    )
+    assigned_to: Mapped[User | None] = relationship(
+        "User", foreign_keys=[assigned_to_id], lazy="raise"
+    )
+    status_history: Mapped[list[FindingStatusHistory]] = relationship(
+        "FindingStatusHistory",
+        back_populates="finding",
+        lazy="raise",
+        order_by="FindingStatusHistory.created_at",
+    )
+
+
+class FindingStatusHistory(Base, UUIDPrimaryKeyMixin, TimestampMixin):
+    """Immutable audit trail of every status transition on a finding."""
+
+    __tablename__ = "finding_status_history"
+
+    finding_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("audit_findings.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    from_status: Mapped[str | None] = mapped_column(String(30), nullable=True)
+    to_status: Mapped[str] = mapped_column(String(30), nullable=False)
+    changed_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    finding: Mapped[AuditFinding] = relationship(
+        "AuditFinding", back_populates="status_history", lazy="raise"
+    )
+    changed_by: Mapped[User | None] = relationship(
+        "User", foreign_keys=[changed_by_id], lazy="raise"
     )

@@ -47,6 +47,7 @@ from app.routes.workspace import notification_router as notification_unread_rout
 from app.routes.institution_knowledge import router as institution_knowledge_router
 from app.routes.acquisition import router as acquisition_router
 from app.routes.extraction import router as extraction_router
+from app.routes.findings import router as findings_router
 
 
 @asynccontextmanager
@@ -152,6 +153,7 @@ def create_app() -> FastAPI:
     app.include_router(institution_knowledge_router, prefix=prefix)
     app.include_router(acquisition_router, prefix=prefix)
     app.include_router(extraction_router, prefix=prefix)
+    app.include_router(findings_router, prefix=f"{prefix}/findings")
 
     return app
 

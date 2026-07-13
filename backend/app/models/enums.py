@@ -143,6 +143,34 @@ class FindingType(str, enum.Enum):
     INFO = "info"
 
 
+class FindingStatus(str, enum.Enum):
+    """Lifecycle status of an audit finding (10-state machine).
+
+    Transitions:
+      open → acknowledged | closed_no_action
+      acknowledged → in_progress | deferred | escalated
+      in_progress → evidence_submitted | deferred | escalated
+      evidence_submitted → under_review
+      under_review → resolved | rejected
+      rejected → in_progress
+      deferred → in_progress | escalated
+      escalated → in_progress | resolved
+      resolved (terminal)
+      closed_no_action (terminal)
+    """
+
+    OPEN = "open"                         # finding raised by AI agent
+    ACKNOWLEDGED = "acknowledged"         # institution acknowledged
+    IN_PROGRESS = "in_progress"           # corrective action underway
+    EVIDENCE_SUBMITTED = "evidence_submitted"  # evidence uploaded for review
+    UNDER_REVIEW = "under_review"         # QA officer reviewing submitted evidence
+    RESOLVED = "resolved"                 # finding closed, satisfactory
+    REJECTED = "rejected"                 # corrective action insufficient, rework needed
+    DEFERRED = "deferred"                 # deferred to next academic cycle
+    ESCALATED = "escalated"              # escalated to dean/head of department
+    CLOSED_NO_ACTION = "closed_no_action"  # closed without corrective action (INFO)
+
+
 class AttendanceRiskLevel(str, enum.Enum):
     """Risk level for module attendance evidence (Attendance Compliance Agent).
 

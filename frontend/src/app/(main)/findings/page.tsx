@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/common/PlaceholderPage";
+import { FindingsCentre } from "./FindingsCentre";
 
-export const metadata: Metadata = { title: "Findings" };
+export const metadata: Metadata = { title: "Findings — AQAA" };
 
 export default function Page() {
-  return <PlaceholderPage title="Findings" />;
+  return <FindingsCentre />;
 }

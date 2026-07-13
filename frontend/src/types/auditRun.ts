@@ -1,6 +1,6 @@
-import type { AgentType, AuditRunStatus, AuditStatus, FindingSeverity, FindingType, FileCategory } from "./enums";
+import type { AgentType, AuditRunStatus, AuditStatus, FindingSeverity, FindingStatus, FindingType, FileCategory } from "./enums";
 
-export type { AgentType, AuditRunStatus, AuditStatus, FindingSeverity };
+export type { AgentType, AuditRunStatus, AuditStatus, FindingSeverity, FindingStatus };
 
 export const AGENT_TYPE_LABELS: Record<AgentType, string> = {
   module_folder_audit: "Module Folder Audit",
@@ -64,6 +64,32 @@ export interface AuditRunBrief {
   completed_at: string | null;
 }
 
+export const FINDING_STATUS_LABELS: Record<FindingStatus, string> = {
+  open: "Open",
+  acknowledged: "Acknowledged",
+  in_progress: "In Progress",
+  evidence_submitted: "Evidence Submitted",
+  under_review: "Under Review",
+  resolved: "Resolved",
+  rejected: "Rejected",
+  deferred: "Deferred",
+  escalated: "Escalated",
+  closed_no_action: "Closed – No Action",
+};
+
+export const FINDING_STATUS_COLOURS: Record<FindingStatus, string> = {
+  open: "text-slate-700 bg-slate-50 border-slate-300",
+  acknowledged: "text-blue-700 bg-blue-50 border-blue-200",
+  in_progress: "text-indigo-700 bg-indigo-50 border-indigo-200",
+  evidence_submitted: "text-violet-700 bg-violet-50 border-violet-200",
+  under_review: "text-amber-700 bg-amber-50 border-amber-200",
+  resolved: "text-green-700 bg-green-50 border-green-200",
+  rejected: "text-red-700 bg-red-50 border-red-200",
+  deferred: "text-orange-700 bg-orange-50 border-orange-200",
+  escalated: "text-rose-700 bg-rose-100 border-rose-300",
+  closed_no_action: "text-slate-500 bg-slate-50 border-slate-200",
+};
+
 export interface AuditFindingRead {
   id: string;
   audit_run_id: string;
@@ -74,9 +100,13 @@ export interface AuditFindingRead {
   title: string;
   description: string;
   recommendation: string;
+  status: FindingStatus;
+  assigned_to_id: string | null;
+  due_date: string | null;
   is_resolved: boolean;
   resolved_note: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 export interface AuditRunRead extends AuditRunBrief {

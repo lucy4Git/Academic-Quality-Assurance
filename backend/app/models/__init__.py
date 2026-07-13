@@ -13,7 +13,7 @@ from app.models.extraction_run import ExtractionRun
 from app.models.extraction_candidate import ExtractionCandidate
 from app.models.audit_comment import AuditComment
 from app.models.audit_evidence import AuditEvidence
-from app.models.audit_finding import AuditFinding
+from app.models.audit_finding import AuditFinding, FindingStatusHistory
 from app.models.audit_history import AuditHistory
 from app.models.accreditation import Accreditation, AccreditationBody
 from app.models.audit_run import AuditRun
@@ -30,6 +30,7 @@ from app.models.enums import (
     ChecklistItemStatus,
     FileCategory,
     FindingSeverity,
+    FindingStatus,
     FindingType,
     ModuleAuditStatus,
     NotificationType,
@@ -101,6 +102,8 @@ __all__ = [
     "FileCategory",
     "FileVersion",
     "FindingSeverity",
+    "FindingStatus",
+    "FindingStatusHistory",
     "FindingType",
     "Institution",
     "KnowledgeReviewBatch",

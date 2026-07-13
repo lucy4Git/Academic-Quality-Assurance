@@ -10,6 +10,7 @@ from app.models.enums import (
     AuditStatus,
     FileCategory,
     FindingSeverity,
+    FindingStatus,
     FindingType,
 )
 
@@ -31,9 +32,42 @@ class AuditFindingRead(BaseModel):
     title: str
     description: str
     recommendation: str
+    # Lifecycle status
+    status: str = FindingStatus.OPEN
+    assigned_to_id: uuid.UUID | None = None
+    due_date: str | None = None
+    # Legacy
     is_resolved: bool
     resolved_note: str | None
     created_at: datetime
+    updated_at: datetime
+
+
+class FindingStatusHistoryRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    finding_id: uuid.UUID
+    from_status: str | None
+    to_status: str
+    changed_by_id: uuid.UUID | None
+    note: str | None
+    created_at: datetime
+
+
+class FindingTransitionRequest(BaseModel):
+    to_status: str = Field(..., description="Target status from FindingStatus enum")
+    note: str | None = Field(default=None, max_length=2000)
+
+
+class FindingAssignRequest(BaseModel):
+    assignee_id: uuid.UUID
+    due_date: str | None = Field(default=None, description="ISO date YYYY-MM-DD")
+
+
+class FindingPatchRequest(BaseModel):
+    due_date: str | None = None
+    recommendation: str | None = None
 
 
 class FindingResolveRequest(BaseModel):

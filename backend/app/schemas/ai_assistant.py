@@ -71,6 +71,7 @@ class AskResponse(BaseModel):
     sources: list[SourceChunk]
     confidence_score: float
     institution_code: str | None
+    # Legacy field — reflects ONLY embedding placeholder state (not generation mode)
     is_placeholder_mode: bool
     suggested_followups: list[str]
     query_mode: str
@@ -81,6 +82,12 @@ class AskResponse(BaseModel):
     citations: list[Citation] = Field(default_factory=list)
     unsupported_claims: list[str] = Field(default_factory=list)
     grounding_status: str = Field(default="no_source_found")
+    # Honest generation labelling (A7 requirement)
+    retrieval_mode: str = Field(default="semantic")
+    embedding_provider: str = Field(default="fastembed")
+    generation_mode: str = Field(default="deterministic_template")
+    generation_provider: str = Field(default="none")
+    evidence_support_status: str = Field(default="chunks_retrieved")
 
 
 # ---------------------------------------------------------------------------

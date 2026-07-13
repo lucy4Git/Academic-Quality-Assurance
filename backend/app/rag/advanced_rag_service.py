@@ -62,9 +62,17 @@ async def advanced_ask(
 
     _provider = provider if provider is not None else get_provider()
 
+    retrieval_mode = "placeholder" if embedding_service.IS_PLACEHOLDER else "semantic"
+    emb_provider_name = embedding_service.MODEL_NAME if not embedding_service.IS_PLACEHOLDER else "dev-sha256"
+    generation_mode: str
+    generation_provider: str
+    evidence_support: str
+
     if _provider.is_local_dev:
         answer = assemble_answer(question, ranked, institution_code, intent)
-        is_placeholder = embedding_service.IS_PLACEHOLDER
+        generation_mode = "deterministic_template"
+        generation_provider = "none"
+        evidence_support = "chunks_retrieved" if ranked else "no_chunks"
     else:
         ikp_version = ranked[0].get("ikp_version", "v1.x.x") if ranked else "v1.x.x"
         system_prompt = build_grounded_system_prompt(
@@ -80,11 +88,15 @@ async def advanced_ask(
         ]
         try:
             answer = await _provider.complete(messages, temperature=_get_temperature(), max_tokens=_get_max_tokens())
-            is_placeholder = False
+            generation_mode = "llm"
+            generation_provider = _provider.provider_name
+            evidence_support = "grounded" if ranked else "no_chunks"
         except Exception as exc:
             logger.error("advanced_ask: provider '%s' error — falling back: %s", _provider.provider_name, exc)
             answer = assemble_answer(question, ranked, institution_code, intent)
-            is_placeholder = True
+            generation_mode = "deterministic_template"
+            generation_provider = "none"
+            evidence_support = "chunks_retrieved" if ranked else "no_chunks"
 
     verification = verify_citations(answer, citation_index)
 
@@ -111,7 +123,8 @@ async def advanced_ask(
         "sources": sources,
         "confidence_score": round(avg_confidence, 4),
         "institution_code": institution_code.upper(),
-        "is_placeholder_mode": is_placeholder,
+        # is_placeholder_mode reflects ONLY embedding placeholder state, not LLM fallback
+        "is_placeholder_mode": embedding_service.IS_PLACEHOLDER,
         "suggested_followups": generate_suggested_followups(intent, institution_code),
         "query_mode": intent,
         "provider": _provider.provider_name,
@@ -120,4 +133,9 @@ async def advanced_ask(
         "citations": verification["citations"],
         "unsupported_claims": verification["unsupported_claims"],
         "grounding_status": verification["grounding_status"],
+        "retrieval_mode": retrieval_mode,
+        "embedding_provider": emb_provider_name,
+        "generation_mode": generation_mode,
+        "generation_provider": generation_provider,
+        "evidence_support_status": evidence_support,
     }

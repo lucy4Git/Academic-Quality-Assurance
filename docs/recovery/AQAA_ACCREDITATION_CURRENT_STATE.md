@@ -1,7 +1,7 @@
 # AQAA Accreditation Current State
 
 **Document:** AQAA_ACCREDITATION_CURRENT_STATE  
-**Sprint:** Recovery Sprint — Stage B6  
+**Sprint:** Recovery Sprint — Stage B (Updated)  
 **Date:** 2026-07-13  
 **Status:** Backend WORKING; Frontend PLACEHOLDER → being replaced
 

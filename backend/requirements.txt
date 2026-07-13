@@ -40,6 +40,9 @@ alembic>=1.14,<2.0
 # --- Vector store client ---
 qdrant-client>=1.12,<1.14              # Qdrant REST + gRPC client (pin to match server 1.12.x)
 
+# --- Embeddings (real semantic search, ONNX-based, no PyTorch required) ---
+fastembed>=0.3,<1.0                    # lightweight ONNX embedding models (all-MiniLM-L6-v2 default)
+
 # --- Testing (used by backend/app/tests) ---
 pytest>=8.3,<9.0
 pytest-asyncio>=0.24,<1.0

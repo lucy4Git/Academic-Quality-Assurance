@@ -179,7 +179,8 @@ def assemble_answer(
             context_block="\n".join(context_parts),
         )
 
-    return preamble + body + DEV_MODE_NOTICE
+    suffix = DEV_MODE_NOTICE if embedding_service.IS_PLACEHOLDER else ""
+    return preamble + body + suffix
 
 
 # ---------------------------------------------------------------------------

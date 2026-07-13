@@ -1,4 +1,5 @@
 export * from "./enums";
+export * from "./auditRun";
 export * from "./auth";
 export * from "./api";
 export * from "./institution";

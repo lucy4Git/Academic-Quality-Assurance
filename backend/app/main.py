@@ -118,7 +118,7 @@ def create_app() -> FastAPI:
     app.include_router(auth_router, prefix=prefix)
     app.include_router(audit_evidence_router, prefix=prefix)
     app.include_router(dashboard_router, prefix=prefix)
-    app.include_router(module_audits_router, prefix=prefix)
+    app.include_router(module_audits_router, prefix=f"{prefix}/module-folder")
     app.include_router(institutions_router, prefix=prefix)
     app.include_router(faculties_router, prefix=prefix)
     app.include_router(departments_router, prefix=prefix)

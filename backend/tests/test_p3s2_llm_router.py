@@ -179,8 +179,9 @@ class TestLlmRoutePromptWithLLM:
             result = await llm_route_prompt("Check programme accreditation status.")
 
         assert result["used_llm"] is False
-        # Should use keyword fallback — prompt mentions accreditation
-        assert result["intent"] == "accreditation"
+        # Should use keyword fallback — prompt mentions programme accreditation
+        # Phase C: more specific regulatory intent takes precedence over generic accreditation
+        assert result["intent"] == "check_programme_accreditation"
 
     @pytest.mark.asyncio
     async def test_ollama_fallback_returns_valid_result(self):

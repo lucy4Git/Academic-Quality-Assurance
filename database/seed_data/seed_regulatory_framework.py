@@ -84,6 +84,48 @@ AUTHORITIES = [
         "is_active": True,
         "status": "active",
     },
+    {
+        "code": "HPCSA-ZA",
+        "name": "[TEST FIXTURE] Health Professions Council of South Africa",
+        "short_name": "HPCSA",
+        "authority_type": "professional_council",
+        "jurisdiction": "National",
+        "country": "ZA",
+        "description": "[TEST FIXTURE] Regulatory body for health professions education and practice.",
+        "official_website": "https://www.hpcsa.co.za",
+        "is_external": True,
+        "is_internal": False,
+        "is_active": True,
+        "status": "active",
+    },
+    {
+        "code": "SACE-ZA",
+        "name": "[TEST FIXTURE] South African Council for Educators",
+        "short_name": "SACE",
+        "authority_type": "professional_council",
+        "jurisdiction": "National",
+        "country": "ZA",
+        "description": "[TEST FIXTURE] Professional council for teacher education and registration.",
+        "official_website": "https://www.sace.org.za",
+        "is_external": True,
+        "is_internal": False,
+        "is_active": True,
+        "status": "active",
+    },
+    {
+        "code": "QCTO-ZA",
+        "name": "[TEST FIXTURE] Quality Council for Trades and Occupations",
+        "short_name": "QCTO",
+        "authority_type": "quality_council",
+        "jurisdiction": "National",
+        "country": "ZA",
+        "description": "[TEST FIXTURE] Quality council for occupational qualifications on the NQF.",
+        "official_website": "https://www.qcto.org.za",
+        "is_external": True,
+        "is_internal": False,
+        "is_active": True,
+        "status": "active",
+    },
 ]
 
 FRAMEWORKS = [
@@ -162,6 +204,147 @@ FRAMEWORKS = [
                                     {
                                         "code": "CHE-IQA-S2-C1-R1",
                                         "title": "[TEST FIXTURE] Assessment Plan",
+                                        "evidence_type": "document",
+                                        "minimum_count": 1,
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+        ],
+    },
+    {
+        "authority_code": "HPCSA-ZA",
+        "code": "HPCSA-MED-2023",
+        "name": "[TEST FIXTURE] Health Professions Accreditation Standards 2023",
+        "description": (
+            "[TEST FIXTURE] Representative stub of HPCSA accreditation requirements. "
+            "NOT authoritative regulatory text."
+        ),
+        "framework_type": "accreditation",
+        "scope": "programme",
+        "jurisdiction": "ZA",
+        "is_mandatory": True,
+        "is_public": True,
+        "versions": [
+            {
+                "version_number": "2023.1",
+                "version_label": "[TEST FIXTURE] 2023 Edition",
+                "status": "active",
+                "standards": [
+                    {
+                        "code": "HPCSA-S1",
+                        "title": "[TEST FIXTURE] Clinical Training Standards",
+                        "description": "Clinical training requirements for health profession programmes.",
+                        "sequence": 1,
+                        "is_mandatory": True,
+                        "criteria": [
+                            {
+                                "code": "HPCSA-S1-C1",
+                                "title": "[TEST FIXTURE] Clinical Placement Documentation",
+                                "description": "Evidence of approved clinical placement facilities.",
+                                "is_mandatory": True,
+                                "evaluation_method": "document_presence",
+                                "requirements": [
+                                    {
+                                        "code": "HPCSA-S1-C1-R1",
+                                        "title": "[TEST FIXTURE] Clinical Placement Agreement",
+                                        "evidence_type": "document",
+                                        "minimum_count": 1,
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+        ],
+    },
+    {
+        "authority_code": "SACE-ZA",
+        "code": "SACE-PGCE-2022",
+        "name": "[TEST FIXTURE] Professional Teacher Education Standards 2022",
+        "description": (
+            "[TEST FIXTURE] Representative stub of SACE teacher education requirements. "
+            "NOT authoritative regulatory text."
+        ),
+        "framework_type": "accreditation",
+        "scope": "programme",
+        "jurisdiction": "ZA",
+        "is_mandatory": True,
+        "is_public": True,
+        "versions": [
+            {
+                "version_number": "2022.1",
+                "version_label": "[TEST FIXTURE] 2022 Edition",
+                "status": "active",
+                "standards": [
+                    {
+                        "code": "SACE-S1",
+                        "title": "[TEST FIXTURE] Professional Practice Standards",
+                        "description": "Professional practice requirements for teacher education.",
+                        "sequence": 1,
+                        "is_mandatory": True,
+                        "criteria": [
+                            {
+                                "code": "SACE-S1-C1",
+                                "title": "[TEST FIXTURE] Teaching Practice Log",
+                                "description": "Evidence of supervised teaching practice hours.",
+                                "is_mandatory": True,
+                                "evaluation_method": "document_presence",
+                                "requirements": [
+                                    {
+                                        "code": "SACE-S1-C1-R1",
+                                        "title": "[TEST FIXTURE] Teaching Practice Journal",
+                                        "evidence_type": "document",
+                                        "minimum_count": 1,
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+        ],
+    },
+    {
+        "authority_code": "QCTO-ZA",
+        "code": "QCTO-OQF-2021",
+        "name": "[TEST FIXTURE] Occupational Qualifications Framework Standards 2021",
+        "description": (
+            "[TEST FIXTURE] Representative stub of QCTO occupational qualification requirements. "
+            "NOT authoritative regulatory text."
+        ),
+        "framework_type": "programme_qualification",
+        "scope": "programme",
+        "jurisdiction": "ZA",
+        "is_mandatory": True,
+        "is_public": True,
+        "versions": [
+            {
+                "version_number": "2021.1",
+                "version_label": "[TEST FIXTURE] 2021 Edition",
+                "status": "active",
+                "standards": [
+                    {
+                        "code": "QCTO-S1",
+                        "title": "[TEST FIXTURE] Occupational Competency Standards",
+                        "description": "Competency standards for occupational qualifications.",
+                        "sequence": 1,
+                        "is_mandatory": True,
+                        "criteria": [
+                            {
+                                "code": "QCTO-S1-C1",
+                                "title": "[TEST FIXTURE] Unit Standard Mapping",
+                                "description": "Programme mapped to registered QCTO unit standards.",
+                                "is_mandatory": True,
+                                "evaluation_method": "document_presence",
+                                "requirements": [
+                                    {
+                                        "code": "QCTO-S1-C1-R1",
+                                        "title": "[TEST FIXTURE] Unit Standard Map",
                                         "evidence_type": "document",
                                         "minimum_count": 1,
                                     }

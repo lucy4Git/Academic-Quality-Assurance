@@ -6,7 +6,7 @@ import uuid
 from datetime import date, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
 # ---------------------------------------------------------------------------
@@ -53,6 +53,11 @@ class RegulatoryAuthorityRead(RegulatoryAuthorityBase):
     created_at: datetime
     updated_at: datetime
 
+    @computed_field  # type: ignore[misc]
+    @property
+    def is_test_fixture(self) -> bool:
+        return "[TEST FIXTURE]" in (self.name or "")
+
 
 # ---------------------------------------------------------------------------
 # Quality Framework
@@ -83,6 +88,11 @@ class QualityFrameworkRead(QualityFrameworkBase):
     is_active: bool
     created_at: datetime
     updated_at: datetime
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def is_test_fixture(self) -> bool:
+        return "[TEST FIXTURE]" in (self.name or "")
 
 
 class QualityFrameworkWithVersions(QualityFrameworkRead):

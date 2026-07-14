@@ -21,6 +21,7 @@ export interface RegulatoryAuthority {
   is_external: boolean;
   is_internal: boolean;
   is_active: boolean;
+  is_test_fixture: boolean;
   status: string;
   institution_id: string | null;
   created_at: string;
@@ -48,6 +49,7 @@ export interface QualityFramework {
   is_mandatory: boolean;
   is_public: boolean;
   is_active: boolean;
+  is_test_fixture: boolean;
   authority_id: string;
   institution_id: string | null;
   versions: FrameworkVersionBrief[];

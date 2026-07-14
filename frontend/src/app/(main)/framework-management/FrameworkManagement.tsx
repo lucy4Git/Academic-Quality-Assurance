@@ -84,6 +84,11 @@ function AuthorityCard({ authority }: { authority: RegulatoryAuthority }) {
             <span className="text-xs text-slate-500 px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded">
               {AUTHORITY_TYPE_LABELS[authority.authority_type] ?? authority.authority_type}
             </span>
+            {authority.is_test_fixture && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded font-medium">
+                TEST FIXTURE
+              </span>
+            )}
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 truncate">{authority.name}</p>
           {authority.jurisdiction && (
@@ -142,6 +147,11 @@ function FrameworkCard({
             {framework.is_mandatory && (
               <span className="text-xs px-1.5 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded">
                 Mandatory
+              </span>
+            )}
+            {framework.is_test_fixture && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded font-medium">
+                TEST FIXTURE
               </span>
             )}
           </div>

@@ -72,6 +72,28 @@ export interface StreamErrorEvent {
   message: string;
 }
 
+export interface RegulatoryCitationItem {
+  framework_code: string;
+  framework_name: string;
+  version_number: string;
+  standard_code: string | null;
+  criterion_code: string | null;
+  source_url: string | null;
+  is_test_fixture: boolean;
+}
+
+/** Regulatory orchestration metadata — emitted for regulatory-mode queries. */
+export interface StreamRegulatoryEvent {
+  type: "regulatory";
+  citations: RegulatoryCitationItem[];
+  effective_frameworks: string[];
+  requires_human_review: boolean;
+  generation_mode: "LLM" | "DETERMINISTIC_TEMPLATE" | "HYBRID" | "MANUAL_REVIEW_REQUIRED";
+  caveat: string | null;
+  suggested_next_actions: string[];
+  follow_up_questions: string[];
+}
+
 export type StreamEvent =
   | StreamStartEvent
   | StreamChunkEvent
@@ -79,7 +101,8 @@ export type StreamEvent =
   | StreamSourcesEvent
   | StreamMetadataEvent
   | StreamDoneEvent
-  | StreamErrorEvent;
+  | StreamErrorEvent
+  | StreamRegulatoryEvent;
 
 export interface StreamSource {
   entity_type?: string;

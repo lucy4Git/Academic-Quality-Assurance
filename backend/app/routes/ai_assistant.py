@@ -241,15 +241,19 @@ async def _stream_ask(
     institution_code: str,
     context_limit: int,
     mode: str,
+    db: AsyncSession | None = None,
+    current_user: User | None = None,
 ) -> Any:
     """Async generator that yields SSE lines for one ask-stream request.
 
     Stream shape:
-        start   — routing decision (intent, agents, confidence, routing_reason)
-        chunk   — incremental answer text (simulated from full LLM response)
-        sources — Qdrant sources and follow-up data
-        done    — provider/model metadata
-        error   — emitted instead of chunk/sources/done on failure
+        start      — routing decision (intent, agents, confidence, routing_reason)
+        token      — incremental answer text
+        regulatory — regulatory-specific data (citations, frameworks, caveat) [regulatory mode only]
+        sources    — Qdrant sources and follow-up data [non-regulatory mode only]
+        metadata   — Advanced RAG citation data [non-regulatory mode only]
+        done       — provider/model metadata
+        error      — emitted instead of other events on failure
     """
     # 1. LLM-assisted routing (with keyword fallback built-in)
     try:
@@ -281,7 +285,53 @@ async def _stream_ask(
     if effective_mode not in AGENT_MODES:
         effective_mode = "qa_assistant"
 
-    # 3. Get full LLM response via Advanced RAG pipeline
+    # 3a. Regulatory branch — invoke orchestration service
+    if effective_mode == "regulatory" and db is not None and current_user is not None:
+        try:
+            from app.services.regulatory_orchestration_service import orchestrate_regulatory_query
+            regulatory_resp = await orchestrate_regulatory_query(
+                db,
+                current_user,
+                prompt=question,
+                primary_intent=router.get("intent", "identify_applicable_frameworks"),
+                routing_confidence=float(router.get("confidence", 0.7)),
+            )
+        except Exception as exc:
+            import logging
+            logging.getLogger(__name__).error("ask-stream: regulatory orchestration failed: %s", exc)
+            yield _sse("error", {"message": "The regulatory AI service could not complete the request. Please try again."})
+            return
+
+        answer: str = regulatory_resp.answer
+        words = answer.split(" ")
+        CHUNK_WORDS = 6
+        for i in range(0, len(words), CHUNK_WORDS):
+            chunk_words = words[i : i + CHUNK_WORDS]
+            content = " ".join(chunk_words)
+            if i > 0:
+                content = " " + content
+            yield _sse("token", {"content": content})
+            await asyncio.sleep(0.02)
+
+        yield _sse("regulatory", {
+            "citations": [c.to_dict() for c in regulatory_resp.citations],
+            "effective_frameworks": regulatory_resp.effective_frameworks,
+            "requires_human_review": regulatory_resp.requires_human_review,
+            "generation_mode": regulatory_resp.generation_mode.value,
+            "caveat": regulatory_resp.caveat,
+            "suggested_next_actions": regulatory_resp.suggested_next_actions,
+            "follow_up_questions": regulatory_resp.follow_up_questions,
+        })
+
+        yield _sse("done", {
+            "provider": "regulatory_orchestration",
+            "model": "deterministic+hybrid",
+            "query_mode": effective_mode,
+            "is_placeholder_mode": False,
+        })
+        return
+
+    # 3b. Standard branch — Advanced RAG pipeline
     try:
         manager = get_provider_manager()
         provider = await manager.get_healthy_provider()
@@ -300,7 +350,7 @@ async def _stream_ask(
         return
 
     # 4. Simulate streaming: split answer into word-level token events
-    answer: str = result.get("answer", "")
+    answer = result.get("answer", "")
     words = answer.split(" ")
     CHUNK_WORDS = 6
     for i in range(0, len(words), CHUNK_WORDS):
@@ -363,7 +413,7 @@ async def ask_assistant_stream(
     effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
 
     return StreamingResponse(
-        _stream_ask(body.question, institution_code, body.context_limit, effective_mode),
+        _stream_ask(body.question, institution_code, body.context_limit, effective_mode, db=db, current_user=current_user),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",

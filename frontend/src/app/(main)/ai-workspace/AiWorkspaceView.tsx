@@ -12,7 +12,7 @@ import {
   useAsk, useSuggestedPrompts, useCreateSession, useChatSessions, useDeleteSession,
 } from "@/hooks/useAiAssistant";
 import { useMultiAgent, type MultiAgentResponse } from "@/hooks/useWorkspace";
-import { askStream, type StreamSource, type Citation } from "@/lib/api/ai-assistant";
+import { askStream, type StreamSource, type Citation, type RegulatoryCitationItem } from "@/lib/api/ai-assistant";
 import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
 import { ContextPanel } from "@/components/ai/ContextPanel";
 import {
@@ -62,6 +62,14 @@ const EMPTY_PROMPTS = [
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
+interface RegulatoryData {
+  citations: RegulatoryCitationItem[];
+  effective_frameworks: string[];
+  requires_human_review: boolean;
+  generation_mode: "LLM" | "DETERMINISTIC_TEMPLATE" | "HYBRID" | "MANUAL_REVIEW_REQUIRED";
+  caveat: string | null;
+}
+
 interface WorkspaceMessage {
   id: string;
   role: "user" | "assistant";
@@ -78,6 +86,7 @@ interface WorkspaceMessage {
   timestamp: Date;
   citations?: Citation[];
   unsupportedClaims?: string[];
+  regulatoryData?: RegulatoryData;
   groundingStatus?: "grounded" | "partially_grounded" | "no_source_found";
   groundingScore?: number;
   isError?: boolean;
@@ -289,6 +298,73 @@ const MessageBubble = memo(function MessageBubble({
             isStreaming={msg.isStreaming}
           />
         </div>
+
+        {/* Regulatory panel */}
+        {msg.regulatoryData && !msg.isStreaming && (
+          <div className="mt-3 space-y-2">
+            {/* Human review banner */}
+            {msg.regulatoryData.requires_human_review && (
+              <div className="flex items-start gap-2.5 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-3.5 py-2.5">
+                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
+                  Manual Review Required — conflicting regulatory requirements detected. Consult your QA Officer before acting on this response.
+                </p>
+              </div>
+            )}
+            {/* Caveat */}
+            {msg.regulatoryData.caveat && (
+              <div className="flex items-start gap-2.5 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 px-3.5 py-2.5">
+                <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed whitespace-pre-wrap">{msg.regulatoryData.caveat}</p>
+              </div>
+            )}
+            {/* Effective frameworks */}
+            {msg.regulatoryData.effective_frameworks.length > 0 && (
+              <div className="rounded-lg border border-border bg-muted/40 px-3.5 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Applicable Frameworks</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {msg.regulatoryData.effective_frameworks.map((fw) => (
+                    <span key={fw} className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+                      <Shield className="h-2.5 w-2.5 text-blue-500" />
+                      {fw}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Regulatory citations */}
+            {msg.regulatoryData.citations.length > 0 && (
+              <div className="rounded-lg border border-border bg-muted/40 px-3.5 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Regulatory Citations</p>
+                <div className="space-y-1.5">
+                  {msg.regulatoryData.citations.map((c, i) => (
+                    <div key={i} className="flex items-start gap-2 text-[12px]">
+                      <Hash className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <span className="font-medium text-foreground">{c.framework_code}</span>
+                        <span className="text-muted-foreground"> v{c.version_number}</span>
+                        {c.standard_code && <span className="text-muted-foreground"> · {c.standard_code}</span>}
+                        <span className="text-muted-foreground truncate block text-[11px]">{c.framework_name}</span>
+                        {c.is_test_fixture && (
+                          <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded font-medium dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
+                            TEST FIXTURE
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Generation mode badge */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-muted-foreground">Generated via</span>
+              <span className="text-[10px] font-medium text-foreground bg-muted px-2 py-0.5 rounded-full">
+                {msg.regulatoryData.generation_mode.replace(/_/g, " ")}
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Action toolbar */}
         {!msg.isStreaming && msg.content && (
@@ -934,6 +1010,21 @@ export function AiWorkspaceView() {
               citations: event.citations,
               unsupportedClaims: event.unsupported_claims,
               groundingStatus: event.grounding_status,
+            } : m,
+          ));
+        } else if (event.type === "regulatory") {
+          setMessages((prev) => prev.map((m) =>
+            m.id === streamMsgId ? {
+              ...m,
+              regulatoryData: {
+                citations: event.citations,
+                effective_frameworks: event.effective_frameworks,
+                requires_human_review: event.requires_human_review,
+                generation_mode: event.generation_mode,
+                caveat: event.caveat,
+              },
+              nextActions: event.suggested_next_actions,
+              followUps: event.follow_up_questions,
             } : m,
           ));
         } else if (event.type === "done") {

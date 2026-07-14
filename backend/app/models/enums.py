@@ -356,3 +356,167 @@ class UploadState(str, enum.Enum):
     READY = "ready"
     QUARANTINED = "quarantined"
     FAILED = "failed"
+
+
+# ---------------------------------------------------------------------------
+# Phase C — Regulatory and Quality Framework Engine
+# ---------------------------------------------------------------------------
+
+
+class AuthorityType(str, enum.Enum):
+    """Type of regulatory or quality authority."""
+
+    NATIONAL_REGULATOR = "national_regulator"
+    QUALIFICATION_AUTHORITY = "qualification_authority"
+    QUALITY_COUNCIL = "quality_council"
+    PROFESSIONAL_COUNCIL = "professional_council"
+    ACCREDITATION_BODY = "accreditation_body"
+    GOVERNMENT_DEPARTMENT = "government_department"
+    SETA = "seta"
+    INSTITUTION = "institution"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    INTERNATIONAL_BODY = "international_body"
+    CUSTOM = "custom"
+
+
+class AuthorityStatus(str, enum.Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUPERSEDED = "superseded"
+
+
+class FrameworkType(str, enum.Enum):
+    """Type of quality or accreditation framework."""
+
+    INSTITUTIONAL_AUDIT = "institutional_audit"
+    PROGRAMME_ACCREDITATION = "programme_accreditation"
+    QUALIFICATION_REGISTRATION = "qualification_registration"
+    PROFESSIONAL_ACCREDITATION = "professional_accreditation"
+    OCCUPATIONAL_QUALIFICATION = "occupational_qualification"
+    ASSESSMENT_POLICY = "assessment_policy"
+    MODERATION_POLICY = "moderation_policy"
+    TEACHING_AND_LEARNING = "teaching_and_learning"
+    WORK_INTEGRATED_LEARNING = "work_integrated_learning"
+    CLINICAL_TRAINING = "clinical_training"
+    ENGINEERING_EDUCATION = "engineering_education"
+    TEACHER_EDUCATION = "teacher_education"
+    CUSTOM = "custom"
+
+
+class FrameworkScope(str, enum.Enum):
+    NATIONAL = "national"
+    INTERNATIONAL = "international"
+    INSTITUTIONAL = "institutional"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    PROGRAMME = "programme"
+    MODULE = "module"
+
+
+class VersionStatus(str, enum.Enum):
+    """Lifecycle status of a framework version."""
+
+    DRAFT = "draft"
+    UNDER_REVIEW = "under_review"
+    APPROVED = "approved"
+    ACTIVE = "active"
+    SUPERSEDED = "superseded"
+    RETIRED = "retired"
+    ARCHIVED = "archived"
+
+
+class EvaluationMethod(str, enum.Enum):
+    """How a criterion is evaluated."""
+
+    DOCUMENT_PRESENCE = "document_presence"
+    METADATA_VALIDATION = "metadata_validation"
+    RULE_BASED = "rule_based"
+    SEMANTIC_ANALYSIS = "semantic_analysis"
+    NUMERIC_THRESHOLD = "numeric_threshold"
+    MANUAL_REVIEW = "manual_review"
+    HYBRID = "hybrid"
+    CUSTOM = "custom"
+
+
+class EvidenceType(str, enum.Enum):
+    """Type of evidence required for a criterion."""
+
+    DOCUMENT = "document"
+    NUMERIC = "numeric"
+    NARRATIVE = "narrative"
+    STRUCTURED_DATA = "structured_data"
+    SIGNED_DOCUMENT = "signed_document"
+    DATED_DOCUMENT = "dated_document"
+    PERIODIC = "periodic"
+    SAMPLE = "sample"
+    HUMAN_VERIFIED = "human_verified"
+    CUSTOM = "custom"
+
+
+class ApplicabilityTargetType(str, enum.Enum):
+    """The type of academic entity an applicability rule targets."""
+
+    INSTITUTION = "institution"
+    CAMPUS = "campus"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    QUALIFICATION = "qualification"
+    PROGRAMME = "programme"
+    MODULE = "module"
+    ASSESSMENT = "assessment"
+    ANY = "any"
+
+
+class MappingSource(str, enum.Enum):
+    """How an evidence mapping was created."""
+
+    MANUAL = "manual"
+    RULE_BASED = "rule_based"
+    SEMANTIC_RETRIEVAL = "semantic_retrieval"
+    AI_ASSISTED = "ai_assisted"
+    IMPORTED = "imported"
+    SYSTEM_INFERRED = "system_inferred"
+
+
+class MappingValidationStatus(str, enum.Enum):
+    PROPOSED = "proposed"
+    MATCHED = "matched"
+    VERIFIED = "verified"
+    REJECTED = "rejected"
+    EXPIRED = "expired"
+    SUPERSEDED = "superseded"
+
+
+class FrameworkAssessmentStatus(str, enum.Enum):
+    """Lifecycle status of a framework assessment run."""
+
+    QUEUED = "queued"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    PARTIALLY_COMPLETED = "partially_completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    REQUIRES_REVIEW = "requires_review"
+
+
+class CrossFrameworkRelation(str, enum.Enum):
+    """Semantic relationship between two criteria / standards across frameworks."""
+
+    EQUIVALENT = "equivalent"
+    PARTIALLY_EQUIVALENT = "partially_equivalent"
+    SUPPORTS = "supports"
+    OVERLAPS = "overlaps"
+    CONFLICTS_WITH = "conflicts_with"
+    SUPERSEDES = "supersedes"
+    REFERENCES = "references"
+    NO_RELATION = "no_relation"
+
+
+class RegulatoryRisk(str, enum.Enum):
+    """Risk level of a regulatory finding."""
+
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"

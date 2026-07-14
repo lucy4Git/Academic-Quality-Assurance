@@ -58,6 +58,17 @@ from app.models.policy import Policy, PolicyVersion
 from app.models.programme import Programme
 from app.models.school import School
 from app.models.user import User
+# Phase C — Regulatory Engine
+from app.models.regulatory_authority import RegulatoryAuthority
+from app.models.quality_framework import QualityFramework
+from app.models.framework_version import FrameworkVersion
+from app.models.framework_standard import FrameworkStandard
+from app.models.framework_criterion import FrameworkCriterion
+from app.models.evidence_requirement import EvidenceRequirement
+from app.models.applicability_rule import ApplicabilityRule
+from app.models.evidence_mapping import EvidenceMapping
+from app.models.framework_assessment import FrameworkAssessmentRun, CriterionAssessmentResult
+from app.models.cross_framework_mapping import CrossFrameworkMapping
 
 __all__ = [
     "ADIPDocument",
@@ -122,4 +133,16 @@ __all__ = [
     "User",
     "UserRole",
     "WorkflowStatus",
+    # Phase C
+    "RegulatoryAuthority",
+    "QualityFramework",
+    "FrameworkVersion",
+    "FrameworkStandard",
+    "FrameworkCriterion",
+    "EvidenceRequirement",
+    "ApplicabilityRule",
+    "EvidenceMapping",
+    "FrameworkAssessmentRun",
+    "CriterionAssessmentResult",
+    "CrossFrameworkMapping",
 ]

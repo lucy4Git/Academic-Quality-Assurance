@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import FileCategory, FindingSeverity, FindingStatus, FindingType
+from app.models.enums import FileCategory, FindingSeverity, FindingStatus, FindingType, RegulatoryRisk
 
 if TYPE_CHECKING:
     from app.models.audit_run import AuditRun
@@ -96,6 +96,40 @@ class AuditFinding(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         Boolean, nullable=False, default=False, index=True
     )
     resolved_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    # ------------------------------------------------------------------
+    # Phase C — Regulatory citations (all nullable; not set by legacy agents)
+    # ------------------------------------------------------------------
+
+    regulatory_authority_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("regulatory_authorities.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    framework_version_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("framework_versions.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    standard_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("framework_standards.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    criterion_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("framework_criteria.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    evidence_requirement_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("evidence_requirements.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    citation_reference: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    regulatory_risk: Mapped[RegulatoryRisk | None] = mapped_column(String(20), nullable=True)
 
     # ------------------------------------------------------------------
     # Relationships

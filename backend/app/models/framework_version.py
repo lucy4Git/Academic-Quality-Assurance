@@ -11,7 +11,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import VersionStatus
+from app.models.enums import SourceStatus, VersionStatus
 
 if TYPE_CHECKING:
     from app.models.applicability_rule import ApplicabilityRule
@@ -61,6 +61,9 @@ class FrameworkVersion(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=True,
     )
     source_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_status: Mapped[SourceStatus] = mapped_column(
+        String(40), default=SourceStatus.TEST_FIXTURE, nullable=False
+    )
     change_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Approval

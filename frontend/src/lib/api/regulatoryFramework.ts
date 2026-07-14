@@ -23,6 +23,7 @@ export interface RegulatoryAuthority {
   is_active: boolean;
   is_test_fixture: boolean;
   status: string;
+  source_status: string;
   institution_id: string | null;
   created_at: string;
   updated_at: string;
@@ -34,6 +35,7 @@ export interface FrameworkVersionBrief {
   version_number: string;
   version_label: string | null;
   status: string;
+  source_status: string;
   effective_from: string | null;
   effective_to: string | null;
 }
@@ -50,6 +52,7 @@ export interface QualityFramework {
   is_public: boolean;
   is_active: boolean;
   is_test_fixture: boolean;
+  source_status: string;
   authority_id: string;
   institution_id: string | null;
   versions: FrameworkVersionBrief[];

@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import AuthorityStatus, AuthorityType
+from app.models.enums import AuthorityStatus, AuthorityType, SourceStatus
 
 if TYPE_CHECKING:
     from app.models.quality_framework import QualityFramework
@@ -48,6 +48,9 @@ class RegulatoryAuthority(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     status: Mapped[AuthorityStatus] = mapped_column(
         String(20), default=AuthorityStatus.ACTIVE, nullable=False
+    )
+    source_status: Mapped[SourceStatus] = mapped_column(
+        String(40), default=SourceStatus.TEST_FIXTURE, nullable=False
     )
 
     # Audit trail — who created/last-updated

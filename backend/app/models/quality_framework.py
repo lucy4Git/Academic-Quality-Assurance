@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import FrameworkScope, FrameworkType
+from app.models.enums import FrameworkScope, FrameworkType, SourceStatus
 
 if TYPE_CHECKING:
     from app.models.framework_version import FrameworkVersion
@@ -50,6 +50,9 @@ class QualityFramework(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     is_mandatory: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_public: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    source_status: Mapped[SourceStatus] = mapped_column(
+        String(40), default=SourceStatus.TEST_FIXTURE, nullable=False
+    )
 
     created_by_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),

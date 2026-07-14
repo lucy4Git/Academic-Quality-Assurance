@@ -89,6 +89,11 @@ function AuthorityCard({ authority }: { authority: RegulatoryAuthority }) {
                 TEST FIXTURE
               </span>
             )}
+            {authority.source_status && authority.source_status !== "TEST_FIXTURE" && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-medium">
+                {authority.source_status.replace(/_/g, " ")}
+              </span>
+            )}
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 truncate">{authority.name}</p>
           {authority.jurisdiction && (
@@ -152,6 +157,11 @@ function FrameworkCard({
             {framework.is_test_fixture && (
               <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded font-medium">
                 TEST FIXTURE
+              </span>
+            )}
+            {framework.source_status && framework.source_status !== "TEST_FIXTURE" && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-medium">
+                {framework.source_status.replace(/_/g, " ")}
               </span>
             )}
           </div>

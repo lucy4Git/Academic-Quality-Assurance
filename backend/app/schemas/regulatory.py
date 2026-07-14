@@ -50,6 +50,7 @@ class RegulatoryAuthorityRead(RegulatoryAuthorityBase):
     institution_id: uuid.UUID | None
     is_active: bool
     status: str
+    source_status: str
     created_at: datetime
     updated_at: datetime
 
@@ -86,6 +87,7 @@ class QualityFrameworkRead(QualityFrameworkBase):
     authority_id: uuid.UUID
     institution_id: uuid.UUID | None
     is_active: bool
+    source_status: str
     created_at: datetime
     updated_at: datetime
 
@@ -134,6 +136,7 @@ class FrameworkVersionRead(FrameworkVersionBase):
     id: uuid.UUID
     framework_id: uuid.UUID
     status: str
+    source_status: str
     approved_by_id: uuid.UUID | None
     supersedes_version_id: uuid.UUID | None
     created_at: datetime

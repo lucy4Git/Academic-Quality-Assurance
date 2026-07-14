@@ -434,11 +434,11 @@ async def seed():
                 INSERT INTO regulatory_authorities
                     (id, code, name, short_name, authority_type, jurisdiction, country,
                      description, official_website, is_external, is_internal, is_active,
-                     status, created_by_id, updated_by_id, created_at, updated_at)
+                     status, source_status, created_by_id, updated_by_id, created_at, updated_at)
                 VALUES
                     (gen_random_uuid(), $1, $2, $3, $4, $5, $6,
                      $7, $8, $9, $10, $11,
-                     $12, $13, $13, now(), now())
+                     $12, 'TEST_FIXTURE', $13, $13, now(), now())
                 """,
                 auth_data["code"], auth_data["name"], auth_data["short_name"],
                 auth_data["authority_type"], auth_data["jurisdiction"], auth_data["country"],
@@ -470,11 +470,11 @@ async def seed():
                 INSERT INTO quality_frameworks
                     (id, authority_id, institution_id, code, name, description,
                      framework_type, scope, jurisdiction, is_mandatory, is_public,
-                     is_active, created_by_id, updated_by_id, created_at, updated_at)
+                     is_active, source_status, created_by_id, updated_by_id, created_at, updated_at)
                 VALUES
                     (gen_random_uuid(), $1, NULL, $2, $3, $4,
                      $5, $6, $7, $8, $9,
-                     TRUE, $10, $10, now(), now())
+                     TRUE, 'TEST_FIXTURE', $10, $10, now(), now())
                 RETURNING id
                 """,
                 authority_id, fw_data["code"], fw_data["name"], fw_data["description"],
@@ -488,10 +488,10 @@ async def seed():
                     """
                     INSERT INTO framework_versions
                         (id, framework_id, version_number, version_label, status,
-                         created_by_id, updated_by_id, created_at, updated_at)
+                         source_status, created_by_id, updated_by_id, created_at, updated_at)
                     VALUES
                         (gen_random_uuid(), $1, $2, $3, $4,
-                         $5, $5, now(), now())
+                         'TEST_FIXTURE', $5, $5, now(), now())
                     RETURNING id
                     """,
                     fw_id, ver_data["version_number"], ver_data["version_label"],

@@ -454,6 +454,22 @@ class EvidenceType(str, enum.Enum):
     CUSTOM = "custom"
 
 
+class SourceStatus(str, enum.Enum):
+    """Provenance status of a regulatory authority, framework, or version record.
+
+    Stored as a plain string column (not a native PG enum) so new values can
+    be added without a migration ALTER TYPE statement.
+    """
+
+    OFFICIAL_VERIFIED = "OFFICIAL_VERIFIED"
+    OFFICIAL_UNVERIFIED = "OFFICIAL_UNVERIFIED"
+    INSTITUTIONAL_APPROVED = "INSTITUTIONAL_APPROVED"
+    TEST_FIXTURE = "TEST_FIXTURE"
+    DRAFT_IMPORT = "DRAFT_IMPORT"
+    SUPERSEDED = "SUPERSEDED"
+    ARCHIVED = "ARCHIVED"
+
+
 class ApplicabilityTargetType(str, enum.Enum):
     """The type of academic entity an applicability rule targets."""
 

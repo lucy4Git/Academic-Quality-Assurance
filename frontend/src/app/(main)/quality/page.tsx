@@ -104,6 +104,24 @@ const CARDS: WorkspaceCard[] = [
     badge: "Policy",
     roles: QA_AND_ABOVE,
   },
+  {
+    label: "Framework Management",
+    description: "Regulatory authorities, quality frameworks, versions, standards and criteria",
+    href: "/framework-management",
+    icon: Shield,
+    iconColor: "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50",
+    badge: "Regulatory",
+    roles: QA_AND_ABOVE,
+  },
+  {
+    label: "Regulatory Readiness",
+    description: "Framework assessment results, compliance scores and mandatory failure tracking",
+    href: "/regulatory-readiness",
+    icon: ShieldCheck,
+    iconColor: "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50",
+    badge: "Readiness",
+    roles: COORDINATOR_AND_ABOVE,
+  },
 ];
 
 export default function QualityWorkspacePage() {

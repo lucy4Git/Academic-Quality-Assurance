@@ -130,7 +130,6 @@ async def update_audit(
 
 @router.delete(
     "/audits/{audit_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a module folder audit",
 )
 async def delete_audit(

@@ -678,7 +678,6 @@ async def ask_in_session(
 
 @router.delete(
     "/sessions/{session_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     response_model=None,
     summary="Soft-delete a chat session",
 )

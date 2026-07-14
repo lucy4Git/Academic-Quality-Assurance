@@ -381,17 +381,17 @@ async def update_file_metadata(
 
 @router.delete(
     "/{file_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Soft-delete a file (bytes removed, audit trail preserved)",
 )
 async def delete_file(
     file_id: uuid.UUID,
     current_user: User = CoordinatorRequired,
     db: AsyncSession = Depends(get_db),
-) -> None:
+) -> Response:
     db_file = await file_service.get_file(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
     await file_service.delete_file(db, db_file)
+    return Response(status_code=204)
 
 
 # ---------------------------------------------------------------------------

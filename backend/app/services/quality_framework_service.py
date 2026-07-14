@@ -47,7 +47,12 @@ async def list_frameworks(
         filters.append(QualityFramework.institution_id == institution_id)
     if filters:
         stmt = stmt.where(*filters)
-    stmt = stmt.order_by(QualityFramework.name).offset(offset).limit(limit)
+    stmt = (
+        stmt.order_by(QualityFramework.name)
+        .offset(offset)
+        .limit(limit)
+        .options(selectinload(QualityFramework.versions))
+    )
     result = await db.execute(stmt)
     return list(result.scalars().all())
 

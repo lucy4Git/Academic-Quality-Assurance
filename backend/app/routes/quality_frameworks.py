@@ -28,7 +28,7 @@ router = APIRouter(prefix="/quality-frameworks", tags=["Quality Frameworks"])
 # Quality Frameworks
 # ---------------------------------------------------------------------------
 
-@router.get("", response_model=list[QualityFrameworkRead])
+@router.get("", response_model=list[QualityFrameworkWithVersions])
 async def list_frameworks(
     institution_id: uuid.UUID | None = None,
     include_global: bool = True,

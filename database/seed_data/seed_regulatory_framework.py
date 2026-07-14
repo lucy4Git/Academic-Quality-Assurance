@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parent.parent.parent / "backend" / ".env")
 
-DATABASE_URL = os.environ["DATABASE_URL"]
+DATABASE_URL = os.environ["DATABASE_URL"].replace("postgresql+asyncpg://", "postgresql://", 1)
 
 
 # ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ async def seed():
     try:
         # Find a system admin user to act as creator
         admin = await conn.fetchrow(
-            "SELECT id FROM users WHERE role = 'system_admin' LIMIT 1"
+            "SELECT id FROM users WHERE role::text = 'SYSTEM_ADMIN' LIMIT 1"
         )
         if admin is None:
             print("No system_admin user found — run run_all.py first.")

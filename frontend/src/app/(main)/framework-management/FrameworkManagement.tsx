@@ -113,7 +113,7 @@ function FrameworkCard({
   selected: boolean;
   onClick: () => void;
 }) {
-  const activeVersions = framework.versions.filter((v) => v.status === "active");
+  const activeVersions = (framework.versions ?? []).filter((v) => v.status === "active");
 
   return (
     <button

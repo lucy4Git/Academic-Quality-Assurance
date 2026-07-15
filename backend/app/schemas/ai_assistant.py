@@ -13,6 +13,18 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 
+class WorkspaceContextHint(BaseModel):
+    """Optional context hints from the frontend workspace."""
+
+    institution_id: uuid.UUID | None = None
+    faculty_id: uuid.UUID | None = None
+    department_id: uuid.UUID | None = None
+    programme_id: uuid.UUID | None = None
+    module_id: uuid.UUID | None = None
+    academic_year: str | None = None
+    semester: str | None = None
+
+
 class AskRequest(BaseModel):
     """Natural language QA question."""
 
@@ -37,6 +49,17 @@ class AskRequest(BaseModel):
     session_id: uuid.UUID | None = Field(
         default=None,
         description="Attach this question to an existing chat session (optional).",
+    )
+    workspace_context: WorkspaceContextHint | None = Field(
+        default=None,
+        description="Optional entity context from the frontend workspace.",
+    )
+    attached_file_ids: list[uuid.UUID] = Field(
+        default_factory=list,
+        description=(
+            "File IDs (from POST /ai-assistant/attach) to scope retrieval. "
+            "When non-empty the assistant limits evidence retrieval to these files."
+        ),
     )
 
 
@@ -190,6 +213,8 @@ class ChatSessionBrief(BaseModel):
     is_active: bool
     created_at: datetime
     message_count: int = 0
+    is_pinned: bool = False
+    is_archived: bool = False
 
     model_config = {"from_attributes": True, "protected_namespaces": ()}
 

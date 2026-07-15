@@ -12,9 +12,14 @@ import {
   useAsk, useSuggestedPrompts, useCreateSession, useChatSessions, useDeleteSession,
 } from "@/hooks/useAiAssistant";
 import { useMultiAgent, type MultiAgentResponse } from "@/hooks/useWorkspace";
-import { askStream, type StreamSource, type Citation, type RegulatoryCitationItem } from "@/lib/api/ai-assistant";
+import {
+  askStream,
+  type StreamSource, type Citation, type RegulatoryCitationItem,
+  type StreamContextEvent, type StructuredBlock,
+} from "@/lib/api/ai-assistant";
 import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
 import { ContextPanel } from "@/components/ai/ContextPanel";
+import { ArtifactPanel } from "@/components/ai/ArtifactPanel";
 import {
   Brain, Plus, Trash2, Download, BookOpen, Zap, Shield,
   BarChart2, Search, GitBranch, GraduationCap, CheckSquare, Layers,
@@ -78,6 +83,8 @@ interface WorkspaceMessage {
   isMultiAgent?: boolean;
   isStreaming?: boolean;
   confidence?: number;
+  structuredBlocks?: StructuredBlock[];
+  executionSummary?: string;
   sources?: StreamSource[];
   nextActions?: string[];
   followUps?: string[];
@@ -91,6 +98,154 @@ interface WorkspaceMessage {
   groundingScore?: number;
   isError?: boolean;
   errorMessage?: string;
+}
+
+// ── Context indicator bar (D4) ─────────────────────────────────────────────────
+
+function ContextIndicatorBar({ ctx }: { ctx: StreamContextEvent | null }) {
+  if (!ctx || !ctx.institution_code) return null;
+
+  const parts = Object.entries(ctx.indicator ?? {}).filter(([, v]) => v);
+  if (parts.length === 0) return null;
+
+  return (
+    <div className="flex items-center gap-1.5 px-5 py-2 border-b border-border bg-muted/30 text-[11px] text-muted-foreground overflow-x-auto scrollbar-hide flex-shrink-0">
+      <Building2 className="h-3 w-3 flex-shrink-0 text-blue-500" />
+      {parts.map(([key, val], i) => (
+        <span key={key} className="flex items-center gap-1.5 flex-shrink-0">
+          {i > 0 && <ChevronRight className="h-2.5 w-2.5 text-muted-foreground/40" />}
+          <span className={cn(
+            "font-medium",
+            key === "institution" ? "text-foreground" : "text-muted-foreground",
+          )}>
+            {val}
+          </span>
+        </span>
+      ))}
+      {ctx.open_finding_count > 0 && (
+        <span className="ml-auto flex-shrink-0 flex items-center gap-1 bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
+          <AlertCircle className="h-2.5 w-2.5" />
+          {ctx.open_finding_count} open findings
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ── Structured blocks panel (D5) ───────────────────────────────────────────────
+
+function StructuredBlocksPanel({
+  blocks, executionSummary,
+}: {
+  blocks: StructuredBlock[];
+  executionSummary?: string;
+}) {
+  if (!blocks || blocks.length === 0) return null;
+
+  return (
+    <div className="mt-3 space-y-2">
+      {executionSummary && (
+        <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/40 rounded-lg px-3 py-1.5">
+          <Zap className="h-3 w-3 text-blue-500 flex-shrink-0" />
+          {executionSummary}
+        </div>
+      )}
+      {blocks.map((block, i) => {
+        if (block.type === "findings_summary" && block.findings) {
+          return (
+            <div key={i} className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50/60 dark:bg-amber-950/20 px-3.5 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-400 mb-2">
+                Open Findings ({block.count ?? block.findings.length})
+              </p>
+              <div className="space-y-1.5">
+                {block.findings.slice(0, 5).map((f) => (
+                  <div key={f.id} className="flex items-start gap-2 text-[12px]">
+                    <span className={cn(
+                      "flex-shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase",
+                      f.severity === "critical" ? "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400" :
+                      f.severity === "major" ? "bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-400" :
+                      "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/50 dark:text-yellow-400",
+                    )}>
+                      {f.severity}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-foreground text-[12px] leading-tight">
+                        {f.title || f.finding_type.replace(/_/g, " ")}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground truncate">{f.description}</p>
+                      <span className="text-[10px] text-muted-foreground/70">{f.status.replace(/_/g, " ")}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+        if (block.type === "applicable_frameworks" && block.frameworks) {
+          return (
+            <div key={i} className="rounded-lg border border-border bg-muted/40 px-3.5 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Applicable Frameworks</p>
+              <div className="flex flex-wrap gap-1.5">
+                {block.frameworks.map((fw) => (
+                  <span key={fw} className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+                    <Shield className="h-2.5 w-2.5 text-blue-500" />
+                    {fw}
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        }
+        if (block.type === "caveat" && block.text) {
+          return (
+            <div key={i} className="flex items-start gap-2.5 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 px-3.5 py-2.5">
+              <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed whitespace-pre-wrap">{block.text}</p>
+            </div>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
+
+// ── Action confirmation UI (D6) ────────────────────────────────────────────────
+
+function ActionConfirmationCard({
+  action, onConfirm, onCancel,
+}: {
+  action: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-3 my-2">
+      <div className="flex items-start gap-3">
+        <AlertCircle className="h-4.5 w-4.5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="font-semibold text-amber-800 dark:text-amber-300 text-sm">Confirm Action</p>
+          <p className="text-[13px] text-amber-700 dark:text-amber-400 mt-0.5">{action}</p>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 transition-colors"
+        >
+          Confirm
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
 }
 
 // ── AI error card ─────────────────────────────────────────────────────────────
@@ -401,6 +556,14 @@ const MessageBubble = memo(function MessageBubble({
           </div>
         )}
 
+        {/* D5 Structured blocks panel */}
+        {!msg.isStreaming && msg.structuredBlocks && msg.structuredBlocks.length > 0 && (
+          <StructuredBlocksPanel
+            blocks={msg.structuredBlocks}
+            executionSummary={msg.executionSummary}
+          />
+        )}
+
         {/* Follow-up suggestions */}
         {!msg.isStreaming && msg.followUps && msg.followUps.length > 0 && (
           <div className="mt-3 space-y-1.5">
@@ -679,13 +842,49 @@ function EmptyState({
 
 // ── Prompt composer ────────────────────────────────────────────────────────────
 
+// ── File attachment types ──────────────────────────────────────────────────────
+
+type AttachmentStatus = "uploading" | "ready" | "error";
+
+interface AttachedFile {
+  localId: string;        // temp key
+  name: string;
+  sizeBytes: number;
+  status: AttachmentStatus;
+  file_id?: string;       // populated after successful upload (File.id from backend)
+  upload_state?: string;  // backend upload_state (ready | quarantined | failed)
+  errorMsg?: string;
+}
+
+const MAX_FILE_MB = 50;
+const ALLOWED_TYPES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/zip",
+  "text/plain",
+  "text/csv",
+  "image/png",
+  "image/jpeg",
+]);
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+// ── Prompt composer ────────────────────────────────────────────────────────────
+
 function PromptComposer({
   value, onChange, onSubmit, isLoading, disabled, institutionCode, isAdmin,
-  messageCount, onClear, abortRef,
+  messageCount, onClear, abortRef, moduleId,
 }: {
   value: string;
   onChange: (v: string) => void;
-  onSubmit: (q: string) => void;
+  onSubmit: (q: string, attachedFileIds?: string[]) => void;
   isLoading: boolean;
   disabled: boolean;
   institutionCode: string;
@@ -693,15 +892,111 @@ function PromptComposer({
   messageCount: number;
   onClear: () => void;
   abortRef: React.RefObject<AbortController | null>;
+  moduleId?: string;
 }) {
   const [showSlash, setShowSlash] = useState(false);
   const [slashFilter, setSlashFilter] = useState("");
   const [slashSelected, setSlashSelected] = useState(0);
+  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const filteredCommands = SLASH_COMMANDS.filter(
     (c) => c.cmd.slice(1).startsWith(slashFilter) || c.label.toLowerCase().startsWith(slashFilter),
   );
+
+  const uploadFile = useCallback(async (file: File) => {
+    if (file.size > MAX_FILE_MB * 1024 * 1024) {
+      toast.error(`${file.name} exceeds ${MAX_FILE_MB} MB limit`);
+      return;
+    }
+    if (!ALLOWED_TYPES.has(file.type) && file.type !== "") {
+      toast.error(`${file.name}: unsupported file type`);
+      return;
+    }
+    if (!moduleId) {
+      toast.error("Select a module in the workspace context before attaching files.");
+      return;
+    }
+
+    const localId = crypto.randomUUID();
+    setAttachments((prev) => [...prev, {
+      localId,
+      name: file.name,
+      sizeBytes: file.size,
+      status: "uploading",
+    }]);
+
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("module_id", moduleId);
+      form.append("category", "other");
+      const res = await fetch("/api/proxy/ai-assistant/attach", {
+        method: "POST",
+        credentials: "include",
+        body: form,
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: "Upload failed" }));
+        throw new Error(err.detail ?? `HTTP ${res.status}`);
+      }
+      const data = await res.json() as { file_id: string; upload_state: string };
+      if (data.upload_state === "quarantined") {
+        throw new Error("File was quarantined during security scan. Contact your system administrator.");
+      }
+      setAttachments((prev) => prev.map((a) =>
+        a.localId === localId
+          ? { ...a, status: "ready", file_id: data.file_id, upload_state: data.upload_state }
+          : a,
+      ));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Upload failed";
+      setAttachments((prev) => prev.map((a) =>
+        a.localId === localId ? { ...a, status: "error", errorMsg: msg } : a,
+      ));
+      toast.error(`Failed to attach ${file.name}: ${msg}`);
+    }
+  }, [moduleId]);
+
+  const handleFilesSelected = useCallback((files: FileList | File[]) => {
+    Array.from(files).forEach(uploadFile);
+  }, [uploadFile]);
+
+  const retryAttachment = useCallback((localId: string, file?: File) => {
+    if (!file) {
+      setAttachments((prev) => prev.filter((a) => a.localId !== localId));
+      return;
+    }
+    setAttachments((prev) => prev.filter((a) => a.localId !== localId));
+    uploadFile(file);
+  }, [uploadFile]);
+
+  const removeAttachment = useCallback((localId: string) => {
+    setAttachments((prev) => prev.filter((a) => a.localId !== localId));
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (e.dataTransfer.files.length > 0) {
+      handleFilesSelected(e.dataTransfer.files);
+    }
+  }, [handleFilesSelected]);
+
+  const doSubmit = useCallback(() => {
+    const readyIds = attachments
+      .filter((a) => a.status === "ready" && a.file_id)
+      .map((a) => a.file_id as string);
+    const uploading = attachments.some((a) => a.status === "uploading");
+    if (uploading) {
+      toast.warning("Please wait for all files to finish uploading");
+      return;
+    }
+    onSubmit(value, readyIds.length > 0 ? readyIds : undefined);
+    setAttachments([]);
+  }, [attachments, value, onSubmit]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const v = e.target.value;
@@ -730,7 +1025,7 @@ function PromptComposer({
     }
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onSubmit(value);
+      doSubmit();
     }
   };
 
@@ -755,7 +1050,60 @@ function PromptComposer({
     : "Ask about audits, evidence, policies, programmes… (/ for commands, Shift+Enter for newline)";
 
   return (
-    <div className="border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3">
+    <div
+      className="border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3"
+      onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+      onDragLeave={() => setIsDragOver(false)}
+      onDrop={handleDrop}
+    >
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept={Array.from(ALLOWED_TYPES).join(",")}
+        className="hidden"
+        onChange={(e) => { if (e.target.files) { handleFilesSelected(e.target.files); e.target.value = ""; } }}
+      />
+
+      {/* Drag-over overlay */}
+      {isDragOver && (
+        <div className="mb-2 rounded-xl border-2 border-dashed border-blue-400 bg-blue-50/50 dark:bg-blue-950/20 py-4 text-center text-sm text-blue-600 dark:text-blue-400">
+          Drop files here to attach
+        </div>
+      )}
+
+      {/* Attached files tray */}
+      {attachments.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-2">
+          {attachments.map((att) => (
+            <div
+              key={att.localId}
+              className={cn(
+                "flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[11px] max-w-[200px]",
+                att.status === "ready" && "border-green-300 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-950/30 dark:text-green-400",
+                att.status === "uploading" && "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-400",
+                att.status === "error" && "border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400",
+              )}
+            >
+              {att.status === "uploading" && <Loader2 className="h-3 w-3 flex-shrink-0 animate-spin" />}
+              {att.status === "ready" && <CheckCircle2 className="h-3 w-3 flex-shrink-0" />}
+              {att.status === "error" && <AlertCircle className="h-3 w-3 flex-shrink-0" />}
+              <span className="truncate flex-1 min-w-0" title={att.name}>{att.name}</span>
+              <span className="text-[10px] opacity-70 flex-shrink-0">{formatBytes(att.sizeBytes)}</span>
+              <button
+                type="button"
+                onClick={() => removeAttachment(att.localId)}
+                className="flex-shrink-0 ml-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                aria-label={`Remove ${att.name}`}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Session toolbar */}
       {messageCount > 0 && (
         <div className="flex items-center justify-between mb-2 text-[11px] text-muted-foreground">
@@ -805,14 +1153,19 @@ function PromptComposer({
 
       {/* Composer box */}
       <div className="relative flex items-end gap-2 rounded-2xl border border-border bg-background shadow-sm focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-400/10 transition-all">
-        {/* Attachment placeholder */}
+        {/* Attach button */}
         <button
           type="button"
-          className="ml-3 mb-3 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+          className="ml-3 mb-3 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 relative"
           aria-label="Attach file"
-          onClick={() => toast.info("File attachments coming in Phase 4 Wave 3")}
+          onClick={() => fileInputRef.current?.click()}
         >
           <Paperclip className="h-4 w-4" />
+          {attachments.length > 0 && (
+            <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-blue-600 text-[8px] text-white flex items-center justify-center font-bold">
+              {attachments.length}
+            </span>
+          )}
         </button>
 
         <textarea
@@ -850,8 +1203,8 @@ function PromptComposer({
         ) : (
           <button
             type="button"
-            onClick={() => onSubmit(value)}
-            disabled={!value.trim() || disabled}
+            onClick={doSubmit}
+            disabled={(!value.trim() && !attachments.some(a => a.status === "ready" && a.file_id)) || disabled}
             className="mr-3 mb-3 flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-shrink-0 shadow-sm shadow-blue-500/30"
             aria-label="Send"
           >
@@ -882,8 +1235,12 @@ export function AiWorkspaceView() {
   const [messages, setMessages] = useState<WorkspaceMessage[]>([]);
   const [input, setInput] = useState("");
   const [showRightPanel, setShowRightPanel] = useState(true);
+  const [rightTab, setRightTab] = useState<"context" | "artifacts">("context");
   const [isStreamLoading, setIsStreamLoading] = useState(false);
   const [lastPrompt, setLastPrompt] = useState<string>("");
+  // D1 — Resolved context from the last ask-stream request
+  const [resolvedContext, setResolvedContext] = useState<StreamContextEvent | null>(null);
+  const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => {
     try {
       const stored = localStorage.getItem("aqaa:pinned-sessions");
@@ -951,7 +1308,7 @@ export function AiWorkspaceView() {
     setActiveSessionId(null);
   }, []);
 
-  const handleSubmit = useCallback(async (question: string) => {
+  const handleSubmit = useCallback(async (question: string, attachedFileIds?: string[]) => {
     const q = question.trim();
     if (!q || isLoading) return;
     if (isAdmin && !institutionCode) {
@@ -981,10 +1338,31 @@ export function AiWorkspaceView() {
     try {
       let groundingScore: number | undefined;
       for await (const event of askStream(
-        { question: q, institution_code: institutionCode || null, context_limit: 5, mode: "qa_assistant" },
+        {
+          question: q,
+          institution_code: institutionCode || null,
+          context_limit: 5,
+          mode: "qa_assistant",
+          attached_file_ids: attachedFileIds,
+        },
         abortRef.current.signal,
       )) {
-        if (event.type === "start") {
+        if (event.type === "context") {
+          // D1 — update the context indicator bar
+          setResolvedContext(event);
+          if (event.module_id) setActiveModuleId(event.module_id);
+        } else if (event.type === "plan") {
+          // D2 — execution plan (internal; no visible update needed)
+        } else if (event.type === "structured") {
+          // D5 — structured blocks (findings, frameworks, caveats)
+          setMessages((prev) => prev.map((m) =>
+            m.id === streamMsgId ? {
+              ...m,
+              structuredBlocks: event.blocks,
+              executionSummary: event.execution_summary,
+            } : m,
+          ));
+        } else if (event.type === "start") {
           setMessages((prev) => prev.map((m) =>
             m.id === streamMsgId ? { ...m, agents: event.agents } : m,
           ));
@@ -1101,6 +1479,9 @@ export function AiWorkspaceView() {
           </div>
         </div>
 
+        {/* D4 — Context indicator bar */}
+        <ContextIndicatorBar ctx={resolvedContext} />
+
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-5 py-6 space-y-5">
           {messages.length === 0 ? (
@@ -1141,31 +1522,70 @@ export function AiWorkspaceView() {
           messageCount={messages.length}
           onClear={handleClear}
           abortRef={abortRef}
+          moduleId={activeModuleId ?? undefined}
         />
       </div>
 
-      {/* ── Right context panel ───────────────────────────────────────────── */}
+      {/* ── Right panel — Context or Artifacts ───────────────────────────── */}
       <AnimatePresence>
         {showRightPanel && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 280, opacity: 1 }}
+            animate={{ width: 300, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="overflow-hidden flex-shrink-0"
+            className="overflow-hidden flex-shrink-0 border-l border-border flex flex-col"
           >
-            <ContextPanel
-              institutionCode={institutionCode}
-              groundingScore={lastAssistantMsg?.groundingScore}
-              groundingStatus={lastAssistantMsg?.groundingStatus}
-              sources={(lastAssistantMsg?.sources as StreamSource[]) ?? []}
-              citations={lastAssistantMsg?.citations ?? []}
-              agents={lastAssistantMsg?.agents ?? []}
-              nextActions={lastAssistantMsg?.nextActions ?? []}
-              onActionClick={(action, route) => route && router.push(route)}
-              onClose={() => setShowRightPanel(false)}
-              messageCount={messages.length}
-            />
+            {/* Tab bar */}
+            <div className="flex border-b border-border flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setRightTab("context")}
+                className={cn(
+                  "flex-1 py-2.5 text-xs font-semibold transition-colors",
+                  rightTab === "context"
+                    ? "border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                Context
+              </button>
+              <button
+                type="button"
+                onClick={() => setRightTab("artifacts")}
+                className={cn(
+                  "flex-1 py-2.5 text-xs font-semibold transition-colors",
+                  rightTab === "artifacts"
+                    ? "border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                Artifacts
+              </button>
+            </div>
+
+            {/* Tab content */}
+            <div className="flex-1 overflow-hidden">
+              {rightTab === "context" ? (
+                <ContextPanel
+                  institutionCode={institutionCode}
+                  groundingScore={lastAssistantMsg?.groundingScore}
+                  groundingStatus={lastAssistantMsg?.groundingStatus}
+                  sources={(lastAssistantMsg?.sources as StreamSource[]) ?? []}
+                  citations={lastAssistantMsg?.citations ?? []}
+                  agents={lastAssistantMsg?.agents ?? []}
+                  nextActions={lastAssistantMsg?.nextActions ?? []}
+                  onActionClick={(action, route) => route && router.push(route)}
+                  onClose={() => setShowRightPanel(false)}
+                  messageCount={messages.length}
+                />
+              ) : (
+                <ArtifactPanel
+                  conversationId={activeSessionId}
+                  onClose={() => setShowRightPanel(false)}
+                />
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

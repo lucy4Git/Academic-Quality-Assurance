@@ -148,8 +148,9 @@ def assemble_answer(
     chunks: list[dict[str, Any]],
     institution_code: str,
     intent: str,
+    is_local_dev: bool = False,
 ) -> str:
-    """Assemble a template-based answer from retrieved chunks (LOCAL_DEV path)."""
+    """Assemble a template-based answer from retrieved chunks (LOCAL_DEV / fallback path)."""
     preamble = INTENT_PREAMBLES.get(intent, INTENT_PREAMBLES["general"]).format(
         institution_code=institution_code.upper()
     )
@@ -179,7 +180,8 @@ def assemble_answer(
             context_block="\n".join(context_parts),
         )
 
-    suffix = DEV_MODE_NOTICE if embedding_service.IS_PLACEHOLDER else ""
+    # Include dev notice when using placeholder embeddings OR local_dev generation.
+    suffix = DEV_MODE_NOTICE if (is_local_dev or embedding_service.IS_PLACEHOLDER) else ""
     return preamble + body + suffix
 
 
@@ -264,7 +266,7 @@ async def ask(
     evidence_support: str
 
     if _provider.is_local_dev:
-        answer = assemble_answer(question, chunks, institution_code, intent)
+        answer = assemble_answer(question, chunks, institution_code, intent, is_local_dev=True)
         generation_mode = "deterministic_template"
         generation_provider = "none"
         evidence_support = "chunks_retrieved" if chunks else "no_chunks"
@@ -290,7 +292,7 @@ async def ask(
                 _provider.provider_name,
                 exc,
             )
-            answer = assemble_answer(question, chunks, institution_code, intent)
+            answer = assemble_answer(question, chunks, institution_code, intent, is_local_dev=False)
             generation_mode = "deterministic_template"
             generation_provider = "none"
             evidence_support = "chunks_retrieved" if chunks else "no_chunks"
@@ -318,8 +320,8 @@ async def ask(
         "sources": sources,
         "confidence_score": round(avg_confidence, 4),
         "institution_code": institution_code.upper(),
-        # is_placeholder_mode reflects ONLY embedding placeholder state, not generation fallback
-        "is_placeholder_mode": embedding_service.IS_PLACEHOLDER,
+        # is_placeholder_mode: True when using placeholder embeddings OR template generation.
+        "is_placeholder_mode": embedding_service.IS_PLACEHOLDER or generation_mode == "deterministic_template",
         "suggested_followups": generate_suggested_followups(intent, institution_code),
         "query_mode": intent,
         "provider": _provider.provider_name,

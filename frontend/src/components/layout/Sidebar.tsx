@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   LayoutGrid,
+  Library,
   BookOpen,
   ShieldCheck,
   Settings2,
@@ -27,6 +28,7 @@ import type { UserRole } from "@/types";
 const ICON_MAP: Record<string, LucideIcon> = {
   Home,
   LayoutGrid,
+  Library,
   BookOpen,
   ShieldCheck,
   Settings2,

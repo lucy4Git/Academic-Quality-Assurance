@@ -186,9 +186,26 @@ async def test_resolve_context_workspace_module_hint():
 
     db = AsyncMock()
     db.get = mock_get
-    mock_result = MagicMock()
-    mock_result.scalars.return_value.all.return_value = []
-    db.execute = AsyncMock(return_value=mock_result)
+
+    # The workspace module fallback now does a JOIN to verify institution_id.
+    # scalar_one_or_none() must return inst_id so the tenant check passes.
+    mock_inst_result = MagicMock()
+    mock_inst_result.scalar_one_or_none.return_value = inst_id
+
+    mock_empty_result = MagicMock()
+    mock_empty_result.scalars.return_value.all.return_value = []
+    mock_empty_result.scalar_one_or_none.return_value = None
+
+    call_count = [0]
+
+    async def side_effect_execute(stmt, *args, **kwargs):
+        call_count[0] += 1
+        # First execute call is the institution JOIN for module tenant check
+        if call_count[0] == 1:
+            return mock_inst_result
+        return mock_empty_result
+
+    db.execute = side_effect_execute
 
     ctx = await resolve_context(
         db, user, "Audit this module",

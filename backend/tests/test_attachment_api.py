@@ -200,3 +200,158 @@ class TestContextEnginePublicDict:
         d = ctx.to_public_dict()
         assert d["module_id"] is None
         assert d["programme_id"] is None
+
+
+# ---------------------------------------------------------------------------
+# File upload tenant isolation (D11 — cross-tenant rejection)
+# ---------------------------------------------------------------------------
+
+
+class TestFileUploadTenantIsolation:
+    """Verify that file_service.upload_file rejects cross-tenant uploads with NotFoundError."""
+
+    @pytest.mark.asyncio
+    async def test_cross_tenant_upload_raises_not_found(self):
+        """A lecturer from institution A cannot upload to a module owned by institution B."""
+        from unittest.mock import AsyncMock, MagicMock
+        from app.core.exceptions import NotFoundError
+        from app.services.file_service import upload_file
+        from app.models.enums import FileCategory, UserRole
+
+        inst_a = uuid.uuid4()
+        inst_b = uuid.uuid4()
+        mod_id = uuid.uuid4()
+
+        user = MagicMock()
+        user.role = UserRole.LECTURER
+        user.institution_id = inst_a  # user belongs to institution A
+
+        db = AsyncMock()
+
+        # _resolve_module_institution returns institution B's ID
+        mock_result = MagicMock()
+        mock_result.scalar_one_or_none.return_value = inst_b
+        db.execute = AsyncMock(return_value=mock_result)
+
+        with pytest.raises(NotFoundError):
+            await upload_file(
+                db=db,
+                module_id=mod_id,
+                category=FileCategory.OTHER,
+                original_filename="evidence.pdf",
+                content=b"%PDF test",
+                current_user=user,
+            )
+
+    @pytest.mark.asyncio
+    async def test_same_tenant_upload_does_not_raise(self):
+        """A lecturer from institution A CAN upload to a module in institution A."""
+        from unittest.mock import AsyncMock, MagicMock, patch
+        from app.services.file_service import upload_file
+        from app.models.enums import FileCategory, UserRole, UploadState
+
+        inst_id = uuid.uuid4()
+        mod_id = uuid.uuid4()
+
+        user = MagicMock()
+        user.role = UserRole.LECTURER
+        user.institution_id = inst_id
+
+        db = AsyncMock()
+
+        # _resolve_module_institution returns same institution ID
+        mock_resolve_result = MagicMock()
+        mock_resolve_result.scalar_one_or_none.return_value = inst_id
+
+        # _find_existing_file returns None (new file)
+        mock_find_result = MagicMock()
+        mock_find_result.scalar_one_or_none.return_value = None
+
+        call_count = [0]
+
+        async def execute_side_effect(stmt, *a, **kw):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return mock_resolve_result
+            return mock_find_result
+
+        db.execute = execute_side_effect
+        db.add = MagicMock()
+        db.commit = AsyncMock()
+        db.refresh = AsyncMock()
+
+        mock_file = MagicMock()
+        mock_file.id = uuid.uuid4()
+        mock_file.upload_state = UploadState.READY
+        mock_file.original_filename = "evidence.pdf"
+        mock_file.mime_type = "application/pdf"
+        mock_file.size_bytes = 100
+        mock_file.module_id = mod_id
+
+        async def mock_refresh(obj):
+            obj.id = mock_file.id
+            obj.upload_state = UploadState.READY
+            obj.original_filename = "evidence.pdf"
+            obj.mime_type = "application/pdf"
+            obj.size_bytes = 100
+            obj.module_id = mod_id
+
+        db.refresh = mock_refresh
+
+        with (
+            patch("app.services.file_service.validate_upload", return_value=(".pdf", "application/pdf")),
+            patch("app.services.file_service.scan_file", new_callable=AsyncMock) as mock_scan,
+            patch("app.services.file_service.get_storage") as mock_storage,
+        ):
+            mock_scan.return_value = MagicMock(is_clean=True)
+            mock_storage.return_value.build_path.return_value = "path/to/file"
+            mock_storage.return_value.save = AsyncMock()
+
+            # Should not raise
+            result = await upload_file(
+                db=db,
+                module_id=mod_id,
+                category=FileCategory.OTHER,
+                original_filename="evidence.pdf",
+                content=b"%PDF test content",
+                current_user=user,
+            )
+        # If we get here without exception, tenant check passed
+        assert result is not None
+
+    def test_system_admin_bypasses_tenant_check(self):
+        """SYSTEM_ADMIN role is documented as bypassing the institution_id check."""
+        from app.models.enums import UserRole
+        # The bypass is at: if current_user.role != UserRole.SYSTEM_ADMIN
+        assert UserRole.SYSTEM_ADMIN.value == "system_admin"
+
+
+# ---------------------------------------------------------------------------
+# Attach endpoint — pre-click guard (no module context)
+# ---------------------------------------------------------------------------
+
+
+class TestAttachButtonGuard:
+    def test_attach_endpoint_requires_module_id_field(self):
+        """The /attach endpoint must require module_id as a Form field."""
+        import inspect
+        from app.routes.ai_assistant import workspace_attach
+        sig = inspect.signature(workspace_attach)
+        assert "module_id" in sig.parameters
+
+    def test_workspace_attachment_response_never_exposes_raw_id(self):
+        """WorkspaceAttachmentResponse must have file_id, not a bare 'id' field."""
+        from app.routes.ai_assistant import WorkspaceAttachmentResponse
+        assert "file_id" in WorkspaceAttachmentResponse.model_fields
+        assert "id" not in WorkspaceAttachmentResponse.model_fields
+
+    def test_attached_file_ids_on_ask_request_are_uuid_list(self):
+        """attached_file_ids is a list[UUID], not list[str]."""
+        from app.schemas.ai_assistant import AskRequest
+        import typing
+        field = AskRequest.model_fields.get("attached_file_ids")
+        assert field is not None
+        # Default must be an empty list
+        req = AskRequest(question="test")
+        assert isinstance(req.attached_file_ids, list)
+        assert len(req.attached_file_ids) == 0

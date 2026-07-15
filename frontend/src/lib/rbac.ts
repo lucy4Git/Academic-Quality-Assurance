@@ -95,6 +95,9 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/knowledge/acquisition": QA_AND_ABOVE,
   "/institution/profile":  STAFF,
 
+  // ── Library ───────────────────────────────────────────────────────────────
+  "/library":             STAFF,
+
   // ── Quality / Evidence / Audit ────────────────────────────────────────────
   "/files":               STAFF,
   "/audits":              COORDINATOR_AND_ABOVE,
@@ -187,6 +190,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Home",           href: "/dashboard",      icon: "Home",          roles: ALL },
       { label: "Workspace",      href: "/workspace",      icon: "LayoutGrid",    roles: STAFF },
+      { label: "Library",        href: "/library",        icon: "Library",       roles: STAFF },
       { label: "Knowledge",      href: "/knowledge",      icon: "BookOpen",      roles: STAFF },
       { label: "Quality",        href: "/quality",        icon: "ShieldCheck",   roles: COORDINATOR_AND_ABOVE },
       { label: "Administration", href: "/administration", icon: "Settings2",     roles: SA_ONLY },

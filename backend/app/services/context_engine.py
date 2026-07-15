@@ -218,12 +218,19 @@ async def resolve_context(
         ctx.institution_code = inst.code
 
     # ── 2. Module (highest priority entity — explicit code mention) ──────────
+    # Module has no institution_id — must join Module → Programme → Department → Faculty → Institution
     if mentions.get("module_codes") and ctx.institution_id:
         for code in mentions["module_codes"]:
-            stmt = select(Module).where(
-                and_(
-                    Module.code.ilike(code),
-                    Module.institution_id == ctx.institution_id,
+            stmt = (
+                select(Module)
+                .join(Programme, Module.programme_id == Programme.id)
+                .join(Department, Programme.department_id == Department.id)
+                .join(Faculty, Department.faculty_id == Faculty.id)
+                .where(
+                    and_(
+                        Module.code.ilike(code),
+                        Faculty.institution_id == ctx.institution_id,
+                    )
                 )
             )
             result = await db.execute(stmt)
@@ -240,25 +247,42 @@ async def resolve_context(
         mid = ws.get("module_id") or conv.get("module_id")
         if mid:
             mod = await db.get(Module, uuid.UUID(str(mid)))
-            if mod and (user.role == UserRole.SYSTEM_ADMIN or mod.institution_id == ctx.institution_id):
-                ctx.module_id = mod.id
-                ctx.module_name = mod.name
-                ctx.module_code = mod.code
-                ctx.resolution_source = "workspace" if ws.get("module_id") else "conversation"
+            if mod:
+                # Verify tenant: join to institution via programme → department → faculty
+                inst_stmt = (
+                    select(Faculty.institution_id)
+                    .join(Department, Faculty.id == Department.faculty_id)
+                    .join(Programme, Department.id == Programme.department_id)
+                    .where(Programme.id == mod.programme_id)
+                )
+                inst_result = await db.execute(inst_stmt)
+                mod_institution_id = inst_result.scalar_one_or_none()
+                if user.role == UserRole.SYSTEM_ADMIN or mod_institution_id == ctx.institution_id:
+                    ctx.module_id = mod.id
+                    ctx.module_name = mod.name
+                    ctx.module_code = mod.code
+                    ctx.resolution_source = "workspace" if ws.get("module_id") else "conversation"
 
     # ── 3. Programme ─────────────────────────────────────────────────────────
     if not ctx.programme_id:
         pid = ws.get("programme_id") or conv.get("programme_id")
         if pid:
             prog = await db.get(Programme, uuid.UUID(str(pid)))
-            if prog and (user.role == UserRole.SYSTEM_ADMIN or prog.institution_id == ctx.institution_id):
-                ctx.programme_id = prog.id
-                ctx.programme_name = prog.name
-                ctx.programme_code = getattr(prog, "code", "")
-                if ctx.resolution_source == "explicit":
-                    pass  # module already explicit
-                else:
-                    ctx.resolution_source = "workspace" if ws.get("programme_id") else "conversation"
+            if prog:
+                # Verify tenant: join Programme → Department → Faculty → institution_id
+                inst_stmt = (
+                    select(Faculty.institution_id)
+                    .join(Department, Faculty.id == Department.faculty_id)
+                    .where(Department.id == prog.department_id)
+                )
+                inst_result = await db.execute(inst_stmt)
+                prog_institution_id = inst_result.scalar_one_or_none()
+                if user.role == UserRole.SYSTEM_ADMIN or prog_institution_id == ctx.institution_id:
+                    ctx.programme_id = prog.id
+                    ctx.programme_name = prog.name
+                    ctx.programme_code = getattr(prog, "code", "")
+                    if ctx.resolution_source != "explicit":
+                        ctx.resolution_source = "workspace" if ws.get("programme_id") else "conversation"
 
     # If module resolved, infer programme from it
     if ctx.module_id and not ctx.programme_id:

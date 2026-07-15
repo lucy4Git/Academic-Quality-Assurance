@@ -536,3 +536,101 @@ class RegulatoryRisk(str, enum.Enum):
     MEDIUM = "medium"
     HIGH = "high"
     CRITICAL = "critical"
+
+
+# ---------------------------------------------------------------------------
+# Phase D — Artifact Engine
+# ---------------------------------------------------------------------------
+
+
+class ArtifactType(str, enum.Enum):
+    """Type of AI-generated artifact produced in the AI Workspace."""
+
+    MODULE_AUDIT_REPORT = "module_audit_report"
+    PROGRAMME_COMPLIANCE_REPORT = "programme_compliance_report"
+    DEPARTMENT_QUALITY_REPORT = "department_quality_report"
+    FACULTY_QUALITY_REPORT = "faculty_quality_report"
+    INSTITUTIONAL_QUALITY_REPORT = "institutional_quality_report"
+    REGULATORY_READINESS_REPORT = "regulatory_readiness_report"
+    ACCREDITATION_EVIDENCE_PACK = "accreditation_evidence_pack"
+    CORRECTIVE_ACTION_PLAN = "corrective_action_plan"
+    RISK_REGISTER = "risk_register"
+    ASSESSMENT_ALIGNMENT_MATRIX = "assessment_alignment_matrix"
+    MODERATION_REPORT = "moderation_report"
+    EXECUTIVE_BRIEFING = "executive_briefing"
+    QA_MEETING_PACK = "qa_meeting_pack"
+    EVIDENCE_CHECKLIST = "evidence_checklist"
+    FRAMEWORK_COMPARISON = "framework_comparison"
+    QUALIFICATION_ALIGNMENT_REPORT = "qualification_alignment_report"
+
+
+class ArtifactStatus(str, enum.Enum):
+    """Lifecycle state of an artifact."""
+
+    DRAFT = "draft"
+    SAVED = "saved"
+    VERSIONED = "versioned"
+    ARCHIVED = "archived"
+    DELETED = "deleted"
+
+
+class ArtifactApprovalStatus(str, enum.Enum):
+    """Approval state of an artifact requiring formal sign-off."""
+
+    NOT_REQUIRED = "not_required"
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class ActionType(str, enum.Enum):
+    """Conversational action types executed through the AI Workspace."""
+
+    # Findings
+    ACKNOWLEDGE_FINDING = "acknowledge_finding"
+    ASSIGN_FINDING = "assign_finding"
+    START_PROGRESS = "start_progress"
+    SUBMIT_RESOLUTION = "submit_resolution"
+    REQUEST_REVIEW = "request_review"
+    APPROVE_RESOLUTION = "approve_resolution"
+    REJECT_RESOLUTION = "reject_resolution"
+    REOPEN_FINDING = "reopen_finding"
+    ESCALATE_FINDING = "escalate_finding"
+    CLOSE_FINDING = "close_finding"
+    ADD_COMMENT = "add_comment"
+    SET_DUE_DATE = "set_due_date"
+    UPLOAD_RESOLUTION_EVIDENCE = "upload_resolution_evidence"
+    # Regulatory
+    RUN_FRAMEWORK_ASSESSMENT = "run_framework_assessment"
+    RUN_INTEGRATED_READINESS = "run_integrated_readiness"
+    PROMOTE_GAPS_TO_FINDINGS = "promote_gaps_to_findings"
+    GENERATE_REGULATORY_REPORT = "generate_regulatory_report"
+    GENERATE_EVIDENCE_PACK = "generate_evidence_pack"
+    CREATE_CORRECTIVE_ACTION_PLAN = "create_corrective_action_plan"
+    # Audit
+    RUN_MODULE_AUDIT = "run_module_audit"
+    RUN_ASSESSMENT_AUDIT = "run_assessment_audit"
+    RUN_MODERATION_AUDIT = "run_moderation_audit"
+    RUN_ATTENDANCE_AUDIT = "run_attendance_audit"
+    RUN_OUTCOME_ALIGNMENT = "run_outcome_alignment"
+    VERIFY_EVIDENCE = "verify_evidence"
+    # Artifacts
+    SAVE_ARTIFACT = "save_artifact"
+    REGENERATE_ARTIFACT = "regenerate_artifact"
+    EXPORT_ARTIFACT = "export_artifact"
+    SHARE_ARTIFACT = "share_artifact"
+    ASSIGN_ARTIFACT = "assign_artifact"
+    APPROVE_ARTIFACT = "approve_artifact"
+    REJECT_ARTIFACT = "reject_artifact"
+
+
+class ActionStatus(str, enum.Enum):
+    """Execution state of a conversational action."""
+
+    PENDING_CONFIRMATION = "pending_confirmation"
+    CONFIRMED = "confirmed"
+    EXECUTING = "executing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"

@@ -498,8 +498,79 @@ async def ask_assistant_stream(
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
     effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
 
+    # Resolve or create a session for message persistence
+    session_id: uuid.UUID
+    if body.session_id is not None:
+        existing = await db.get(AiChatSession, body.session_id)
+        if existing is None or existing.user_id != current_user.id:
+            raise HTTPException(status_code=404, detail="Session not found.")
+        session_id = existing.id
+    else:
+        new_session = AiChatSession(
+            id=uuid.uuid4(),
+            user_id=current_user.id,
+            institution_id=current_user.institution_id,
+            title=body.question[:80],
+        )
+        db.add(new_session)
+        await db.commit()
+        session_id = new_session.id
+
+    attached_ids = [str(fid) for fid in body.attached_file_ids] if body.attached_file_ids else None
+
+    async def _persist_and_stream():
+        answer_parts: list[str] = []
+        result_meta: dict[str, Any] = {}
+        context_snapshot: dict | None = None
+
+        async for chunk in _stream_ask(
+            body.question,
+            institution_code,
+            body.context_limit,
+            effective_mode,
+            db=db,
+            current_user=current_user,
+            workspace_context=body.workspace_context,
+        ):
+            # Accumulate tokens for persistence
+            try:
+                raw = chunk.removeprefix("data: ").strip()
+                if raw:
+                    evt = json.loads(raw)
+                    if evt.get("type") == "token":
+                        answer_parts.append(evt.get("content", ""))
+                    elif evt.get("type") == "done":
+                        result_meta = evt
+                    elif evt.get("type") == "context":
+                        context_snapshot = evt
+            except Exception:
+                pass
+            yield chunk
+
+        # After stream: persist message pair to DB
+        try:
+            await _persist_message_pair(
+                db=db,
+                session_id=session_id,
+                question=body.question,
+                result={
+                    "answer": "".join(answer_parts),
+                    "provider": result_meta.get("provider"),
+                    "model": result_meta.get("model"),
+                    "query_mode": result_meta.get("query_mode"),
+                },
+                context_snapshot=context_snapshot,
+                attached_file_ids=attached_ids,
+            )
+        except Exception as exc:
+            import logging as _l
+            _l.getLogger(__name__).error("ask-stream: message persistence failed: %s", exc)
+
+        # Emit session_id so the client can restore the session
+        yield _sse("session", {"session_id": str(session_id)})
+
     return StreamingResponse(
-        _stream_ask(body.question, institution_code, body.context_limit, effective_mode, db=db, current_user=current_user, workspace_context=body.workspace_context),
+        _persist_and_stream(),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",

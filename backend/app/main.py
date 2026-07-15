@@ -51,6 +51,7 @@ from app.routes.findings import router as findings_router
 from app.routes.regulatory_authorities import router as regulatory_authorities_router
 from app.routes.quality_frameworks import router as quality_frameworks_router
 from app.routes.framework_assessments import router as framework_assessments_router
+from app.routes.artifacts import router as artifacts_router
 
 
 @asynccontextmanager
@@ -161,6 +162,8 @@ def create_app() -> FastAPI:
     app.include_router(regulatory_authorities_router, prefix=prefix)
     app.include_router(quality_frameworks_router, prefix=prefix)
     app.include_router(framework_assessments_router, prefix=prefix)
+    # Phase D — Artifact Engine
+    app.include_router(artifacts_router, prefix=prefix)
 
     return app
 

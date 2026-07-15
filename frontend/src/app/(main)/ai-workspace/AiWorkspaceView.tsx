@@ -1158,7 +1158,13 @@ function PromptComposer({
           type="button"
           className="ml-3 mb-3 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 relative"
           aria-label="Attach file"
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() => {
+            if (!moduleId) {
+              toast.error("Select a module in the workspace context before attaching files.");
+              return;
+            }
+            fileInputRef.current?.click();
+          }}
         >
           <Paperclip className="h-4 w-4" />
           {attachments.length > 0 && (

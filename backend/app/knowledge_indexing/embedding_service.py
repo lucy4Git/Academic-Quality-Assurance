@@ -291,3 +291,7 @@ embedding_service = get_embedding_service()
 
 # Active dimensions — imported by qdrant_service.py.
 EMBEDDING_DIMENSIONS = embedding_service.DIMENSIONS
+
+# Public alias — callable class that always returns a PlaceholderEmbeddingService.
+# Tests import `EmbeddingService` and call it with no args to exercise the placeholder path.
+EmbeddingService = PlaceholderEmbeddingService

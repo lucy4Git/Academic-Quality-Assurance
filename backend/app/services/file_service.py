@@ -105,6 +105,15 @@ async def upload_file(
         ConflictError: an existing version of this file is currently quarantined.
     """
     institution_id = await _resolve_module_institution(db, module_id)
+
+    # Tenant isolation: non-admin users may only upload to their own institution's modules
+    from app.models.enums import UserRole as _Role
+    from app.core.exceptions import NotFoundError as _NF
+    if current_user.role != _Role.SYSTEM_ADMIN:
+        if current_user.institution_id != institution_id:
+            # Return 404 (not 403) to avoid leaking cross-tenant module existence
+            raise _NF("Module", module_id)
+
     ext, mime_type = validate_upload(original_filename, content)
     checksum = _sha256(content)
 

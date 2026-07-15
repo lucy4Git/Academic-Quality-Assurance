@@ -69,6 +69,8 @@ from app.models.applicability_rule import ApplicabilityRule
 from app.models.evidence_mapping import EvidenceMapping
 from app.models.framework_assessment import FrameworkAssessmentRun, CriterionAssessmentResult
 from app.models.cross_framework_mapping import CrossFrameworkMapping
+# Phase D — AI Workspace, Artifacts, Actions
+from app.models.ai_chat import AiArtifact, AiAction, AiChatMessage, AiChatSession
 
 __all__ = [
     "ADIPDocument",
@@ -133,6 +135,11 @@ __all__ = [
     "User",
     "UserRole",
     "WorkflowStatus",
+    # Phase D
+    "AiChatSession",
+    "AiChatMessage",
+    "AiArtifact",
+    "AiAction",
     # Phase C
     "RegulatoryAuthority",
     "QualityFramework",

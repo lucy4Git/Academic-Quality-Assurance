@@ -46,22 +46,24 @@ This document validates that the Phase E planning package is internally consiste
 
 | Category | Prefix | Count |
 |----------|--------|-------|
-| Security | AC-SEC-* | 10 |
-| Background processing | AC-BG-* | 5 |
-| Regulatory | AC-REG-* | 5 |
-| Analytics | AC-ANA-* | 6 |
-| AI governance | AC-GOV-* | 5 (also AIGG variants) |
-| Corrective actions | AC-CA-* | 5 |
-| UX | AC-UX-* | 5 |
-| Pilot | AC-PILOT-* | 4 |
-| NFR | AC-NFR-* | 8 |
-| Tenant isolation | AC-TEN-* | 4 |
-| AI governance (AIGG) | AC-AIGG-* | 5 |
-| Evaluation | AC-EVAL-* | 6 |
-| **Total** | | **74–79 unique IDs** |
+| Security | AC-SEC-* | 10 (AC-SEC-01 to AC-SEC-10) |
+| Background processing | AC-BG-* | 5 (AC-BG-01 to AC-BG-05) |
+| Regulatory | AC-REG-* | 5 (AC-REG-01 to AC-REG-05) |
+| Analytics | AC-ANA-* | 6 (AC-ANA-01 to AC-ANA-06) |
+| AI governance | AC-GOV-* | 5 (AC-GOV-01 to AC-GOV-05) |
+| Corrective actions | AC-CA-* | 5 (AC-CA-01 to AC-CA-05) |
+| UX | AC-UX-* | 5 (AC-UX-01 to AC-UX-05) |
+| Pilot | AC-PILOT-* | 4 (AC-PILOT-01 to AC-PILOT-04) |
+| NFR | AC-NFR-* | 8 (AC-NFR-01 to AC-NFR-08) |
+| Tenant isolation | AC-TEN-* | 4 (AC-TEN-01 to AC-TEN-04) |
+| AI governance (AIGG) | AC-AIGG-* | 5 (AC-AIGG-01 to AC-AIGG-05) |
+| Evaluation | AC-EVAL-* | 6 (AC-EVAL-01 to AC-EVAL-06) |
+| **Total** | | **68 unique acceptance-criterion IDs** |
+
+> **Note on grep methodology**: the regex `AC-[A-Z]*-[0-9]*` also matches bare category prefixes (e.g. `AC-SEC-`) in the completion gate on line 155 of the document, producing 79 raw matches. The authoritative count uses `AC-[A-Z]*-[0-9][0-9]*` (requiring at least one digit), yielding exactly 68 numbered IDs. Earlier documentation used the range "74–79" — that estimate is superseded by this exact count.
 
 **Duplicate IDs found:** 0  
-**Orphaned acceptance criteria:** 0 — all criteria map to a planning document requirement category
+**Orphaned acceptance criteria:** 0 — every category maps to a corresponding requirement category in AQAA_PHASE_E_REQUIREMENTS.md (AC-SEC-* ↔ E-SEC-*, AC-BG-* ↔ E-FR-* background, AC-REG-* ↔ E-FR-* regulatory, AC-ANA-* ↔ E-FR-* analytics, AC-GOV-* ↔ E-GOV-*, AC-CA-* ↔ E-FR-* corrective actions, AC-UX-* ↔ E-UX-*, AC-PILOT-* ↔ E-OPS-*, AC-NFR-* ↔ E-NFR-*, AC-TEN-* ↔ E-SEC-*, AC-AIGG-* ↔ E-GOV-*, AC-EVAL-* ↔ E-EVAL-*)
 
 ---
 
@@ -218,7 +220,7 @@ No planned feature is presented as implemented in the Phase D baseline. No Phase
 | Check | Result |
 |-------|--------|
 | Unique requirement IDs | PASS (88 unique, 0 duplicates) |
-| Unique acceptance criterion IDs | PASS (0 duplicates) |
+| Unique acceptance criterion IDs | PASS (68 unique IDs, 0 duplicates) |
 | Unique risk IDs | PASS (16 unique R-01–R-16) |
 | Unique metric IDs | PASS (25 unique M-01–M-25) |
 | Sprint references valid | PASS (E0–E7 consistent) |

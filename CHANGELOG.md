@@ -4,6 +4,36 @@ All notable changes to this project are documented here.
 
 ---
 
+## [Unreleased] — Phase E Planning Package (APPROVED_WITH_CONDITIONS)
+
+### Added
+- **Phase E planning package** — 15 planning documents in `docs/phase-e/` covering capability inventory, commercial gap analysis, vision and scope, requirements, architecture, security and governance, data requirements, regulatory knowledge plan, role experience plan, evaluation plan, pilot deployment plan, risk register, sprint roadmap, acceptance criteria, and master index
+- **ADR-0009 through ADR-0016** — 8 new Architecture Decision Records (all remain PROPOSED): background task queue (ARQ), secrets management (Docker secrets), observability (structlog + Prometheus + Sentry), PDF generation (WeasyPrint), pilot tenant isolation (existing is_demo field), regulatory knowledge governance model, reverse proxy (Caddy), analytics aggregation (pre-aggregated snapshots)
+- **AQAA_PHASE_E_OWNER_REVIEW_REPORT.md** — Independent 17-section architecture, security, governance, and commercial review; verdict: READY FOR OWNER APPROVAL WITH CONDITIONS; 4 discrepancies (DISC-01 through DISC-04) found and resolved
+- **AQAA_PHASE_E_OWNER_APPROVAL.md** — Formal owner approval: APPROVED_WITH_CONDITIONS; records OD-01, OD-02, autonomous-action boundaries, ADR status, approved workstreams and sprint roadmap
+- **AQAA_PHASE_E_TRACEABILITY_VALIDATION.md** — Pre-commit traceability validation (88 unique requirements, 0 duplicate IDs, 9-table count consistent, all ADR refs resolve); result: PASS
+- **PHASE_TRACKER.md** — Phase E status updated to APPROVED_WITH_CONDITIONS; OD-01 and OD-02 tracked as OPEN; Sprint E0 AUTHORIZED_NOT_STARTED; implementation 0%
+
+### Documentation corrections (DISC-01 through DISC-04)
+- **DISC-01** — Capability inventory: added section 3.15 Notifications with correct 10 NotificationType values
+- **DISC-02** — Capability inventory: clarified that `attachment_grounding_status` is computed per-request in `ai_assistant.py` and is not a persisted model field
+- **DISC-03** — ADR-0013: revised to adopt existing `Institution.is_demo` field; removed proposed `is_internal_test` column (would have been redundant)
+- **DISC-04** — Authoritative table count established as 9 new tables; architecture plan updated to include M-E-00 migration for background_job_logs and audit_trigger_schedules; data requirements updated with explicit 9-table summary table
+
+### Notes
+- No source code changes in this planning package
+- No database migrations created
+- No runtime configuration altered
+- No dependency installations
+- No deployment changes
+- Phase D tag v0.9.0-phase-d preserved and unchanged
+- Sprint E0 authorized; awaiting push and PR merge before implementation begins
+- OD-01 (Information Officer / data-processing governance): OPEN
+- OD-02 (Pilot institution confirmed): OPEN
+- All ADRs remain PROPOSED
+
+---
+
 ## [4.2.0] — 2026-07-12 · Phase 4 Wave 3: Multi-Role Live UX Validation + Improvement
 
 ### Added

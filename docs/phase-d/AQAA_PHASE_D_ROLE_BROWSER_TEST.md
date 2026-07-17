@@ -142,3 +142,36 @@
 | LECTURER | ✅ | ✅ |
 | STUDENT | ✅ blocked | ✅ |
 | Cross-tenant | ✅ blocked | ✅ |
+
+---
+
+## Live API Verification Evidence (2026-07-15)
+
+All 8 roles authenticated successfully via `POST /api/v1/auth/login` with password `ChangeMe123!`.
+
+| Role | Email | Token Obtained | Role in /auth/me |
+|------|-------|---------------|-----------------|
+| SYSTEM_ADMIN | admin@test.com | ✅ | `system_admin` |
+| QA_OFFICER (TUT) | qa.officer@tut.ac.za | ✅ | `quality_assurance_officer` |
+| FACULTY_DEAN (TUT) | dean.ict@tut.ac.za | ✅ | `faculty_dean` |
+| HEAD_OF_DEPARTMENT (TUT) | hod.cs@tut.ac.za | ✅ | `head_of_department` |
+| PROGRAMME_COORDINATOR (TUT) | coordinator.it@tut.ac.za | ✅ | `programme_coordinator` |
+| LECTURER (TUT) | lecturer.cs@tut.ac.za | ✅ | `lecturer` |
+| STUDENT (TUT) | student.cs@tut.ac.za | ✅ | `student` |
+| QA_OFFICER (UP) | qa.officer@up.ac.za | ✅ | `quality_assurance_officer` |
+
+### RBAC Enforcement (Live Results)
+| Check | Result | HTTP Code |
+|-------|--------|-----------|
+| Student → GET /ai-assistant/sessions | ✅ Blocked | 403 |
+| Student → POST /ai-assistant/ask-stream | ✅ Blocked | 403 |
+| QA Officer (TUT) → GET /ai-assistant/sessions | ✅ Allowed | 200 |
+| Lecturer (TUT) → GET /ai-assistant/sessions | ✅ Allowed | 200 (5 sessions) |
+| System Admin institution_id | ✅ null (cross-institution) | — |
+
+### Cross-Tenant Isolation (Live Results)
+| Check | Result |
+|-------|--------|
+| TUT ↔ UP module code overlap | **0 modules** — no data leakage |
+| UP QA reading TUT lecturer session | **HTTP 403** — blocked |
+| TUT and UP have separate institution_ids | ✅ confirmed |

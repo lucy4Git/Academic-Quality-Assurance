@@ -1,0 +1,134 @@
+{
+  "release": "v0.9.0-phase-d",
+  "phase": "D",
+  "date": "2026-07-17",
+  "project": "AQAA — Academic Quality Assurance Agent",
+  "status": "ACCEPTED",
+  "branch": "recovery/semantic-grounding-and-audit-centre",
+  "base_commit": "5b6e211756a71f27294c9f50dd2a6bfa6217a6e2",
+  "tag": "v0.9.0-phase-d",
+  "runtime": {
+    "python": "3.13.2",
+    "node": "22.14.0",
+    "npm": "11.16.0",
+    "docker": "29.5.3",
+    "postgres": "16.14",
+    "nextjs": "14.2.35",
+    "fastapi": "0.136.3"
+  },
+  "database": {
+    "engine": "PostgreSQL 16",
+    "database_name": "aqaa",
+    "tables": 58,
+    "migration_head": "7602e7b39d25",
+    "migration_count": 21
+  },
+  "vector_store": {
+    "engine": "Qdrant v1.8.4",
+    "collections": [
+      {
+        "name": "tut_2026_v1_1_0",
+        "points": 196,
+        "dimensions": 384,
+        "distance": "Cosine"
+      },
+      {
+        "name": "up_2026_v1_0_0",
+        "points": 28,
+        "dimensions": 384,
+        "distance": "Cosine"
+      }
+    ],
+    "embedding_model": "all-MiniLM-L6-v2"
+  },
+  "test_results": {
+    "backend_tests": 1319,
+    "backend_failures": 0,
+    "typescript_errors": 0,
+    "production_build": "PASS"
+  },
+  "seed_data": {
+    "institutions": 28,
+    "faculties": 150,
+    "departments": 325,
+    "programmes": 748,
+    "modules": 2327,
+    "users": 95,
+    "total_rows": 3673
+  },
+  "features_delivered": [
+    "AI-native universal workspace (three-panel)",
+    "Conversation persistence and restore",
+    "Module context establishment via SSE",
+    "Semantic attachment grounding (6-stage pipeline)",
+    "Findings lifecycle integration",
+    "Artifact create/list (JSON + Markdown)",
+    "Session pin/rename/archive",
+    "Regulatory framework engine integration (source_status)",
+    "Multi-tenant security controls (403/404 enforcement)",
+    "ZIP multi-format parsing (5 MIME types)",
+    "8-role RBAC enforcement"
+  ],
+  "known_limitations": [
+    "Export: JSON and Markdown only (no PDF/DOCX/XLSX)",
+    "activeModuleId requires live SSE context event (not restored on reload)",
+    "MongoDB not wired",
+    "No real-time multi-user collaboration",
+    "Virus scan disabled in development"
+  ],
+  "release_artifacts": {
+    "database_snapshots": [
+      "database/snapshots/phase-d/aqaa_phase_d_schema.sql",
+      "database/snapshots/phase-d/aqaa_phase_d_schema_inventory.json",
+      "database/snapshots/phase-d/aqaa_phase_d_seed_data.sql",
+      "database/snapshots/phase-d/migration_manifest.json",
+      "database/snapshots/phase-d/aqaa_phase_d_seed_manifest.json",
+      "database/snapshots/phase-d/qdrant_collection_manifest.json"
+    ],
+    "release_docs": [
+      "docs/releases/phase-d/AQAA_PHASE_D_PRE_RELEASE_AUDIT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_FINAL_REGRESSION_REPORT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_AS_BUILT_ARCHITECTURE.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_RUNTIME_FLOW_MAP.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_COMPONENT_INVENTORY.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_DEPLOYMENT_SNAPSHOT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_DATABASE_SCHEMA_SNAPSHOT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_MIGRATION_VALIDATION.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_SEED_DATA_SNAPSHOT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_QDRANT_SNAPSHOT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_ENVIRONMENT_VARIABLES.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_DOCKER_SERVICE_MANIFEST.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_RELEASE_NOTES.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_KNOWN_LIMITATIONS.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_ROLLBACK_AND_RESTORE.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_RELEASE_MANIFEST.json",
+      "docs/releases/phase-d/AQAA_PHASE_D_BACKUP_INTEGRITY_REPORT.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_GIT_TAG_RECORD.md",
+      "docs/releases/phase-d/AQAA_PHASE_D_OWNER_ACCEPTANCE.md"
+    ],
+    "browser_acceptance_docs": [
+      "docs/phase-d/AQAA_LECTURER_END_TO_END_EVIDENCE.md",
+      "docs/phase-d/AQAA_FINDINGS_BROWSER_WORKFLOW_EVIDENCE.md",
+      "docs/phase-d/AQAA_QA_OFFICER_BROWSER_EVIDENCE.md",
+      "docs/phase-d/AQAA_REGULATORY_BROWSER_WORKFLOW_EVIDENCE.md",
+      "docs/phase-d/AQAA_ARTIFACT_BROWSER_AND_EXPORT_EVIDENCE.md",
+      "docs/phase-d/AQAA_EIGHT_ROLE_FINAL_BROWSER_EVIDENCE.md",
+      "docs/phase-d/AQAA_CROSS_TENANT_FINAL_BROWSER_EVIDENCE.md",
+      "docs/phase-d/AQAA_ZIP_FINAL_SECURITY_EVIDENCE.md",
+      "docs/phase-d/AQAA_PHASE_D_FINAL_ACCESSIBILITY_EVIDENCE.md",
+      "docs/phase-d/AQAA_PHASE_D_FINAL_BROWSER_ACCEPTANCE.md",
+      "docs/phase-d/AQAA_PHASE_D_OWNER_ACCEPTANCE_REPORT.md"
+    ]
+  },
+  "security_confirmation": {
+    "no_secrets_committed": true,
+    "no_env_files_committed": true,
+    "no_real_student_records": true,
+    "no_production_credentials": true,
+    "no_confidential_evidence": true,
+    "standalone_project": true
+  },
+  "phase_e_authorized": true,
+  "generated_by": "AQAA Engineering",
+  "generated_at": "2026-07-17"
+}

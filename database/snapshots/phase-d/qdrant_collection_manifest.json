@@ -1,0 +1,86 @@
+{
+  "generated": "2026-07-17",
+  "qdrant_version": "1.x",
+  "qdrant_endpoint": "http://localhost:6333",
+  "embedding_provider": "sentence-transformers",
+  "embedding_model": "all-MiniLM-L6-v2",
+  "embedding_dimensions": 384,
+  "distance_metric": "Cosine",
+  "collections": [
+    {
+      "name": "tut_2026_v1_1_0",
+      "institution_code": "TUT",
+      "institution_name": "Tshwane University of Technology",
+      "institution_id": "46bb6ff4-2ad8-4abe-9ace-6422d9b7636c",
+      "knowledge_package_version": "v1.1.0",
+      "knowledge_package_year": 2026,
+      "status": "green",
+      "optimizer_status": "ok",
+      "points_count": 196,
+      "indexed_vectors_count": 0,
+      "segments_count": 8,
+      "vector_size": 384,
+      "distance": "Cosine",
+      "shard_number": 1,
+      "replication_factor": 1,
+      "hnsw_config": {
+        "m": 16,
+        "ef_construct": 100,
+        "full_scan_threshold": 10000
+      },
+      "payload_fields": [
+        "entity_type",
+        "entity_id",
+        "institution_id",
+        "title",
+        "text",
+        "source_document"
+      ],
+      "content_type": "Institutional Knowledge Package — TUT modules, programmes, faculties"
+    },
+    {
+      "name": "up_2026_v1_0_0",
+      "institution_code": "UP",
+      "institution_name": "University of Pretoria",
+      "institution_id": "a3294995-a14e-4574-950a-8d77031d8310",
+      "knowledge_package_version": "v1.0.0",
+      "knowledge_package_year": 2026,
+      "status": "green",
+      "optimizer_status": "ok",
+      "points_count": 28,
+      "indexed_vectors_count": 0,
+      "segments_count": 8,
+      "vector_size": 384,
+      "distance": "Cosine",
+      "shard_number": 1,
+      "replication_factor": 1,
+      "hnsw_config": {
+        "m": 16,
+        "ef_construct": 100,
+        "full_scan_threshold": 10000
+      },
+      "payload_fields": [
+        "entity_type",
+        "entity_id",
+        "institution_id",
+        "title",
+        "text",
+        "source_document"
+      ],
+      "content_type": "Institutional Knowledge Package — UP modules, programmes, faculties"
+    }
+  ],
+  "backup_strategy": {
+    "method": "Qdrant snapshot API or reindex from source",
+    "snapshot_endpoint": "POST /collections/{name}/snapshots",
+    "restore_endpoint": "PUT /collections/{name}/snapshots/recover",
+    "data_sensitivity": "Low — test institutional knowledge packages only. No confidential student or staff data.",
+    "preferred_restore": "reindex",
+    "reindex_command": "python backend/scripts/reindex_knowledge_packages.py --institution TUT UP"
+  },
+  "restore_strategy": {
+    "1_create_collection": "PUT /collections/{name} with vector_size=384, distance=Cosine",
+    "2_reindex": "Run reindex script from institutional knowledge package JSON files",
+    "3_verify": "GET /collections/{name} — check points_count > 0"
+  }
+}

@@ -47,9 +47,27 @@ Phase D delivered the full AI Workspace experience: conversational audit queries
 | D29 | 8 role scenarios verified (Student blocked, cross-tenant blocked) | ✅ |
 | D30 | Cross-tenant isolation verified (6 isolation points) | ✅ |
 | D31 | Frontend TypeScript: 0 errors | ✅ |
-| D32 | Backend tests: 1,274 passing, 0 failures | ✅ |
+| D32 | Backend tests: 1,319 passing, 0 failures | ✅ |
 
 **All 32 conditions: PASSED**
+
+---
+
+## Closure Sprint Additions (2026-07-15)
+
+The following gaps were identified in the closure audit and resolved before Phase D was signed off:
+
+| Gap | Fix | Tests |
+|-----|-----|-------|
+| ZIP backend parser only registered `application/zip` | Added 4 Windows/legacy variants to `ZipParser.supported_mime_types` | `TestZipMimeTypeVariants` (8 tests) |
+| `attached_file_ids` stored but never used in retrieval | Route fetches + parses files, passes as `injected_chunks` to `advanced_ask()` | `TestAttachmentGrounding` (3 tests) |
+| `structured_blocks` and `citations` not persisted after stream | `_persist_and_stream()` now captures all SSE event types | `TestStructuredBlocksPersistence` (4 tests) |
+| `ChatMessageBrief` missing Phase D fields on restoration | Added `attached_file_ids`, `structured_blocks`, `citations` to schema + route | `TestChatMessageBriefFields` (5 tests) |
+| `ChatSessionDetail` missing `is_pinned`/`is_archived` | Added both fields to schema + `get_session()` constructor | `TestChatSessionDetailFields` (4 tests) |
+| Cross-tenant session access test missing | Verified `get_session()` raises 403 for foreign `user_id` | `TestCrossTenantSessionAccess` (2 tests) |
+| Student role exclusion test missing | Verified `STUDENT` absent from `LecturerRequired` allowed set | `TestStudentRoleBlocked` (4 tests) |
+
+**Test suite after closure sprint: 1,310 passing. After runtime validation sprint hardening: 1,319 passing.**
 
 ---
 
@@ -99,6 +117,6 @@ Phase D delivered the full AI Workspace experience: conversational audit queries
 ## Verdict
 
 **Phase D: COMPLETE.**
-All 32 completion gate conditions passed. Production build clean. 1,274 backend tests passing.
+All 32 completion gate conditions passed. Production build clean. 1,319 backend tests passing. Runtime validation sprint confirmed HTTP grounding, fixed silent attachment failure bug, hardened the pipeline, and produced 13 additional evidence documents.
 
 Phase E may now begin.

@@ -158,6 +158,12 @@ export interface StreamRegulatoryEvent {
   follow_up_questions: string[];
 }
 
+/** Session persistence event — emitted after the stream completes. */
+export interface StreamSessionEvent {
+  type: "session";
+  session_id: string;
+}
+
 export type StreamEvent =
   | StreamContextEvent
   | StreamPlanEvent
@@ -169,7 +175,8 @@ export type StreamEvent =
   | StreamMetadataEvent
   | StreamDoneEvent
   | StreamErrorEvent
-  | StreamRegulatoryEvent;
+  | StreamRegulatoryEvent
+  | StreamSessionEvent;
 
 export interface StreamSource {
   entity_type?: string;

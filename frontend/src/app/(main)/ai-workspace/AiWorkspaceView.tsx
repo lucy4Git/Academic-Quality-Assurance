@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth.store";
 import {
   useAsk, useSuggestedPrompts, useCreateSession, useChatSessions, useDeleteSession,
+  useChatSession, usePinSession, useRenameSession, useArchiveSession,
 } from "@/hooks/useAiAssistant";
 import { useMultiAgent, type MultiAgentResponse } from "@/hooks/useWorkspace";
 import {
@@ -28,6 +29,7 @@ import {
   RotateCcw, Star, AlertCircle, Sparkles, Hash, Settings,
   Menu, Pin, PinOff, Mic, Paperclip, StopCircle, ChevronDown,
   ChevronRight, Search as SearchIcon, RefreshCw, Share2,
+  Pencil, Archive,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -593,37 +595,41 @@ const MessageBubble = memo(function MessageBubble({
 // ── Conversation sidebar ───────────────────────────────────────────────────────
 
 function ConversationSidebar({
-  activeSessionId, onSelect, onNew, onDelete, onPin,
-  institutionCode, isAdmin, onInstitutionChange, pinnedIds,
+  activeSessionId, onSelect, onNew, onDelete, onPin, onRename, onArchive,
+  institutionCode, isAdmin, onInstitutionChange,
 }: {
   activeSessionId: string | null;
   onSelect: (id: string) => void;
   onNew: () => void;
   onDelete: (id: string) => void;
   onPin: (id: string) => void;
+  onRename: (id: string, title: string) => void;
+  onArchive: (id: string) => void;
   institutionCode: string;
   isAdmin: boolean;
   onInstitutionChange: (code: string) => void;
-  pinnedIds: Set<string>;
 }) {
   const { data: sessions } = useChatSessions();
   const [searchQuery, setSearchQuery] = useState("");
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState("");
 
   const filtered = sessions?.filter((s) =>
     !searchQuery || (s.title ?? s.mode).toLowerCase().includes(searchQuery.toLowerCase())
   ) ?? [];
 
-  const pinned = filtered.filter((s) => pinnedIds.has(s.id));
-  const recent = filtered.filter((s) => !pinnedIds.has(s.id));
+  const pinned = filtered.filter((s) => s.is_pinned);
+  const recent = filtered.filter((s) => !s.is_pinned);
 
   function SessionRow({ s }: { s: typeof filtered[number] }) {
+    const isRenaming = renamingId === s.id;
     return (
       <div
         role="button"
         tabIndex={0}
         aria-label={`Open: ${s.title ?? s.mode}`}
-        onKeyDown={(e) => e.key === "Enter" && onSelect(s.id)}
-        onClick={() => onSelect(s.id)}
+        onKeyDown={(e) => !isRenaming && e.key === "Enter" && onSelect(s.id)}
+        onClick={() => !isRenaming && onSelect(s.id)}
         className={cn(
           "group flex items-center justify-between gap-1 rounded-xl px-3 py-2.5 cursor-pointer transition-colors",
           s.id === activeSessionId
@@ -632,7 +638,24 @@ function ConversationSidebar({
         )}
       >
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-medium truncate">{s.title || s.mode.replace(/_/g, " ")}</p>
+          {isRenaming ? (
+            <input
+              autoFocus
+              type="text"
+              value={renameValue}
+              onChange={(e) => setRenameValue(e.target.value)}
+              onBlur={() => { onRename(s.id, renameValue); setRenamingId(null); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") { onRename(s.id, renameValue); setRenamingId(null); }
+                if (e.key === "Escape") setRenamingId(null);
+                e.stopPropagation();
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full text-xs font-medium bg-background border border-border rounded px-1 py-0.5 outline-none"
+            />
+          ) : (
+            <p className="text-xs font-medium truncate">{s.title || s.mode.replace(/_/g, " ")}</p>
+          )}
           <div className="flex items-center gap-1.5 mt-0.5">
             <Clock className="h-2.5 w-2.5 text-muted-foreground opacity-50" />
             <span className="text-[10px] text-muted-foreground">{s.message_count} msgs</span>
@@ -643,12 +666,28 @@ function ConversationSidebar({
             type="button"
             onClick={(e) => { e.stopPropagation(); onPin(s.id); }}
             className="p-1 rounded hover:bg-accent"
-            aria-label={pinnedIds.has(s.id) ? "Unpin" : "Pin"}
+            aria-label={s.is_pinned ? "Unpin" : "Pin"}
           >
-            {pinnedIds.has(s.id)
+            {s.is_pinned
               ? <PinOff className="h-3 w-3 text-blue-500" />
               : <Pin className="h-3 w-3 text-muted-foreground" />
             }
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setRenameValue(s.title ?? ""); setRenamingId(s.id); }}
+            className="p-1 rounded hover:bg-accent"
+            aria-label="Rename"
+          >
+            <Pencil className="h-3 w-3 text-muted-foreground" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onArchive(s.id); }}
+            className="p-1 rounded hover:bg-accent"
+            aria-label="Archive"
+          >
+            <Archive className="h-3 w-3 text-muted-foreground" />
           </button>
           <button
             type="button"
@@ -863,12 +902,32 @@ const ALLOWED_TYPES = new Set([
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  // ZIP — browsers and OS report multiple MIME types for the same format
   "application/zip",
+  "application/x-zip-compressed",   // Windows
+  "application/x-zip",
+  "application/x-compressed",
+  "multipart/x-zip",
   "text/plain",
   "text/csv",
   "image/png",
   "image/jpeg",
 ]);
+
+const ALLOWED_EXTENSIONS = new Set([
+  ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip",
+  ".txt", ".csv", ".png", ".jpg", ".jpeg",
+]);
+
+function isAllowedFile(file: File): boolean {
+  if (ALLOWED_TYPES.has(file.type)) return true;
+  // Fallback: check extension when browser reports generic or empty MIME
+  if (file.type === "" || file.type === "application/octet-stream") {
+    const ext = "." + file.name.split(".").pop()?.toLowerCase();
+    return ALLOWED_EXTENSIONS.has(ext);
+  }
+  return false;
+}
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -911,7 +970,7 @@ function PromptComposer({
       toast.error(`${file.name} exceeds ${MAX_FILE_MB} MB limit`);
       return;
     }
-    if (!ALLOWED_TYPES.has(file.type) && file.type !== "") {
+    if (!isAllowedFile(file)) {
       toast.error(`${file.name}: unsupported file type`);
       return;
     }
@@ -1247,12 +1306,9 @@ export function AiWorkspaceView() {
   // D1 — Resolved context from the last ask-stream request
   const [resolvedContext, setResolvedContext] = useState<StreamContextEvent | null>(null);
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => {
-    try {
-      const stored = localStorage.getItem("aqaa:pinned-sessions");
-      return stored ? new Set(JSON.parse(stored) as string[]) : new Set();
-    } catch { return new Set(); }
-  });
+  const [isRestoringSession, setIsRestoringSession] = useState(false);
+  // Track whether current messages came from an active stream (don't re-restore)
+  const isStreamingRef = useRef(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -1261,6 +1317,29 @@ export function AiWorkspaceView() {
   const multiAgent = useMultiAgent();
   const createSession = useCreateSession();
   const deleteSession = useDeleteSession();
+  const pinSession = usePinSession();
+  const renameSession = useRenameSession();
+  const archiveSession = useArchiveSession();
+
+  // Load historical messages when a session is selected from the sidebar
+  const { data: sessionDetail } = useChatSession(activeSessionId);
+
+  useEffect(() => {
+    // Skip: no data, actively streaming, or this is a mid-stream session update
+    if (!sessionDetail || isStreamLoading || isStreamingRef.current) return;
+    setIsRestoringSession(true);
+    const restored = sessionDetail.messages.map((m) => ({
+      id: m.id,
+      role: m.role as "user" | "assistant",
+      content: m.content,
+      timestamp: new Date(m.created_at),
+      provider: m.provider ?? undefined,
+      sources: (m.sources ?? []) as StreamSource[],
+    }));
+    setMessages(restored);
+    setIsRestoringSession(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionDetail?.id, sessionDetail?.messages.length]);
 
   const isLoading = ask.isPending || multiAgent.isPending || isStreamLoading;
   const lastAssistantMsg = [...messages].reverse().find((m) => m.role === "assistant") ?? null;
@@ -1279,14 +1358,33 @@ export function AiWorkspaceView() {
     }
   }, []);
 
-  const handlePin = useCallback((id: string) => {
-    setPinnedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      try { localStorage.setItem("aqaa:pinned-sessions", JSON.stringify(Array.from(next))); } catch {}
-      return next;
-    });
-  }, []);
+  const handlePin = useCallback(async (id: string) => {
+    try {
+      await pinSession.mutateAsync(id);
+      queryClient.invalidateQueries({ queryKey: ["chat-sessions"] });
+    } catch {
+      toast.error("Could not update pin state");
+    }
+  }, [pinSession, queryClient]);
+
+  const handleRename = useCallback(async (id: string, title: string) => {
+    try {
+      await renameSession.mutateAsync({ sessionId: id, title });
+      queryClient.invalidateQueries({ queryKey: ["chat-sessions"] });
+    } catch {
+      toast.error("Could not rename conversation");
+    }
+  }, [renameSession, queryClient]);
+
+  const handleArchive = useCallback(async (id: string) => {
+    try {
+      await archiveSession.mutateAsync(id);
+      if (id === activeSessionId) { setActiveSessionId(null); setMessages([]); }
+      queryClient.invalidateQueries({ queryKey: ["chat-sessions"] });
+    } catch {
+      toast.error("Could not archive conversation");
+    }
+  }, [archiveSession, activeSessionId, queryClient]);
 
   const handleNewSession = useCallback(async () => {
     try {
@@ -1338,6 +1436,7 @@ export function AiWorkspaceView() {
       id: streamMsgId, role: "assistant", content: "", isStreaming: true, timestamp: new Date(),
     }]);
     setIsStreamLoading(true);
+    isStreamingRef.current = true;
 
     abortRef.current = new AbortController();
 
@@ -1423,6 +1522,12 @@ export function AiWorkspaceView() {
               ...m, isStreaming: false, isError: true, errorMessage: event.message,
             } : m,
           ));
+        } else if (event.type === "session") {
+          // D11 — backend has created/identified the session; update sidebar
+          if (event.session_id) {
+            setActiveSessionId(event.session_id);
+            queryClient.invalidateQueries({ queryKey: ["chat-sessions"] });
+          }
         }
       }
     } catch (err) {
@@ -1440,23 +1545,28 @@ export function AiWorkspaceView() {
       }
     } finally {
       setIsStreamLoading(false);
+      isStreamingRef.current = false;
       abortRef.current = null;
     }
-  }, [isLoading, isAdmin, institutionCode]);
+  }, [isLoading, isAdmin, institutionCode, queryClient]);
 
   return (
     <div className="flex h-full overflow-hidden">
       {/* ── Left sidebar ──────────────────────────────────────────────────── */}
       <ConversationSidebar
         activeSessionId={activeSessionId}
-        onSelect={(id) => { setActiveSessionId(id); setMessages([]); }}
+        onSelect={(id) => {
+          setMessages([]);
+          setActiveSessionId(id);
+        }}
         onNew={handleNewSession}
         onDelete={handleDeleteSession}
         onPin={handlePin}
+        onRename={handleRename}
+        onArchive={handleArchive}
         institutionCode={institutionCode}
         isAdmin={isAdmin}
         onInstitutionChange={setInstitutionCode}
-        pinnedIds={pinnedIds}
       />
 
       {/* ── Main chat ─────────────────────────────────────────────────────── */}

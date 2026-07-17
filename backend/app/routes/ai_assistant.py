@@ -71,7 +71,19 @@ from app.schemas.ai_assistant import (
     WorkspaceContextHint,
 )
 
+import logging as _logging_module
+
+_logger = _logging_module.getLogger(__name__)
+
 router = APIRouter(prefix="/ai-assistant", tags=["AI QA Assistant"])
+
+# Attachment grounding stage labels
+_STAGE_REQUESTED = "ATTACHMENT_REQUESTED"
+_STAGE_FOUND = "ATTACHMENT_FOUND"
+_STAGE_LOADED = "ATTACHMENT_LOADED"
+_STAGE_PARSED = "ATTACHMENT_PARSED"
+_STAGE_USED = "ATTACHMENT_USED"
+_STAGE_FAILED = "ATTACHMENT_FAILED"
 
 
 # ---------------------------------------------------------------------------
@@ -133,6 +145,7 @@ async def _persist_message_pair(
     attached_file_ids: list[str] | None = None,
     referenced_finding_ids: list[str] | None = None,
     referenced_framework_ids: list[str] | None = None,
+    citations: list | None = None,
 ) -> tuple[uuid.UUID, uuid.UUID]:
     """Persist user question and assistant response to the chat session.
 
@@ -165,6 +178,7 @@ async def _persist_message_pair(
         query_mode=result.get("query_mode"),
         intent=result.get("query_mode"),
         structured_blocks=structured_blocks,
+        citations=citations,
         referenced_finding_ids=referenced_finding_ids,
         referenced_framework_ids=referenced_framework_ids,
         created_at=now,
@@ -262,6 +276,7 @@ async def _stream_ask(
     db: AsyncSession | None = None,
     current_user: User | None = None,
     workspace_context: WorkspaceContextHint | None = None,
+    file_chunks: list[dict] | None = None,
 ) -> Any:
     """Async generator that yields SSE lines for one ask-stream request.
 
@@ -428,6 +443,7 @@ async def _stream_ask(
             context_limit=context_limit,
             mode=effective_mode,
             provider=provider,
+            injected_chunks=file_chunks,
         )
     except Exception as exc:
         import logging
@@ -518,10 +534,111 @@ async def ask_assistant_stream(
 
     attached_ids = [str(fid) for fid in body.attached_file_ids] if body.attached_file_ids else None
 
+    # ---------------------------------------------------------------------------
+    # Attachment grounding pipeline
+    # States per file: REQUESTED → FOUND → LOADED → PARSED → USED / FAILED
+    # When injected_chunks is non-None, advanced_ask skips Qdrant entirely.
+    # When all attachments fail, file_chunks stays [] (not None) so Qdrant is
+    # also bypassed — the assistant must not silently query the knowledge base
+    # when the user pinned scope to specific files.
+    # ---------------------------------------------------------------------------
+    from app.services.file_service import get_file_content
+    from app.parsers.factory import get_parser, is_supported
+
+    file_chunks: list[dict] | None = None
+    attachment_report: dict = {
+        "attachment_grounding_status": "not_requested",
+        "requested_count": 0,
+        "used_count": 0,
+        "failed_count": 0,
+        "files": [],
+    }
+
+    if body.attached_file_ids:
+        attachment_report["attachment_grounding_status"] = "requested"
+        attachment_report["requested_count"] = len(body.attached_file_ids)
+        file_chunks = []
+
+        for fid in body.attached_file_ids:
+            file_status: dict = {
+                "file_id": str(fid),
+                "stage": _STAGE_REQUESTED,
+                "success": False,
+            }
+            try:
+                # FOUND — fetch DB record and raw bytes from storage
+                db_file, raw_bytes = await get_file_content(db, fid)
+                file_status["filename"] = db_file.original_filename
+                file_status["stage"] = _STAGE_FOUND
+
+                # LOADED — bytes available; determine text extraction path
+                mime = db_file.mime_type or ""
+                file_status["stage"] = _STAGE_LOADED
+
+                # PARSED — extract plain text
+                if is_supported(mime):
+                    parser = get_parser(mime)
+                    extraction = await parser.extract(raw_bytes, db_file.original_filename)
+                    text = extraction.text[:8000]
+                else:
+                    text = raw_bytes.decode("utf-8", errors="replace")[:8000]
+                file_status["stage"] = _STAGE_PARSED
+
+                # USED — build knowledge chunk
+                file_chunks.append({
+                    "entity_type": "attached_file",
+                    "entity_id": str(fid),
+                    "title": db_file.original_filename,
+                    "text": text,
+                    "source_document": db_file.original_filename,
+                    "confidence_score": 1.0,
+                    "combined_score": 1.0,
+                    "institution_id": (
+                        str(db_file.institution_id) if db_file.institution_id else None
+                    ),
+                })
+                file_status["stage"] = _STAGE_USED
+                file_status["success"] = True
+
+            except Exception as exc:
+                file_status["stage"] = _STAGE_FAILED
+                file_status["error_type"] = type(exc).__name__
+                _logger.warning(
+                    "ask-stream: attachment extraction failed | "
+                    "file_id=%s filename=%s stage_reached=%s exc_type=%s msg=%s",
+                    fid,
+                    file_status.get("filename", "unknown"),
+                    file_status.get("stage", _STAGE_REQUESTED),
+                    type(exc).__name__,
+                    exc,
+                )
+
+            attachment_report["files"].append(file_status)
+
+        _used = sum(1 for f in attachment_report["files"] if f["success"])
+        _failed = len(attachment_report["files"]) - _used
+        attachment_report["used_count"] = _used
+        attachment_report["failed_count"] = _failed
+
+        if _used == 0:
+            attachment_report["attachment_grounding_status"] = "failed"
+        elif _failed > 0:
+            attachment_report["attachment_grounding_status"] = "partial"
+        else:
+            attachment_report["attachment_grounding_status"] = "success"
+
     async def _persist_and_stream():
+        # Emit attachment status before the LLM stream begins so the client
+        # can display grounding state (success / partial / failed) immediately.
+        if body.attached_file_ids:
+            yield _sse("attachment", attachment_report)
+
         answer_parts: list[str] = []
         result_meta: dict[str, Any] = {}
         context_snapshot: dict | None = None
+        structured_blocks: list | None = None
+        citations_data: list | None = None
+        sources_data: list | None = None
 
         async for chunk in _stream_ask(
             body.question,
@@ -531,18 +648,32 @@ async def ask_assistant_stream(
             db=db,
             current_user=current_user,
             workspace_context=body.workspace_context,
+            file_chunks=file_chunks,
         ):
-            # Accumulate tokens for persistence
+            # Accumulate tokens and metadata for persistence
             try:
                 raw = chunk.removeprefix("data: ").strip()
                 if raw:
                     evt = json.loads(raw)
-                    if evt.get("type") == "token":
+                    etype = evt.get("type")
+                    if etype == "token":
                         answer_parts.append(evt.get("content", ""))
-                    elif evt.get("type") == "done":
+                    elif etype == "done":
                         result_meta = evt
-                    elif evt.get("type") == "context":
+                    elif etype == "context":
                         context_snapshot = evt
+                    elif etype == "structured":
+                        structured_blocks = evt.get("blocks")
+                    elif etype == "metadata":
+                        citations_data = evt.get("citations")
+                    elif etype == "sources":
+                        sources_data = evt.get("sources")
+                    elif etype == "regulatory":
+                        # Persist regulatory citations as structured blocks
+                        # so they survive session restoration.
+                        reg_cits = evt.get("citations", [])
+                        if reg_cits and citations_data is None:
+                            citations_data = reg_cits
             except Exception:
                 pass
             yield chunk
@@ -558,13 +689,16 @@ async def ask_assistant_stream(
                     "provider": result_meta.get("provider"),
                     "model": result_meta.get("model"),
                     "query_mode": result_meta.get("query_mode"),
+                    "sources": sources_data,
+                    "confidence_score": result_meta.get("confidence"),
                 },
                 context_snapshot=context_snapshot,
                 attached_file_ids=attached_ids,
+                structured_blocks=structured_blocks,
+                citations=citations_data,
             )
         except Exception as exc:
-            import logging as _l
-            _l.getLogger(__name__).error("ask-stream: message persistence failed: %s", exc)
+            _logger.error("ask-stream: message persistence failed: %s", exc)
 
         # Emit session_id so the client can restore the session
         yield _sse("session", {"session_id": str(session_id)})
@@ -846,6 +980,8 @@ async def get_session(
         provider=session.provider,
         model_name=session.model_name,
         is_active=session.is_active,
+        is_pinned=session.is_pinned,
+        is_archived=session.is_archived,
         created_at=session.created_at,
         messages=[
             ChatMessageBrief(
@@ -858,6 +994,9 @@ async def get_session(
                 intent=m.intent,
                 created_at=m.created_at,
                 sources=m.sources,
+                attached_file_ids=m.attached_file_ids,
+                structured_blocks=m.structured_blocks,
+                citations=m.citations,
             )
             for m in messages
         ],

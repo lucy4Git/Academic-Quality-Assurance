@@ -123,3 +123,19 @@ Successful attachment creates a `File` record:
 | Cross-tenant attachment blocked | ✅ |
 
 **Overall: PASS**
+
+---
+
+## Live Browser Evidence (2026-07-15)
+
+Verified in browser preview at `http://localhost:3000` as `lecturer.cs@tut.ac.za` (Ms. Zanele Khumalo, Lecturer, TUT):
+
+| Step | Observed |
+|------|----------|
+| Click paperclip with module context active (CGA115D) | No guard toast — file input opened |
+| Simulated `test-assessment-brief.pdf` (51 B) via programmatic change event | `POST /api/proxy/ai-assistant/attach → 201 Created` |
+| Attachment chip | Displayed "test-assessment-bri... 51 B" with green ✓ |
+| Submitted with question | Chip cleared; `ask-stream → 200 OK` fired |
+| Unsupported type attempt (`.zip`) | Toast error "Admission Enquiry chatbot.zip: unsupported file type" |
+| File input `accept` attribute | Confirmed: pdf, doc, docx, xls, xlsx, zip, txt, csv, png, jpeg |
+| `multiple` attribute | `true` — multi-file attach supported |

@@ -12,7 +12,9 @@ cd backend
 python -m pytest -q
 ```
 
-### Result: 1,274 tests passed, 0 failed, 0 errors
+### Result: 1,319 tests passed, 0 failed, 0 errors
+
+*(+30 Phase D gap tests in closure sprint; +9 hardening regression tests in runtime sprint — see `tests/test_phase_d_gaps.py`)*
 
 ---
 

@@ -29,24 +29,32 @@ async def advanced_ask(
     context_limit: int = 5,
     mode: str = "qa_assistant",
     provider: BaseAIProvider | None = None,
+    injected_chunks: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Process a NL QA question through the Advanced RAG pipeline.
 
     Flow:
         1. Classify intent
-        2. Retrieve context from Qdrant (tenant-scoped)
+        2. Retrieve context from Qdrant (tenant-scoped) — skipped when injected_chunks given
         3. Re-rank sources and enforce cross-tenant isolation
         4. Build numbered [SOURCE:N] context block + citation index
         5. If LOCAL_DEV → template assembly
            Else → build grounded system prompt requiring inline citations → call AI provider
         6. Verify citations in the answer
         7. Return structured response dict (superset of assistant_service.ask() output)
+
+    Args:
+        injected_chunks: When non-empty, use these chunks instead of Qdrant retrieval.
+            Used by the attachment-grounding path to restrict retrieval to attached files.
     """
     context_limit = min(max(context_limit, 1), 20)
     intent = classify_intent(question)
 
     raw_chunks: list[dict[str, Any]] = []
-    if institution_code.upper() in ACTIVE_INSTITUTION_CODES:
+    if injected_chunks is not None:
+        # Attachment-grounded path: use only the provided file chunks, skip Qdrant.
+        raw_chunks = injected_chunks
+    elif institution_code.upper() in ACTIVE_INSTITUTION_CODES:
         try:
             raw_chunks = search_knowledge(
                 query=question,
@@ -103,12 +111,14 @@ async def advanced_ask(
     sources = [
         {
             "entity_type": c.get("entity_type", ""),
+            "entity_id": c.get("entity_id", "") or None,
             "entity_key": c.get("entity_id", ""),
             "title": c.get("title", ""),
             "text": c.get("text", ""),
             "source_document": c.get("source_document", ""),
             "confidence_score": float(c.get("confidence_score", 0.0)),
             "relevance_score": round(float(c.get("combined_score", c.get("score", 0.0))), 4),
+            "institution_id": c.get("institution_id") or None,
         }
         for c in ranked
     ]

@@ -25,7 +25,13 @@ class ZipParser(DocumentParser):
 
     @property
     def supported_mime_types(self) -> frozenset[str]:
-        return frozenset({"application/zip"})
+        return frozenset({
+            "application/zip",
+            "application/x-zip-compressed",  # Windows
+            "application/x-zip",
+            "application/x-compressed",
+            "multipart/x-zip",
+        })
 
     async def extract(self, content: bytes, filename: str) -> ExtractionResult:
         # Import factory lazily to avoid circular import at module load time.

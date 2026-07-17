@@ -231,6 +231,9 @@ class ChatMessageBrief(BaseModel):
     intent: str | None
     created_at: datetime
     sources: list[dict] | None = None
+    attached_file_ids: list[uuid.UUID] | None = None
+    structured_blocks: list[dict] | None = None
+    citations: list[dict] | None = None
 
     model_config = {"from_attributes": True}
 
@@ -244,6 +247,8 @@ class ChatSessionDetail(BaseModel):
     provider: str | None
     model_name: str | None
     is_active: bool
+    is_pinned: bool = False
+    is_archived: bool = False
     created_at: datetime
     messages: list[ChatMessageBrief]
 

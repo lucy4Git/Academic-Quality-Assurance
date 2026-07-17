@@ -3,6 +3,8 @@
 **Date:** 2026-07-17
 **Release:** v0.9.0-phase-d
 **Decision:** ACCEPTED ✅
+**Core release commit:** `c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2`
+**Tag target:** Final preserved release commit (tag `v0.9.0-phase-d` is authoritative pointer)
 
 ---
 

@@ -4,6 +4,8 @@
 **Date:** 2026-07-17
 **Branch:** `recovery/semantic-grounding-and-audit-centre`
 **Base commit:** `5b6e211`
+**Core release commit:** `c1cec9c` — `release: preserve AQAA Phase D AI-native operating system baseline`
+**Final preserved release commit:** integrity correction commit (tag `v0.9.0-phase-d` is the authoritative pointer)
 
 ---
 

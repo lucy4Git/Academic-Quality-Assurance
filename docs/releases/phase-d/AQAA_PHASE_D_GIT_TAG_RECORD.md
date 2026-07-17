@@ -6,14 +6,27 @@
 
 ---
 
+## Commit Chain
+
+| Role | Hash | Message |
+|------|------|---------|
+| Core release implementation | `c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2` | `release: preserve AQAA Phase D AI-native operating system baseline` |
+| Release metadata completion | `389e1e2` | `docs: add git tag record for v0.9.0-phase-d` |
+
+The tag `v0.9.0-phase-d` is the authoritative pointer to the final preserved release commit.
+The tag message and the tag object itself are the source of truth for what is included.
+
+---
+
 ## Tag Details
 
 | Field | Value |
 |-------|-------|
 | Tag name | `v0.9.0-phase-d` |
 | Tag type | Annotated |
-| Tagged commit | `c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2` |
-| Short hash | `c1cec9c` |
+| Core release commit | `c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2` |
+| Final preserved release commit | `389e1e2` (integrity correction — see below) |
+| Tag target | Final preserved release commit |
 | Tagger | AQAA Engineering |
 | Date | 2026-07-17 |
 | Branch | `recovery/semantic-grounding-and-audit-centre` |
@@ -33,18 +46,25 @@ Includes:
 - findings lifecycle integration
 - regulatory framework engine integration
 - multi-tenant security controls
+- complete Phase D preservation documentation
 - Phase D regression baseline
 ```
 
 ---
 
-## Commit Summary
+## Commit Summaries
 
-**Commit:** `c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2`
-**Message:** `release: preserve AQAA Phase D AI-native operating system baseline`
-**Files changed:** 62
-**Insertions:** 7,120
-**Deletions:** 41
+**Core release commit (`c1cec9c`):**
+`release: preserve AQAA Phase D AI-native operating system baseline`
+— 62 files, 7,120 insertions, 41 deletions
+
+**Release metadata completion commit (`389e1e2`):**
+`docs: add git tag record for v0.9.0-phase-d`
+— 1 file, 104 insertions
+
+**Integrity correction commit:**
+`chore: release-integrity — retag v0.9.0-phase-d to final preservation commit`
+— Updates metadata files; moves tag to final preserved state; fixes schema_inventory BOM
 
 ---
 
@@ -53,7 +73,7 @@ Includes:
 ```bash
 # Resolve tag to commit
 git rev-list -n 1 v0.9.0-phase-d
-# → c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2
+# → final preserved release commit hash
 
 # Show tag details
 git show v0.9.0-phase-d --format="%H %d %s" --no-patch

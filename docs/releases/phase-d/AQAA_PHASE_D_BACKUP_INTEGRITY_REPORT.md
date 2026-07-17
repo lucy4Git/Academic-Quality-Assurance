@@ -2,6 +2,17 @@
 
 **Date:** 2026-07-17
 **Release:** v0.9.0-phase-d
+**Core release commit:** `c1cec9c`
+**Tag target:** Final preserved release commit (integrity correction applied — see below)
+
+### Integrity Correction Applied
+
+The annotated tag `v0.9.0-phase-d` was originally set to `c1cec9c` (core release commit). A subsequent integrity correction:
+1. Stripped UTF-8 BOM from `aqaa_phase_d_schema_inventory.json` (was failing JSON parse with utf-8 codec)
+2. Updated metadata files to record both the core release commit and the release metadata commit
+3. Moved the tag to the final preserved state
+
+The tag is the authoritative pointer. All JSON files now parse cleanly with standard `utf-8` encoding.
 
 ---
 

@@ -6,7 +6,11 @@
   "status": "ACCEPTED",
   "branch": "recovery/semantic-grounding-and-audit-centre",
   "base_commit": "5b6e211756a71f27294c9f50dd2a6bfa6217a6e2",
+  "core_release_commit": "c1cec9c04f1a30d2a88eb16ad8d0db213f7c93b2",
+  "release_metadata_commit": "389e1e2",
   "tag": "v0.9.0-phase-d",
+  "tag_target": "final Phase D preservation commit (see integrity_correction note)",
+  "integrity_correction": "Tag was originally set to core_release_commit. Corrected to target final preserved release commit which includes the git tag record and schema inventory BOM fix.",
   "runtime": {
     "python": "3.13.2",
     "node": "22.14.0",

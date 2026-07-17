@@ -68,3 +68,7 @@ Thumbs.db
 *.swp
 *.swo
 .directory
+
+# --- Claude Code session ephemera (worktrees created by Claude agents) ---
+# Do NOT ignore the entire .claude/ directory — settings.json and launch.json are tracked
+.claude/worktrees/

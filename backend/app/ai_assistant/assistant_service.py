@@ -148,8 +148,9 @@ def assemble_answer(
     chunks: list[dict[str, Any]],
     institution_code: str,
     intent: str,
+    is_local_dev: bool = False,
 ) -> str:
-    """Assemble a template-based answer from retrieved chunks (LOCAL_DEV path)."""
+    """Assemble a template-based answer from retrieved chunks (LOCAL_DEV / fallback path)."""
     preamble = INTENT_PREAMBLES.get(intent, INTENT_PREAMBLES["general"]).format(
         institution_code=institution_code.upper()
     )
@@ -179,7 +180,9 @@ def assemble_answer(
             context_block="\n".join(context_parts),
         )
 
-    return preamble + body + DEV_MODE_NOTICE
+    # Include dev notice when using placeholder embeddings OR local_dev generation.
+    suffix = DEV_MODE_NOTICE if (is_local_dev or embedding_service.IS_PLACEHOLDER) else ""
+    return preamble + body + suffix
 
 
 # ---------------------------------------------------------------------------
@@ -256,9 +259,17 @@ async def ask(
 
     _provider = provider if provider is not None else get_provider()
 
+    retrieval_mode = "placeholder" if embedding_service.IS_PLACEHOLDER else "semantic"
+    emb_provider_name = embedding_service.MODEL_NAME if not embedding_service.IS_PLACEHOLDER else "dev-sha256"
+    generation_mode: str
+    generation_provider: str
+    evidence_support: str
+
     if _provider.is_local_dev:
-        answer = assemble_answer(question, chunks, institution_code, intent)
-        is_placeholder = embedding_service.IS_PLACEHOLDER
+        answer = assemble_answer(question, chunks, institution_code, intent, is_local_dev=True)
+        generation_mode = "deterministic_template"
+        generation_provider = "none"
+        evidence_support = "chunks_retrieved" if chunks else "no_chunks"
     else:
         ikp_version = chunks[0].get("ikp_version", "v1.x.x") if chunks else "v1.x.x"
         system_prompt = build_system_prompt(institution_code, mode, chunks, ikp_version)
@@ -272,15 +283,19 @@ async def ask(
                 temperature=_get_temperature(),
                 max_tokens=_get_max_tokens(),
             )
-            is_placeholder = False
+            generation_mode = "llm"
+            generation_provider = _provider.provider_name
+            evidence_support = "grounded" if chunks else "no_chunks"
         except Exception as exc:
             logger.error(
                 "AI provider '%s' error — falling back to template: %s",
                 _provider.provider_name,
                 exc,
             )
-            answer = assemble_answer(question, chunks, institution_code, intent)
-            is_placeholder = True
+            answer = assemble_answer(question, chunks, institution_code, intent, is_local_dev=False)
+            generation_mode = "deterministic_template"
+            generation_provider = "none"
+            evidence_support = "chunks_retrieved" if chunks else "no_chunks"
 
     sources = [
         {
@@ -305,12 +320,18 @@ async def ask(
         "sources": sources,
         "confidence_score": round(avg_confidence, 4),
         "institution_code": institution_code.upper(),
-        "is_placeholder_mode": is_placeholder,
+        # is_placeholder_mode: True when using placeholder embeddings OR template generation.
+        "is_placeholder_mode": embedding_service.IS_PLACEHOLDER or generation_mode == "deterministic_template",
         "suggested_followups": generate_suggested_followups(intent, institution_code),
         "query_mode": intent,
         "provider": _provider.provider_name,
         "model": _provider.model_name,
         "mode": mode,
+        "retrieval_mode": retrieval_mode,
+        "embedding_provider": emb_provider_name,
+        "generation_mode": generation_mode,
+        "generation_provider": generation_provider,
+        "evidence_support_status": evidence_support,
     }
 
 

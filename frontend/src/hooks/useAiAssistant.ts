@@ -118,6 +118,40 @@ export function useDeleteSession() {
   });
 }
 
+export function usePinSession() {
+  return useMutation<ChatSessionBrief, Error, string>({
+    mutationFn: async (sessionId) => {
+      const { data } = await apiClient.post<ChatSessionBrief>(
+        `/ai-assistant/sessions/${sessionId}/pin`
+      );
+      return data;
+    },
+  });
+}
+
+export function useRenameSession() {
+  return useMutation<ChatSessionBrief, Error, { sessionId: string; title: string }>({
+    mutationFn: async ({ sessionId, title }) => {
+      const { data } = await apiClient.patch<ChatSessionBrief>(
+        `/ai-assistant/sessions/${sessionId}/rename`,
+        { title }
+      );
+      return data;
+    },
+  });
+}
+
+export function useArchiveSession() {
+  return useMutation<ChatSessionBrief, Error, string>({
+    mutationFn: async (sessionId) => {
+      const { data } = await apiClient.post<ChatSessionBrief>(
+        `/ai-assistant/sessions/${sessionId}/archive`
+      );
+      return data;
+    },
+  });
+}
+
 export interface AgentRouterResponse {
   intent: string;
   confidence: number;

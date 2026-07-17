@@ -7,7 +7,14 @@ import { cn } from "@/lib/utils";
 
 /** Map path segments to human-readable labels */
 const SEGMENT_LABELS: Record<string, string> = {
-  dashboard: "Dashboard",
+  dashboard: "Home",
+  workspace: "Workspace",
+  knowledge: "Knowledge",
+  quality: "Quality",
+  administration: "Administration",
+  ai: "AI",
+  extraction: "Extraction Review",
+  acquisition: "Acquisition",
   institutions: "Institutions",
   faculties: "Faculties",
   departments: "Departments",

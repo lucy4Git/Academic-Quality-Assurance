@@ -94,6 +94,8 @@ export interface ChatSessionBrief {
   provider: string | null;
   model_name: string | null;
   is_active: boolean;
+  is_pinned: boolean;
+  is_archived: boolean;
   created_at: string;
   message_count: number;
 }
@@ -108,6 +110,9 @@ export interface ChatMessageBrief {
   intent: string | null;
   created_at: string;
   sources?: Array<Record<string, unknown>> | null;
+  attached_file_ids?: string[] | null;
+  structured_blocks?: Array<Record<string, unknown>> | null;
+  citations?: Array<Record<string, unknown>> | null;
 }
 
 export interface ChatSessionDetail {
@@ -117,6 +122,8 @@ export interface ChatSessionDetail {
   provider: string | null;
   model_name: string | null;
   is_active: boolean;
+  is_pinned: boolean;
+  is_archived: boolean;
   created_at: string;
   messages: ChatMessageBrief[];
 }

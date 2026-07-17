@@ -16,7 +16,7 @@ from app.models.downloaded_document import DownloadedDocument
 
 from .classifier import classify_document
 from .deduplicator import is_duplicate
-from .downloader import download_metadata
+from .downloader import DownloadResult, download_metadata, download_with_content
 
 logger = logging.getLogger(__name__)
 MAX_DOWNLOADS_PER_JOB = 5
@@ -71,7 +71,7 @@ async def _run(
                 break
             url = source.source_url
             try:
-                result_dl = download_metadata(url)
+                result_dl, raw_content = download_with_content(url)
                 log = AcquisitionLog(
                     job_id=job_id,
                     institution_id=institution_id,
@@ -105,6 +105,7 @@ async def _run(
                             data_status=source.data_status,
                             data_confidence=source.data_confidence,
                             is_synthetic=False,
+                            extraction_status="pending",
                         )
                         db.add(doc)
                         await db.flush()
@@ -117,18 +118,29 @@ async def _run(
                             source_url=url,
                         )
                         db.add(version)
+                        await db.commit()
+
+                        # Wave 3: run intelligent extraction in-process
+                        await _run_extraction(db, doc, raw_content)
+
                         downloaded += 1
+                    else:
+                        await db.commit()
                 else:
                     errors += 1
+                    await db.commit()
             except Exception as exc:  # noqa: BLE001
                 logger.exception("Error processing source %s: %s", url, exc)
                 errors += 1
+                await db.rollback()
 
-        job.status = JobStatus.COMPLETED.value
-        job.completed_at = datetime.now(timezone.utc)
-        job.documents_downloaded = downloaded
-        job.errors_count = errors
-        await db.commit()
+        job = await db.get(AcquisitionJob, job_id)
+        if job:
+            job.status = JobStatus.COMPLETED.value
+            job.completed_at = datetime.now(timezone.utc)
+            job.documents_downloaded = downloaded
+            job.errors_count = errors
+            await db.commit()
         logger.info(
             "Job %s completed: %d downloaded, %d errors", job_id, downloaded, errors
         )
@@ -142,3 +154,22 @@ async def _run(
             job.completed_at = datetime.now(timezone.utc)
             job.error_message = str(exc)[:500]
             await db.commit()
+
+
+async def _run_extraction(
+    db: AsyncSession,
+    doc: DownloadedDocument,
+    raw_content: bytes | None,
+) -> None:
+    """Trigger Wave 3 extraction for a newly downloaded document."""
+    try:
+        from .extraction_engine import run_extraction
+        await run_extraction(db, doc, raw_content)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Extraction failed for document %s: %s", doc.id, exc)
+        # Extraction failure must not fail the acquisition job
+        doc.extraction_status = "failed"
+        try:
+            await db.commit()
+        except Exception:  # noqa: BLE001
+            await db.rollback()

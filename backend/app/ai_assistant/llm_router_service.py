@@ -42,6 +42,26 @@ AGENT_LABELS: dict[str, str] = {
     "reporting":     "Reporting & Analytics Agent",
     "workflow":      "Workflow Agent",
     "qa_general":    "QA General Assistant",
+    # Phase C — Regulatory intents
+    "identify_applicable_frameworks":           "Regulatory Framework Identification Agent",
+    "explain_applicability":                    "Framework Applicability Agent",
+    "assess_framework_compliance":              "Framework Compliance Assessment Agent",
+    "assess_integrated_readiness":              "Integrated Regulatory Readiness Agent",
+    "explain_regulatory_requirement":           "Regulatory Requirement Agent",
+    "find_missing_regulatory_evidence":         "Missing Evidence Detection Agent",
+    "compare_frameworks":                       "Framework Comparison Agent",
+    "explain_framework_overlap":                "Framework Overlap Agent",
+    "explain_framework_conflict":               "Framework Conflict Agent",
+    "generate_regulatory_report":               "Regulatory Report Agent",
+    "generate_evidence_pack":                   "Evidence Pack Agent",
+    "create_corrective_action_plan":            "Corrective Action Agent",
+    "explain_regulatory_finding":               "Regulatory Finding Agent",
+    "check_framework_version":                  "Framework Version Agent",
+    "check_qualification_alignment":            "Qualification Alignment Agent",
+    "check_programme_accreditation":            "Programme Accreditation Agent",
+    "check_professional_accreditation":         "Professional Accreditation Agent",
+    "check_institutional_audit_readiness":      "Institutional Audit Readiness Agent",
+    "check_occupational_qualification_compliance": "Occupational Qualification Agent",
 }
 
 _ROUTER_SYSTEM_PROMPT = """\
@@ -63,6 +83,25 @@ Available intents:
 - reporting: Reports, analytics, dashboards, compliance statistics
 - workflow: Approvals, submissions, deadlines, notifications
 - qa_general: General quality assurance questions (default)
+- identify_applicable_frameworks: Which frameworks apply to a programme or institution
+- explain_applicability: Why a framework or standard applies to a specific entity
+- assess_framework_compliance: Assess compliance against a named quality framework
+- assess_integrated_readiness: Holistic readiness across multiple frameworks
+- explain_regulatory_requirement: Explain what a specific criterion or standard requires
+- find_missing_regulatory_evidence: Identify evidence gaps for framework criteria
+- compare_frameworks: Compare or contrast two or more frameworks
+- explain_framework_overlap: Shared criteria between two frameworks
+- explain_framework_conflict: Conflicting or incompatible requirements across frameworks
+- generate_regulatory_report: Generate a compliance or readiness report
+- generate_evidence_pack: Assemble an evidence submission pack for an accrediting body
+- create_corrective_action_plan: Create a remediation plan for findings or gaps
+- explain_regulatory_finding: Explain what a regulatory finding means and how to respond
+- check_framework_version: Check which version of a framework is current or was used
+- check_qualification_alignment: Check NQF/HEQSF alignment for a qualification or programme
+- check_programme_accreditation: Check CHE/DHET programme accreditation status or readiness
+- check_professional_accreditation: Check ECSA/HPCSA/SACE professional body accreditation
+- check_institutional_audit_readiness: CHE site visit or DHET inspection readiness
+- check_occupational_qualification_compliance: QCTO/SETA occupational qualification compliance
 
 Multiple intents may apply — list primary first in 'agents'.
 

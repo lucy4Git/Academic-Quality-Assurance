@@ -1,0 +1,207 @@
+{
+  "generated": "2026-07-17",
+  "migration_head": "7602e7b39d25",
+  "total_migrations": 21,
+  "database": "aqaa",
+  "alembic_location": "backend/alembic/versions/",
+  "migrations": [
+    {
+      "order": 1,
+      "revision_id": "99c7b97c9a76",
+      "down_revision": null,
+      "filename": "20260611_1426_99c7b97c9a76_initial_schema.py",
+      "description": "Initial schema — all Phase A and B tables",
+      "applied": true,
+      "reversible": false,
+      "notes": "Creates all base tables. Irreversible due to data dependencies."
+    },
+    {
+      "order": 2,
+      "revision_id": "bcb42a8b6462",
+      "down_revision": "99c7b97c9a76",
+      "filename": "20260624_1230_bcb42a8b6462_add_programme_qa_fields.py",
+      "description": "Add QA fields to programmes table",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 3,
+      "revision_id": "6bcc7db53782",
+      "down_revision": "bcb42a8b6462",
+      "filename": "20260625_1027_6bcc7db53782_add_module_audit_tables.py",
+      "description": "Add module audit tables (audit_runs, audit_findings)",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 4,
+      "revision_id": "a1afe7223e2a",
+      "down_revision": "6bcc7db53782",
+      "filename": "20260626_0911_a1afe7223e2a_add_audit_evidence_table.py",
+      "description": "Add audit_evidence table",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 5,
+      "revision_id": "146ff3d10cd9",
+      "down_revision": "a1afe7223e2a",
+      "filename": "20260626_0948_146ff3d10cd9_add_audit_history_table.py",
+      "description": "Add audit_history table",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 6,
+      "revision_id": "2a7b17360d01",
+      "down_revision": "146ff3d10cd9",
+      "filename": "20260626_1017_2a7b17360d01_phase5_workflow_comments_notifications.py",
+      "description": "Add workflow comments and notifications tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 7,
+      "revision_id": "7c5db84357e3",
+      "down_revision": "2a7b17360d01",
+      "filename": "20260629_1302_7c5db84357e3_add_adip_registry_tables.py",
+      "description": "Add ADIP document registry tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 8,
+      "revision_id": "b0df78d4b8ec",
+      "down_revision": "7c5db84357e3",
+      "filename": "20260701_1000_b0df78d4b8ec_add_knowledge_review_tables.py",
+      "description": "Add knowledge review batch/items tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 9,
+      "revision_id": "a1b2c3d4e5f6",
+      "down_revision": "b0df78d4b8ec",
+      "filename": "20260701_1200_a1b2c3d4e5f6_add_institution_is_active.py",
+      "description": "Add is_active flag to institutions",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 10,
+      "revision_id": "c4d5e6f7a8b9",
+      "down_revision": "a1b2c3d4e5f6",
+      "filename": "20260703_1000_c4d5e6f7a8b9_add_ai_chat_tables.py",
+      "description": "Add ai_chat_sessions and ai_chat_messages tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 11,
+      "revision_id": "e6f7a8b9c0d1",
+      "down_revision": "c4d5e6f7a8b9",
+      "filename": "20260703_1200_e6f7a8b9c0d1_add_user_registration_fields.py",
+      "description": "Add registration fields to users table",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 12,
+      "revision_id": "d5e6f7a8b9c0",
+      "down_revision": "e6f7a8b9c0d1",
+      "filename": "20260703_1100_d5e6f7a8b9c0_add_qualification_tables.py",
+      "description": "Add qualifications and related tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 13,
+      "revision_id": "f7a8b9c0d1e2",
+      "down_revision": "d5e6f7a8b9c0",
+      "filename": "20260706_0000_f7a8b9c0d1e2_add_institution_registry_fields.py",
+      "description": "Add institution registry extension fields",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 14,
+      "revision_id": "b2c3d4e5f6a7",
+      "down_revision": "f7a8b9c0d1e2",
+      "filename": "20260707_0000_b2c3d4e5f6a7_add_institutional_knowledge_foundation.py",
+      "description": "Add institutional knowledge foundation tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 15,
+      "revision_id": "c3d4e5f6a7b8",
+      "down_revision": "b2c3d4e5f6a7",
+      "filename": "20260707_0001_c3d4e5f6a7b8_add_acquisition_engine.py",
+      "description": "Add document acquisition engine tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 16,
+      "revision_id": "d4e5f6a7b8c9",
+      "down_revision": "c3d4e5f6a7b8",
+      "filename": "20260707_0002_d4e5f6a7b8c9_add_extraction_engine.py",
+      "description": "Add extraction engine tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 17,
+      "revision_id": "39b2fec2e97f",
+      "down_revision": "d4e5f6a7b8c9",
+      "filename": "20260713_1233_39b2fec2e97f_add_finding_status_and_history_table.py",
+      "description": "Add finding_status_history table",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 18,
+      "revision_id": "7a8b9c0d1e2f",
+      "down_revision": "39b2fec2e97f",
+      "filename": "20260713_1600_7a8b9c0d1e2f_canonical_finding_status_lifecycle.py",
+      "description": "Canonical finding status lifecycle enum and constraints",
+      "applied": true,
+      "reversible": false,
+      "notes": "Enum type changes may require manual intervention to downgrade"
+    },
+    {
+      "order": 19,
+      "revision_id": "a1b2c3d4e5f7",
+      "down_revision": "7a8b9c0d1e2f",
+      "filename": "20260714_0900_a1b2c3d4e5f7_phase_c_regulatory_framework_engine.py",
+      "description": "Phase C regulatory framework engine tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 20,
+      "revision_id": "51694630069f",
+      "down_revision": "a1b2c3d4e5f7",
+      "filename": "20260714_0933_51694630069f_add_source_status_to_regulatory_tables.py",
+      "description": "Add source_status field to regulatory tables",
+      "applied": true,
+      "reversible": true
+    },
+    {
+      "order": 21,
+      "revision_id": "7602e7b39d25",
+      "down_revision": "51694630069f",
+      "filename": "20260714_1358_7602e7b39d25_phase_d_artifacts_actions_session_.py",
+      "description": "Phase D — ai_artifacts, ai_actions, session extensions (is_pinned, is_archived, title), message extensions (attached_file_ids, structured_blocks, citations)",
+      "applied": true,
+      "reversible": true
+    }
+  ],
+  "validation": {
+    "current_head": "7602e7b39d25",
+    "duplicate_heads": false,
+    "missing_revisions": false,
+    "orphan_revisions": false,
+    "status": "VALID"
+  }
+}

@@ -243,7 +243,6 @@ async def reclassify(
 
 @router.delete(
     "/{file_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Reset processing record (deletes extracted text, enables re-processing)",
 )
 async def reset_processing(

@@ -99,7 +99,6 @@ async def update_programme(
 
 @router.delete(
     "/{programme_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a programme and all its modules",
 )
 async def delete_programme(

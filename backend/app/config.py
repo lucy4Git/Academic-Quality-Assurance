@@ -56,6 +56,10 @@ class Settings(BaseSettings):
     AI_PROVIDER: str = "LOCAL_DEV"        # OPENAI | ANTHROPIC | OLLAMA | GEMINI | LOCAL_DEV
     OPENAI_API_KEY: str | None = None
     OPENAI_MODEL: str = "gpt-4o-mini"
+    EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"   # embedding model (fastembed default)
+    EMBEDDING_PROVIDER: str = "fastembed"              # "fastembed" | "sentence_transformers" | "huggingface" | "openai"
+    USE_REAL_EMBEDDINGS: bool = False                  # set True to enable real embeddings
+    HF_TOKEN: str | None = None               # optional HuggingFace API token
     ANTHROPIC_API_KEY: str | None = None
     ANTHROPIC_MODEL: str = "claude-haiku-4-5-20251001"
     OLLAMA_BASE_URL: str = "http://localhost:11434"

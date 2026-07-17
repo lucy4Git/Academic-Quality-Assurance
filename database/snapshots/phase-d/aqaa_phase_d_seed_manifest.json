@@ -1,0 +1,65 @@
+{
+  "generated": "2026-07-17",
+  "description": "AQAA Phase D Safe Seed Data Manifest — TEST FIXTURES ONLY",
+  "warning": "No production data. All users use password ChangeMe123! (bcrypt hash).",
+  "source_file": "database/snapshots/phase-d/aqaa_phase_d_seed_data.sql",
+  "fixture_type": "TEST_FIXTURE",
+  "tables": [
+    {
+      "table": "institutions",
+      "row_count": 28,
+      "description": "Test institutions including TUT and UP primary test institutions",
+      "sensitive": false,
+      "includes_production_data": false
+    },
+    {
+      "table": "faculties",
+      "row_count": 150,
+      "description": "Test faculties across all seeded institutions",
+      "sensitive": false,
+      "includes_production_data": false
+    },
+    {
+      "table": "departments",
+      "row_count": 325,
+      "description": "Test departments within faculties",
+      "sensitive": false,
+      "includes_production_data": false
+    },
+    {
+      "table": "programmes",
+      "row_count": 748,
+      "description": "Test programmes (NQF levels 5-10)",
+      "sensitive": false,
+      "includes_production_data": false
+    },
+    {
+      "table": "modules",
+      "row_count": 2327,
+      "description": "Test modules with codes (e.g. CFA115D, FRD118G)",
+      "sensitive": false,
+      "includes_production_data": false
+    },
+    {
+      "table": "users",
+      "row_count": 95,
+      "description": "Test users: 8 roles across TUT + UP. All use password ChangeMe123!",
+      "sensitive": false,
+      "includes_production_data": false,
+      "password_note": "All passwords are bcrypt hashes of ChangeMe123! — safe for development only"
+    }
+  ],
+  "primary_test_accounts": [
+    {"email": "lecturer.cs@tut.ac.za", "role": "LECTURER", "institution": "TUT"},
+    {"email": "coordinator.ict@tut.ac.za", "role": "PROGRAMME_COORDINATOR", "institution": "TUT"},
+    {"email": "hod.ict@tut.ac.za", "role": "HEAD_OF_DEPARTMENT", "institution": "TUT"},
+    {"email": "dean.ict@tut.ac.za", "role": "FACULTY_DEAN", "institution": "TUT"},
+    {"email": "qa.officer@tut.ac.za", "role": "QUALITY_ASSURANCE_OFFICER", "institution": "TUT"},
+    {"email": "admin@tut.ac.za", "role": "INSTITUTION_ADMIN", "institution": "TUT"},
+    {"email": "sysadmin@aqaa.ac.za", "role": "SYSTEM_ADMIN", "institution": null},
+    {"email": "lecturer@up.ac.za", "role": "LECTURER", "institution": "UP"},
+    {"email": "qa.officer@up.ac.za", "role": "QUALITY_ASSURANCE_OFFICER", "institution": "UP"}
+  ],
+  "restore_command": "docker exec -i aqaa-postgres psql -U aqaa aqaa < database/snapshots/phase-d/aqaa_phase_d_seed_data.sql",
+  "prerequisites": ["Schema must be applied first via: python -m alembic upgrade head"]
+}

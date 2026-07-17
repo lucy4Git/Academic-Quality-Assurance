@@ -70,7 +70,7 @@ async def resolve_comment(
     return CommentRead.model_validate(resolved)
 
 
-@router.delete("/{comment_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{comment_id}")
 async def delete_comment(
     comment_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),

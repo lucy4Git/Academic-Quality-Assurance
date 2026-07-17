@@ -112,7 +112,6 @@ async def update_module(
 
 @router.delete(
     "/{module_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a module and all associated evidence files",
 )
 async def delete_module(

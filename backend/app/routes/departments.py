@@ -99,7 +99,6 @@ async def update_department(
 
 @router.delete(
     "/{department_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a department and all its child data",
 )
 async def delete_department(

@@ -13,6 +13,18 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 
+class WorkspaceContextHint(BaseModel):
+    """Optional context hints from the frontend workspace."""
+
+    institution_id: uuid.UUID | None = None
+    faculty_id: uuid.UUID | None = None
+    department_id: uuid.UUID | None = None
+    programme_id: uuid.UUID | None = None
+    module_id: uuid.UUID | None = None
+    academic_year: str | None = None
+    semester: str | None = None
+
+
 class AskRequest(BaseModel):
     """Natural language QA question."""
 
@@ -37,6 +49,17 @@ class AskRequest(BaseModel):
     session_id: uuid.UUID | None = Field(
         default=None,
         description="Attach this question to an existing chat session (optional).",
+    )
+    workspace_context: WorkspaceContextHint | None = Field(
+        default=None,
+        description="Optional entity context from the frontend workspace.",
+    )
+    attached_file_ids: list[uuid.UUID] = Field(
+        default_factory=list,
+        description=(
+            "File IDs (from POST /ai-assistant/attach) to scope retrieval. "
+            "When non-empty the assistant limits evidence retrieval to these files."
+        ),
     )
 
 
@@ -71,6 +94,7 @@ class AskResponse(BaseModel):
     sources: list[SourceChunk]
     confidence_score: float
     institution_code: str | None
+    # Legacy field — reflects ONLY embedding placeholder state (not generation mode)
     is_placeholder_mode: bool
     suggested_followups: list[str]
     query_mode: str
@@ -81,6 +105,12 @@ class AskResponse(BaseModel):
     citations: list[Citation] = Field(default_factory=list)
     unsupported_claims: list[str] = Field(default_factory=list)
     grounding_status: str = Field(default="no_source_found")
+    # Honest generation labelling (A7 requirement)
+    retrieval_mode: str = Field(default="semantic")
+    embedding_provider: str = Field(default="fastembed")
+    generation_mode: str = Field(default="deterministic_template")
+    generation_provider: str = Field(default="none")
+    evidence_support_status: str = Field(default="chunks_retrieved")
 
 
 # ---------------------------------------------------------------------------
@@ -183,6 +213,8 @@ class ChatSessionBrief(BaseModel):
     is_active: bool
     created_at: datetime
     message_count: int = 0
+    is_pinned: bool = False
+    is_archived: bool = False
 
     model_config = {"from_attributes": True, "protected_namespaces": ()}
 
@@ -199,6 +231,9 @@ class ChatMessageBrief(BaseModel):
     intent: str | None
     created_at: datetime
     sources: list[dict] | None = None
+    attached_file_ids: list[uuid.UUID] | None = None
+    structured_blocks: list[dict] | None = None
+    citations: list[dict] | None = None
 
     model_config = {"from_attributes": True}
 
@@ -212,6 +247,8 @@ class ChatSessionDetail(BaseModel):
     provider: str | None
     model_name: str | None
     is_active: bool
+    is_pinned: bool = False
+    is_archived: bool = False
     created_at: datetime
     messages: list[ChatMessageBrief]
 

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { InstitutionWorkspaceView } from "./InstitutionWorkspaceView";
+import { WorkspaceLandingView } from "./WorkspaceLandingView";
 
-export const metadata: Metadata = { title: "Institution Workspace" };
+export const metadata: Metadata = { title: "Workspace — AQAA" };
 
 export default function WorkspacePage() {
-  return <InstitutionWorkspaceView />;
+  return <WorkspaceLandingView />;
 }

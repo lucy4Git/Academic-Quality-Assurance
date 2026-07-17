@@ -143,6 +143,46 @@ class FindingType(str, enum.Enum):
     INFO = "info"
 
 
+class FindingStatus(str, enum.Enum):
+    """Canonical lifecycle status of an audit finding (12-state machine).
+
+    OPEN              → ACKNOWLEDGED | ASSIGNED | ESCALATED | CLOSED
+    ACKNOWLEDGED      → ASSIGNED | IN_PROGRESS | DEFERRED | ESCALATED
+    ASSIGNED          → IN_PROGRESS | DEFERRED | ESCALATED
+    IN_PROGRESS       → RESOLUTION_SUBMITTED | DEFERRED | ESCALATED
+    RESOLUTION_SUBMITTED → UNDER_REVIEW | IN_PROGRESS (retracted)
+    UNDER_REVIEW      → RESOLVED | REJECTED
+    REJECTED          → IN_PROGRESS | ESCALATED
+    RESOLVED          → REOPENED | CLOSED
+    REOPENED          → ASSIGNED | IN_PROGRESS
+    ESCALATED         → IN_PROGRESS | UNDER_REVIEW | RESOLVED
+    DEFERRED          → IN_PROGRESS | ESCALATED
+    CLOSED            (terminal)
+
+    ACKNOWLEDGED: institution has formally acknowledged the finding exists,
+      before a coordinator assigns it. ASSIGNED: explicitly allocated to an
+      individual for remediation. These are distinct — acknowledgement is a
+      governance gate; assignment is a workflow action.
+    DEFERRED: postponed to the next academic cycle (retained from earlier
+      implementation as a valid and regularly used state).
+    CLOSED: finding closed with or without corrective action (replaces the
+      former CLOSED_NO_ACTION). The note field records the reason.
+    """
+
+    OPEN = "open"                               # finding raised by AI agent
+    ACKNOWLEDGED = "acknowledged"               # institution acknowledged finding
+    ASSIGNED = "assigned"                       # allocated to responsible person
+    IN_PROGRESS = "in_progress"                 # corrective action underway
+    RESOLUTION_SUBMITTED = "resolution_submitted"  # evidence/resolution uploaded
+    UNDER_REVIEW = "under_review"               # QA officer reviewing submission
+    RESOLVED = "resolved"                       # finding closed satisfactorily
+    REJECTED = "rejected"                       # submission rejected — rework required
+    REOPENED = "reopened"                       # previously resolved; new evidence needed
+    ESCALATED = "escalated"                     # escalated to dean / HOD
+    DEFERRED = "deferred"                       # deferred to next academic cycle
+    CLOSED = "closed"                           # closed — note records reason
+
+
 class AttendanceRiskLevel(str, enum.Enum):
     """Risk level for module attendance evidence (Attendance Compliance Agent).
 
@@ -316,3 +356,281 @@ class UploadState(str, enum.Enum):
     READY = "ready"
     QUARANTINED = "quarantined"
     FAILED = "failed"
+
+
+# ---------------------------------------------------------------------------
+# Phase C — Regulatory and Quality Framework Engine
+# ---------------------------------------------------------------------------
+
+
+class AuthorityType(str, enum.Enum):
+    """Type of regulatory or quality authority."""
+
+    NATIONAL_REGULATOR = "national_regulator"
+    QUALIFICATION_AUTHORITY = "qualification_authority"
+    QUALITY_COUNCIL = "quality_council"
+    PROFESSIONAL_COUNCIL = "professional_council"
+    ACCREDITATION_BODY = "accreditation_body"
+    GOVERNMENT_DEPARTMENT = "government_department"
+    SETA = "seta"
+    INSTITUTION = "institution"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    INTERNATIONAL_BODY = "international_body"
+    CUSTOM = "custom"
+
+
+class AuthorityStatus(str, enum.Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUPERSEDED = "superseded"
+
+
+class FrameworkType(str, enum.Enum):
+    """Type of quality or accreditation framework."""
+
+    INSTITUTIONAL_AUDIT = "institutional_audit"
+    PROGRAMME_ACCREDITATION = "programme_accreditation"
+    QUALIFICATION_REGISTRATION = "qualification_registration"
+    PROFESSIONAL_ACCREDITATION = "professional_accreditation"
+    OCCUPATIONAL_QUALIFICATION = "occupational_qualification"
+    ASSESSMENT_POLICY = "assessment_policy"
+    MODERATION_POLICY = "moderation_policy"
+    TEACHING_AND_LEARNING = "teaching_and_learning"
+    WORK_INTEGRATED_LEARNING = "work_integrated_learning"
+    CLINICAL_TRAINING = "clinical_training"
+    ENGINEERING_EDUCATION = "engineering_education"
+    TEACHER_EDUCATION = "teacher_education"
+    CUSTOM = "custom"
+
+
+class FrameworkScope(str, enum.Enum):
+    NATIONAL = "national"
+    INTERNATIONAL = "international"
+    INSTITUTIONAL = "institutional"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    PROGRAMME = "programme"
+    MODULE = "module"
+
+
+class VersionStatus(str, enum.Enum):
+    """Lifecycle status of a framework version."""
+
+    DRAFT = "draft"
+    UNDER_REVIEW = "under_review"
+    APPROVED = "approved"
+    ACTIVE = "active"
+    SUPERSEDED = "superseded"
+    RETIRED = "retired"
+    ARCHIVED = "archived"
+
+
+class EvaluationMethod(str, enum.Enum):
+    """How a criterion is evaluated."""
+
+    DOCUMENT_PRESENCE = "document_presence"
+    METADATA_VALIDATION = "metadata_validation"
+    RULE_BASED = "rule_based"
+    SEMANTIC_ANALYSIS = "semantic_analysis"
+    NUMERIC_THRESHOLD = "numeric_threshold"
+    MANUAL_REVIEW = "manual_review"
+    HYBRID = "hybrid"
+    CUSTOM = "custom"
+
+
+class EvidenceType(str, enum.Enum):
+    """Type of evidence required for a criterion."""
+
+    DOCUMENT = "document"
+    NUMERIC = "numeric"
+    NARRATIVE = "narrative"
+    STRUCTURED_DATA = "structured_data"
+    SIGNED_DOCUMENT = "signed_document"
+    DATED_DOCUMENT = "dated_document"
+    PERIODIC = "periodic"
+    SAMPLE = "sample"
+    HUMAN_VERIFIED = "human_verified"
+    CUSTOM = "custom"
+
+
+class SourceStatus(str, enum.Enum):
+    """Provenance status of a regulatory authority, framework, or version record.
+
+    Stored as a plain string column (not a native PG enum) so new values can
+    be added without a migration ALTER TYPE statement.
+    """
+
+    OFFICIAL_VERIFIED = "OFFICIAL_VERIFIED"
+    OFFICIAL_UNVERIFIED = "OFFICIAL_UNVERIFIED"
+    INSTITUTIONAL_APPROVED = "INSTITUTIONAL_APPROVED"
+    TEST_FIXTURE = "TEST_FIXTURE"
+    DRAFT_IMPORT = "DRAFT_IMPORT"
+    SUPERSEDED = "SUPERSEDED"
+    ARCHIVED = "ARCHIVED"
+
+
+class ApplicabilityTargetType(str, enum.Enum):
+    """The type of academic entity an applicability rule targets."""
+
+    INSTITUTION = "institution"
+    CAMPUS = "campus"
+    FACULTY = "faculty"
+    DEPARTMENT = "department"
+    QUALIFICATION = "qualification"
+    PROGRAMME = "programme"
+    MODULE = "module"
+    ASSESSMENT = "assessment"
+    ANY = "any"
+
+
+class MappingSource(str, enum.Enum):
+    """How an evidence mapping was created."""
+
+    MANUAL = "manual"
+    RULE_BASED = "rule_based"
+    SEMANTIC_RETRIEVAL = "semantic_retrieval"
+    AI_ASSISTED = "ai_assisted"
+    IMPORTED = "imported"
+    SYSTEM_INFERRED = "system_inferred"
+
+
+class MappingValidationStatus(str, enum.Enum):
+    PROPOSED = "proposed"
+    MATCHED = "matched"
+    VERIFIED = "verified"
+    REJECTED = "rejected"
+    EXPIRED = "expired"
+    SUPERSEDED = "superseded"
+
+
+class FrameworkAssessmentStatus(str, enum.Enum):
+    """Lifecycle status of a framework assessment run."""
+
+    QUEUED = "queued"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    PARTIALLY_COMPLETED = "partially_completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    REQUIRES_REVIEW = "requires_review"
+
+
+class CrossFrameworkRelation(str, enum.Enum):
+    """Semantic relationship between two criteria / standards across frameworks."""
+
+    EQUIVALENT = "equivalent"
+    PARTIALLY_EQUIVALENT = "partially_equivalent"
+    SUPPORTS = "supports"
+    OVERLAPS = "overlaps"
+    CONFLICTS_WITH = "conflicts_with"
+    SUPERSEDES = "supersedes"
+    REFERENCES = "references"
+    NO_RELATION = "no_relation"
+
+
+class RegulatoryRisk(str, enum.Enum):
+    """Risk level of a regulatory finding."""
+
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+# ---------------------------------------------------------------------------
+# Phase D — Artifact Engine
+# ---------------------------------------------------------------------------
+
+
+class ArtifactType(str, enum.Enum):
+    """Type of AI-generated artifact produced in the AI Workspace."""
+
+    MODULE_AUDIT_REPORT = "module_audit_report"
+    PROGRAMME_COMPLIANCE_REPORT = "programme_compliance_report"
+    DEPARTMENT_QUALITY_REPORT = "department_quality_report"
+    FACULTY_QUALITY_REPORT = "faculty_quality_report"
+    INSTITUTIONAL_QUALITY_REPORT = "institutional_quality_report"
+    REGULATORY_READINESS_REPORT = "regulatory_readiness_report"
+    ACCREDITATION_EVIDENCE_PACK = "accreditation_evidence_pack"
+    CORRECTIVE_ACTION_PLAN = "corrective_action_plan"
+    RISK_REGISTER = "risk_register"
+    ASSESSMENT_ALIGNMENT_MATRIX = "assessment_alignment_matrix"
+    MODERATION_REPORT = "moderation_report"
+    EXECUTIVE_BRIEFING = "executive_briefing"
+    QA_MEETING_PACK = "qa_meeting_pack"
+    EVIDENCE_CHECKLIST = "evidence_checklist"
+    FRAMEWORK_COMPARISON = "framework_comparison"
+    QUALIFICATION_ALIGNMENT_REPORT = "qualification_alignment_report"
+
+
+class ArtifactStatus(str, enum.Enum):
+    """Lifecycle state of an artifact."""
+
+    DRAFT = "draft"
+    SAVED = "saved"
+    VERSIONED = "versioned"
+    ARCHIVED = "archived"
+    DELETED = "deleted"
+
+
+class ArtifactApprovalStatus(str, enum.Enum):
+    """Approval state of an artifact requiring formal sign-off."""
+
+    NOT_REQUIRED = "not_required"
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class ActionType(str, enum.Enum):
+    """Conversational action types executed through the AI Workspace."""
+
+    # Findings
+    ACKNOWLEDGE_FINDING = "acknowledge_finding"
+    ASSIGN_FINDING = "assign_finding"
+    START_PROGRESS = "start_progress"
+    SUBMIT_RESOLUTION = "submit_resolution"
+    REQUEST_REVIEW = "request_review"
+    APPROVE_RESOLUTION = "approve_resolution"
+    REJECT_RESOLUTION = "reject_resolution"
+    REOPEN_FINDING = "reopen_finding"
+    ESCALATE_FINDING = "escalate_finding"
+    CLOSE_FINDING = "close_finding"
+    ADD_COMMENT = "add_comment"
+    SET_DUE_DATE = "set_due_date"
+    UPLOAD_RESOLUTION_EVIDENCE = "upload_resolution_evidence"
+    # Regulatory
+    RUN_FRAMEWORK_ASSESSMENT = "run_framework_assessment"
+    RUN_INTEGRATED_READINESS = "run_integrated_readiness"
+    PROMOTE_GAPS_TO_FINDINGS = "promote_gaps_to_findings"
+    GENERATE_REGULATORY_REPORT = "generate_regulatory_report"
+    GENERATE_EVIDENCE_PACK = "generate_evidence_pack"
+    CREATE_CORRECTIVE_ACTION_PLAN = "create_corrective_action_plan"
+    # Audit
+    RUN_MODULE_AUDIT = "run_module_audit"
+    RUN_ASSESSMENT_AUDIT = "run_assessment_audit"
+    RUN_MODERATION_AUDIT = "run_moderation_audit"
+    RUN_ATTENDANCE_AUDIT = "run_attendance_audit"
+    RUN_OUTCOME_ALIGNMENT = "run_outcome_alignment"
+    VERIFY_EVIDENCE = "verify_evidence"
+    # Artifacts
+    SAVE_ARTIFACT = "save_artifact"
+    REGENERATE_ARTIFACT = "regenerate_artifact"
+    EXPORT_ARTIFACT = "export_artifact"
+    SHARE_ARTIFACT = "share_artifact"
+    ASSIGN_ARTIFACT = "assign_artifact"
+    APPROVE_ARTIFACT = "approve_artifact"
+    REJECT_ARTIFACT = "reject_artifact"
+
+
+class ActionStatus(str, enum.Enum):
+    """Execution state of a conversational action."""
+
+    PENDING_CONFIRMATION = "pending_confirmation"
+    CONFIRMED = "confirmed"
+    EXECUTING = "executing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"

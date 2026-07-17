@@ -46,6 +46,12 @@ from app.routes.workspace import router as workspace_router
 from app.routes.workspace import notification_router as notification_unread_router
 from app.routes.institution_knowledge import router as institution_knowledge_router
 from app.routes.acquisition import router as acquisition_router
+from app.routes.extraction import router as extraction_router
+from app.routes.findings import router as findings_router
+from app.routes.regulatory_authorities import router as regulatory_authorities_router
+from app.routes.quality_frameworks import router as quality_frameworks_router
+from app.routes.framework_assessments import router as framework_assessments_router
+from app.routes.artifacts import router as artifacts_router
 
 
 @asynccontextmanager
@@ -117,7 +123,7 @@ def create_app() -> FastAPI:
     app.include_router(auth_router, prefix=prefix)
     app.include_router(audit_evidence_router, prefix=prefix)
     app.include_router(dashboard_router, prefix=prefix)
-    app.include_router(module_audits_router, prefix=prefix)
+    app.include_router(module_audits_router, prefix=f"{prefix}/module-folder")
     app.include_router(institutions_router, prefix=prefix)
     app.include_router(faculties_router, prefix=prefix)
     app.include_router(departments_router, prefix=prefix)
@@ -150,6 +156,14 @@ def create_app() -> FastAPI:
     app.include_router(notification_unread_router, prefix=prefix)
     app.include_router(institution_knowledge_router, prefix=prefix)
     app.include_router(acquisition_router, prefix=prefix)
+    app.include_router(extraction_router, prefix=prefix)
+    app.include_router(findings_router, prefix=f"{prefix}/findings")
+    # Phase C — Regulatory Framework Engine
+    app.include_router(regulatory_authorities_router, prefix=prefix)
+    app.include_router(quality_frameworks_router, prefix=prefix)
+    app.include_router(framework_assessments_router, prefix=prefix)
+    # Phase D — Artifact Engine
+    app.include_router(artifacts_router, prefix=prefix)
 
     return app
 

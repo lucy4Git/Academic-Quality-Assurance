@@ -29,24 +29,32 @@ async def advanced_ask(
     context_limit: int = 5,
     mode: str = "qa_assistant",
     provider: BaseAIProvider | None = None,
+    injected_chunks: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Process a NL QA question through the Advanced RAG pipeline.
 
     Flow:
         1. Classify intent
-        2. Retrieve context from Qdrant (tenant-scoped)
+        2. Retrieve context from Qdrant (tenant-scoped) — skipped when injected_chunks given
         3. Re-rank sources and enforce cross-tenant isolation
         4. Build numbered [SOURCE:N] context block + citation index
         5. If LOCAL_DEV → template assembly
            Else → build grounded system prompt requiring inline citations → call AI provider
         6. Verify citations in the answer
         7. Return structured response dict (superset of assistant_service.ask() output)
+
+    Args:
+        injected_chunks: When non-empty, use these chunks instead of Qdrant retrieval.
+            Used by the attachment-grounding path to restrict retrieval to attached files.
     """
     context_limit = min(max(context_limit, 1), 20)
     intent = classify_intent(question)
 
     raw_chunks: list[dict[str, Any]] = []
-    if institution_code.upper() in ACTIVE_INSTITUTION_CODES:
+    if injected_chunks is not None:
+        # Attachment-grounded path: use only the provided file chunks, skip Qdrant.
+        raw_chunks = injected_chunks
+    elif institution_code.upper() in ACTIVE_INSTITUTION_CODES:
         try:
             raw_chunks = search_knowledge(
                 query=question,
@@ -62,9 +70,17 @@ async def advanced_ask(
 
     _provider = provider if provider is not None else get_provider()
 
+    retrieval_mode = "placeholder" if embedding_service.IS_PLACEHOLDER else "semantic"
+    emb_provider_name = embedding_service.MODEL_NAME if not embedding_service.IS_PLACEHOLDER else "dev-sha256"
+    generation_mode: str
+    generation_provider: str
+    evidence_support: str
+
     if _provider.is_local_dev:
         answer = assemble_answer(question, ranked, institution_code, intent)
-        is_placeholder = embedding_service.IS_PLACEHOLDER
+        generation_mode = "deterministic_template"
+        generation_provider = "none"
+        evidence_support = "chunks_retrieved" if ranked else "no_chunks"
     else:
         ikp_version = ranked[0].get("ikp_version", "v1.x.x") if ranked else "v1.x.x"
         system_prompt = build_grounded_system_prompt(
@@ -80,23 +96,29 @@ async def advanced_ask(
         ]
         try:
             answer = await _provider.complete(messages, temperature=_get_temperature(), max_tokens=_get_max_tokens())
-            is_placeholder = False
+            generation_mode = "llm"
+            generation_provider = _provider.provider_name
+            evidence_support = "grounded" if ranked else "no_chunks"
         except Exception as exc:
             logger.error("advanced_ask: provider '%s' error — falling back: %s", _provider.provider_name, exc)
             answer = assemble_answer(question, ranked, institution_code, intent)
-            is_placeholder = True
+            generation_mode = "deterministic_template"
+            generation_provider = "none"
+            evidence_support = "chunks_retrieved" if ranked else "no_chunks"
 
     verification = verify_citations(answer, citation_index)
 
     sources = [
         {
             "entity_type": c.get("entity_type", ""),
+            "entity_id": c.get("entity_id", "") or None,
             "entity_key": c.get("entity_id", ""),
             "title": c.get("title", ""),
             "text": c.get("text", ""),
             "source_document": c.get("source_document", ""),
             "confidence_score": float(c.get("confidence_score", 0.0)),
             "relevance_score": round(float(c.get("combined_score", c.get("score", 0.0))), 4),
+            "institution_id": c.get("institution_id") or None,
         }
         for c in ranked
     ]
@@ -111,7 +133,8 @@ async def advanced_ask(
         "sources": sources,
         "confidence_score": round(avg_confidence, 4),
         "institution_code": institution_code.upper(),
-        "is_placeholder_mode": is_placeholder,
+        # is_placeholder_mode reflects ONLY embedding placeholder state, not LLM fallback
+        "is_placeholder_mode": embedding_service.IS_PLACEHOLDER,
         "suggested_followups": generate_suggested_followups(intent, institution_code),
         "query_mode": intent,
         "provider": _provider.provider_name,
@@ -120,4 +143,9 @@ async def advanced_ask(
         "citations": verification["citations"],
         "unsupported_claims": verification["unsupported_claims"],
         "grounding_status": verification["grounding_status"],
+        "retrieval_mode": retrieval_mode,
+        "embedding_provider": emb_provider_name,
+        "generation_mode": generation_mode,
+        "generation_provider": generation_provider,
+        "evidence_support_status": evidence_support,
     }

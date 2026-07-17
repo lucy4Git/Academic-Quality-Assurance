@@ -120,7 +120,6 @@ async def get_record(
 
 @router.delete(
     "/records/{record_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a qualification record",
 )
 async def delete_record(

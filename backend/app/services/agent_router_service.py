@@ -46,6 +46,88 @@ _INTENT_PATTERNS: list[tuple[str, list[str]]] = [
         r"\battendance\b", r"\bregister\b", r"\bsign.?in\b", r"\bpresence\b",
         r"\babsent(ee)?\b",
     ]),
+    # ---------------------------------------------------------------------------
+    # Phase C — Regulatory intents
+    # ---------------------------------------------------------------------------
+    ("identify_applicable_frameworks", [
+        r"\bwhich framework(s)?\b", r"\bapplicable framework\b", r"\bwhat framework\b",
+        r"\bidentify framework\b", r"\bframeworks? appl(y|ies)\b",
+    ]),
+    ("explain_applicability", [
+        r"\bwhy (is|are).*(framework|standard|regulation)\b", r"\bhow does.*(apply|applicable)\b",
+        r"\bapplicability\b", r"\bwhy does it apply\b",
+    ]),
+    ("assess_framework_compliance", [
+        r"\bcompl(y|iance) with (the )?framework\b", r"\bframework compliance\b",
+        r"\bassess.*(framework|standard)\b", r"\bmeet.*(framework|standard|criterion)\b",
+    ]),
+    ("assess_integrated_readiness", [
+        r"\bintegrated readiness\b", r"\boverall readiness\b", r"\bmulti.?framework\b",
+        r"\bcombined compliance\b", r"\bholistic.*(compliance|readiness)\b",
+    ]),
+    ("explain_regulatory_requirement", [
+        r"\bwhat does.*(criterion|standard|requirement|regulation) require\b",
+        r"\bexplain.*(criterion|standard|requirement|regulation)\b",
+        r"\bwhat is required (by|under)\b",
+    ]),
+    ("find_missing_regulatory_evidence", [
+        r"\bmissing (regulatory )?evidence\b", r"\bgaps?.*(evidence|criterion)\b",
+        r"\bwhich (evidence|document)s? (are|is) missing\b", r"\bunmet criterion\b",
+    ]),
+    ("compare_frameworks", [
+        r"\bcompar(e|ing).*(framework|standard)\b", r"\bdifference(s)? between.*(framework|standard)\b",
+        r"\bframework (vs|versus|comparison)\b",
+    ]),
+    ("explain_framework_overlap", [
+        r"\boverlap(ping)?.*(framework|standard)\b", r"\bshared (criteria|standards)\b",
+        r"\bboth frameworks?\b", r"\bduplication.*(framework|standard)\b",
+    ]),
+    ("explain_framework_conflict", [
+        r"\bconflict(ing)?.*(framework|standard|requirement)\b",
+        r"\bincompat(ible|ibility).*(framework|standard)\b",
+        r"\bcontradiction.*(framework|standard)\b",
+    ]),
+    ("generate_regulatory_report", [
+        r"\bregulatory report\b", r"\bgenerate.*(framework|regulatory) report\b",
+        r"\bframework.*(summary|report)\b",
+    ]),
+    ("generate_evidence_pack", [
+        r"\bevidence pack\b", r"\bevidence bundle\b", r"\bassembl(e|y).*(evidence|pack)\b",
+        r"\bprepare.*(accreditation|submission) pack\b",
+    ]),
+    ("create_corrective_action_plan", [
+        r"\bcorrective action\b", r"\bremediation plan\b", r"\baction plan\b",
+        r"\bfix.*(finding|gap|non.?compliance)\b", r"\baddress.*(finding|gap)\b",
+    ]),
+    ("explain_regulatory_finding", [
+        r"\bregulatory finding\b", r"\bwhat does.*(finding|non.?compliance) mean\b",
+        r"\bexplain.*(finding|gap|non.?compliance)\b",
+    ]),
+    ("check_framework_version", [
+        r"\bframework version\b", r"\bcurrent version.*(framework|standard)\b",
+        r"\blatest.*(standard|framework|edition)\b", r"\bversion (of|for).*(framework)\b",
+    ]),
+    ("check_qualification_alignment", [
+        r"\bqualification alignment\b", r"\bnqf alignment\b", r"\bheqsf alignment\b",
+        r"\bprogramme.*(nqf|heqsf|saqa)\b", r"\bdegree.*(nqf|level|aligned)\b",
+    ]),
+    ("check_programme_accreditation", [
+        r"\bprogramme accreditat(ion|ed)\b", r"\bche accreditat(ion|ed)\b",
+        r"\bdhet.*(programme|accreditat)\b", r"\binstitutional audit\b",
+    ]),
+    ("check_professional_accreditation", [
+        r"\bprofessional accreditat\b", r"\becsa accreditat\b", r"\bhpcsa accreditat\b",
+        r"\bsace accreditat\b", r"\bprofessional body\b", r"\bprofessional council\b",
+    ]),
+    ("check_institutional_audit_readiness", [
+        r"\binstitutional audit readiness\b", r"\bche (site visit|audit)\b",
+        r"\bdhet.*(audit|inspection|review)\b", r"\binstitutional review readiness\b",
+    ]),
+    ("check_occupational_qualification_compliance", [
+        r"\boccu?pational qual(ification)?\b", r"\bqcto\b", r"\bseta\b",
+        r"\bpart qual(ification)?\b", r"\boccupational cert(ificate)?\b",
+        r"\bunit standard\b", r"\blearnership\b",
+    ]),
     ("evidence", [
         r"\bevidence\b", r"\bportfolio\b", r"\bartefact\b", r"\bartifact\b",
         r"\bdocument(ation)?\b", r"\bverif(y|ication)\b",
@@ -169,6 +251,102 @@ _NEXT_ACTIONS: dict[str, list[str]] = {
         "Select an audit agent",
         "Contact your QA Officer",
     ],
+    # Phase C — Regulatory intents
+    "identify_applicable_frameworks": [
+        "Open Framework Management workspace",
+        "View applicable frameworks for your programme",
+        "Run a framework assessment",
+    ],
+    "explain_applicability": [
+        "View framework applicability rules",
+        "Open Regulatory Readiness workspace",
+        "Contact your QA Officer for applicability guidance",
+    ],
+    "assess_framework_compliance": [
+        "Trigger a framework compliance assessment",
+        "View assessment results for this framework",
+        "Upload evidence to improve your compliance score",
+    ],
+    "assess_integrated_readiness": [
+        "View integrated readiness score across all frameworks",
+        "Identify mandatory failures blocking readiness",
+        "Generate a combined regulatory report",
+    ],
+    "explain_regulatory_requirement": [
+        "View the criterion detail in Framework Management",
+        "Upload evidence for this requirement",
+        "Ask for a corrective action plan",
+    ],
+    "find_missing_regulatory_evidence": [
+        "View missing evidence gaps in Regulatory Readiness",
+        "Upload missing evidence files",
+        "Promote gaps to findings for tracking",
+    ],
+    "compare_frameworks": [
+        "View cross-framework mapping in Framework Management",
+        "Run assessments for both frameworks",
+        "Generate a comparison report",
+    ],
+    "explain_framework_overlap": [
+        "View shared criteria across frameworks",
+        "Review cross-framework equivalence mappings",
+        "Optimise evidence submission for overlapping criteria",
+    ],
+    "explain_framework_conflict": [
+        "Review conflicting requirements with your QA Officer",
+        "Flag the conflict in the findings tracker",
+        "Request human review for conflicting criteria",
+    ],
+    "generate_regulatory_report": [
+        "Generate regulatory compliance report",
+        "Download assessment results as PDF",
+        "Share report with accreditation body",
+    ],
+    "generate_evidence_pack": [
+        "Assemble evidence pack for submission",
+        "Review evidence coverage before submission",
+        "Upload any missing evidence items",
+    ],
+    "create_corrective_action_plan": [
+        "View open findings for this programme",
+        "Generate corrective action plan from findings",
+        "Assign findings to responsible parties",
+    ],
+    "explain_regulatory_finding": [
+        "View finding detail in Findings tracker",
+        "Request guidance from QA Officer",
+        "Assign finding to a responsible party",
+    ],
+    "check_framework_version": [
+        "View active version in Framework Management",
+        "Review version lifecycle history",
+        "Check if your assessment used the active version",
+    ],
+    "check_qualification_alignment": [
+        "Run Outcome Alignment audit for this programme",
+        "View NQF level descriptors in Knowledge Base",
+        "Check HEQSF alignment for your qualification",
+    ],
+    "check_programme_accreditation": [
+        "Run Programme Accreditation Readiness assessment",
+        "View CHE accreditation criteria",
+        "Upload programme self-evaluation report",
+    ],
+    "check_professional_accreditation": [
+        "Run professional body accreditation assessment",
+        "View ECSA / HPCSA accreditation criteria",
+        "Upload professional accreditation evidence",
+    ],
+    "check_institutional_audit_readiness": [
+        "Open Institutional Audit Readiness workspace",
+        "View CHE site visit preparation checklist",
+        "Generate institutional audit readiness report",
+    ],
+    "check_occupational_qualification_compliance": [
+        "View QCTO / SETA occupational framework criteria",
+        "Upload unit standard evidence",
+        "Check learnership compliance status",
+    ],
 }
 
 _FOLLOW_UP_QUESTIONS: dict[str, list[str]] = {
@@ -220,6 +398,83 @@ _FOLLOW_UP_QUESTIONS: dict[str, list[str]] = {
         "What aspect of quality assurance can I help you with?",
         "Are you looking for compliance gaps, evidence, or a specific audit?",
     ],
+    # Phase C — Regulatory intents
+    "identify_applicable_frameworks": [
+        "Which programme or module are you asking about?",
+        "Are you looking at institutional or programme-level frameworks?",
+    ],
+    "explain_applicability": [
+        "Which framework or standard would you like me to explain?",
+        "Is this for your institution or a specific programme?",
+    ],
+    "assess_framework_compliance": [
+        "Which framework should I assess compliance against?",
+        "Which module or programme is in scope?",
+    ],
+    "assess_integrated_readiness": [
+        "Which programme or institution should I assess?",
+        "Should I include all active frameworks or specific ones?",
+    ],
+    "explain_regulatory_requirement": [
+        "Which criterion or standard would you like explained?",
+        "Are you asking about a mandatory or advisory requirement?",
+    ],
+    "find_missing_regulatory_evidence": [
+        "Which framework or criterion are you checking evidence gaps for?",
+        "Should I look at module-level or programme-level evidence?",
+    ],
+    "compare_frameworks": [
+        "Which two frameworks would you like me to compare?",
+        "Are you interested in overlapping criteria or conflicting requirements?",
+    ],
+    "explain_framework_overlap": [
+        "Which frameworks should I check for overlap?",
+        "Are you looking for shared criteria to reduce submission duplication?",
+    ],
+    "explain_framework_conflict": [
+        "Which frameworks have conflicting requirements you'd like explained?",
+        "Would you like me to flag this for human review?",
+    ],
+    "generate_regulatory_report": [
+        "Which framework or programme should the report cover?",
+        "What time period should the report include?",
+    ],
+    "generate_evidence_pack": [
+        "Which accreditation body is this evidence pack for?",
+        "Should I include all verified evidence or only mandatory items?",
+    ],
+    "create_corrective_action_plan": [
+        "Which findings or gaps should the corrective plan address?",
+        "Who should be assigned responsibility for these actions?",
+    ],
+    "explain_regulatory_finding": [
+        "Which finding would you like me to explain?",
+        "Are you looking for guidance on how to remediate it?",
+    ],
+    "check_framework_version": [
+        "Which framework's version would you like to check?",
+        "Are you checking the version used in a specific assessment?",
+    ],
+    "check_qualification_alignment": [
+        "Which qualification or programme are you checking?",
+        "Are you checking NQF level alignment or graduate attribute mapping?",
+    ],
+    "check_programme_accreditation": [
+        "Which programme's accreditation status should I check?",
+        "Which accrediting body — CHE, DHET, or another?",
+    ],
+    "check_professional_accreditation": [
+        "Which professional body accreditation are you checking (ECSA, HPCSA, SACE)?",
+        "Which programme is under professional accreditation review?",
+    ],
+    "check_institutional_audit_readiness": [
+        "Is this for a CHE institutional audit or DHET inspection?",
+        "Which institution or campus should I assess readiness for?",
+    ],
+    "check_occupational_qualification_compliance": [
+        "Which QCTO occupational qualification or SETA unit standard are you checking?",
+        "Is this for a learnership or a skills programme?",
+    ],
 }
 
 
@@ -265,6 +520,26 @@ _INTENT_TO_MODE: dict[str, str] = {
     "reporting": "reporting",
     "workflow": "workflow",
     "qa_general": "general",
+    # Phase C — Regulatory intents
+    "identify_applicable_frameworks": "regulatory",
+    "explain_applicability": "regulatory",
+    "assess_framework_compliance": "regulatory",
+    "assess_integrated_readiness": "regulatory",
+    "explain_regulatory_requirement": "regulatory",
+    "find_missing_regulatory_evidence": "regulatory",
+    "compare_frameworks": "regulatory",
+    "explain_framework_overlap": "regulatory",
+    "explain_framework_conflict": "regulatory",
+    "generate_regulatory_report": "regulatory",
+    "generate_evidence_pack": "regulatory",
+    "create_corrective_action_plan": "regulatory",
+    "explain_regulatory_finding": "regulatory",
+    "check_framework_version": "regulatory",
+    "check_qualification_alignment": "regulatory",
+    "check_programme_accreditation": "regulatory",
+    "check_professional_accreditation": "regulatory",
+    "check_institutional_audit_readiness": "regulatory",
+    "check_occupational_qualification_compliance": "regulatory",
 }
 
 
@@ -308,6 +583,26 @@ def _build_answer(intent: str, prompt: str, confidence: float) -> str:
         "reporting": "Reporting & Analytics",
         "workflow": "Workflow Management",
         "qa_general": "General QA Assistant",
+        # Phase C — Regulatory intents
+        "identify_applicable_frameworks": "Regulatory Framework Identification",
+        "explain_applicability": "Framework Applicability Explanation",
+        "assess_framework_compliance": "Framework Compliance Assessment",
+        "assess_integrated_readiness": "Integrated Regulatory Readiness",
+        "explain_regulatory_requirement": "Regulatory Requirement Explanation",
+        "find_missing_regulatory_evidence": "Missing Evidence Detection",
+        "compare_frameworks": "Framework Comparison",
+        "explain_framework_overlap": "Framework Overlap Analysis",
+        "explain_framework_conflict": "Framework Conflict Analysis",
+        "generate_regulatory_report": "Regulatory Report Generation",
+        "generate_evidence_pack": "Evidence Pack Assembly",
+        "create_corrective_action_plan": "Corrective Action Planning",
+        "explain_regulatory_finding": "Regulatory Finding Explanation",
+        "check_framework_version": "Framework Version Check",
+        "check_qualification_alignment": "Qualification Alignment Check",
+        "check_programme_accreditation": "Programme Accreditation Check",
+        "check_professional_accreditation": "Professional Accreditation Check",
+        "check_institutional_audit_readiness": "Institutional Audit Readiness",
+        "check_occupational_qualification_compliance": "Occupational Qualification Compliance",
     }
     label = intent_labels.get(intent, "QA Assistant")
     if confidence >= 0.75:
@@ -338,5 +633,25 @@ def _build_sources(intent: str) -> list[str]:
         "knowledge": ["Institutional Knowledge Portal", "Policy Document Repository"],
         "reporting": ["AQAA Analytics Module", "Compliance Reporting Framework"],
         "workflow": ["Institutional Workflow Policy", "Approval Process Manual"],
+        # Phase C — Regulatory intents
+        "identify_applicable_frameworks": ["Framework Applicability Engine", "Regulatory Authority Registry", "Quality Framework Catalogue"],
+        "explain_applicability": ["Framework Applicability Rules", "HEQSF Level Descriptors", "SAQA NQF Framework"],
+        "assess_framework_compliance": ["Framework Assessment Engine", "Criterion Assessment Results", "Evidence Mapping Records"],
+        "assess_integrated_readiness": ["Integrated Regulatory Readiness Dashboard", "Multi-Framework Assessment Results"],
+        "explain_regulatory_requirement": ["Framework Standards and Criteria", "Evidence Requirements Register", "Regulatory Authority Guidelines"],
+        "find_missing_regulatory_evidence": ["Evidence Coverage Gap Report", "Criterion Assessment Results", "Evidence Requirements Register"],
+        "compare_frameworks": ["Cross-Framework Mapping Registry", "Framework Standards Catalogue", "Human-Verified Equivalence Records"],
+        "explain_framework_overlap": ["Cross-Framework Equivalence Mappings", "Shared Criteria Analysis"],
+        "explain_framework_conflict": ["Cross-Framework Conflict Records", "QA Officer Escalation Log"],
+        "generate_regulatory_report": ["Framework Assessment Run Results", "Compliance Score History", "Regulatory Authority Requirements"],
+        "generate_evidence_pack": ["Verified Evidence Mappings", "Evidence Requirements Register", "Accreditation Submission Checklist"],
+        "create_corrective_action_plan": ["Regulatory Findings Register", "Gap Promotion Records", "Finding Lifecycle Tracker"],
+        "explain_regulatory_finding": ["Regulatory Findings Register", "Criterion Assessment Results", "Framework Standards"],
+        "check_framework_version": ["Framework Version Lifecycle Records", "Active Version Registry", "Version Transition History"],
+        "check_qualification_alignment": ["HEQSF Qualification Standards", "NQF Level Descriptors", "SAQA Qualification Register"],
+        "check_programme_accreditation": ["CHE Programme Accreditation Standards", "DHET Programme Requirements", "Institutional Quality Assurance Framework"],
+        "check_professional_accreditation": ["ECSA Engineering Accreditation Criteria", "HPCSA Health Professions Standards", "SACE Teacher Education Requirements"],
+        "check_institutional_audit_readiness": ["CHE Institutional Audit Framework", "DHET Inspection Requirements", "Institutional Self-Evaluation Guidelines"],
+        "check_occupational_qualification_compliance": ["QCTO Occupational Qualification Framework", "SETA Unit Standards", "Learnership Compliance Register"],
     }
     return source_map.get(intent, ["AQAA Knowledge Base"])

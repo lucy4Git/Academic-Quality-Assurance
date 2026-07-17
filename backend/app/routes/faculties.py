@@ -99,7 +99,6 @@ async def update_faculty(
 
 @router.delete(
     "/{faculty_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a faculty and all its child data",
 )
 async def delete_faculty(

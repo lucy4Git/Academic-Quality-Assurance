@@ -9,9 +9,11 @@ from app.models.acquisition_log import AcquisitionLog
 from app.models.acquisition_source import AcquisitionSource
 from app.models.document_version import DocumentVersion
 from app.models.downloaded_document import DownloadedDocument
+from app.models.extraction_run import ExtractionRun
+from app.models.extraction_candidate import ExtractionCandidate
 from app.models.audit_comment import AuditComment
 from app.models.audit_evidence import AuditEvidence
-from app.models.audit_finding import AuditFinding
+from app.models.audit_finding import AuditFinding, FindingStatusHistory
 from app.models.audit_history import AuditHistory
 from app.models.accreditation import Accreditation, AccreditationBody
 from app.models.audit_run import AuditRun
@@ -28,6 +30,7 @@ from app.models.enums import (
     ChecklistItemStatus,
     FileCategory,
     FindingSeverity,
+    FindingStatus,
     FindingType,
     ModuleAuditStatus,
     NotificationType,
@@ -55,6 +58,19 @@ from app.models.policy import Policy, PolicyVersion
 from app.models.programme import Programme
 from app.models.school import School
 from app.models.user import User
+# Phase C — Regulatory Engine
+from app.models.regulatory_authority import RegulatoryAuthority
+from app.models.quality_framework import QualityFramework
+from app.models.framework_version import FrameworkVersion
+from app.models.framework_standard import FrameworkStandard
+from app.models.framework_criterion import FrameworkCriterion
+from app.models.evidence_requirement import EvidenceRequirement
+from app.models.applicability_rule import ApplicabilityRule
+from app.models.evidence_mapping import EvidenceMapping
+from app.models.framework_assessment import FrameworkAssessmentRun, CriterionAssessmentResult
+from app.models.cross_framework_mapping import CrossFrameworkMapping
+# Phase D — AI Workspace, Artifacts, Actions
+from app.models.ai_chat import AiArtifact, AiAction, AiChatMessage, AiChatSession
 
 __all__ = [
     "ADIPDocument",
@@ -68,6 +84,8 @@ __all__ = [
     "AcquisitionSource",
     "DocumentVersion",
     "DownloadedDocument",
+    "ExtractionRun",
+    "ExtractionCandidate",
     "JobStatus",
     "AgentType",
     "Campus",
@@ -97,6 +115,8 @@ __all__ = [
     "FileCategory",
     "FileVersion",
     "FindingSeverity",
+    "FindingStatus",
+    "FindingStatusHistory",
     "FindingType",
     "Institution",
     "KnowledgeReviewBatch",
@@ -115,4 +135,21 @@ __all__ = [
     "User",
     "UserRole",
     "WorkflowStatus",
+    # Phase D
+    "AiChatSession",
+    "AiChatMessage",
+    "AiArtifact",
+    "AiAction",
+    # Phase C
+    "RegulatoryAuthority",
+    "QualityFramework",
+    "FrameworkVersion",
+    "FrameworkStandard",
+    "FrameworkCriterion",
+    "EvidenceRequirement",
+    "ApplicabilityRule",
+    "EvidenceMapping",
+    "FrameworkAssessmentRun",
+    "CriterionAssessmentResult",
+    "CrossFrameworkMapping",
 ]

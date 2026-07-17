@@ -125,7 +125,6 @@ async def update_institution(
 
 @router.delete(
     "/{institution_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete an institution and all its child data",
 )
 async def delete_institution(

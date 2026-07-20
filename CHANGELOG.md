@@ -4,6 +4,60 @@ All notable changes to this project are documented here.
 
 ---
 
+## [Unreleased] — Sprint E0 Baseline and Planning Validation (COMPLETE — 2026-07-20)
+
+### Added
+- **Sprint E0 documentation package** — 15 planning and baseline documents in `docs/phase-e/sprint-e0/`:
+  - `AQAA_SPRINT_E0_APPROVED_BASELINE_REGISTER.md` — Repository state verification; confirmed HEAD `3853b3a`, Phase D tag `v0.9.0-phase-d` unchanged; 88 requirements, 68 ACs, 16 risks, 25 metrics, 9 tables, 8 migrations verified
+  - `AQAA_SPRINT_E0_CHARTER.md` — Sprint E0 charter; 10 objectives, 24 exit criteria, 15 deliverables
+  - `AQAA_SPRINT_E0_CURRENT_STATE_ARCHITECTURE.md` — Current-state architecture baseline; 5 Mermaid diagrams; 15 technical debt items (TD-01–TD-15)
+  - `AQAA_SPRINT_E0_ADR_DECISION_SEQUENCE.md` — ADR decision sequence; 5 ADRs must be decided before E1; 3 deferred to later sprints
+  - `AQAA_SPRINT_E0_TRACEABILITY_MATRIX.md` — Full 88×16 requirements traceability matrix; 68 ACs traced; 0 orphans
+  - `AQAA_SPRINT_E0_SECURITY_GATE.md` — Security gate with 4 levels (E1, E2, pilot, production); 8 MUST items for E1 gate
+  - `AQAA_SPRINT_E0_DATA_BOUNDARY_REGISTER.md` — Data boundary register; 5 permitted classes; 10 prohibited categories until OD-01+OD-02; 11 Phase E entity records
+  - `AQAA_SPRINT_E0_TEST_STRATEGY.md` — Test strategy; 1,319-test baseline preserved; 24 test layers; Playwright proposal gated on E0-OD-008
+  - `AQAA_SPRINT_E0_DEPENDENCY_REGISTER.md` — Dependency register; existing packages catalogued; 9 proposed additions (not installed); PyMuPDF AGPL flag documented
+  - `AQAA_SPRINT_E0_ENVIRONMENT_BASELINE.md` — Environment baseline; 4-service compose stack; port allocations; 9 configuration risks; 5 environment tiers
+  - `AQAA_SPRINT_E1_FROZEN_BACKLOG.md` — Sprint E1 frozen backlog; 16 MUST + 2 SHOULD backlog items; status FROZEN pending owner approval
+  - `AQAA_SPRINT_E1_DEFINITION_OF_READY.md` — Sprint E1 Definition of Ready; 25 conditions; 21 PASS, 8 PENDING OWNER
+  - `AQAA_SPRINT_E0_BLOCKER_REGISTER.md` — Risk and blocker register; 20 blockers tracked; B-01–B-07 OPEN; B-08–B-19 ACCEPTED_RISK; B-20 OPEN
+  - `AQAA_SPRINT_E0_OWNER_DECISIONS.md` — Owner decision register; E0-OD-001 through E0-OD-010; 6 marked ★ blocking E1 start
+  - `AQAA_SPRINT_E0_ACCEPTANCE_REPORT.md` — Sprint E0 acceptance report; verdict PENDING OWNER REVIEW
+
+### Sprint E0 Issues Documented
+- **E0-ISS-001** — E-FR-* requirement numbering is non-sequential (37 unique IDs; total 88 authoritative); documentation only
+- **E0-ISS-002** — 13 test files fail to collect from project root due to pydantic deprecation; E1-OPS-004 assigned
+- **E0-ISS-003** — No readiness endpoint for Docker health checks; E1-OPS-001 assigned
+- **E0-ISS-004** — Redis in stack but unused in application layer; E1-SEC-004 (JWT deny-list) and E0-OD-001 (ARQ) address this
+- **E0-ISS-005** — SECRET_KEY default value in .env.example; E1 security hardening
+- **E0-ISS-006** — No CI/CD pipeline; E1-OPS-005 assigned
+- **E0-ISS-007** — No structured logging; E1-OPS-001 assigned
+- **E0-ISS-008** — VIRUS_SCAN_ENABLED=False; E1/E2 ClamAV assigned
+
+### Owner Decisions Resolved (2026-07-20)
+- **E0-OD-001** — CONFIRMED: Use ARQ as background task queue with Redis; persistent job records; separate worker; tenant-context preservation
+- **E0-OD-002** — CONFIRMED: Platform environment variables for Render/Vercel; Docker Secrets for self-hosted; typed startup validation; reject default secrets in staging/pilot/production
+- **E0-OD-003** — CONFIRMED WITH CONDITIONS: structlog + Prometheus-compatible metrics + optional Sentry free tier; Sentry disabled by default; `send_default_pii=False`; no PII to Sentry
+- **E0-OD-004** — CONFIRMED WITH CONDITIONS: Platform TLS for Vercel/Render; Caddy for self-hosted Docker; no TLS duplication in cloud path
+- **E0-OD-006** — CONFIRMED: Retain application-layer tenant isolation; mandatory comprehensive positive/negative tenant-isolation tests; any isolation gap is an E1 blocker
+- **E0-OD-008** — CONFIRMED: Install Playwright in Sprint E1; three critical-path tests (login, audit trigger, AI Workspace streaming); devDependency only; synthetic users; CI via GitHub secrets
+
+### Verdict
+SPRINT E0 ACCEPTED — SPRINT E1 AUTHORIZED
+
+### Notes
+- No source code changes
+- No database migrations created
+- No dependencies installed
+- No runtime configuration altered
+- No deployment changes
+- Phase D tag `v0.9.0-phase-d` preserved and unchanged
+- All changes are `docs/phase-e/sprint-e0/` documentation and root `.md` tracker files
+- OD-01 (Information Officer / DPIA): OPEN
+- OD-02 (Pilot institution engagement): OPEN
+
+---
+
 ## [Unreleased] — Phase E Planning Package (APPROVED_WITH_CONDITIONS)
 
 ### Added

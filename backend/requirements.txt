@@ -62,6 +62,9 @@ slowapi>=0.1.9,<1.0               # rate limiting for FastAPI via Redis or memor
 # --- File type validation (Sprint E1 — E1-SEC-005) ---
 filetype>=1.2,<2.0                # pure-Python MIME detection from file headers (no libmagic)
 
+# --- S3-compatible object storage (Sprint E2 — staging/production file backend) ---
+boto3>=1.35,<2.0
+
 # --- Testing (used by backend/app/tests) ---
 pytest>=8.3,<9.0
 pytest-asyncio>=0.24,<1.0

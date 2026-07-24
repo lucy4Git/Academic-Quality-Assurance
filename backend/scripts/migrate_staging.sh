@@ -1,24 +1,37 @@
 #!/usr/bin/env bash
 # migrate_staging.sh — safe one-time migration runner for Windows Git Bash.
 #
-# Usage (from the backend/ directory):
-#   bash scripts/migrate_staging.sh
+# Usage — invoke from the repository root OR from backend/:
+#   bash backend/scripts/migrate_staging.sh   # from repo root
+#   bash scripts/migrate_staging.sh            # from backend/
 #
-# The script prompts for the full Neon connection string without echo,
-# normalizes it to the asyncpg format expected by SQLAlchemy, validates
-# safe metadata only (never the password), runs the migration, then
-# immediately clears DATABASE_URL from the environment.
+# The script:
+#   1. Prompts for the Neon connection string without echoing it.
+#   2. Exports it as DATABASE_URL (raw, un-modified in the shell).
+#   3. Delegates ALL URL normalization to backend/app/config.py via Python —
+#      there is exactly one normalization implementation.
+#   4. Validates safe metadata only (scheme, host, database — never password).
+#   5. Runs scripts/run_migrations.py from the backend/ directory.
+#   6. Clears DATABASE_URL immediately after (success or failure).
 #
-# Normalization applied:
-#   postgres://     → postgresql+asyncpg://
-#   postgresql://   → postgresql+asyncpg://
-#   sslmode=require → ssl=require
+# Normalizations applied by Python (Settings._normalize_database_url):
+#   postgres://       → postgresql+asyncpg://
+#   postgresql://     → postgresql+asyncpg://
+#   sslmode=<v>       → ssl=<v>
+#   channel_binding=* → removed
 #
 # Exit codes:
 #   0  — migration completed successfully
 #   1  — validation failed or migration failed
 
 set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# Locate backend/ regardless of invocation directory.
+# BASH_SOURCE[0] is the path of this script file itself.
+# ---------------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKEND_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # ---------------------------------------------------------------------------
 # 1. Prompt — hidden input, no echo, nothing written to disk or history
@@ -32,40 +45,40 @@ if [[ -z "$RAW_URL" ]]; then
     exit 1
 fi
 
-# ---------------------------------------------------------------------------
-# 2. Normalize — all substitutions happen in memory, never printed
-# ---------------------------------------------------------------------------
-NORM_URL="$RAW_URL"
-
-# postgres:// → postgresql+asyncpg://
-NORM_URL="${NORM_URL/postgres:\/\//postgresql+asyncpg://}"
-
-# postgresql:// (bare, without driver) → postgresql+asyncpg://
-# Only rewrite if not already postgresql+asyncpg://
-if [[ "$NORM_URL" == postgresql://* ]]; then
-    NORM_URL="postgresql+asyncpg://${NORM_URL#postgresql://}"
-fi
-
-# sslmode= → ssl=  (asyncpg uses ssl=, not sslmode=)
-NORM_URL="${NORM_URL//sslmode=/ssl=}"
+# Export the raw URL. Python's Settings validator normalizes it — the shell
+# never needs to manipulate the URL value.
+export DATABASE_URL="$RAW_URL"
+unset RAW_URL
 
 # ---------------------------------------------------------------------------
-# 3. Validate safe metadata only — scheme, host, database (no password)
+# 2. Validate safe metadata — Python applies normalization and prints only
+#    scheme, host, and database name. The password is never printed.
 # ---------------------------------------------------------------------------
 echo "Validating connection metadata..."
-DATABASE_URL="$NORM_URL" python - <<'PYEOF'
-import os, sys
-from urllib.parse import urlparse
+python - <<'PYEOF'
+import os, re, sys
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 url = os.environ.get("DATABASE_URL", "")
-p = urlparse(url)
+
+# Apply the same normalization as Settings._normalize_database_url so that
+# the metadata display reflects what the application will actually use.
+url = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", url)
+parsed = urlparse(url)
+params = [
+    ("ssl" if k == "sslmode" else k, v)
+    for k, v in parse_qsl(parsed.query, keep_blank_values=True)
+    if k != "channel_binding"
+]
+url = urlunparse(parsed._replace(query=urlencode(params)))
+parsed = urlparse(url)
 
 errors = []
-if not p.scheme.startswith("postgresql+asyncpg"):
-    errors.append(f"scheme '{p.scheme}' is not postgresql+asyncpg")
-if not p.hostname:
+if not parsed.scheme.startswith("postgresql+asyncpg"):
+    errors.append(f"scheme '{parsed.scheme}' is not postgresql+asyncpg")
+if not parsed.hostname:
     errors.append("no host found in URL")
-if not p.path or p.path == "/":
+if not parsed.path or parsed.path == "/":
     errors.append("no database name found in URL")
 
 if errors:
@@ -73,27 +86,24 @@ if errors:
         print(f"  ERROR: {e}", file=sys.stderr)
     sys.exit(1)
 
-print(f"  Driver:   {p.scheme}")
-print(f"  Host:     {p.hostname}")
-print(f"  Database: {p.path.lstrip('/')}")
+print(f"  Driver:   {parsed.scheme}")
+print(f"  Host:     {parsed.hostname}")
+print(f"  Database: {parsed.path.lstrip('/')}")
 PYEOF
 
 # ---------------------------------------------------------------------------
-# 4. Export and run migrations
+# 3. Run migrations from backend/ so that alembic.ini and app/ are on PATH
 # ---------------------------------------------------------------------------
 echo ""
 echo "Running migrations..."
-export DATABASE_URL="$NORM_URL"
 
-python scripts/run_migrations.py
+(cd "$BACKEND_DIR" && python scripts/run_migrations.py)
 EXIT_CODE=$?
 
 # ---------------------------------------------------------------------------
-# 5. Clear — DATABASE_URL removed from environment immediately
+# 4. Clear DATABASE_URL immediately — success or failure
 # ---------------------------------------------------------------------------
 unset DATABASE_URL
-unset NORM_URL
-unset RAW_URL
 
 if [[ $EXIT_CODE -ne 0 ]]; then
     echo "Migration failed (exit $EXIT_CODE). DATABASE_URL has been cleared." >&2

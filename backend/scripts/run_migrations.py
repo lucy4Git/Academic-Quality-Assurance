@@ -13,9 +13,10 @@ Exit codes:
 """
 
 import os
+import re
 import subprocess
 import sys
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 
 def _alembic(*args: str) -> subprocess.CompletedProcess[str]:
@@ -31,16 +32,30 @@ def _current_revision() -> str:
     return result.stdout.strip() or "(none)"
 
 
-def _validate_url_safe_metadata(url: str) -> None:
-    """Print safe URL metadata for diagnostic purposes — never the password."""
+def _display_url_metadata(raw_url: str) -> None:
+    """Print safe URL metadata — scheme, host, database only; never password.
+
+    Applies the same normalization as Settings._normalize_database_url so the
+    display reflects the URL the application will actually use.
+    """
+    url = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", raw_url)
     parsed = urlparse(url)
+    params = [
+        ("ssl" if k == "sslmode" else k, v)
+        for k, v in parse_qsl(parsed.query, keep_blank_values=True)
+        if k != "channel_binding"
+    ]
+    url = urlunparse(parsed._replace(query=urlencode(params)))
+    parsed = urlparse(url)
+
     print(f"  Driver:   {parsed.scheme}")
     print(f"  Host:     {parsed.hostname or '(none)'}")
     print(f"  Database: {parsed.path.lstrip('/') or '(none)'}")
+
     if not parsed.scheme.startswith("postgresql+asyncpg"):
         print(
-            "  WARNING: scheme does not include +asyncpg driver. "
-            "Migrations may fail with 'asyncio extension requires async driver'.",
+            "  WARNING: scheme is not postgresql+asyncpg — "
+            "migrations will fail with 'asyncio extension requires async driver'.",
             file=sys.stderr,
         )
 
@@ -52,7 +67,7 @@ def main() -> int:
         return 1
 
     print("Connection metadata (no credentials):")
-    _validate_url_safe_metadata(raw_url)
+    _display_url_metadata(raw_url)
 
     before = _current_revision()
     print(f"\nRevision before migration: {before}")

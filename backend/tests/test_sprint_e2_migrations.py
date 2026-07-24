@@ -73,7 +73,75 @@ class TestDatabaseUrlNormalization:
         assert result == raw
 
     # ------------------------------------------------------------------
-    # Combined: typical Neon connection string
+    # channel_binding removal
+    # ------------------------------------------------------------------
+
+    def test_channel_binding_only_param_removed(self) -> None:
+        """channel_binding as the sole query parameter must be removed cleanly."""
+        url = "postgresql+asyncpg://user:pass@host/db?channel_binding=require"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        # No dangling ? or & left behind
+        assert result.endswith("/db") or result.endswith("/db?") is False
+        assert "?" not in result or result.count("?") == 1
+
+    def test_channel_binding_first_param_removed(self) -> None:
+        url = "postgresql://user:pass@host/db?channel_binding=require&ssl=require"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        assert "ssl=require" in result
+        assert result.startswith("postgresql+asyncpg://")
+
+    def test_channel_binding_middle_param_removed(self) -> None:
+        url = "postgresql+asyncpg://user:pass@host/db?ssl=require&channel_binding=require&connect_timeout=10"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        assert "ssl=require" in result
+        assert "connect_timeout=10" in result
+
+    def test_channel_binding_last_param_removed(self) -> None:
+        url = "postgresql+asyncpg://user:pass@host/db?ssl=require&channel_binding=require"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        assert "ssl=require" in result
+
+    def test_channel_binding_no_double_ampersand(self) -> None:
+        """Removing a middle parameter must not produce && or trailing &."""
+        url = "postgresql+asyncpg://user:pass@host/db?a=1&channel_binding=require&b=2"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        assert "a=1" in result
+        assert "b=2" in result
+        assert "&&" not in result
+        assert not result.endswith("&")
+        assert not result.endswith("?")
+
+    def test_other_params_preserved_after_channel_binding_removal(self) -> None:
+        url = "postgresql://user:pass@host/db?sslmode=require&channel_binding=require&connect_timeout=5"
+        result = self._url(url)
+        assert "channel_binding" not in result
+        assert "sslmode=" not in result
+        assert "ssl=require" in result
+        assert "connect_timeout=5" in result
+
+    def test_neon_pooled_url_fully_normalized(self) -> None:
+        """Typical Neon pooled endpoint URL with channel_binding must normalize cleanly."""
+        neon = (
+            "postgresql://owner:secret"
+            "@ep-quiet-smoke-12345-pooler.eu-west-2.aws.neon.tech"
+            "/neondb"
+            "?sslmode=require&channel_binding=require"
+        )
+        result = self._url(neon)
+        assert result.startswith("postgresql+asyncpg://")
+        assert "ssl=require" in result
+        assert "sslmode=" not in result
+        assert "channel_binding" not in result
+        assert "ep-quiet-smoke-12345-pooler.eu-west-2.aws.neon.tech" in result
+        assert "/neondb" in result
+
+    # ------------------------------------------------------------------
+    # Combined: typical Neon connection string (non-pooled)
     # ------------------------------------------------------------------
 
     def test_typical_neon_url_fully_normalized(self) -> None:

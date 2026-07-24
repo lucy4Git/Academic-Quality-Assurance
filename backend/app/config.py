@@ -78,8 +78,14 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: str | None = None
 
     # --- Storage ---
-    STORAGE_BACKEND: str = "local"          # "local" | "s3" | "azure"
+    STORAGE_BACKEND: str = "local"          # "local" | "s3"
     STORAGE_LOCAL_PATH: str = "./storage"   # root dir for LocalStorageBackend
+    # S3-compatible storage (AWS S3, Cloudflare R2, MinIO, …)
+    S3_BUCKET: str = ""
+    S3_REGION: str = "auto"                 # "auto" works for Cloudflare R2
+    S3_ENDPOINT_URL: str | None = None      # None = AWS; set for R2/MinIO
+    S3_ACCESS_KEY_ID: str | None = None
+    S3_SECRET_ACCESS_KEY: str | None = None
     VIRUS_SCAN_ENABLED: bool = False        # set True to enable ClamAV / AV hook
     MAX_UPLOAD_SIZE_MB: int = 50            # per-file cap sent to validate_upload
 

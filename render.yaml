@@ -26,10 +26,10 @@ services:
       pip install --upgrade pip
       pip install -r requirements.txt
 
-    # releaseCommand runs after a successful build, before traffic is switched.
+    # preDeployCommand runs after build but before startCommand receives traffic.
     # DATABASE_URL is read from the protected Render environment variable — never
     # placed in terminal commands or documentation.
-    releaseCommand: python -m alembic upgrade head
+    preDeployCommand: python -m alembic upgrade head
 
     startCommand: >
       uvicorn app.main:app

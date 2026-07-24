@@ -13,8 +13,10 @@ Exit codes:
 """
 
 import os
+import re
 import subprocess
 import sys
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 
 def _alembic(*args: str) -> subprocess.CompletedProcess[str]:
@@ -30,13 +32,45 @@ def _current_revision() -> str:
     return result.stdout.strip() or "(none)"
 
 
+def _display_url_metadata(raw_url: str) -> None:
+    """Print safe URL metadata — scheme, host, database only; never password.
+
+    Applies the same normalization as Settings._normalize_database_url so the
+    display reflects the URL the application will actually use.
+    """
+    url = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", raw_url)
+    parsed = urlparse(url)
+    params = [
+        ("ssl" if k == "sslmode" else k, v)
+        for k, v in parse_qsl(parsed.query, keep_blank_values=True)
+        if k != "channel_binding"
+    ]
+    url = urlunparse(parsed._replace(query=urlencode(params)))
+    parsed = urlparse(url)
+
+    print(f"  Driver:   {parsed.scheme}")
+    print(f"  Host:     {parsed.hostname or '(none)'}")
+    print(f"  Database: {parsed.path.lstrip('/') or '(none)'}")
+
+    if not parsed.scheme.startswith("postgresql+asyncpg"):
+        print(
+            "  WARNING: scheme is not postgresql+asyncpg — "
+            "migrations will fail with 'asyncio extension requires async driver'.",
+            file=sys.stderr,
+        )
+
+
 def main() -> int:
-    if not os.environ.get("DATABASE_URL"):
+    raw_url = os.environ.get("DATABASE_URL", "")
+    if not raw_url:
         print("ERROR: DATABASE_URL is not set in the environment.", file=sys.stderr)
         return 1
 
+    print("Connection metadata (no credentials):")
+    _display_url_metadata(raw_url)
+
     before = _current_revision()
-    print(f"Revision before migration: {before}")
+    print(f"\nRevision before migration: {before}")
 
     result = _alembic("upgrade", "head")
     if result.stdout:
@@ -46,7 +80,7 @@ def main() -> int:
 
     if result.returncode != 0:
         print(
-            f"ERROR: alembic upgrade head exited {result.returncode}. "
+            f"\nERROR: alembic upgrade head exited {result.returncode}. "
             "Review the output above and resolve before accepting staging.",
             file=sys.stderr,
         )

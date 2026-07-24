@@ -1,6 +1,8 @@
 """Application configuration loaded from environment variables."""
 
+import re
 from functools import lru_cache
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 from typing import Annotated
 
 from pydantic import field_validator, model_validator
@@ -67,6 +69,43 @@ class Settings(BaseSettings):
     # --- Database ---
     DATABASE_URL: str
     DATABASE_ECHO: bool = False
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def _normalize_database_url(cls, value: object) -> object:
+        """Normalize DATABASE_URL for the asyncpg driver used throughout the app.
+
+        Providers such as Neon return connection strings that require several
+        fixes before SQLAlchemy's async engine can use them:
+
+        Scheme normalization (string prefix, applied first):
+          postgres://     → postgresql+asyncpg://
+          postgresql://   → postgresql+asyncpg://
+
+        Query-parameter normalization (via urllib.parse — no naive substitution):
+          sslmode=<v>         → ssl=<v>   (asyncpg uses ssl=, not sslmode=)
+          channel_binding=*   → removed   (asyncpg does not support channel_binding)
+
+        All other query parameters are preserved exactly.  Transformations are
+        idempotent: already-correct URLs pass through unchanged.
+        """
+        if not isinstance(value, str):
+            return value
+
+        # Step 1 — normalize scheme (must happen before URL parsing so that the
+        # netloc separator is correctly identified as "://").
+        value = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", value)
+
+        # Step 2 — fix query parameters via proper URL parsing so that
+        # channel_binding removal cannot leave malformed ? / & separators
+        # regardless of the parameter's position in the query string.
+        parsed = urlparse(value)
+        params = [
+            ("ssl" if k == "sslmode" else k, v)
+            for k, v in parse_qsl(parsed.query, keep_blank_values=True)
+            if k != "channel_binding"
+        ]
+        return urlunparse(parsed._replace(query=urlencode(params)))
     DATABASE_POOL_SIZE: int = 10
     DATABASE_MAX_OVERFLOW: int = 20
 

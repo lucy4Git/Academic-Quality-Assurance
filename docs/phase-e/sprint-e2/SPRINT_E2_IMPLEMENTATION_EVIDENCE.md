@@ -2,7 +2,7 @@
 
 **Sprint:** E2 — Staging Deployment Enablement and Storage Foundation  
 **Branch:** `feature/phase-e-sprint-e2`  
-**Evidence date:** 2026-07-24  
+**Evidence date:** 2026-07-24 (corrective update 2026-07-24)  
 **Reviewer:** AQAA Engineering (Claude Sonnet 4.6)
 
 ---
@@ -23,6 +23,7 @@ automation, analytics, or other later-sprint functionality has been added.
 |------|---------|
 | `backend/app/storage/s3.py` | S3-compatible backend (boto3 + asyncio.to_thread) |
 | `backend/tests/test_sprint_e2_storage.py` | 15 unit tests for S3 backend |
+| `backend/scripts/run_migrations.py` | Controlled one-time migration runner for free-tier shell execution |
 | `render.yaml` | Render Blueprint (web + worker, free tier) |
 | `vercel.json` | Vercel deployment config with security headers |
 | `backend/.env.staging.example` | Staging env template (placeholders only) |
@@ -214,17 +215,50 @@ a log entry.
 | Aspect | Value |
 |--------|-------|
 | Backend type | `web` (uvicorn, free tier) |
-| Worker type | `worker` (arq, free tier) |
+| Worker type | `worker` (arq, free tier — deferred if free plan unavailable) |
 | Python version | `3.13.0` |
 | Build command | `pip install --upgrade pip && pip install -r requirements.txt` |
-| Migration command | `releaseCommand: python -m alembic upgrade head` (runs after build, before traffic switch) |
+| Migration command | **None on startup** — `preDeployCommand` is paid-only; see §7a |
 | Start command | `uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1` |
 | Health check | `/health` |
+| `STORAGE_BACKEND` | `local` (ephemeral — object storage is a deployment blocker; see §7b) |
 | All secrets | `sync: false` (set in Render Dashboard, never committed) |
 
-Alembic runs as a Render `releaseCommand`, not inside `buildCommand`, so the
-database is only migrated when a new version is ready to receive traffic —
-consistent with the migration rules.
+#### §7a — Free-tier migration strategy
+
+`preDeployCommand` is a paid Render feature (paid web services, private
+services, and background workers only).  Using it on `plan: free` would
+require selecting a paid plan, which is prohibited by the staging constraints.
+
+**Resolution:** `preDeployCommand` is removed from the Blueprint.  Migrations
+are run once via `backend/scripts/run_migrations.py` from the Render Shell
+after the first deploy.
+
+Migration script behaviour:
+- reads `DATABASE_URL` from the environment (never displayed in output)
+- records Alembic revision before and after execution
+- exits with code 1 if `alembic upgrade head` fails
+- is idempotent — safe to run multiple times (no-op when already at head)
+
+Paid-plan equivalent is documented in `render.yaml` comments but not active:
+```yaml
+# preDeployCommand: python -m alembic upgrade head
+```
+
+#### §7b — Object storage deployment blocker
+
+No S3-compatible provider has been approved with credentials.  `render.yaml`
+sets `STORAGE_BACKEND=local` for both services so the backend starts and
+health checks pass.  The local backend writes to Render's ephemeral
+filesystem; files do not survive restarts.
+
+**File upload functionality is a known deployment blocker** until a provider
+is approved (Backblaze B2 recommended — no payment card required) and
+credentials are set as protected environment variables in Render Dashboard.
+
+Switching to S3 requires changing `STORAGE_BACKEND` from `local` to `s3` and
+setting `S3_BUCKET`, `S3_ENDPOINT_URL`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
+in the Render Dashboard.  No code change is needed.
 
 ### vercel.json
 
@@ -346,11 +380,13 @@ pending action.
 
 After owner review and PR merge into `origin/main`, proceed in this order:
 
-1. **Neon** — provision PostgreSQL (free, no card)
-2. **Upstash** — provision Redis (free, no card)
-3. **Qdrant Cloud** — provision free cluster (no card)
-4. **Object storage** — provision Backblaze B2 (or owner-approved alternative)
-5. **Render** — deploy Blueprint; migrations run automatically via `releaseCommand`
-6. **Vercel** — deploy frontend; update `CORS_ORIGINS` on Render
-7. **Seed** — run `python ../database/seed_data/run_all.py` via Render Shell
-8. **Smoke test** — full 7-point checklist from `staging-deployment-guide.md`
+1. **Neon** — provision PostgreSQL (free, no card) ✅ done
+2. **Upstash** — provision Redis (free, no card) ✅ done
+3. **Qdrant Cloud** — provision free cluster (no card) ✅ done
+4. **Object storage** — provision Backblaze B2 (or owner-approved alternative) ⏳ pending owner decision
+5. **Render** — deploy Blueprint; service starts with `STORAGE_BACKEND=local`
+6. **Migrations** — run `python scripts/run_migrations.py` via Render Shell (one-time, after step 5)
+7. **Vercel** — deploy frontend; update `CORS_ORIGINS` on Render
+8. **Seed** — run `python ../database/seed_data/run_all.py` via Render Shell (one-time, after step 6)
+9. **Smoke test** — full checklist from `staging-deployment-guide.md`
+10. **Object storage** — once provider approved: set `STORAGE_BACKEND=s3` + credentials in Render Dashboard

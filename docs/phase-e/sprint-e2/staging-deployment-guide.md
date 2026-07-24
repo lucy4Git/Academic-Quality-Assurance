@@ -24,24 +24,12 @@
    ```
 4. Save this as `DATABASE_URL` — you'll use it in Render and locally.
 
-**Migrations** are applied automatically by the Render `releaseCommand`
-(`python -m alembic upgrade head`) every time a new version is deployed.
+**Migrations** — `preDeployCommand` is a paid Render feature and is not
+active on `plan: free`.  Migrations are therefore run **once** via Render
+Shell after the first deploy.  See **Step 5.3** below.
+
 `DATABASE_URL` is read from the protected Render environment variable — never
 placed in a terminal command, script, or documentation.
-
-**Seed data** — run once after the first deploy using the `DATABASE_URL`
-environment variable already set in Render:
-
-1. In the Render dashboard → `aqaa-backend` → **Shell** tab, run:
-   ```bash
-   python ../database/seed_data/run_all.py
-   ```
-   This uses the `DATABASE_URL` already set in the service environment.
-   The script is idempotent — safe to run multiple times.
-2. If the Shell tab is unavailable on the free tier, open a local terminal,
-   set `DATABASE_URL` via your OS environment (e.g. `export DATABASE_URL=...`
-   in a private shell session), then run the seed script. Do not paste the URL
-   into a script or document.
 
 ---
 
@@ -68,7 +56,39 @@ environment variable already set in Render:
 
 ---
 
-## Step 4 — Cloudflare R2 (File Storage)
+## Step 4 — Object Storage (DEPLOYMENT BLOCKER — pending provider decision)
+
+Object storage is **not provisioned** for initial staging.  `render.yaml`
+sets `STORAGE_BACKEND=local` so the backend starts and health checks pass,
+but uploaded files are written to Render's ephemeral filesystem and **will
+not survive service restarts**.  File-upload features are non-functional
+until a persistent provider is approved.
+
+**Recommended provider:** Backblaze B2 (10 GB free, no payment card required,
+S3-compatible).  Cloudflare R2 requires a payment method even on the free tier.
+
+**When a provider is approved**, update `render.yaml` for both services:
+```yaml
+- key: STORAGE_BACKEND
+  value: s3          # change from local
+- key: S3_BUCKET
+  value: aqaa-staging
+- key: S3_REGION
+  value: us-east-005    # B2 region, or "auto" for R2
+- key: S3_ENDPOINT_URL
+  sync: false        # set to provider endpoint in Render Dashboard
+- key: S3_ACCESS_KEY_ID
+  sync: false
+- key: S3_SECRET_ACCESS_KEY
+  sync: false
+```
+
+Do not activate `STORAGE_BACKEND=s3` until all five S3 variables are set as
+protected environment variables in the Render Dashboard.
+
+---
+
+## Step 4a — Cloudflare R2 (File Storage — requires payment method)
 
 1. Cloudflare account required — create at **https://cloudflare.com** (free)
 2. Dashboard → R2 Object Storage → Create bucket → name: `aqaa-staging`
@@ -107,10 +127,6 @@ For **both** services, add the following environment variables in the Render das
 | `QDRANT_API_KEY` | Qdrant API key |
 | `SECRET_KEY` | 64-char random hex (`python -c "import secrets; print(secrets.token_hex(64))"`) |
 | `METRICS_API_KEY` | Random string (protects /metrics) |
-| `S3_BUCKET` | `aqaa-staging` |
-| `S3_ENDPOINT_URL` | R2 endpoint URL |
-| `S3_ACCESS_KEY_ID` | R2 access key |
-| `S3_SECRET_ACCESS_KEY` | R2 secret key |
 | `CORS_ORIGINS` | `https://YOUR-APP.vercel.app,http://localhost:3000` |
 | `AI_PROVIDER` | `LOCAL_DEV` (or `ANTHROPIC` if you have an API key) |
 | `ANTHROPIC_API_KEY` | (optional) Anthropic API key |
@@ -118,13 +134,60 @@ For **both** services, add the following environment variables in the Render das
 ### 5.3 Deploy
 
 Click **Apply** in the Render Blueprint dashboard. Render will:
-1. Build the backend (pip install + alembic upgrade head)
-2. Start the uvicorn server
-3. Start the ARQ worker
+1. Build the backend (`pip install -r requirements.txt`)
+2. Start the Uvicorn server
+3. Start the ARQ worker (if the free worker tier is accepted; see note below)
+
+> **ARQ worker free tier:** if Render rejects `plan: free` for the worker
+> during Blueprint apply, remove the `aqaa-worker` block from `render.yaml`,
+> commit and redeploy, and document background-job execution as pending.
+> Do not select a paid plan.
 
 **Backend URL** will be: `https://aqaa-backend.onrender.com` (or similar)
 
-### 5.4 Verify backend health
+### 5.4 Run migrations (one-time, after first deploy)
+
+`preDeployCommand` is not available on `plan: free`.  Run migrations manually
+from **Render Dashboard → aqaa-backend → Shell**:
+
+```bash
+python scripts/run_migrations.py
+```
+
+This script:
+- reads `DATABASE_URL` from the service environment (never displayed)
+- prints the Alembic revision before and after
+- exits non-zero if migration fails
+
+Expected output:
+```
+Revision before migration: (none)
+Running migrations...
+INFO  [alembic.runtime.migration] Running upgrade  -> 99c7b97c9a76, initial schema
+Revision after  migration: 99c7b97c9a76 (head)
+Migrations applied successfully.
+```
+
+If the Shell tab is unavailable on the free tier, set `DATABASE_URL` in a
+private local terminal session (`$env:DATABASE_URL = "..."` in PowerShell,
+or `export DATABASE_URL=...` in bash), then run from `backend/`:
+```bash
+python scripts/run_migrations.py
+```
+Do not paste the URL into any script, document, or chat.
+
+### 5.5 Run seed data (one-time, after migrations)
+
+From the same Render Shell (or local terminal with DATABASE_URL set):
+
+```bash
+python ../database/seed_data/run_all.py
+```
+
+The script is idempotent — safe to run more than once.  Do not run this
+automatically on every deploy.
+
+### 5.6 Verify backend health
 
 ```bash
 curl https://aqaa-backend.onrender.com/health

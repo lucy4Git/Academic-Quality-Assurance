@@ -25,7 +25,11 @@ services:
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
-      python -m alembic upgrade head
+
+    # releaseCommand runs after a successful build, before traffic is switched.
+    # DATABASE_URL is read from the protected Render environment variable — never
+    # placed in terminal commands or documentation.
+    releaseCommand: python -m alembic upgrade head
 
     startCommand: >
       uvicorn app.main:app

@@ -183,7 +183,17 @@ async def upload_file(
     )
     db.add(db_version)
 
-    await db.commit()
+    try:
+        await db.commit()
+    except Exception:
+        # DB commit failed — remove the already-written object so storage and
+        # database remain consistent (no orphaned S3/local objects).
+        try:
+            await storage.delete(stored_path)
+        except Exception:
+            pass  # best-effort; the object may not have been written
+        raise
+
     await db.refresh(db_file)
     return db_file
 

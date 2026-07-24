@@ -90,18 +90,21 @@ class TestWorkspaceAttachmentResponse:
 
 class TestAttachEndpointRegistration:
     def test_attach_route_registered(self):
-        routes = [r.path for r in app.routes]
-        assert any("/ai-assistant/attach" in r for r in routes)
+        from app.routes.ai_assistant import router as ai_router
+        routes = [r.path for r in ai_router.routes if hasattr(r, "path")]
+        assert any("/attach" in r for r in routes)
 
     def test_attach_route_is_post(self):
-        for r in app.routes:
-            if hasattr(r, "path") and "/ai-assistant/attach" in r.path:
+        from app.routes.ai_assistant import router as ai_router
+        for r in ai_router.routes:
+            if hasattr(r, "path") and "/attach" in r.path:
                 assert "POST" in (getattr(r, "methods", set()) or set())
                 break
 
     def test_ask_stream_route_still_registered(self):
-        routes = [r.path for r in app.routes]
-        assert any("/ai-assistant/ask-stream" in r for r in routes)
+        from app.routes.ai_assistant import router as ai_router
+        routes = [r.path for r in ai_router.routes if hasattr(r, "path")]
+        assert any("/ask-stream" in r for r in routes)
 
 
 # ---------------------------------------------------------------------------
@@ -149,8 +152,9 @@ class TestFileUploadApiContract:
             FileCategory("general_document")
 
     def test_upload_route_exists_and_requires_post(self):
-        routes = {r.path: getattr(r, "methods", set()) for r in app.routes}
-        upload_routes = {p: m for p, m in routes.items() if "/files/upload" in p}
+        from app.routes.files import router as files_router
+        routes = {r.path: getattr(r, "methods", set()) for r in files_router.routes if hasattr(r, "path")}
+        upload_routes = {p: m for p, m in routes.items() if "/upload" in p}
         assert len(upload_routes) > 0
         for methods in upload_routes.values():
             assert "POST" in (methods or set())

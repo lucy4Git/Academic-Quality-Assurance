@@ -66,7 +66,7 @@ async def get_current_user(
 ) -> User:
     """Validate the Bearer token and return the matching active user.
 
-    Raises HTTP 401 if the token is missing, expired, or invalid.
+    Raises HTTP 401 if the token is missing, expired, invalid, or revoked.
     Raises HTTP 403 if the account is disabled.
     """
     # Deferred import avoids a circular dependency between dependencies ↔ services.
@@ -78,6 +78,17 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(exc),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # Check JWT deny-list — tokens are added here on logout.
+    from app.core.token_deny_list import is_token_denied
+
+    jti = claims.get("jti")
+    if jti and await is_token_denied(jti):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has been revoked. Please log in again.",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

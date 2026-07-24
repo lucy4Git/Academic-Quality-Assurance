@@ -15,6 +15,7 @@ Exit codes:
 import os
 import subprocess
 import sys
+from urllib.parse import urlparse
 
 
 def _alembic(*args: str) -> subprocess.CompletedProcess[str]:
@@ -30,13 +31,31 @@ def _current_revision() -> str:
     return result.stdout.strip() or "(none)"
 
 
+def _validate_url_safe_metadata(url: str) -> None:
+    """Print safe URL metadata for diagnostic purposes — never the password."""
+    parsed = urlparse(url)
+    print(f"  Driver:   {parsed.scheme}")
+    print(f"  Host:     {parsed.hostname or '(none)'}")
+    print(f"  Database: {parsed.path.lstrip('/') or '(none)'}")
+    if not parsed.scheme.startswith("postgresql+asyncpg"):
+        print(
+            "  WARNING: scheme does not include +asyncpg driver. "
+            "Migrations may fail with 'asyncio extension requires async driver'.",
+            file=sys.stderr,
+        )
+
+
 def main() -> int:
-    if not os.environ.get("DATABASE_URL"):
+    raw_url = os.environ.get("DATABASE_URL", "")
+    if not raw_url:
         print("ERROR: DATABASE_URL is not set in the environment.", file=sys.stderr)
         return 1
 
+    print("Connection metadata (no credentials):")
+    _validate_url_safe_metadata(raw_url)
+
     before = _current_revision()
-    print(f"Revision before migration: {before}")
+    print(f"\nRevision before migration: {before}")
 
     result = _alembic("upgrade", "head")
     if result.stdout:
@@ -46,7 +65,7 @@ def main() -> int:
 
     if result.returncode != 0:
         print(
-            f"ERROR: alembic upgrade head exited {result.returncode}. "
+            f"\nERROR: alembic upgrade head exited {result.returncode}. "
             "Review the output above and resolve before accepting staging.",
             file=sys.stderr,
         )

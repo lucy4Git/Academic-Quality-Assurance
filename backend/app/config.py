@@ -1,5 +1,6 @@
 """Application configuration loaded from environment variables."""
 
+import re
 from functools import lru_cache
 from typing import Annotated
 
@@ -67,6 +68,30 @@ class Settings(BaseSettings):
     # --- Database ---
     DATABASE_URL: str
     DATABASE_ECHO: bool = False
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def _normalize_database_url(cls, value: object) -> object:
+        """Normalize DATABASE_URL for the asyncpg driver used throughout the app.
+
+        Providers such as Neon return connection strings with the bare
+        ``postgresql://`` (or ``postgres://``) scheme and ``?sslmode=require``.
+        SQLAlchemy's async engine requires the ``postgresql+asyncpg://`` scheme,
+        and asyncpg uses ``?ssl=require`` rather than ``?sslmode=require``.
+
+        Transformations applied (idempotent):
+          postgres://       → postgresql+asyncpg://
+          postgresql://     → postgresql+asyncpg://
+          sslmode=require   → ssl=require
+        """
+        if not isinstance(value, str):
+            return value
+        # Normalize scheme — only rewrite bare postgresql:// and postgres://;
+        # leave postgresql+asyncpg:// and any other driver spec untouched.
+        value = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", value)
+        # asyncpg does not understand psycopg2's sslmode parameter.
+        value = re.sub(r"\bsslmode=", "ssl=", value)
+        return value
     DATABASE_POOL_SIZE: int = 10
     DATABASE_MAX_OVERFLOW: int = 20
 

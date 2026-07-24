@@ -4,6 +4,77 @@ All notable changes to this project are documented here.
 
 ---
 
+## [Unreleased] — Sprint E1 Production-Readiness Foundation (IN PROGRESS — 2026-07-24)
+
+### Added
+
+**Security (E1-SEC-***)**
+- `SecurityHeadersMiddleware` — X-Frame-Options: DENY, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, Content-Security-Policy, HSTS on every response
+- JWT deny-list via Redis (`aqaa:jwt:deny:<jti>` with TTL = remaining token lifetime); `POST /api/v1/auth/logout` revokes current token
+- Deny-list check in `get_current_user` dependency — revoked tokens receive 401 immediately
+- Rate limiting via slowapi: `RATE_LIMIT_AUTH_PER_MINUTE` (default 10/min) applied to `/auth/login` and `/auth/token`; `SlowAPIMiddleware` wired into app factory
+- Extension/content agreement enforcement in `validate_upload` — PNG uploaded as `.pdf` is now rejected at magic-byte cross-check step
+- filetype secondary MIME validation as additional content-spoofing defence
+
+**Configuration (E0-OD-002)**
+- Pydantic `@model_validator` rejects known-default and short SECRET_KEY values in staging/pilot/production environments
+- `METRICS_API_KEY` required in strict environments; `GET /metrics` returns 401 without correct header/query key
+
+**Observability (E1-OPS-***)**
+- `GET /health/ready` readiness probe — checks PostgreSQL (`SELECT 1`), Redis (`ping`), Qdrant (`get_collections`); returns 200 or 503
+- Prometheus metrics via `prometheus-fastapi-instrumentator`; `/metrics` endpoint protected by `METRICS_API_KEY` in non-dev
+- structlog structured JSON logging with mandatory sensitive-field redaction (`_REDACTED_KEYS` covers passwords, tokens, API keys)
+- Sentry integration (disabled by default; `SENTRY_ENABLED=False`; `send_default_pii=False`)
+
+**Background Jobs (E1-WRK-001)**
+- ARQ worker (`app/worker.py`) with `WorkerSettings`; `max_tries=3`, `job_timeout=600`; tenant context required in all job kwargs
+- `BackgroundJobLog` and `AuditTriggerSchedule` models and migration M-E-00
+- `aqaa-worker` service added to `docker-compose.yml`
+
+**Corrective Actions (E1-CA-001)**
+- `CorrectiveAction` and `CorrectiveActionHistory` models, schemas, service, and router
+- Migration M-E-01 (corrective_actions, corrective_action_history tables)
+- Migration M-E-07 (`primary_corrective_action_id` FK on audit_findings)
+- Corrective action state machine: open → in_progress → pending_approval → approved/rejected/closed
+- Full tenant isolation enforced in service layer (`_assert_tenant`)
+
+**Infrastructure**
+- `Caddyfile` for self-hosted TLS reverse proxy (E0-OD-004)
+- PostgreSQL backup script (`database/backups/backup_postgres.sh`) — pg_dump custom format, configurable retention
+- Qdrant snapshot backup script (`database/backups/backup_qdrant.sh`) — all collections
+
+**CI/CD**
+- `.github/workflows/ci.yml` — backend pytest, TypeScript check, ESLint, Next.js production build, Playwright E2E (push only)
+- Secret scanning step rejects known-default `SECRET_KEY` patterns
+
+**Frontend Testing**
+- `playwright.config.ts` with Chromium, headless, CI-aware configuration
+- 3 E2E test files: `auth.spec.ts`, `audit-trigger.spec.ts`, `ai-workspace.spec.ts`
+- E0-OD-008: synthetic credentials only; CI credentials from GitHub Actions secrets
+
+**Operational Documentation**
+- `docs/phase-e/sprint-e1/deployment-runbook.md`
+- `docs/phase-e/sprint-e1/backup-restore-runbook.md`
+- `docs/phase-e/sprint-e1/secret-rotation-runbook.md`
+- `docs/phase-e/sprint-e1/incident-response-runbook.md`
+- `docs/phase-e/sprint-e1/ai-governance-policy.md` (E1-GOV-001)
+
+**Tests**
+- `tests/test_sprint_e1_security.py` — 20 tests: weak-secret rejection, JWT deny-list, security headers, health probes, file MIME validation, corrective action routes
+- `tests/test_sprint_e1_tenant_isolation.py` — 12 tests: `assert_institution_access` positive/negative, corrective action service cross-tenant enforcement
+
+### Fixed
+- `validate_upload` now rejects content that does not match declared extension (PNG as .pdf was previously accepted)
+- 7 existing route-inspection tests updated for FastAPI 0.139.2 `_IncludedRouter` breaking change
+
+### Dependencies Added
+- `arq>=0.26`, `redis[hiredis]>=5.0`, `structlog>=24.0`
+- `prometheus-fastapi-instrumentator>=7.0`, `sentry-sdk[fastapi]>=2.0`
+- `slowapi>=0.1.9`, `filetype>=1.2`
+- FastAPI upgraded to 0.139.2 (side-effect of sentry-sdk install)
+
+---
+
 ## [Unreleased] — Sprint E0 Baseline and Planning Validation (COMPLETE — 2026-07-20)
 
 ### Added

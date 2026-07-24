@@ -8,8 +8,13 @@ POST /api/v1/auth/refresh   — exchange a refresh token for a new pair
 GET  /api/v1/auth/me        — return the caller's profile
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/token")
+_limiter = Limiter(key_func=get_remote_address)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -27,6 +32,7 @@ from app.schemas.auth import (
     VerifyEmailRequest,
 )
 from app.schemas.user import UserRead
+from app.core.token_deny_list import add_to_deny_list
 from app.security import create_access_token, create_refresh_token, decode_token
 from app.services.auth_service import (
     AuthError,
@@ -97,7 +103,9 @@ async def register(
     response_model=TokenResponse,
     summary="Authenticate and receive tokens",
 )
+@_limiter.limit(f"{settings.RATE_LIMIT_AUTH_PER_MINUTE}/minute")
 async def login(
+    request: Request,
     data: UserLoginRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
@@ -114,7 +122,9 @@ async def login(
     response_model=TokenResponse,
     summary="OAuth2 password-flow login (used by Swagger UI's Authorize dialog)",
 )
+@_limiter.limit(f"{settings.RATE_LIMIT_AUTH_PER_MINUTE}/minute")
 async def login_oauth2(
+    request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
@@ -163,6 +173,32 @@ async def refresh(
         access_token=create_access_token(user),
         refresh_token=create_refresh_token(user),
     )
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Revoke the current access token",
+)
+async def logout(
+    token: str = Depends(_oauth2_scheme),
+    current_user: User = Depends(get_current_user),
+) -> None:
+    """Add the current access token's JTI to the Redis deny-list.
+
+    The token is invalidated immediately; subsequent requests with the same
+    token receive HTTP 401. The deny-list entry expires when the token would
+    have expired naturally — no unbounded Redis growth.
+    """
+    try:
+        claims = decode_token(token, expected_type="access")
+    except ValueError:
+        return  # already invalid — nothing to revoke
+
+    jti = claims.get("jti")
+    exp = claims.get("exp")
+    if jti and exp:
+        await add_to_deny_list(jti, exp)
 
 
 @router.get(

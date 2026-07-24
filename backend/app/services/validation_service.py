@@ -18,6 +18,12 @@ import io
 import zipfile
 from pathlib import Path
 
+try:
+    import filetype as _filetype  # E1-SEC-005: pure-Python MIME detection (no libmagic)
+    _HAS_FILETYPE = True
+except ImportError:
+    _HAS_FILETYPE = False
+
 
 # ---------------------------------------------------------------------------
 # Public exception
@@ -194,8 +200,33 @@ def validate_upload(
             f"{max_size_bytes / 1024 / 1024:.0f} MB limit."
         )
 
-    # 3. Magic-byte check
+    # 3. Magic-byte check (custom logic handles all AQAA-permitted formats)
     mime_type = _detect_mime_from_magic(content, ext)
+
+    # 3a. Extension/content agreement: the detected MIME must match what the
+    # declared extension implies.  A PNG uploaded as document.pdf fails here.
+    expected_mime = EXTENSION_MIME.get(ext)
+    if expected_mime and mime_type != expected_mime:
+        raise UploadValidationError(
+            f"File content does not match the declared extension. "
+            f"The file has a {ext!r} extension but its content identifies as {mime_type!r}. "
+            "Please upload the correct file type."
+        )
+
+    # 3b. filetype secondary confirmation — cross-validates against the AQAA
+    # magic-byte result for non-ZIP types where filetype has coverage.
+    # Mismatches raise immediately; filetype returning None is not an error
+    # (text/CSV files have no binary header that filetype can detect).
+    if _HAS_FILETYPE and ext not in {".csv", ".txt", ".zip", ".docx", ".xlsx", ".pptx"}:
+        ft = _filetype.guess(content[:262])  # filetype only needs first 262 bytes
+        if ft is not None:
+            detected = ft.mime
+            if detected != mime_type:
+                raise UploadValidationError(
+                    f"File content does not match the declared type. "
+                    f"Expected {mime_type!r} but the file identifies as {detected!r}. "
+                    "Please upload the correct file."
+                )
 
     # 4. ZIP safety (applies to plain ZIPs and all Office Open XML formats)
     if ext in {".zip", ".docx", ".xlsx", ".pptx"} or mime_type == "application/zip":

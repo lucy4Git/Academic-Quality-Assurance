@@ -104,6 +104,33 @@ services:
     networks:
       - aqaa-network
 
+  # Sprint E1 — ARQ background task worker (E0-OD-001)
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aqaa-worker
+    restart: unless-stopped
+    command: ["python", "-m", "arq", "app.worker.WorkerSettings"]
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-aqaa}:${POSTGRES_PASSWORD:-aqaa}@postgres:5432/${POSTGRES_DB:-aqaa}
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+    volumes:
+      - ./backend:/app
+      - aqaa_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - aqaa-network
+
 networks:
   aqaa-network:
     name: aqaa-network

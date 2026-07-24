@@ -1,0 +1,58 @@
+# AQAA Caddy reverse proxy configuration
+# E0-OD-004: Used for supported self-hosted Docker deployments only.
+# DO NOT use this in the Vercel or Render deployment path — those platforms
+# handle TLS termination natively and Caddy would duplicate it.
+#
+# Usage (self-hosted):
+#   docker compose -f docker-compose.yml -f docker-compose.caddy.yml up -d
+#
+# Caddy automatically provisions and renews TLS certificates via Let's Encrypt
+# when a public hostname is provided. For local testing replace the hostname
+# with ":443" and accept the self-signed certificate warning.
+#
+# Replace {$AQAA_DOMAIN} with your domain (set in environment or .env):
+#   AQAA_DOMAIN=aqaa.example.ac.za
+
+{$AQAA_DOMAIN:localhost} {
+    # --- Backend API proxy ---
+    handle /api/* {
+        reverse_proxy backend:8000 {
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # --- Health probes (allow direct without auth) ---
+    handle /health* {
+        reverse_proxy backend:8000
+    }
+
+    # --- Metrics (internal use — restrict to monitoring network) ---
+    handle /metrics {
+        # Only allow from Prometheus container; deny external access
+        @external not remote_ip 172.16.0.0/12 10.0.0.0/8 192.168.0.0/16
+        abort @external
+        reverse_proxy backend:8000
+    }
+
+    # --- Frontend (Next.js) ---
+    handle {
+        reverse_proxy frontend:3000 {
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # --- Security headers (complement backend middleware) ---
+    header {
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        X-Robots-Tag "noindex, nofollow"  # prevent indexing until production
+    }
+
+    # --- Access logging ---
+    log {
+        output stdout
+        format json
+        level INFO
+    }
+}

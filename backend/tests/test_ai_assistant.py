@@ -246,8 +246,14 @@ class TestAsk:
         mock_provider.model_name = "gpt-4o-mini"
         mock_provider.complete = AsyncMock(return_value="Real AI answer about TUT.")
 
-        with patch("app.ai_assistant.assistant_service.retrieve_context") as mock_ctx:
+        # is_placeholder_mode is True whenever IS_PLACEHOLDER (embedding) is True
+        # OR generation falls back to template. Patch IS_PLACEHOLDER so that using
+        # a real provider produces is_placeholder_mode=False as expected.
+        with patch("app.ai_assistant.assistant_service.retrieve_context") as mock_ctx, \
+             patch("app.ai_assistant.assistant_service.embedding_service") as mock_emb:
             mock_ctx.return_value = self._mock_chunks()
+            mock_emb.IS_PLACEHOLDER = False
+            mock_emb.embed_query = MagicMock(return_value=[0.1] * 384)
             result = await ask("test", "TUT", provider=mock_provider)
 
         assert result["answer"] == "Real AI answer about TUT."

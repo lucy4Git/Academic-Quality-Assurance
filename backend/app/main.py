@@ -3,13 +3,24 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
 
 from app.config import settings
 from app.core.exceptions import ConflictError, NotFoundError
 from app.core.exceptions import DomainError, DomainPermissionError
+from app.core.logging import configure_logging, get_logger
+from app.core.redis_client import check_redis_health, close_redis, get_redis
+from app.core.security_headers import SecurityHeadersMiddleware
+
+# Shared limiter instance — imported by route modules that need per-endpoint limits
+limiter = Limiter(key_func=get_remote_address)
 from app.routes.assessment_audits import router as assessment_audits_router
 from app.routes.attendance_audits import router as attendance_audits_router
 from app.routes.evidence_audits import router as evidence_audits_router
@@ -52,17 +63,59 @@ from app.routes.regulatory_authorities import router as regulatory_authorities_r
 from app.routes.quality_frameworks import router as quality_frameworks_router
 from app.routes.framework_assessments import router as framework_assessments_router
 from app.routes.artifacts import router as artifacts_router
+from app.routes.corrective_actions import router as corrective_actions_router
+
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Application startup/shutdown hook.
+    """Application startup/shutdown lifecycle.
 
-    Left intentionally minimal at this stage — connection pools are managed by
-    the SQLAlchemy engine itself. Future stages (caching, background workers,
-    AI agent orchestration) will extend this to warm up shared resources.
+    Startup: configure logging, initialise Redis, instrument Prometheus,
+    optionally initialise Sentry.
+    Shutdown: close Redis connection pool cleanly.
     """
+    # --- Structured logging ---
+    json_logs = settings.APP_ENV not in ("development",)
+    configure_logging(json_logs=json_logs)
+    logger.info(
+        "aqaa_startup",
+        app=settings.APP_NAME,
+        env=settings.APP_ENV,
+        debug=settings.DEBUG,
+    )
+
+    # --- Sentry (optional — disabled by default; E0-OD-003) ---
+    if settings.SENTRY_ENABLED and settings.SENTRY_DSN:
+        try:
+            import sentry_sdk
+            from sentry_sdk.integrations.fastapi import FastApiIntegration
+            from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+
+            sentry_sdk.init(
+                dsn=settings.SENTRY_DSN,
+                environment=settings.SENTRY_ENVIRONMENT or settings.APP_ENV,
+                send_default_pii=False,  # E0-OD-003: never send PII to Sentry
+                integrations=[FastApiIntegration(), SqlalchemyIntegration()],
+                traces_sample_rate=0.1,
+            )
+            logger.info("sentry_initialised", environment=settings.APP_ENV)
+        except ImportError:
+            logger.warning("sentry_sdk_not_installed")
+
+    # --- Warm up Redis connection ---
+    try:
+        await get_redis()
+        logger.info("redis_connected")
+    except Exception as exc:
+        logger.warning("redis_connection_warning", error=str(exc))
+
     yield
+
+    # --- Shutdown ---
+    await close_redis()
+    logger.info("aqaa_shutdown")
 
 
 def create_app() -> FastAPI:
@@ -77,6 +130,14 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # --- Security headers (outermost middleware — applied to all responses) ---
+    app.add_middleware(SecurityHeadersMiddleware)
+
+    # --- Rate limiting (Sprint E1 — E0-OD-002) ---
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+    app.add_middleware(SlowAPIMiddleware)
+
     # --- CORS ---
     app.add_middleware(
         CORSMiddleware,
@@ -86,10 +147,38 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # --- Domain exception → HTTP response handlers ---
-    # Services raise these HTTP-agnostic exceptions; handlers convert them so
-    # route functions need no try/except boilerplate.
+    # --- Prometheus metrics (Sprint E1 — E0-OD-003) ---
+    try:
+        from prometheus_fastapi_instrumentator import Instrumentator
 
+        instrumentator = Instrumentator(
+            should_group_status_codes=True,
+            should_ignore_untemplated=True,
+            excluded_handlers=["/health", "/health/ready", "/metrics"],
+        )
+        instrumentator.instrument(app)
+
+        @app.get("/metrics", include_in_schema=False)
+        async def metrics(request: Request) -> Response:
+            """Prometheus metrics endpoint — protected by METRICS_API_KEY."""
+            if settings.APP_ENV not in ("development", "test"):
+                api_key = request.headers.get("X-Metrics-Key") or request.query_params.get("key")
+                if not api_key or api_key != settings.METRICS_API_KEY:
+                    return JSONResponse(
+                        status_code=401,
+                        content={"detail": "Invalid or missing metrics API key."},
+                    )
+            from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+
+            return Response(
+                content=generate_latest(),
+                media_type=CONTENT_TYPE_LATEST,
+            )
+
+    except ImportError:
+        logger.warning("prometheus_instrumentator_not_installed")
+
+    # --- Domain exception → HTTP response handlers ---
     @app.exception_handler(NotFoundError)
     async def _not_found_handler(request: Request, exc: NotFoundError) -> JSONResponse:
         return JSONResponse(status_code=404, content={"detail": str(exc)})
@@ -108,15 +197,58 @@ def create_app() -> FastAPI:
     async def _domain_error_handler(request: Request, exc: DomainError) -> JSONResponse:
         return JSONResponse(status_code=409, content={"detail": str(exc)})
 
-    # --- Health probe ---
+    # --- Health probes ---
+
     @app.get("/health", tags=["Health"])
     async def health_check() -> dict[str, str]:
-        """Lightweight liveness probe used by orchestrators and load balancers."""
+        """Lightweight liveness probe. Returns 200 if the process is alive."""
         return {
             "status": "ok",
             "app": settings.APP_NAME,
             "environment": settings.APP_ENV,
         }
+
+    @app.get("/health/ready", tags=["Health"])
+    async def readiness_check() -> JSONResponse:
+        """Readiness probe. Returns 200 only when all datastores are reachable.
+
+        Used by Docker healthchecks, Kubernetes readiness probes, and the
+        aqaa-worker/aqaa-caddy startup dependency chain.
+        """
+        checks: dict[str, bool] = {}
+
+        # PostgreSQL
+        try:
+            from app.database import AsyncSessionLocal
+            from sqlalchemy import text
+
+            async with AsyncSessionLocal() as session:
+                await session.execute(text("SELECT 1"))
+            checks["postgres"] = True
+        except Exception:
+            checks["postgres"] = False
+
+        # Redis
+        checks["redis"] = await check_redis_health()
+
+        # Qdrant
+        try:
+            from qdrant_client import AsyncQdrantClient
+
+            qc = AsyncQdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
+            await qc.get_collections()
+            checks["qdrant"] = True
+        except Exception:
+            checks["qdrant"] = False
+
+        all_ok = all(checks.values())
+        return JSONResponse(
+            status_code=200 if all_ok else 503,
+            content={
+                "status": "ready" if all_ok else "degraded",
+                "checks": checks,
+            },
+        )
 
     # --- Routers ---
     prefix = settings.API_V1_PREFIX
@@ -164,6 +296,8 @@ def create_app() -> FastAPI:
     app.include_router(framework_assessments_router, prefix=prefix)
     # Phase D — Artifact Engine
     app.include_router(artifacts_router, prefix=prefix)
+    # Sprint E1 — Corrective Actions
+    app.include_router(corrective_actions_router, prefix=prefix)
 
     return app
 

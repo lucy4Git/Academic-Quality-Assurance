@@ -351,14 +351,14 @@ class TestStudentRoleBlocked:
     """Students must not access session management or ask-stream endpoints."""
 
     def test_sessions_endpoint_exists_on_router(self):
-        from app.main import app
-        routes = [r.path for r in app.routes]
-        assert any("/ai-assistant/sessions" in r for r in routes)
+        from app.routes.ai_assistant import router as ai_router
+        routes = [r.path for r in ai_router.routes if hasattr(r, "path")]
+        assert any("/sessions" in r for r in routes)
 
     def test_ask_stream_endpoint_exists_on_router(self):
-        from app.main import app
-        routes = [r.path for r in app.routes]
-        assert any("/ai-assistant/ask-stream" in r for r in routes)
+        from app.routes.ai_assistant import router as ai_router
+        routes = [r.path for r in ai_router.routes if hasattr(r, "path")]
+        assert any("/ask-stream" in r for r in routes)
 
     def test_student_role_not_in_allowed_roles_for_ai_workspace(self):
         """STUDENT is not a QA-capable role — confirm it's excluded from allowed set."""

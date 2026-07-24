@@ -3,8 +3,27 @@
 from functools import lru_cache
 from typing import Annotated
 
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+
+_WEAK_SECRETS = frozenset(
+    {
+        "change-me-to-a-long-random-string",
+        "changeme",
+        "change_me",
+        "aqaa",
+        "secret",
+        "password",
+        "supersecret",
+        "devsecret",
+        "testsecret",
+        "your-secret-key",
+        "your_secret_key",
+        "insecure",
+    }
+)
+
+_STRICT_ENVS = frozenset({"staging", "pilot", "production"})
 
 
 class Settings(BaseSettings):
@@ -33,13 +52,25 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 10_080  # 7 days
 
+    # --- Rate limiting (Sprint E1 — E1-SEC-002) ---
+    RATE_LIMIT_PER_MINUTE: int = 60  # requests per IP per minute
+    RATE_LIMIT_AUTH_PER_MINUTE: int = 10  # tighter limit for auth endpoints
+
+    # --- Metrics (Sprint E1 — E0-OD-003) ---
+    METRICS_API_KEY: str | None = None  # required to expose /metrics in non-dev envs
+
+    # --- Sentry (Sprint E1 — E0-OD-003; disabled by default) ---
+    SENTRY_ENABLED: bool = False
+    SENTRY_DSN: str | None = None
+    SENTRY_ENVIRONMENT: str | None = None  # defaults to APP_ENV if unset
+
     # --- Database ---
     DATABASE_URL: str
     DATABASE_ECHO: bool = False
     DATABASE_POOL_SIZE: int = 10
     DATABASE_MAX_OVERFLOW: int = 20
 
-    # --- Redis (caching, JWT revocation, background job state) ---
+    # --- Redis (caching, JWT revocation, background job state, rate limiting) ---
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # --- Qdrant (vector store for document embeddings / semantic search) ---
@@ -93,6 +124,29 @@ class Settings(BaseSettings):
         if isinstance(value, str):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
+
+    @model_validator(mode="after")
+    def _reject_weak_secrets_in_strict_envs(self) -> "Settings":
+        """Reject known-weak SECRET_KEY values in staging, pilot, and production.
+
+        E0-OD-002: 'Reject known default or weak secrets in staging, pilot and
+        production environments.'
+        """
+        if self.APP_ENV in _STRICT_ENVS:
+            key_lower = self.SECRET_KEY.lower().strip()
+            if key_lower in _WEAK_SECRETS or len(self.SECRET_KEY) < 32:
+                raise ValueError(
+                    f"SECRET_KEY is weak or uses a known default value. "
+                    f"A minimum 32-character random secret is required in "
+                    f"APP_ENV={self.APP_ENV!r}. Generate one with: "
+                    f"python -c \"import secrets; print(secrets.token_hex(32))\""
+                )
+            if self.METRICS_API_KEY is None:
+                raise ValueError(
+                    f"METRICS_API_KEY must be set in APP_ENV={self.APP_ENV!r} "
+                    "to prevent unauthenticated access to Prometheus metrics."
+                )
+        return self
 
 
 @lru_cache

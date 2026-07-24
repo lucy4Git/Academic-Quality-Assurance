@@ -24,17 +24,24 @@
    ```
 4. Save this as `DATABASE_URL` — you'll use it in Render and locally.
 
-**Run migrations** (from your local machine, after cloning main):
-```bash
-cd backend
-DATABASE_URL="postgresql+asyncpg://..." python -m alembic upgrade head
-```
+**Migrations** are applied automatically by the Render `releaseCommand`
+(`python -m alembic upgrade head`) every time a new version is deployed.
+`DATABASE_URL` is read from the protected Render environment variable — never
+placed in a terminal command, script, or documentation.
 
-**Seed data** (staging uses the same seed as dev):
-```bash
-cd backend
-DATABASE_URL="postgresql+asyncpg://..." python ../database/seed_data/run_all.py
-```
+**Seed data** — run once after the first deploy using the `DATABASE_URL`
+environment variable already set in Render:
+
+1. In the Render dashboard → `aqaa-backend` → **Shell** tab, run:
+   ```bash
+   python ../database/seed_data/run_all.py
+   ```
+   This uses the `DATABASE_URL` already set in the service environment.
+   The script is idempotent — safe to run multiple times.
+2. If the Shell tab is unavailable on the free tier, open a local terminal,
+   set `DATABASE_URL` via your OS environment (e.g. `export DATABASE_URL=...`
+   in a private shell session), then run the seed script. Do not paste the URL
+   into a script or document.
 
 ---
 

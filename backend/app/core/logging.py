@@ -39,6 +39,13 @@ _REDACTED_KEYS = frozenset(
         "smtp_password",
         "metrics_api_key",
         "sentry_dsn",
+        # S3 / object-storage credentials (Sprint E2)
+        "s3_secret_access_key",
+        "aws_secret_access_key",
+        "s3_access_key_id",
+        "aws_access_key_id",
+        # Vector-store credentials
+        "qdrant_api_key",
     }
 )
 

@@ -376,6 +376,64 @@ pending action.
 
 ---
 
+## 13a. API Documentation Exposure Policy (2026-07-27)
+
+### Finding
+
+`GET /docs` and `GET /openapi.json` return 404 in staging.  This is **correct
+and expected** — it is not a security restriction, a missing configuration, or
+a bug.
+
+### Root cause
+
+`create_app()` in `backend/app/main.py` (lines 127–129) mounts the FastAPI
+documentation endpoints under the versioned API prefix:
+
+```python
+openapi_url=f"{settings.API_V1_PREFIX}/openapi.json",   # /api/v1/openapi.json
+docs_url=f"{settings.API_V1_PREFIX}/docs",               # /api/v1/docs
+redoc_url=f"{settings.API_V1_PREFIX}/redoc",             # /api/v1/redoc
+```
+
+`API_V1_PREFIX = "/api/v1"`.  Root-level paths `/docs`, `/redoc`, and
+`/openapi.json` have no registered route and therefore return 404.
+
+**Correct staging URLs:**
+- Swagger UI: `https://<backend-url>/api/v1/docs`
+- ReDoc: `https://<backend-url>/api/v1/redoc`
+- OpenAPI schema: `https://<backend-url>/api/v1/openapi.json`
+
+### Policy decision
+
+Documentation is enabled in all environments (no `APP_ENV`-based gating).
+
+**Trade-off accepted:** the API shape is publicly visible; all data endpoints
+require a valid JWT so documentation exposure alone grants no access.
+
+**If a future policy decision requires disabling docs in production**, set
+`docs_url=None`, `redoc_url=None`, and `openapi_url=None` in `create_app()` for
+`APP_ENV in {"pilot", "production"}`.  That change requires an explicit owner
+decision and must not be made unilaterally.
+
+### Regression tests added
+
+`backend/tests/test_sprint_e2_api_docs.py` — 8 tests:
+
+| Test | Assertion |
+|------|-----------|
+| `test_root_docs_returns_404` | `/docs` → 404 |
+| `test_root_openapi_returns_404` | `/openapi.json` → 404 |
+| `test_root_redoc_returns_404` | `/redoc` → 404 |
+| `test_versioned_docs_reachable` | `/api/v1/docs` → 200 |
+| `test_versioned_openapi_reachable` | `/api/v1/openapi.json` → 200 |
+| `test_versioned_redoc_reachable` | `/api/v1/redoc` → 200 |
+| `test_openapi_schema_is_valid_json` | schema contains `openapi`, `paths`, `info` |
+| `test_openapi_schema_contains_auth_endpoint` | schema includes `/auth/` routes |
+
+All 8 passed locally.
+
+---
+
 ## 14. Post-Merge Staging Sequence
 
 After owner review and PR merge into `origin/main`, proceed in this order:

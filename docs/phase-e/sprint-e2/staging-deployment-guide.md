@@ -145,47 +145,49 @@ Click **Apply** in the Render Blueprint dashboard. Render will:
 
 **Backend URL** will be: `https://aqaa-backend.onrender.com` (or similar)
 
-### 5.4 Run migrations (one-time, after first deploy)
+### 5.4 Run migrations (one-time — completed for staging)
 
-`preDeployCommand` is not available on `plan: free`.  Run migrations manually
-from **Render Dashboard → aqaa-backend → Shell**:
+> **Status:** ✅ **Completed** — Alembic revision `e10000000c2 (head)` applied
+> to Neon staging database on 2026-07-27.
+
+`preDeployCommand` is not available on `plan: free`.  Migrations were run from
+the owner machine using the hidden-input helper:
 
 ```bash
-python scripts/run_migrations.py
+bash backend/scripts/migrate_staging.sh
+# or from backend/:
+bash scripts/migrate_staging.sh
 ```
 
-This script:
-- reads `DATABASE_URL` from the service environment (never displayed)
-- prints the Alembic revision before and after
-- exits non-zero if migration fails
+The helper prompts for the Neon connection string (hidden), normalizes it
+(`postgresql+asyncpg://`, removes `channel_binding`, `sslmode→ssl`), validates
+safe metadata only, runs `scripts/run_migrations.py`, then clears `DATABASE_URL`.
 
-Expected output:
+Evidence:
 ```
 Revision before migration: (none)
-Running migrations...
-INFO  [alembic.runtime.migration] Running upgrade  -> 99c7b97c9a76, initial schema
-Revision after  migration: 99c7b97c9a76 (head)
+Revision after  migration: e10000000c2 (head)
 Migrations applied successfully.
 ```
 
-If the Shell tab is unavailable on the free tier, set `DATABASE_URL` in a
-private local terminal session (`$env:DATABASE_URL = "..."` in PowerShell,
-or `export DATABASE_URL=...` in bash), then run from `backend/`:
-```bash
-python scripts/run_migrations.py
-```
-Do not paste the URL into any script, document, or chat.
+For future schema changes, re-run the same helper — it is idempotent.
 
-### 5.5 Run seed data (one-time, after migrations)
+### 5.5 Run seed data (one-time — run after migrations)
 
-From the same Render Shell (or local terminal with DATABASE_URL set):
+Use the hidden-input seed helper from Git Bash:
 
 ```bash
-python ../database/seed_data/run_all.py
+bash backend/scripts/seed_staging.sh
+# or from backend/:
+bash scripts/seed_staging.sh
 ```
 
-The script is idempotent — safe to run more than once.  Do not run this
-automatically on every deploy.
+The helper follows the same hidden-input workflow as the migration helper.
+It runs `database/seed_data/run_all.py` which seeds synthetic data only
+(GFU and RCT are fictional institutions; no real personal information).
+
+The seed is idempotent — re-running skips already-existing rows.
+Do not run the seed automatically on every deploy.
 
 ### 5.6 Verify backend health
 

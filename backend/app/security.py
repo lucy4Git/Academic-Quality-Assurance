@@ -67,7 +67,7 @@ def _build_token(
     now = datetime.now(UTC)
     payload: dict = {
         "sub": str(user_id),
-        "role": role.value,
+        "role": role.value if isinstance(role, UserRole) else str(role),
         "institution_id": str(institution_id) if institution_id else None,
         "type": token_type,
         "iat": int(now.timestamp()),

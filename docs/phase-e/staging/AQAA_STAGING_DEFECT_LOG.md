@@ -14,10 +14,45 @@
 | STG-003 | Role coverage | Medium | `faculty_dean`, `head_of_department`, `programme_coordinator`, `system_admin` not seeded | Open — provisioning script ready |
 | STG-004 | Object storage | Medium | `STORAGE_BACKEND=local`; uploaded files do not survive Render restarts | Open — provider decision pending |
 | STG-005 | Background worker | Low | `aqaa-worker` disabled; ARQ jobs do not execute on staging | Open — Render Free limitation |
+| STG-006 | Frontend gateway | High | Vercel Deployment Protection enabled — staging URL redirects to Vercel login | Open — owner must disable in Vercel project settings |
 
 ---
 
 ## Closed defects
+
+### STG-007 — Login endpoint returns HTTP 500 (role-as-string AttributeError)
+
+**Component:** `backend/app/security.py` — `_build_token()`
+**Severity:** Critical — blocked all login attempts on staging
+**Root cause:** asyncpg returns the `role` column value as a plain `str` (e.g.
+`"quality_assurance_officer"`) rather than a Python `UserRole` enum instance
+when `native_enum=True` is used with a PostgreSQL native ENUM column. The
+`_build_token()` function called `role.value`, raising `AttributeError: 'str'
+object has no attribute 'value'` which propagated as an unhandled HTTP 500.
+The `authenticate_user()` function only catches `AuthError`; any other exception
+reaches FastAPI's default 500 handler.
+
+**Fix applied (this commit):**
+Changed line 70 in `backend/app/security.py`:
+```python
+# Before (breaks when role is a plain str from asyncpg):
+"role": role.value,
+
+# After (defensive — handles both str and UserRole enum):
+"role": role.value if isinstance(role, UserRole) else str(role),
+```
+
+**Regression tests added:**
+`backend/tests/test_sprint_e2_login_500.py` — 11 unit tests covering:
+- `create_access_token` / `create_refresh_token` accept plain `str` role for
+  all 7 `UserRole` values.
+- JWT payload contains the correct role string.
+- Proper `UserRole` enum input still produces correct output.
+- `None` institution_id (SYSTEM_ADMIN pattern) works with str role.
+
+All 1402 tests pass.
+
+---
 
 ### STG-001 — `\r` carriage-return corrupts DATABASE_URL in rotation shell helper
 

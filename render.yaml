@@ -119,51 +119,59 @@ services:
         sync: false
 
   # --------------------------------------------------------------------------
-  # Background Worker (ARQ)
-  # Note: if Render rejects plan: free for this worker type during Blueprint
-  # apply, remove this block and document ARQ worker as a pending deployment.
-  # Do not select a paid plan to unblock it.
+  # Background Worker (ARQ) — DISABLED FOR RENDER FREE STAGING
+  #
+  # Render Free accounts cannot create Background Worker services.  The worker
+  # block is commented out so the Blueprint deploys only aqaa-backend.
+  #
+  # The worker source code (app/worker.py, WorkerSettings) is intentionally
+  # preserved and must not be deleted.  Background-job execution is a known
+  # staging limitation until either:
+  #   (a) the account is upgraded to a paid Render plan, or
+  #   (b) the worker is deployed on an alternative free provider.
+  #
+  # To re-enable: uncomment the block below and redeploy the Blueprint.
   # --------------------------------------------------------------------------
-  - type: worker
-    name: aqaa-worker
-    runtime: python
-    rootDir: backend
-    plan: free
-
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-
-    startCommand: python -m arq app.worker.WorkerSettings
-
-    envVars:
-      - key: APP_ENV
-        value: staging
-      - key: PYTHON_VERSION
-        value: "3.13.0"
-      - key: DATABASE_URL
-        sync: false
-      - key: REDIS_URL
-        sync: false
-      - key: QDRANT_URL
-        sync: false
-      - key: QDRANT_API_KEY
-        sync: false
-      - key: SECRET_KEY
-        sync: false
-      - key: STORAGE_BACKEND
-        value: local
-      - key: S3_BUCKET
-        sync: false
-      - key: S3_REGION
-        value: auto
-      - key: S3_ENDPOINT_URL
-        sync: false
-      - key: S3_ACCESS_KEY_ID
-        sync: false
-      - key: S3_SECRET_ACCESS_KEY
-        sync: false
-      - key: AI_PROVIDER
-        value: LOCAL_DEV
-      - key: ANTHROPIC_API_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
+  # - type: worker
+  #   name: aqaa-worker
+  #   runtime: python
+  #   rootDir: backend
+  #   plan: free
+  #
+  #   buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+  #
+  #   startCommand: python -m arq app.worker.WorkerSettings
+  #
+  #   envVars:
+  #     - key: APP_ENV
+  #       value: staging
+  #     - key: PYTHON_VERSION
+  #       value: "3.13.0"
+  #     - key: DATABASE_URL
+  #       sync: false
+  #     - key: REDIS_URL
+  #       sync: false
+  #     - key: QDRANT_URL
+  #       sync: false
+  #     - key: QDRANT_API_KEY
+  #       sync: false
+  #     - key: SECRET_KEY
+  #       sync: false
+  #     - key: STORAGE_BACKEND
+  #       value: local
+  #     - key: S3_BUCKET
+  #       sync: false
+  #     - key: S3_REGION
+  #       value: auto
+  #     - key: S3_ENDPOINT_URL
+  #       sync: false
+  #     - key: S3_ACCESS_KEY_ID
+  #       sync: false
+  #     - key: S3_SECRET_ACCESS_KEY
+  #       sync: false
+  #     - key: AI_PROVIDER
+  #       value: LOCAL_DEV
+  #     - key: ANTHROPIC_API_KEY
+  #       sync: false
+  #     - key: OPENAI_API_KEY
+  #       sync: false

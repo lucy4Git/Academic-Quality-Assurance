@@ -203,16 +203,29 @@ curl https://aqaa-backend.onrender.com/health/ready
 
 ## Step 6 — Vercel (Frontend)
 
+> **Configuration note:** `rootDirectory` is a Vercel Dashboard setting only
+> — it is not supported inside `vercel.json`.  The repository contains a
+> minimal `frontend/vercel.json` with security headers only; all other
+> settings (framework, build command, output directory) are auto-detected by
+> Vercel from `frontend/package.json`.
+
 1. Create a free account at **https://vercel.com**
-2. New Project → Import Git repository → `lucy4Git/Academic-Quality-Assurance`
-3. Configure project:
-   - **Framework Preset**: Next.js (auto-detected)
-   - **Root Directory**: `frontend`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `.next`
-4. Add environment variable:
+2. Dashboard → **Add New** → **Project**
+3. Import Git repository: **`lucy4Git/Academic-Quality-Assurance`**
+4. In the **Configure Project** panel:
+   - **Root Directory** — click the directory picker and select **`frontend`**
+     (this is the only place `rootDirectory` may be set; do not add it to
+     `vercel.json`)
+   - **Framework Preset**: Next.js (auto-detected once root is set to `frontend`)
+   - **Build Command**: leave blank (auto-detected: `next build`)
+   - **Output Directory**: leave blank (auto-detected: `.next`)
+5. Add environment variable — apply to **Production**, **Preview**, and
+   **Development**:
    - `NEXT_PUBLIC_API_BASE_URL` = `https://aqaa-backend.onrender.com`
-5. Click **Deploy**
+6. Click **Deploy**
+
+The Vercel deployment builds only the Next.js frontend.  The FastAPI backend
+is separately deployed on Render and is not part of this Vercel project.
 
 **Frontend URL** will be: `https://aqaa-staging.vercel.app` (or similar)
 

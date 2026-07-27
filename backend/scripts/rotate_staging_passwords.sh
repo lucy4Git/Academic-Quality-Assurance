@@ -28,6 +28,11 @@ echo "Enter the Neon connection string (input hidden):"
 read -rsp "" RAW_URL
 echo
 
+# Strip carriage returns that Windows copy-paste inserts before the newline.
+# Without this, a pasted URL ends with \r which corrupts urlparse's scheme
+# detection ("postgresql\r+asyncpg" is not a valid scheme).
+RAW_URL="$(printf '%s' "$RAW_URL" | tr -d '\r')"
+
 if [[ -z "$RAW_URL" ]]; then
     echo "ERROR: no connection string entered." >&2
     exit 1
@@ -66,8 +71,16 @@ python - <<'PYEOF'
 import os, re, sys
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
-url = os.environ.get("DATABASE_URL", "")
-url = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", url)
+raw = os.environ.get("DATABASE_URL", "").strip()
+
+# Always report whether anything was received so a silent empty-paste is obvious.
+print(f"  URL received: {'yes' if raw else 'no'} ({len(raw)} characters)")
+
+if not raw:
+    print("  ERROR: DATABASE_URL is empty — nothing was captured by read.", file=sys.stderr)
+    sys.exit(1)
+
+url = re.sub(r"^postgres(?:ql)?://", "postgresql+asyncpg://", raw)
 parsed = urlparse(url)
 params = [
     ("ssl" if k == "sslmode" else k, v)
@@ -77,21 +90,29 @@ params = [
 url = urlunparse(parsed._replace(query=urlencode(params)))
 parsed = urlparse(url)
 
+scheme   = parsed.scheme              or "(empty)"
+host     = parsed.hostname            or "(empty)"
+database = parsed.path.lstrip("/")    or "(empty)"
+
+# Print all four diagnostics before deciding to abort so the caller can see
+# exactly what was parsed even when validation fails.
+print(f"  Scheme:   {scheme}")
+print(f"  Host:     {host}")
+print(f"  Database: {database}")
+
 errors = []
 if not parsed.scheme.startswith("postgresql+asyncpg"):
-    errors.append(f"scheme '{parsed.scheme}' is not postgresql+asyncpg")
-if not parsed.hostname:
-    errors.append("no host found in URL")
-if not parsed.path or parsed.path == "/":
-    errors.append("no database name found in URL")
+    errors.append(f"scheme '{scheme}' is not postgresql+asyncpg — "
+                  "check the URL starts with postgres:// or postgresql://")
+if host == "(empty)":
+    errors.append("no host found — the URL may have been truncated or mis-pasted")
+if database == "(empty)":
+    errors.append("no database name found — URL path is missing or is just '/'")
 if errors:
+    print("", file=sys.stderr)
     for e in errors:
         print(f"  ERROR: {e}", file=sys.stderr)
     sys.exit(1)
-
-print(f"  Driver:   {parsed.scheme}")
-print(f"  Host:     {parsed.hostname}")
-print(f"  Database: {parsed.path.lstrip('/')}")
 PYEOF
 
 # ---------------------------------------------------------------------------

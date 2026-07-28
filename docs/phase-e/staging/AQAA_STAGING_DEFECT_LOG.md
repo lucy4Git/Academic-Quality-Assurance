@@ -1,7 +1,7 @@
 # AQAA Staging — Defect Log
 
 **Environment:** staging (Neon / Render / Vercel)
-**Last updated:** 2026-07-27
+**Last updated:** 2026-07-28
 
 ---
 
@@ -9,7 +9,6 @@
 
 | ID | Component | Severity | Summary | Status |
 |----|-----------|----------|---------|--------|
-| STG-001 | Password rotation | High | `\r` carriage-return in pasted DATABASE_URL corrupts scheme detection | Fixed — see below |
 | STG-002 | Staging accounts | High | `ChangeMe123!` shared password compromised — rotation not yet confirmed | Open — owner action required |
 | STG-003 | Role coverage | Medium | `faculty_dean`, `head_of_department`, `programme_coordinator`, `system_admin` not seeded | Open — provisioning script ready |
 | STG-004 | Object storage | Medium | `STORAGE_BACKEND=local`; uploaded files do not survive Render restarts | Open — provider decision pending |
@@ -19,6 +18,56 @@
 ---
 
 ## Closed defects
+
+### STG-008 — Every /api/v1/* endpoint returns HTTP 500 (SlowAPIMiddleware AttributeError)
+
+**Component:** `backend/app/main.py` — `SlowAPIMiddleware` / `_PatchedSlowAPIMiddleware`
+**Severity:** Critical — blocked ALL API endpoints including authentication
+**Confirmed:** 2026-07-28 via live probe and local reproduction
+
+**Root cause:**
+`SlowAPIMiddleware._find_route_handler` iterates `app.routes` and only accepts
+routes where `route.matches(scope) == Match.FULL`. FastAPI's `include_router()`
+stores all included routes inside a `_IncludedRouter` wrapper which returns
+`Match.PARTIAL` — so `handler` is `None` for every single `/api/v1/*` path.
+
+When `handler is None`, `_endpoint_key = ""` (empty function name), and
+`_check_request_limit` returns early without calling `__evaluate_limits`.
+This leaves `request.state.view_rate_limit` unset. The subsequent call to
+`limiter._inject_headers(response, request.state.view_rate_limit)` raises
+`AttributeError: 'State' object has no attribute 'view_rate_limit'`, which
+`BaseHTTPMiddleware` converts to a plain-text `Internal Server Error` HTTP 500.
+
+**Evidence collected from live staging:**
+- `POST /api/v1/auth/login` with `{}` body → 500 (expected 422)
+- `POST /api/v1/auth/login` with wrong credentials → 500 (expected 401)
+- `GET /api/v1/auth/me` without token → 500 (expected 401)
+- `POST /api/v1/auth/register` with `{}` body → 500 (expected 422)
+- `/health`, `/health/ready`, `/api/v1/docs`, `/api/v1/openapi.json` → 200 (unaffected)
+- `GET /nonexistent` → 404 JSON (FastAPI error handling intact)
+- All 3 datastores healthy: `postgres: true, redis: true, qdrant: true`
+- Local reproduction: `_find_route_handler(app.routes, scope)` returns `None`
+  for every `/api/v1/*` path (confirmed with a Python assertion script)
+
+**Fix applied (commit `32db518`):**
+Added `_PatchedSlowAPIMiddleware` in `backend/app/main.py` that pre-initialises
+`request.state.view_rate_limit = None` before delegating to `super().dispatch()`.
+`__evaluate_limits` overwrites this with the real value when limits apply.
+`_inject_headers` already guards `if current_limit is not None` — so `None`
+causes it to skip header injection gracefully, returning the response unchanged.
+
+**Regression tests:** `backend/tests/test_sprint_e2_middleware_500.py` — 7 tests:
+- Empty body → 422, not 500
+- Invalid refresh token → 401, not 500
+- Empty register body → 422, not 500
+- `/me` without token → 401, not 500
+- `/institutions` without token → 401, not 500
+- `/health` → 200 (regression check)
+- `/nonexistent` → 404 (regression check)
+
+Full suite: 1411/1411 pass.
+
+---
 
 ### STG-007 — Login endpoint returns HTTP 500 (role-as-string AttributeError)
 

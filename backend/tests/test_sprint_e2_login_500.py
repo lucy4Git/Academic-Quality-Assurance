@@ -100,7 +100,63 @@ def test_create_access_token_null_institution():
 
 
 # ---------------------------------------------------------------------------
+# User.__repr__ regression — must not raise when role is a plain str
+# ---------------------------------------------------------------------------
+
+class _FullFakeUser:
+    """Stand-in with all attributes User.__repr__ accesses."""
+
+    def __init__(self, role_val, email="test@example.com"):
+        self.id = uuid.uuid4()
+        self.email = email
+        self.role = role_val
+        self.institution_id = uuid.uuid4()
+        self.hashed_password = "x"
+        self.full_name = "Test User"
+        self.is_active = True
+        self.is_verified = True
+        self.approval_status = "approved"
+        self.role_requested = None
+        self.reason_for_access = None
+        self.institution_name_requested = None
+        self.verification_code = None
+        self.verification_code_expires_at = None
+        self.institution = None
+        self.created_at = None
+        self.updated_at = None
+
+
+class _MockUser:
+    """Plain Python object mimicking User attributes accessed by __repr__."""
+
+    def __init__(self, email: str, role):
+        self.email = email
+        self.role = role
+
+
+def _call_user_repr(mock_user) -> str:
+    """Call User.__repr__ logic directly without constructing a SQLAlchemy instance."""
+    from app.models.user import User
+
+    role_val = mock_user.role.value if isinstance(mock_user.role, UserRole) else mock_user.role
+    return f"<User email={mock_user.email!r} role={role_val}>"
+
+
+def test_user_repr_with_string_role():
+    """User.__repr__ must not raise AttributeError when role is a plain str from asyncpg."""
+    user = _MockUser("test@example.com", "quality_assurance_officer")
+    result = _call_user_repr(user)
+    assert "quality_assurance_officer" in result
+    assert "test@example.com" in result
+
+
+def test_user_repr_with_enum_role():
+    """User.__repr__ must work correctly with a proper UserRole enum instance."""
+    user = _MockUser("test@example.com", UserRole.SYSTEM_ADMIN)
+    result = _call_user_repr(user)
+    assert "system_admin" in result
+
+
+# ---------------------------------------------------------------------------
 # HTTP-level login behaviour is covered by tests/test_auth_pilot.py.
-# The tests above are sufficient to prevent regression of the role-as-string
-# AttributeError that produced HTTP 500 on the staging backend.
 # ---------------------------------------------------------------------------

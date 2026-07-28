@@ -1,7 +1,7 @@
 # AQAA Staging — Defect Log
 
 **Environment:** staging (Neon / Render / Vercel)
-**Last updated:** 2026-07-28
+**Last updated:** 2026-07-28 (STG-009 added)
 
 ---
 
@@ -18,6 +18,78 @@
 ---
 
 ## Closed defects
+
+### STG-009 — Every /api/v1/* endpoint returns HTTP 500 (Prometheus _IncludedRouter AttributeError)
+
+**Component:** `backend/requirements.txt` — `prometheus-fastapi-instrumentator` version constraint
+**Severity:** Critical — blocked ALL API endpoints including authentication (second crash, same pattern as STG-008)
+**Confirmed:** 2026-07-28 via live Render traceback captured at 12:47 UTC
+
+**Live traceback (exact, from Render logs):**
+```
+File ".../prometheus_fastapi_instrumentator/middleware.py", line 132, in __call__
+    handler, is_templated = self._get_handler(request)
+File ".../prometheus_fastapi_instrumentator/middleware.py", line 241, in _get_handler
+    route_name = routing.get_route_name(request)
+File ".../prometheus_fastapi_instrumentator/routing.py", line 55, in _get_route_name
+    route_name = route.path
+AttributeError: '_IncludedRouter' object has no attribute 'path'
+```
+
+**Root cause:**
+`requirements.txt` pinned `prometheus-fastapi-instrumentator>=7.0,<8.0`. The 7.x
+`routing.get_route_name()` iterates `app.routes` and accesses `route.path`
+unconditionally. FastAPI 0.116+ (documented as 0.137+) wraps all routes
+registered via `include_router()` in an internal `_IncludedRouter` class that
+does not expose a `.path` attribute. Our FastAPI version is 0.139.2 — squarely
+in the affected range. Every `/api/v1/*` request hit `_get_handler` which
+crashed before any route handler could execute, producing a plain-text HTTP 500
+via `BaseHTTPMiddleware`.
+
+**Version state:**
+| Package | requirements.txt (before fix) | Render installed | Locally installed |
+|---------|-------------------------------|-----------------|-------------------|
+| prometheus-fastapi-instrumentator | `>=7.0,<8.0` | 7.x (latest) | 8.0.2 |
+| fastapi | `>=0.115,<1.0` | 0.139.2 | 0.139.2 |
+
+**Why 7.x and 8.x diverged:**
+Version 8.x added `_resolve_path()` in `routing.py`:
+```python
+def _resolve_path(route):
+    if hasattr(route, "path"):
+        return route.path
+    include_context = getattr(route, "include_context", None)
+    if include_context is not None:
+        return getattr(include_context, "prefix", "") or ""
+    return None
+```
+The `_get_route_name()` caller handles `None` returns gracefully. The fix is
+entirely in the upstream package — no application-level workaround needed.
+
+**Fix applied:**
+`backend/requirements.txt` line 54:
+```
+# Before (installs buggy 7.x on Render):
+prometheus-fastapi-instrumentator>=7.0,<8.0
+
+# After (installs 8.x which contains the _IncludedRouter fix):
+prometheus-fastapi-instrumentator>=8.0,<9.0
+```
+
+**Regression tests:** `backend/tests/test_sprint_e2_prometheus_500.py` — 9 tests:
+- Empty body login → 422 (not 500)
+- `/me` without token → 401 (not 500)
+- `/institutions` without token → 401 (not 500)
+- Empty register body → 422 (not 500)
+- `/health` → 200 (regression check)
+- Unknown route → 404 (regression check)
+- `/metrics` → 200 or 401 (never 500)
+- Package version assert: major >= 8
+- `_resolve_path()` handles objects without `.path` → returns `None`
+
+Full suite: 1420/1420 pass.
+
+---
 
 ### STG-008 — Every /api/v1/* endpoint returns HTTP 500 (SlowAPIMiddleware AttributeError)
 

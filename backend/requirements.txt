@@ -51,7 +51,7 @@ redis[hiredis]>=5.0,<6.0           # Redis client for ARQ + JWT deny-list + cach
 structlog>=24.0,<25.0              # structured JSON logging with correlation IDs
 
 # --- Observability metrics (Sprint E1 — E0-OD-003) ---
-prometheus-fastapi-instrumentator>=7.0,<8.0  # auto-instrument FastAPI with Prometheus
+prometheus-fastapi-instrumentator>=8.0,<9.0  # auto-instrument FastAPI with Prometheus; 8.x fixes _IncludedRouter.path (STG-009)
 
 # --- Error monitoring (Sprint E1 — E0-OD-003, optional, disabled by default) ---
 sentry-sdk[fastapi]>=2.0,<3.0     # optional error tracking; requires SENTRY_DSN env var

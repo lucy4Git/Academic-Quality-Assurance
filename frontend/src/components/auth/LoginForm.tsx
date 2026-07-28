@@ -102,14 +102,23 @@ export function LoginForm() {
       const data = (await res.json()) as { user?: User; detail?: string };
 
       if (!res.ok) {
-        if (res.status === 403) {
-          toast.error("Account disabled", {
-            description:
-              "Your account has been disabled. Contact your administrator.",
-          });
-        } else {
+        if (res.status === 401) {
           toast.error("Sign in failed", {
             description: "Invalid email or password. Please try again.",
+          });
+        } else if (res.status === 403) {
+          toast.error("Account access restricted", {
+            description:
+              "Your account does not have access to this system. Contact your administrator.",
+          });
+        } else if (res.status === 429) {
+          toast.error("Too many attempts", {
+            description:
+              "Too many sign-in attempts. Please wait a moment and try again.",
+          });
+        } else {
+          toast.error("Service error", {
+            description: "The service encountered an error. Please try again.",
           });
         }
         return;

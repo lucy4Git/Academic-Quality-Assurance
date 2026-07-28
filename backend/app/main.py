@@ -12,6 +12,28 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 
+
+class _PatchedSlowAPIMiddleware(SlowAPIMiddleware):
+    """SlowAPIMiddleware with a defensive fix for FastAPI's include_router pattern.
+
+    SlowAPIMiddleware._find_route_handler uses Match.FULL to locate route
+    handlers, but FastAPI's include_router() creates _IncludedRouter objects
+    that return Match.PARTIAL — so the handler is never found for any
+    /api/v1/* path.  When handler is None, _check_request_limit exits early
+    without calling __evaluate_limits, leaving request.state.view_rate_limit
+    unset.  The subsequent _inject_headers(response, request.state.view_rate_limit)
+    call then raises AttributeError, which propagates through BaseHTTPMiddleware
+    as a plain-text HTTP 500 for every single API endpoint.
+
+    Fix: pre-initialise view_rate_limit = None so _inject_headers is always
+    safe to call.  __evaluate_limits overwrites it with the real value when
+    limits do apply.
+    """
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        request.state.view_rate_limit = None
+        return await super().dispatch(request, call_next)
+
 from app.config import settings
 from app.core.exceptions import ConflictError, NotFoundError
 from app.core.exceptions import DomainError, DomainPermissionError
@@ -136,7 +158,7 @@ def create_app() -> FastAPI:
     # --- Rate limiting (Sprint E1 — E0-OD-002) ---
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-    app.add_middleware(SlowAPIMiddleware)
+    app.add_middleware(_PatchedSlowAPIMiddleware)
 
     # --- CORS ---
     app.add_middleware(

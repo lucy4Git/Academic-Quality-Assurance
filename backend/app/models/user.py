@@ -70,4 +70,5 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     institution: Mapped["Institution | None"] = relationship(back_populates="users")
 
     def __repr__(self) -> str:
-        return f"<User email={self.email!r} role={self.role.value}>"
+        role_val = self.role.value if isinstance(self.role, UserRole) else self.role
+        return f"<User email={self.email!r} role={role_val}>"

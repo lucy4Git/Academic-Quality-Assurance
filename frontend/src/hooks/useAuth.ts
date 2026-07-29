@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth.store";
 import { getMe } from "@/lib/api/auth";
 
@@ -10,12 +10,10 @@ import { getMe } from "@/lib/api/auth";
  * then exposes the user object and auth state from the Zustand store.
  */
 export function useAuth() {
+  const queryClient = useQueryClient();
   const { user, isAuthenticated, isLoading, setUser, clearUser } =
     useAuthStore();
 
-  // Rehydrate session by fetching the current user from the API.
-  // Runs once on mount; the Next.js proxy forwards the httpOnly cookie as
-  // a Bearer header to the FastAPI backend.
   useQuery({
     queryKey: ["auth", "me"],
     queryFn: async () => {
@@ -35,15 +33,26 @@ export function useAuth() {
 
   const logout = useCallback(async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
     } finally {
+      await queryClient.cancelQueries();
+
+      // Remove all user-, institution-, conversation- and workspace-scoped
+      // data before another account can sign in within the same browser tab.
+      queryClient.clear();
       clearUser();
-      // Hard navigation clears TanStack Query cache and ensures the
-      // browser sends no stale cookies on the next request — same
-      // approach used in the login success handler.
-      window.location.href = "/login";
+
+      if (typeof window !== "undefined") {
+        useAuthStore.persist.clearStorage();
+        window.sessionStorage.removeItem("aqaa-auth");
+      }
+
+      window.location.replace("/login");
     }
-  }, [clearUser]);
+  }, [clearUser, queryClient]);
 
   return {
     user,

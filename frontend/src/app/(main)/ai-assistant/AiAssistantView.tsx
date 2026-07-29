@@ -4,6 +4,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth.store";
 import {
+  useCurrentInstitution,
+  useInstitutions,
+} from "@/hooks/useInstitutions";
+import {
   useAsk,
   useAgentModes,
   useSuggestedPrompts,
@@ -15,8 +19,6 @@ import {
   type AgentRouterResponse,
 } from "@/hooks/useAiAssistant";
 import type { AskResponse, SourceChunk, ChatMessageBrief } from "@/types/ai-assistant";
-
-const ACTIVE_INSTITUTIONS = ["TUT", "UP"];
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -180,10 +182,10 @@ export function AiAssistantView() {
   const user = useAuthStore((s) => s.user);
   const isAdmin = user?.role === "system_admin";
   const queryClient = useQueryClient();
+  const { data: currentInstitution } = useCurrentInstitution();
+  const { data: institutions } = useInstitutions();
 
-  const [institutionCode, setInstitutionCode] = useState<string>(
-    isAdmin ? "" : (user as Record<string, string> | null)?.institution_code ?? "TUT"
-  );
+  const [institutionCode, setInstitutionCode] = useState<string>("");
   const [selectedMode, setSelectedMode] = useState("qa_assistant");
   const [detectedIntent, setDetectedIntent] = useState<string | null>(null);
   const [showModeOverride, setShowModeOverride] = useState(false);
@@ -200,6 +202,14 @@ export function AiAssistantView() {
   const agentRouter = useAgentRouter();
   const createSession = useCreateSession();
   const deleteSession = useDeleteSession();
+
+  useEffect(() => {
+    if (isAdmin) return;
+
+    setInstitutionCode(currentInstitution?.code ?? "");
+    setActiveSessionId(null);
+    setMessages([]);
+  }, [currentInstitution?.code, isAdmin, user?.id]);
 
   // Load session messages when switching sessions
   useEffect(() => {
@@ -404,9 +414,9 @@ export function AiAssistantView() {
                 className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select institution…</option>
-                {ACTIVE_INSTITUTIONS.map((code) => (
-                  <option key={code} value={code}>
-                    {code}
+                {institutions?.map((institution) => (
+                  <option key={institution.id} value={institution.code}>
+                    {institution.code} — {institution.name}
                   </option>
                 ))}
               </select>

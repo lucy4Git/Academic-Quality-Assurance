@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/auth.store";
+import {
+  useCurrentInstitution,
+  useInstitutions,
+} from "@/hooks/useInstitutions";
 import {
   useInstitutionWorkspace,
   useTimeline,
@@ -25,8 +29,6 @@ import {
   BarChart2,
   ChevronRight,
 } from "lucide-react";
-
-const ACTIVE_INSTITUTIONS = ["TUT", "UP"];
 
 const EVENT_ICONS: Record<string, React.ElementType> = {
   audit_triggered: CheckSquare,
@@ -84,12 +86,31 @@ function TimelineItem({ event }: { event: TimelineEvent }) {
 export function InstitutionWorkspaceView() {
   const user = useAuthStore((s) => s.user);
   const isAdmin = user?.role === "system_admin";
+  const { data: currentInstitution } = useCurrentInstitution();
+  const { data: institutions } = useInstitutions();
 
-  const [selectedCode, setSelectedCode] = useState<string>(
-    isAdmin ? "TUT" : (user as Record<string, string> | null)?.institution_code ?? "TUT"
+  const [selectedCode, setSelectedCode] = useState<string>("");
+
+  useEffect(() => {
+    if (isAdmin) {
+      if (!selectedCode && institutions?.length) {
+        setSelectedCode(institutions[0].code);
+      }
+      return;
+    }
+
+    setSelectedCode(currentInstitution?.code ?? "");
+  }, [
+    currentInstitution?.code,
+    institutions,
+    isAdmin,
+    selectedCode,
+    user?.id,
+  ]);
+
+  const { data: workspace, isLoading } = useInstitutionWorkspace(
+    selectedCode || null
   );
-
-  const { data: workspace, isLoading } = useInstitutionWorkspace(selectedCode);
   const { data: timeline } = useTimeline(20);
 
   const stats = workspace
@@ -127,8 +148,10 @@ export function InstitutionWorkspaceView() {
               onChange={(e) => setSelectedCode(e.target.value)}
               className="rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
-              {ACTIVE_INSTITUTIONS.map((c) => (
-                <option key={c} value={c}>{c}</option>
+              {institutions?.map((institution) => (
+                <option key={institution.id} value={institution.code}>
+                  {institution.code} — {institution.name}
+                </option>
               ))}
             </select>
           )}

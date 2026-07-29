@@ -15,7 +15,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Central University of Technology",
@@ -33,7 +33,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Durban University of Technology",
@@ -51,7 +51,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Mangosuthu University of Technology",
@@ -69,7 +69,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Nelson Mandela University",
@@ -87,7 +87,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "North-West University",
@@ -105,7 +105,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Rhodes University",
@@ -123,7 +123,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Sefako Makgatho Health Sciences University",
@@ -141,7 +141,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Sol Plaatje University",
@@ -159,7 +159,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Stellenbosch University",
@@ -177,7 +177,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Tshwane University of Technology",
@@ -195,7 +195,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Cape Town",
@@ -213,7 +213,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Fort Hare",
@@ -231,7 +231,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of the Free State",
@@ -249,7 +249,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Johannesburg",
@@ -267,7 +267,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of KwaZulu-Natal",
@@ -285,7 +285,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Limpopo",
@@ -303,7 +303,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Mpumalanga",
@@ -321,7 +321,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Pretoria",
@@ -339,7 +339,7 @@
     "data_confidence": 0.99,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of South Africa",
@@ -357,7 +357,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of the Western Cape",
@@ -375,7 +375,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of the Witwatersrand",
@@ -393,7 +393,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Venda",
@@ -411,7 +411,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "University of Zululand",
@@ -429,7 +429,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Vaal University of Technology",
@@ -447,7 +447,7 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   },
   {
     "official_name": "Walter Sisulu University",
@@ -465,6 +465,6 @@
     "data_confidence": 0.95,
     "data_status": "public_verified",
     "is_active": true,
-    "is_demo": true
+    "is_demo": false
   }
 ]

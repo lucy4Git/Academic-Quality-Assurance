@@ -1,9 +1,21 @@
 import { apiClient } from "@/lib/api-client";
-import type { Institution, InstitutionCreate, InstitutionStats, InstitutionUpdate } from "@/types";
+import type {
+  Institution,
+  InstitutionCreate,
+  InstitutionStats,
+  InstitutionUpdate,
+} from "@/types";
 
-export async function listInstitutions(includeArchived = false): Promise<Institution[]> {
+export async function listInstitutions(
+  includeArchived = false
+): Promise<Institution[]> {
   const params = includeArchived ? "?include_archived=true" : "";
   const { data } = await apiClient.get<Institution[]>(`/institutions${params}`);
+  return data;
+}
+
+export async function getCurrentInstitution(): Promise<Institution> {
+  const { data } = await apiClient.get<Institution>("/institutions/current");
   return data;
 }
 
@@ -34,7 +46,11 @@ export async function deleteInstitution(id: string): Promise<void> {
   await apiClient.delete(`/institutions/${id}`);
 }
 
-export async function getInstitutionStats(id: string): Promise<InstitutionStats> {
-  const { data } = await apiClient.get<InstitutionStats>(`/institutions/${id}/stats`);
+export async function getInstitutionStats(
+  id: string
+): Promise<InstitutionStats> {
+  const { data } = await apiClient.get<InstitutionStats>(
+    `/institutions/${id}/stats`
+  );
   return data;
 }

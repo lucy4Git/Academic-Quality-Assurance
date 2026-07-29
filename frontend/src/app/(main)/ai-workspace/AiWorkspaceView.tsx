@@ -9,6 +9,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth.store";
 import {
+  useCurrentInstitution,
+  useInstitutions,
+} from "@/hooks/useInstitutions";
+import {
   useAsk, useSuggestedPrompts, useCreateSession, useChatSessions, useDeleteSession,
   useChatSession, usePinSession, useRenameSession, useArchiveSession,
 } from "@/hooks/useAiAssistant";
@@ -34,8 +38,6 @@ import {
 import { cn } from "@/lib/utils";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-
-const ACTIVE_INSTITUTIONS = ["TUT", "UP"];
 
 const SLASH_COMMANDS = [
   { cmd: "/new",         label: "New Conversation",   desc: "Start fresh",                    mode: "qa_assistant" },
@@ -610,6 +612,7 @@ function ConversationSidebar({
   onInstitutionChange: (code: string) => void;
 }) {
   const { data: sessions } = useChatSessions();
+  const { data: institutions } = useInstitutions();
   const [searchQuery, setSearchQuery] = useState("");
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
@@ -747,8 +750,10 @@ function ConversationSidebar({
             className="w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <option value="">All institutions…</option>
-            {ACTIVE_INSTITUTIONS.map((code) => (
-              <option key={code} value={code}>{code}</option>
+            {institutions?.map((institution) => (
+              <option key={institution.id} value={institution.code}>
+                {institution.code} — {institution.name}
+              </option>
             ))}
           </select>
         </div>
@@ -1292,10 +1297,9 @@ export function AiWorkspaceView() {
   const router = useRouter();
   const isAdmin = user?.role === "system_admin";
   const queryClient = useQueryClient();
+  const { data: currentInstitution } = useCurrentInstitution();
 
-  const [institutionCode, setInstitutionCode] = useState<string>(
-    isAdmin ? "" : (user as Record<string, string> | null)?.institution_code ?? "TUT",
-  );
+  const [institutionCode, setInstitutionCode] = useState<string>("");
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<WorkspaceMessage[]>([]);
   const [input, setInput] = useState("");
@@ -1323,6 +1327,16 @@ export function AiWorkspaceView() {
 
   // Load historical messages when a session is selected from the sidebar
   const { data: sessionDetail } = useChatSession(activeSessionId);
+
+  useEffect(() => {
+    if (isAdmin) return;
+
+    setInstitutionCode(currentInstitution?.code ?? "");
+    setActiveSessionId(null);
+    setMessages([]);
+    setResolvedContext(null);
+    setActiveModuleId(null);
+  }, [currentInstitution?.code, isAdmin, user?.id]);
 
   useEffect(() => {
     // Skip: no data, actively streaming, or this is a mid-stream session update

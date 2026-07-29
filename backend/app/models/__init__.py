@@ -58,6 +58,7 @@ from app.models.policy import Policy, PolicyVersion
 from app.models.programme import Programme
 from app.models.school import School
 from app.models.user import User
+from app.models.user_activation_token import UserActivationToken
 # Phase C — Regulatory Engine
 from app.models.regulatory_authority import RegulatoryAuthority
 from app.models.quality_framework import QualityFramework
@@ -133,6 +134,7 @@ __all__ = [
     "ProgrammeLevel",
     "UploadState",
     "User",
+    "UserActivationToken",
     "UserRole",
     "WorkflowStatus",
     # Phase D

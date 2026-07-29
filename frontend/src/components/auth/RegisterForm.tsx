@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,6 @@ const ROLE_OPTIONS = [
 interface Fields {
   full_name: string;
   email: string;
-  password: string;
   institution_name: string;
   role_requested: string;
   reason_for_access: string;
@@ -35,12 +34,6 @@ function validate(f: Fields): FieldErrors {
     e.full_name = "Full name must be at least 2 characters.";
   if (!f.email.trim() || !EMAIL_RE.test(f.email.trim()))
     e.email = "Please enter a valid email address.";
-  if (f.password.length < 8)
-    e.password = "Password must be at least 8 characters.";
-  else if (!/\d/.test(f.password))
-    e.password = "Password must contain at least one digit.";
-  else if (!/[A-Z]/.test(f.password))
-    e.password = "Password must contain at least one uppercase letter.";
   if (!f.institution_name.trim())
     e.institution_name = "Institution name is required.";
   return e;
@@ -51,12 +44,10 @@ export function RegisterForm() {
   const [fields, setFields] = useState<Fields>({
     full_name: "",
     email: "",
-    password: "",
     institution_name: "",
     role_requested: "lecturer",
     reason_for_access: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,8 +56,7 @@ export function RegisterForm() {
     const next = { ...fields, [key]: value };
     setFields(next);
     if (submitted) {
-      const errs = validate(next);
-      setErrors(errs);
+      setErrors(validate(next));
     }
   }
 
@@ -87,7 +77,6 @@ export function RegisterForm() {
         body: JSON.stringify({
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
-          password: fields.password,
           institution_name: fields.institution_name.trim(),
           role_requested: fields.role_requested,
           reason_for_access: fields.reason_for_access.trim() || undefined,
@@ -111,12 +100,7 @@ export function RegisterForm() {
         return;
       }
 
-      toast.success("Registration submitted!", {
-        description: "Check your email for the verification code.",
-      });
-
-      const email = encodeURIComponent(fields.email.trim());
-      router.push(`/verify-email?email=${email}`);
+      router.push(`/pending-review?email=${encodeURIComponent(fields.email.trim())}`);
     } catch {
       toast.error("Connection error", {
         description: "Unable to connect to the server. Please try again.",
@@ -157,46 +141,18 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground border-l-2 border-blue-500 pl-3 py-1">
-          New accounts require email verification and administrator approval before access is granted.
-        </p>
-
-        {field("full_name", "Full name", { autoFocus: true, placeholder: "Dr. Jane Smith", autoComplete: "name" })}
-        {field("email", "Email address", { type: "text", inputMode: "email", placeholder: "you@institution.ac.za", autoComplete: "email" })}
-
-        {/* Password with toggle */}
-        <div className="space-y-1.5">
-          <Label htmlFor="password" className="text-sm font-medium text-foreground">
-            Password
-          </Label>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={fields.password}
-              onChange={(e) => update("password", e.target.value)}
-              autoComplete="new-password"
-              placeholder="Min 8 chars, 1 uppercase, 1 digit"
-              aria-invalid={errors.password ? true : undefined}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              className={errors.password ? "border-destructive focus-visible:ring-destructive pr-10" : "pr-10"}
-            />
-            <button
-              type="button"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
-          </div>
-          {errors.password && (
-            <p id="password-error" role="alert" className="text-xs text-destructive mt-1">
-              {errors.password}
-            </p>
-          )}
+        <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm text-blue-800">
+          <p className="font-medium mb-1">How it works</p>
+          <ol className="list-decimal list-inside space-y-0.5 text-xs text-blue-700">
+            <li>Submit this form</li>
+            <li>Verify your email address</li>
+            <li>An administrator reviews and approves your request</li>
+            <li>You receive an activation link to set your password</li>
+          </ol>
         </div>
 
+        {field("full_name", "Full name", { autoFocus: true, placeholder: "Dr. Jane Smith", autoComplete: "name" })}
+        {field("email", "Institutional email address", { type: "text", inputMode: "email", placeholder: "you@institution.ac.za", autoComplete: "email" })}
         {field("institution_name", "Institution name", { placeholder: "e.g. Tshwane University of Technology" })}
 
         {/* Role dropdown */}

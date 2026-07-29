@@ -86,6 +86,7 @@ from app.routes.quality_frameworks import router as quality_frameworks_router
 from app.routes.framework_assessments import router as framework_assessments_router
 from app.routes.artifacts import router as artifacts_router
 from app.routes.corrective_actions import router as corrective_actions_router
+from app.routes.admin_users import router as admin_users_router
 
 logger = get_logger(__name__)
 
@@ -320,6 +321,8 @@ def create_app() -> FastAPI:
     app.include_router(artifacts_router, prefix=prefix)
     # Sprint E1 — Corrective Actions
     app.include_router(corrective_actions_router, prefix=prefix)
+    # Account Lifecycle — Admin User Management
+    app.include_router(admin_users_router, prefix=prefix)
 
     return app
 

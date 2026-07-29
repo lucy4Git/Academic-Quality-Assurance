@@ -106,6 +106,53 @@ def send_verification_email(to: str, full_name: str, code: str) -> None:
     send_email(to, subject, body_text, body_html)
 
 
+def send_activation_email(to: str, full_name: str, raw_token: str) -> None:
+    """Send an activation link containing the one-time token."""
+    frontend_base = getattr(settings, "FRONTEND_BASE_URL", "http://localhost:3000")
+    activation_url = f"{frontend_base}/activate?token={raw_token}"
+    subject = "AQAA — Activate your account"
+    body_text = (
+        f"Hello {full_name},\n\n"
+        f"Your AQAA account registration has been approved.\n\n"
+        f"Click the link below to set your password and activate your account:\n\n"
+        f"    {activation_url}\n\n"
+        f"This link expires in 48 hours and can only be used once.\n\n"
+        f"If you did not request this, please ignore this email.\n\n"
+        f"— AQAA Academic Quality Assurance Agent"
+    )
+    body_html = f"""
+    <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 24px;">
+      <div style="background: #1e40af; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+        <h2 style="margin:0">AQAA — Account Approved</h2>
+      </div>
+      <div style="border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
+        <p>Hello <strong>{full_name}</strong>,</p>
+        <p>Your account registration has been approved. Click the button below to set your password and activate your account.</p>
+        <div style="text-align: center; margin: 28px 0;">
+          <a href="{activation_url}" style="background:#1e40af;color:white;padding:14px 28px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:16px;">Activate My Account</a>
+        </div>
+        <p style="color: #6b7280; font-size: 13px;">Or copy this link into your browser:<br>{activation_url}</p>
+        <p style="color: #6b7280; font-size: 13px;">This link expires in 48 hours and can only be used once.</p>
+      </div>
+    </div>
+    """
+    send_email(to, subject, body_text, body_html)
+
+
+def send_rejection_email(to: str, full_name: str, reason: str | None = None) -> None:
+    """Notify a user that their registration was rejected."""
+    subject = "AQAA — Account registration update"
+    reason_line = f"Reason: {reason}\n\n" if reason else ""
+    body_text = (
+        f"Hello {full_name},\n\n"
+        f"Your AQAA account registration was not approved at this time.\n\n"
+        f"{reason_line}"
+        f"Please contact your institution's QA office if you believe this is an error.\n\n"
+        f"— AQAA Academic Quality Assurance Agent"
+    )
+    send_email(to, subject, body_text)
+
+
 def send_approval_notification(to: str, full_name: str, approved: bool, reason: str | None = None) -> None:
     """Notify a user that their account has been approved or rejected."""
     if approved:

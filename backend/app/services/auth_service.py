@@ -103,8 +103,8 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     user = User(
         email=data.email,
         full_name=data.full_name,
-        hashed_password=hash_password(data.password),
-        role=data.role_requested if auto_approve else data.role_requested,
+        hashed_password=hash_password(secrets.token_hex(32)),  # unusable placeholder until activation
+        role=data.role_requested,
         institution_id=None,
         is_active=auto_approve,
         is_verified=False,

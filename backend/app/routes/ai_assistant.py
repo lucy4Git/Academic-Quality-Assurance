@@ -232,20 +232,29 @@ async def ask_assistant(
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
     try:
+        manager = get_provider_manager()
+        provider = await manager.get_healthy_provider()
         result = await advanced_ask(
             question=body.question,
             institution_code=institution_code,
             context_limit=body.context_limit,
             mode=body.mode if body.mode in AGENT_MODES else "qa_assistant",
-            provider=get_provider(),
+            provider=provider,
         )
     except Exception as exc:  # noqa: BLE001 — convert to a safe 503, no stack trace leak
-        import logging
-        logging.getLogger(__name__).exception("AI ask failed: %s", exc)
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="AI service temporarily unavailable. Please try again.",
-        )
+        exc_str = str(exc).lower()
+        _logger.exception("AI ask failed: %s", exc)
+        if "401" in exc_str or "unauthorized" in exc_str or "authentication" in exc_str:
+            detail = "AI provider authentication failed. The service API key may be invalid or expired."
+        elif "429" in exc_str or "rate limit" in exc_str or "quota" in exc_str:
+            detail = "AI provider quota exceeded. Please try again shortly."
+        elif "timeout" in exc_str or "timed out" in exc_str:
+            detail = "AI request timed out. Please try again."
+        elif "403" in exc_str or "permission" in exc_str or "model" in exc_str:
+            detail = "AI provider denied access to the requested model."
+        else:
+            detail = "AI service temporarily unavailable. Please try again."
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=detail)
 
     if body.session_id:
         try:
@@ -437,6 +446,20 @@ async def _stream_ask(
         manager = get_provider_manager()
         provider = await manager.get_healthy_provider()
 
+        # Surface cascade-to-local-dev as a visible warning rather than silent template.
+        # Guard fires only when an external provider was intentionally configured (not "LOCAL_DEV")
+        # but all failed, causing a silent fallback to the placeholder provider.
+        # isinstance guard keeps the check test-safe: MagicMock is not str.
+        _cfg = getattr(manager, "_configured_name", None)
+        if getattr(provider, "is_local_dev", False) and isinstance(_cfg, str) and _cfg.upper() != "LOCAL_DEV":
+            yield _sse("error", {
+                "message": (
+                    "AI provider authentication failed. All configured providers are unavailable. "
+                    "Please contact your system administrator."
+                ),
+            })
+            return
+
         result = await advanced_ask(
             question=question,
             institution_code=institution_code,
@@ -446,9 +469,19 @@ async def _stream_ask(
             injected_chunks=file_chunks,
         )
     except Exception as exc:
-        import logging
-        logging.getLogger(__name__).error("ask-stream: advanced_ask failed: %s", exc)
-        yield _sse("error", {"message": "An error occurred while generating a response."})
+        exc_str = str(exc).lower()
+        _logger.error("ask-stream: advanced_ask failed: %s", exc)
+        if "401" in exc_str or "unauthorized" in exc_str or "authentication" in exc_str:
+            msg = "AI provider authentication failed. The service API key may be invalid or expired."
+        elif "429" in exc_str or "rate limit" in exc_str or "quota" in exc_str:
+            msg = "AI provider quota exceeded. Please try again shortly."
+        elif "timeout" in exc_str or "timed out" in exc_str:
+            msg = "AI request timed out. Please try again."
+        elif "403" in exc_str or "permission" in exc_str:
+            msg = "AI provider denied access to the requested model."
+        else:
+            msg = "An error occurred while generating a response. Please try again."
+        yield _sse("error", {"message": msg})
         return
 
     # 4. Simulate streaming: split answer into word-level token events

@@ -59,11 +59,14 @@ class RefreshRequest(BaseModel):
 
 
 class PublicRegisterRequest(BaseModel):
-    """Payload for public self-registration (POST /auth/public-register)."""
+    """Payload for public self-registration (POST /auth/public-register).
+
+    Password is NOT accepted at registration time.  The user sets their
+    password after admin approval via the activation link flow.
+    """
 
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
-    password: str
     institution_name: str = Field(..., min_length=2, max_length=255, description="Name of your institution")
     role_requested: UserRole = Field(default=UserRole.LECTURER)
     reason_for_access: str | None = Field(default=None, max_length=500)
@@ -72,17 +75,6 @@ class PublicRegisterRequest(BaseModel):
     @classmethod
     def _strip_name(cls, v: str) -> str:
         return v.strip()
-
-    @field_validator("password")
-    @classmethod
-    def _validate_password(cls, v: str) -> str:
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters.")
-        if not any(c.isdigit() for c in v):
-            raise ValueError("Password must contain at least one digit.")
-        if not any(c.isupper() for c in v):
-            raise ValueError("Password must contain at least one uppercase letter.")
-        return v
 
 
 class VerifyEmailRequest(BaseModel):

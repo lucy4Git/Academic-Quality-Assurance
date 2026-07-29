@@ -8,6 +8,7 @@ POST /api/v1/auth/refresh   — exchange a refresh token for a new pair
 GET  /api/v1/auth/me        — return the caller's profile
 """
 
+from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from slowapi import Limiter
@@ -37,6 +38,7 @@ from app.security import create_access_token, create_refresh_token, decode_token
 from app.services.auth_service import (
     AuthError,
     authenticate_user,
+    get_user_by_email,
     get_user_by_id,
     public_register_user,
     register_user,
@@ -318,3 +320,82 @@ async def resend_verification(
     except AuthError:
         pass  # Silent — don't reveal whether email exists
     return {"message": "If this email is registered and unverified, a new code has been sent."}
+
+
+# ---------------------------------------------------------------------------
+# Activation (post-approval password creation)
+# ---------------------------------------------------------------------------
+
+
+class ActivateRequest(BaseModel):
+    token: str
+    new_password: str
+
+
+class ValidateTokenRequest(BaseModel):
+    token: str
+
+
+@router.get(
+    "/activate/validate",
+    status_code=status.HTTP_200_OK,
+    summary="Check activation token validity without consuming it",
+)
+async def validate_activation(
+    token: str,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Return 200 with full_name if the token is valid; 400 otherwise."""
+    from app.services.activation_service import validate_activation_token, ActivationError
+    try:
+        user = await validate_activation_token(db, token)
+        return {"valid": True, "full_name": user.full_name, "email": user.email}
+    except ActivationError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+
+@router.post(
+    "/activate",
+    status_code=status.HTTP_200_OK,
+    summary="Consume an activation token and set a password",
+)
+async def activate_account(
+    data: ActivateRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Validate the one-time activation token, set the user's password, and activate the account."""
+    from app.services.activation_service import consume_activation_token, ActivationError
+    try:
+        user = await consume_activation_token(db, data.token, data.new_password)
+        return {"message": "Account activated. You may now sign in.", "email": user.email}
+    except ActivationError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+
+class ResendActivationRequest(BaseModel):
+    email: str
+
+
+@router.post(
+    "/activate/resend",
+    status_code=status.HTTP_200_OK,
+    summary="Request a new activation link (for expired links)",
+)
+async def resend_activation(
+    data: ResendActivationRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Issue a new activation link for an approved-but-inactive user.
+
+    Always returns 200 regardless of whether the email exists (prevents enumeration).
+    """
+    from app.services.activation_service import resend_activation_token, ActivationError
+    from app.services.email_service import send_activation_email
+    try:
+        user = await get_user_by_email(db, data.email)
+        if user and user.approval_status == "approved" and not user.is_active:
+            raw_token = await resend_activation_token(db, user.id)
+            send_activation_email(user.email, user.full_name, raw_token)
+    except (ActivationError, Exception):
+        pass  # Silent — prevents enumeration
+    return {"message": "If your email is registered and pending activation, a new link has been sent."}

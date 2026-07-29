@@ -19,6 +19,7 @@ from app.models.enums import UserRole
 
 if TYPE_CHECKING:
     from app.models.institution import Institution
+    from app.models.user_activation_token import UserActivationToken
 
 
 class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
@@ -68,6 +69,13 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     institution_name_requested: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     institution: Mapped["Institution | None"] = relationship(back_populates="users")
+    activation_tokens: Mapped[list["UserActivationToken"]] = relationship(
+        "UserActivationToken",
+        foreign_keys="UserActivationToken.user_id",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="dynamic",
+    )
 
     def __repr__(self) -> str:
         role_val = self.role.value if isinstance(self.role, UserRole) else self.role

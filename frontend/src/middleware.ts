@@ -3,7 +3,17 @@ import type { UserRole } from "@/types";
 import { canAccess } from "@/lib/rbac";
 
 // Routes that bypass authentication entirely
-const PUBLIC_PATHS = ["/login", "/register", "/verify-email", "/forbidden", "/api/auth", "/"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/register",
+  "/verify-email",
+  "/pending-review",
+  "/activate",
+  "/forbidden",
+  "/api/auth",
+  "/api/proxy/auth/activate",
+  "/",
+];
 
 function isPublicPath(pathname: string) {
   return PUBLIC_PATHS.some((p) => pathname.startsWith(p));

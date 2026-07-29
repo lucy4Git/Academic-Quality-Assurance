@@ -5,7 +5,7 @@ logic can be tested without standing up an HTTP layer.
 """
 
 import logging
-import random
+import secrets
 import string
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -80,7 +80,7 @@ async def register_user(db: AsyncSession, data: UserRegisterRequest) -> User:
 
 def _generate_verification_code(length: int = 6) -> str:
     """Return a numeric verification code of *length* digits."""
-    return "".join(random.choices(string.digits, k=length))
+    return "".join(secrets.choice(string.digits) for _ in range(length))
 
 
 async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") -> User:  # type: ignore[name-defined]

@@ -24,6 +24,7 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
+
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     """FastAPI dependency that yields a transactional `AsyncSession` per request.
 
@@ -38,3 +39,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             raise
         finally:
             await session.close()
+
+
+from app.utils.sync_engine import create_sync_engine  # noqa: F401 — re-export for legacy imports

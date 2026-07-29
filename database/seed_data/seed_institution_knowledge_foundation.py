@@ -20,10 +20,9 @@ BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from sqlalchemy import create_engine, select  # noqa: E402
+from sqlalchemy import select  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
-from app.config import settings  # noqa: E402
 from app.models.accreditation import Accreditation, AccreditationBody  # noqa: E402
 from app.models.campus import Campus  # noqa: E402
 from app.models.contact import Contact  # noqa: E402
@@ -38,10 +37,11 @@ from app.models.module import Module  # noqa: E402
 from app.models.policy import Policy, PolicyVersion  # noqa: E402
 from app.models.programme import Programme  # noqa: E402
 from app.models.school import School  # noqa: E402
+from app.utils.sync_engine import create_sync_engine  # noqa: E402
 
 _DATA_DIR = Path(__file__).parent / "institution_knowledge_foundation"
-_sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-engine = create_engine(_sync_url, echo=False)
+
+engine = create_sync_engine()
 
 # Provenance ranking: seeds never downgrade a higher-trust record.
 _RANK = {"synthetic_demo": 0, "needs_review": 1, "public_verified": 2, "customer_data": 3}

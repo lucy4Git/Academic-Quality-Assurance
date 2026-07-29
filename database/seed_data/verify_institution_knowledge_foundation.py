@@ -14,9 +14,9 @@ BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from sqlalchemy import create_engine, text, inspect as sa_inspect
+from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.orm import Session
-from app.config import settings
+from app.utils.sync_engine import create_sync_engine
 
 EXPECTED = {
     "institutions": 26,
@@ -37,8 +37,7 @@ EXPECTED = {
     "contacts": 78,
 }
 
-_sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-engine = create_engine(_sync_url, echo=False)
+engine = create_sync_engine()
 
 
 def verify() -> None:

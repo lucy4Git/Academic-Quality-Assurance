@@ -20,12 +20,12 @@ BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from sqlalchemy import create_engine, select, text  # noqa: E402
+from sqlalchemy import select, text  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
-from app.config import settings  # noqa: E402
 from app.models.user import User  # noqa: E402
 from app.security import hash_password  # noqa: E402
+from app.utils.sync_engine import create_sync_engine  # noqa: E402
 
 DEFAULT_PASSWORD = "ChangeMe123!"
 
@@ -42,8 +42,7 @@ SEED_USERS = [
 
 _BCRYPT_PREFIXES = ("$2a$", "$2b$", "$2y$")
 
-_sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-engine = create_engine(_sync_url, echo=False)
+engine = create_sync_engine()
 
 
 def _is_valid_bcrypt(h: str | None) -> bool:
@@ -99,7 +98,7 @@ def repair() -> None:
             print(line)
     else:
         print("No users required repair.")
-    print(f"\nPassword set to: {DEFAULT_PASSWORD}")
+    print("\nAll affected accounts have been set to the configured default password.")
     print("=" * 60)
 
 

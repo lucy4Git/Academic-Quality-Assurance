@@ -30,18 +30,17 @@ BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from sqlalchemy import create_engine, select  # noqa: E402
+from sqlalchemy import select  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
-from app.config import settings  # noqa: E402
 from app.models import Institution, User  # noqa: E402
 from app.models.enums import UserRole  # noqa: E402
 from app.security import hash_password  # noqa: E402
+from app.utils.sync_engine import create_sync_engine  # noqa: E402
 
 DEFAULT_PASSWORD = "ChangeMe123!"
 
-_sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-engine = create_engine(_sync_url, echo=False)
+engine = create_sync_engine()
 
 # ---------------------------------------------------------------------------
 # User definitions per institution code

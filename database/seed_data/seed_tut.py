@@ -36,10 +36,9 @@ if str(BACKEND_DIR) not in sys.path:
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 APPROVED_DIR = PROJECT_ROOT / "ikp" / "institutions" / "tut" / "2026" / "v1.1.0" / "approved"
 
-from sqlalchemy import create_engine, select, text  # noqa: E402
+from sqlalchemy import select, text  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
-from app.config import settings  # noqa: E402
 from app.models.base import Base  # noqa: E402  (ensures all models are registered)
 from app.models import (  # noqa: E402
     Department,
@@ -49,12 +48,9 @@ from app.models import (  # noqa: E402
     Programme,
 )
 from app.models.enums import ProgrammeLevel  # noqa: E402
+from app.utils.sync_engine import create_sync_engine  # noqa: E402
 
-# ---------------------------------------------------------------------------
-# Sync engine (seed scripts use sync SQLAlchemy)
-# ---------------------------------------------------------------------------
-_sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-engine = create_engine(_sync_url, echo=False)
+engine = create_sync_engine()
 
 
 # ---------------------------------------------------------------------------

@@ -231,6 +231,8 @@ async def _get_or_create_user(
         role=role,
         institution_id=institution_id,
         is_active=True,
+        is_verified=True,
+        approval_status="approved",
     )
     db.add(user)
     await db.flush()

@@ -1,20 +1,16 @@
-"""Admin — user management and approval workflow routes.
+"""Admin — legacy pending-users list endpoint.
 
-Endpoints
----------
-GET  /admin/pending-users             List users awaiting approval (Admin)
-POST /admin/users/{id}/approve        Approve a pending user (Admin)
-POST /admin/users/{id}/reject         Reject a pending user (Admin)
-GET  /admin/users                     List all users with filters (Admin)
-
-All endpoints require SystemAdmin role.
+NOTE: User approval/rejection is now handled by admin_users.py which provides
+a secure activation-token flow. The /admin/users/{id}/approve and
+/admin/users/{id}/reject routes have been removed from this file to avoid
+route shadowing — admin_users.py registers the same paths under /admin/users/.
 """
 
 from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,8 +18,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import AdminRequired
 from app.models.user import User
-from app.models.enums import UserRole
-from app.services.auth_service import approve_user, reject_user
 
 router = APIRouter(prefix="/admin", tags=["Administration"])
 
@@ -56,19 +50,10 @@ class PendingUserRead(BaseModel):
         )
 
 
-class ApproveRequest(BaseModel):
-    role: str = "lecturer"
-    institution_id: uuid.UUID | None = None
-
-
-class RejectRequest(BaseModel):
-    reason: str | None = None
-
-
 @router.get(
     "/pending-users",
     response_model=list[PendingUserRead],
-    summary="List users awaiting approval",
+    summary="List users awaiting approval (legacy — prefer /admin/users/pending)",
 )
 async def list_pending_users(
     db: AsyncSession = Depends(get_db),
@@ -80,67 +65,3 @@ async def list_pending_users(
     )
     users = result.scalars().all()
     return [PendingUserRead.from_user(u) for u in users]
-
-
-@router.get(
-    "/users",
-    response_model=list[PendingUserRead],
-    summary="List all users (with optional approval_status filter)",
-)
-async def list_all_users(
-    approval_status: str | None = Query(default=None),
-    is_active: bool | None = Query(default=None),
-    db: AsyncSession = Depends(get_db),
-    _admin: User = AdminRequired,
-) -> list[PendingUserRead]:
-    stmt = select(User).order_by(User.created_at.desc())
-    if approval_status:
-        stmt = stmt.where(User.approval_status == approval_status)
-    if is_active is not None:
-        stmt = stmt.where(User.is_active == is_active)
-    result = await db.execute(stmt)
-    return [PendingUserRead.from_user(u) for u in result.scalars().all()]
-
-
-@router.post(
-    "/users/{user_id}/approve",
-    response_model=PendingUserRead,
-    summary="Approve a pending user registration",
-)
-async def approve(
-    user_id: uuid.UUID,
-    body: ApproveRequest,
-    db: AsyncSession = Depends(get_db),
-    _admin: User = AdminRequired,
-) -> PendingUserRead:
-    """Approve the user: activate account, assign role and institution."""
-    try:
-        user = await approve_user(db, user_id, body.role, body.institution_id)
-    except Exception as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
-
-    from app.services.email_service import send_approval_notification
-    send_approval_notification(user.email, user.full_name, approved=True)
-    return PendingUserRead.from_user(user)
-
-
-@router.post(
-    "/users/{user_id}/reject",
-    response_model=PendingUserRead,
-    summary="Reject a pending user registration",
-)
-async def reject(
-    user_id: uuid.UUID,
-    body: RejectRequest,
-    db: AsyncSession = Depends(get_db),
-    _admin: User = AdminRequired,
-) -> PendingUserRead:
-    """Reject the user: deactivate and mark as rejected."""
-    try:
-        user = await reject_user(db, user_id, body.reason)
-    except Exception as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
-
-    from app.services.email_service import send_approval_notification
-    send_approval_notification(user.email, user.full_name, approved=False, reason=body.reason)
-    return PendingUserRead.from_user(user)

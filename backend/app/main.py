@@ -127,6 +127,21 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         except ImportError:
             logger.warning("sentry_sdk_not_installed")
 
+    # --- Auto-apply pending Alembic migrations ---
+    try:
+        import asyncio
+        from alembic.config import Config as AlembicConfig
+        from alembic import command as alembic_command
+
+        def _run_migrations() -> None:
+            cfg = AlembicConfig("alembic.ini")
+            alembic_command.upgrade(cfg, "head")
+
+        await asyncio.get_event_loop().run_in_executor(None, _run_migrations)
+        logger.info("database_migrations_applied")
+    except Exception as exc:
+        logger.warning("database_migration_warning", error=str(exc))
+
     # --- Warm up Redis connection ---
     try:
         await get_redis()

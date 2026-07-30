@@ -346,19 +346,12 @@ async def validate_activation(
     db: AsyncSession = Depends(get_db),
 ) -> dict:
     """Return 200 with full_name if the token is valid; 400 otherwise."""
-    import logging as _logging
     from app.services.activation_service import validate_activation_token, ActivationError
     try:
         user = await validate_activation_token(db, token)
         return {"valid": True, "full_name": user.full_name, "email": user.email}
     except ActivationError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
-    except Exception as exc:
-        _logging.getLogger(__name__).exception("validate_activation unexpected error")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"{type(exc).__name__}: {exc}",
-        )
 
 
 @router.post(

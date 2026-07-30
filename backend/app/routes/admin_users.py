@@ -200,7 +200,7 @@ async def approve_pending_user(
     user.role = UserRole(payload.role)
     user.institution_id = payload.institution_id
     user.approval_status = "approved"
-    # is_active stays False until activation link is used
+    user.is_active = False  # must stay False until activation link is consumed
 
     # Generate activation token
     raw_token = await create_activation_token(

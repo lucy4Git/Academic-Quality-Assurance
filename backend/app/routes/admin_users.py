@@ -300,4 +300,10 @@ async def resend_user_activation(
 
     raw_token = await resend_activation_token(db, user_id, created_by=current_user.id)
     send_activation_email(user.email, user.full_name, raw_token)
-    return {"message": "Activation link resent."}
+
+    from app.config import settings as _settings
+    _debug = getattr(_settings, "DEBUG", False) or getattr(_settings, "APP_ENV", "") in ("development", "staging")
+    response: dict = {"message": "Activation link resent."}
+    if _debug and current_user.role.value == "system_admin":
+        response["_debug_activation_url"] = f"{getattr(_settings, 'FRONTEND_BASE_URL', '')}/activate?token={raw_token}"
+    return response

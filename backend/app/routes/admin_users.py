@@ -285,7 +285,7 @@ async def resend_user_activation(
     current_user: User = QAOfficerRequired,
 ) -> dict:
     """Resend the activation link for an approved-but-inactive user."""
-    from app.services.activation_service import resend_activation_token, ActivationError
+    from app.services.activation_service import resend_activation_token, ActivationError, TokenRateLimitError
 
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
@@ -300,6 +300,12 @@ async def resend_user_activation(
 
     try:
         raw_token = await resend_activation_token(db, user_id, created_by=current_user.id)
+    except TokenRateLimitError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=str(exc),
+            headers={"Retry-After": str(exc.retry_after)},
+        )
     except ActivationError as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
 

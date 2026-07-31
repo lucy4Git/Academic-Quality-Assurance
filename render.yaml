@@ -110,9 +110,31 @@ services:
       - key: CORS_ORIGINS
         sync: false
 
-      # AI Provider (set to LOCAL_DEV for staging without a real provider)
+      # Frontend base URL — used to build activation links in emails
+      - key: FRONTEND_BASE_URL
+        sync: false
+
+      # SMTP — set in Render Dashboard for email delivery on staging.
+      # Leave unset to use console/log mode (emails printed to stdout).
+      # Recommended: configure Mailtrap (smtp.mailtrap.io:587) or similar.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: SMTP_TLS
+        sync: false
+
+      # AI Provider — set via Render Dashboard (openai, anthropic, or local_dev).
+      # Dashboard value takes precedence; do not hardcode LOCAL_DEV here or it
+      # will override the dashboard setting on every Blueprint re-apply.
       - key: AI_PROVIDER
-        value: LOCAL_DEV
+        sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: OPENAI_API_KEY

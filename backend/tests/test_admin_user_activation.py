@@ -36,7 +36,9 @@ from app.models.user import User
 from app.models.user_activation_token import UserActivationToken
 from app.services.activation_service import (
     ActivationError,
+    TokenRateLimitError,
     MAX_ATTEMPTS,
+    RESEND_COOLDOWN_SECONDS,
     _hash_token,
     consume_activation_token,
     create_activation_token,
@@ -287,17 +289,68 @@ class TestResendActivationToken:
             await resend_activation_token(db, uuid.uuid4())
 
     @pytest.mark.asyncio
-    async def test_inactive_approved_user_succeeds(self):
+    async def test_cooldown_raises_rate_limit_error(self):
+        """Second resend within RESEND_COOLDOWN_SECONDS should raise TokenRateLimitError."""
         user = _make_user(is_active=False, is_verified=False)
 
-        # First execute → load user; second execute → load existing tokens (none)
+        # Mock a recent token created just 5 seconds ago
+        recent_tok = MagicMock(spec=UserActivationToken)
+        recent_tok.created_at = datetime.now(tz=timezone.utc) - timedelta(seconds=5)
+
         r_user = MagicMock()
         r_user.scalar_one_or_none.return_value = user
+        r_cooldown = MagicMock()
+        r_cooldown.scalar_one_or_none.return_value = recent_tok
+
+        db = MagicMock()
+        db.execute = AsyncMock(side_effect=[r_user, r_cooldown])
+
+        with pytest.raises(TokenRateLimitError) as exc_info:
+            await resend_activation_token(db, user.id)
+        assert exc_info.value.retry_after > 0
+        assert exc_info.value.retry_after <= RESEND_COOLDOWN_SECONDS
+
+    @pytest.mark.asyncio
+    async def test_cooldown_allows_after_expiry(self):
+        """Resend is allowed when the prior token was created beyond the cooldown window."""
+        user = _make_user(is_active=False, is_verified=False)
+
+        old_tok = MagicMock(spec=UserActivationToken)
+        old_tok.created_at = datetime.now(tz=timezone.utc) - timedelta(seconds=RESEND_COOLDOWN_SECONDS + 10)
+
+        r_user = MagicMock()
+        r_user.scalar_one_or_none.return_value = user
+        r_cooldown = MagicMock()
+        r_cooldown.scalar_one_or_none.return_value = old_tok
         r_existing = MagicMock()
         r_existing.scalars.return_value.all.return_value = []
 
         db = MagicMock()
-        db.execute = AsyncMock(side_effect=[r_user, r_existing])
+        db.execute = AsyncMock(side_effect=[r_user, r_cooldown, r_existing])
+        db.add = MagicMock()
+        db.flush = AsyncMock()
+        db.commit = AsyncMock()
+
+        raw = await resend_activation_token(db, user.id)
+        assert len(raw) == 64
+
+    @pytest.mark.asyncio
+    async def test_inactive_approved_user_succeeds(self):
+        user = _make_user(is_active=False, is_verified=False)
+
+        # Execute sequence:
+        #   1. load user
+        #   2. cooldown check — no prior tokens (scalar_one_or_none → None)
+        #   3. create_activation_token → existing open tokens (scalars().all() → [])
+        r_user = MagicMock()
+        r_user.scalar_one_or_none.return_value = user
+        r_cooldown = MagicMock()
+        r_cooldown.scalar_one_or_none.return_value = None  # no prior token → no cooldown
+        r_existing = MagicMock()
+        r_existing.scalars.return_value.all.return_value = []
+
+        db = MagicMock()
+        db.execute = AsyncMock(side_effect=[r_user, r_cooldown, r_existing])
         db.add = MagicMock()
         db.flush = AsyncMock()
         db.commit = AsyncMock()
@@ -325,6 +378,29 @@ class TestAdminResendActivationRoute:
         u.role = role
         u.institution_id = institution_id
         return u
+
+    @pytest.mark.asyncio
+    async def test_rate_limited_resend_returns_429(self):
+        """Route must return 429 with Retry-After header when service raises TokenRateLimitError."""
+        from app.routes.admin_users import resend_user_activation
+
+        inactive_user = _make_user(is_active=False, is_verified=False, approval_status="approved")
+        db = MagicMock()
+        r = MagicMock()
+        r.scalar_one_or_none.return_value = inactive_user
+        db.execute = AsyncMock(return_value=r)
+
+        admin = self._make_admin()
+
+        with patch(
+            "app.services.activation_service.resend_activation_token",
+            new_callable=AsyncMock,
+            side_effect=TokenRateLimitError(55),
+        ):
+            with pytest.raises(HTTPException) as exc_info:
+                await resend_user_activation(inactive_user.id, db=db, current_user=admin)
+        assert exc_info.value.status_code == 429
+        assert "55" in exc_info.value.headers.get("Retry-After", "")
 
     @pytest.mark.asyncio
     async def test_active_user_returns_409(self):

@@ -29,6 +29,7 @@ from app.security import hash_password
 
 ACTIVATION_EXPIRE_HOURS = 48
 MAX_ATTEMPTS = 5
+RESEND_COOLDOWN_SECONDS = 60  # minimum gap between consecutive resend requests per user
 
 
 # ---------------------------------------------------------------------------
@@ -115,6 +116,17 @@ async def _find_valid_token(
 
 class ActivationError(Exception):
     """Raised on invalid/expired/consumed activation attempts."""
+
+
+class TokenRateLimitError(ActivationError):
+    """Raised when a resend is requested too soon after the previous one."""
+
+    def __init__(self, retry_after: int) -> None:
+        self.retry_after = retry_after
+        super().__init__(
+            f"Activation link was already sent recently. "
+            f"Please wait {retry_after} seconds before requesting another."
+        )
 
 
 async def consume_activation_token(
@@ -209,6 +221,8 @@ async def resend_activation_token(
     """Issue a new token for a user who hasn't activated yet.
 
     Invalidates the previous token. Returns the raw token.
+    Raises TokenRateLimitError if called within RESEND_COOLDOWN_SECONDS of
+    the most recent token creation for this user.
     """
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
@@ -216,6 +230,21 @@ async def resend_activation_token(
         raise ActivationError("User not found.")
     if user.is_active and user.is_verified:
         raise ActivationError("Account is already active.")
+
+    # Cooldown: find the most recently created token for this user
+    now = datetime.now(tz=timezone.utc)
+    recent_result = await db.execute(
+        select(UserActivationToken)
+        .where(UserActivationToken.user_id == user_id)
+        .order_by(UserActivationToken.created_at.desc())
+        .limit(1)
+    )
+    last_token = recent_result.scalar_one_or_none()
+    if last_token is not None:
+        elapsed = (now - last_token.created_at.replace(tzinfo=timezone.utc)).total_seconds()
+        if elapsed < RESEND_COOLDOWN_SECONDS:
+            retry_after = int(RESEND_COOLDOWN_SECONDS - elapsed) + 1
+            raise TokenRateLimitError(retry_after)
 
     raw = await create_activation_token(db, user_id, created_by=created_by)
     await db.commit()

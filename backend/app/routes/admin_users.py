@@ -278,13 +278,25 @@ async def reject_pending_user(
 # ---------------------------------------------------------------------------
 
 
-@router.post("/{user_id}/resend-activation", status_code=status.HTTP_200_OK)
+@router.post(
+    "/{user_id}/resend-activation",
+    status_code=status.HTTP_200_OK,
+    responses={
+        429: {"description": "Resend cooldown active — Retry-After header contains seconds remaining"},
+        409: {"description": "User is already active or not in approved state"},
+        404: {"description": "User not found"},
+    },
+)
 async def resend_user_activation(
     user_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = QAOfficerRequired,
 ) -> dict:
-    """Resend the activation link for an approved-but-inactive user."""
+    """Resend the activation link for an approved-but-inactive user.
+
+    Rate-limited: returns 429 with ``Retry-After`` header if a token was
+    issued within the last 60 seconds for this user.
+    """
     from app.services.activation_service import resend_activation_token, ActivationError, TokenRateLimitError
 
     result = await db.execute(select(User).where(User.id == user_id))

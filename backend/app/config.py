@@ -159,7 +159,27 @@ class Settings(BaseSettings):
 
     # --- Registration ---
     REGISTRATION_OPEN: bool = True          # allow public self-registration
-    REGISTRATION_AUTO_APPROVE: bool = False  # require admin approval if False
+
+    # When False (default), verified users are activated immediately after email
+    # verification. When True, an administrator must explicitly approve each
+    # registration before the account becomes active. Keep True for privileged
+    # institutional accounts managed via admin invitation.
+    REGISTRATION_REQUIRES_ADMIN_APPROVAL: bool = False
+
+    # Legacy alias — kept for env files that still set REGISTRATION_AUTO_APPROVE.
+    # Ignored when REGISTRATION_REQUIRES_ADMIN_APPROVAL is explicitly set.
+    REGISTRATION_AUTO_APPROVE: bool = False
+
+    # When True (default), a verified email address is required before login is
+    # permitted. Must not be set to False in production.
+    EMAIL_VERIFICATION_REQUIRED: bool = True
+
+    # When True (default) and REGISTRATION_REQUIRES_ADMIN_APPROVAL=False,
+    # the account is activated immediately after the verification code is
+    # confirmed. Setting False leaves accounts in an inactive-but-verified
+    # state (useful for custom post-verification workflows).
+    REGISTRATION_AUTO_ACTIVATE_AFTER_EMAIL_VERIFICATION: bool = True
+
     VERIFICATION_CODE_EXPIRE_HOURS: int = 24
 
     # --- CORS ---

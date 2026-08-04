@@ -242,18 +242,27 @@ async def test_authenticate_blocks_unverified_user():
     db = _mock_db_with_user(user)
 
     with patch("app.services.auth_service.verify_password", return_value=True):
-        with pytest.raises(AuthError, match="not verified"):
-            await authenticate_user(db, user.email, "Secret123!")
+        with patch("app.services.auth_service.settings") as mock_settings:
+            mock_settings.EMAIL_VERIFICATION_REQUIRED = True
+            mock_settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL = True
+            with pytest.raises(AuthError, match="not verified"):
+                await authenticate_user(db, user.email, "Secret123!")
 
 
 @pytest.mark.asyncio
 async def test_authenticate_blocks_pending_approval():
+    """When REGISTRATION_REQUIRES_ADMIN_APPROVAL=True, pending users see the
+    admin-approval message. (With the flag False, the pending state is treated
+    as unverified — covered by test_self_service_registration.py.)"""
     user = _make_user(is_verified=True, is_active=False, approval_status="pending")
     db = _mock_db_with_user(user)
 
     with patch("app.services.auth_service.verify_password", return_value=True):
-        with pytest.raises(AuthError, match="awaiting administrator approval"):
-            await authenticate_user(db, user.email, "Secret123!")
+        with patch("app.services.auth_service.settings") as mock_settings:
+            mock_settings.EMAIL_VERIFICATION_REQUIRED = True
+            mock_settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL = True
+            with pytest.raises(AuthError, match="awaiting administrator approval"):
+                await authenticate_user(db, user.email, "Secret123!")
 
 
 @pytest.mark.asyncio
@@ -262,8 +271,11 @@ async def test_authenticate_blocks_rejected_user():
     db = _mock_db_with_user(user)
 
     with patch("app.services.auth_service.verify_password", return_value=True):
-        with pytest.raises(AuthError, match="not approved"):
-            await authenticate_user(db, user.email, "Secret123!")
+        with patch("app.services.auth_service.settings") as mock_settings:
+            mock_settings.EMAIL_VERIFICATION_REQUIRED = True
+            mock_settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL = False
+            with pytest.raises(AuthError, match="not approved"):
+                await authenticate_user(db, user.email, "Secret123!")
 
 
 @pytest.mark.asyncio
@@ -272,7 +284,10 @@ async def test_authenticate_allows_active_approved_user():
     db = _mock_db_with_user(user)
 
     with patch("app.services.auth_service.verify_password", return_value=True):
-        result = await authenticate_user(db, user.email, "Secret123!")
+        with patch("app.services.auth_service.settings") as mock_settings:
+            mock_settings.EMAIL_VERIFICATION_REQUIRED = True
+            mock_settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL = False
+            result = await authenticate_user(db, user.email, "Secret123!")
     assert result == user
 
 

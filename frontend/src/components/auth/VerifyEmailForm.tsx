@@ -56,13 +56,17 @@ export function VerifyEmailForm() {
       setApprovalStatus(data.approval_status ?? null);
 
       if (data.is_active) {
-        toast.success("Email verified!", {
-          description: "Your account is now active. Redirecting to sign in…",
+        toast.success("Account activated!", {
+          description: "Your account is ready. Redirecting to sign in…",
         });
-        setTimeout(() => router.push("/login"), 2500);
-      } else {
+        setTimeout(() => router.push("/login"), 2000);
+      } else if (data.approval_status === "pending") {
         toast.success("Email verified!", {
           description: "Your account is pending administrator approval.",
+        });
+      } else {
+        toast.success("Email verified!", {
+          description: "Your account will be activated shortly.",
         });
       }
     } catch {
@@ -99,26 +103,27 @@ export function VerifyEmailForm() {
   }
 
   if (verified) {
+    const isPendingApproval = approvalStatus === "pending";
     return (
       <div className="text-center space-y-4 py-4">
         <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto" />
-        <h2 className="text-lg font-semibold text-foreground">Email Verified</h2>
-        {approvalStatus === "approved" ? (
-          <p className="text-sm text-muted-foreground">
-            Your account is now active. Redirecting to sign in…
-          </p>
-        ) : (
+        <h2 className="text-lg font-semibold text-foreground">
+          {isPendingApproval ? "Email Verified" : "Account Activated!"}
+        </h2>
+        {isPendingApproval ? (
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
-              Your email has been verified. Your account is pending administrator approval.
-            </p>
-            <p className="text-xs text-muted-foreground">
-              You will receive an email notification once your account is approved.
+              Your email has been verified. Your account is pending administrator
+              approval — you will be notified by email once it is approved.
             </p>
             <Button variant="outline" className="mt-4 w-full" onClick={() => router.push("/login")}>
               Back to Sign In
             </Button>
           </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Your account is ready. Redirecting to sign in…
+          </p>
         )}
       </div>
     );

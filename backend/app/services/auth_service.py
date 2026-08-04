@@ -84,48 +84,72 @@ def _generate_verification_code(length: int = 6) -> str:
 
 
 async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") -> User:  # type: ignore[name-defined]
-    """Register a new user via the public sign-up flow.
+    """Register a new user via the public self-service sign-up flow.
 
-    - Sets is_verified=False, is_active=False, approval_status='pending'.
-    - Generates an email verification code.
-    - Caller is responsible for sending the code via email_service.
+    Security invariants (enforced here, never by the caller):
+      - Role is always STUDENT regardless of any field submitted by the browser.
+      - institution_id is always None; tenant membership is assigned only by
+        an administrator after secure verification.
+      - approval_status is 'pending' only when REGISTRATION_REQUIRES_ADMIN_APPROVAL
+        is True; otherwise 'approved' so the account activates after email
+        verification without administrator intervention.
+
+    Raises:
+        AuthError: if the email is already registered.
     """
+    from app.models.enums import UserRole
+
     existing = await get_user_by_email(db, data.email)
     if existing is not None:
         raise AuthError("A user with this email address already exists.")
 
-    expire_hours = getattr(settings, "VERIFICATION_CODE_EXPIRE_HOURS", 24)
+    expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
     code = _generate_verification_code()
     expires = datetime.now(tz=timezone.utc) + timedelta(hours=expire_hours)
 
-    auto_approve = getattr(settings, "REGISTRATION_AUTO_APPROVE", False)
+    requires_admin = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
 
     user = User(
         email=data.email,
         full_name=data.full_name,
-        hashed_password=hash_password(secrets.token_hex(32)),  # unusable placeholder until activation
-        role=data.role_requested,
+        # Unusable placeholder — account password is set either via activation
+        # link (admin-managed flow) or implicitly in the self-service flow where
+        # the user logs in with the password they chose at registration.
+        hashed_password=hash_password(data.password) if getattr(data, "password", None) else hash_password(secrets.token_hex(32)),
+        # SECURITY: always STUDENT for public self-registration. Browser-submitted
+        # role is never trusted; admins assign privileged roles separately.
+        role=UserRole.STUDENT,
+        # SECURITY: institution_id is never accepted from the browser. Tenant
+        # membership is set only by an administrator after identity is verified.
         institution_id=None,
-        is_active=auto_approve,
+        is_active=False,  # activated after email verification (or admin approval)
         is_verified=False,
         verification_code=code,
         verification_code_expires_at=expires,
-        approval_status="approved" if auto_approve else "pending",
-        role_requested=str(data.role_requested.value) if data.role_requested else None,
-        reason_for_access=data.reason_for_access,
-        institution_name_requested=data.institution_name,
+        # 'approved' = no admin step required; 'pending' = needs admin action.
+        approval_status="pending" if requires_admin else "approved",
+        role_requested=str(data.role_requested.value) if getattr(data, "role_requested", None) else None,
+        reason_for_access=getattr(data, "reason_for_access", None),
+        institution_name_requested=getattr(data, "institution_name", None),
     )
     db.add(user)
     await db.commit()
     await db.refresh(user)
-    logger.info("Public registration: %s (approval_status=%s)", user.email, user.approval_status)
+    logger.info(
+        "Public registration: %s role=student approval_status=%s",
+        user.email,
+        user.approval_status,
+    )
     return user
 
 
 async def verify_email_code(db: AsyncSession, email: str, code: str) -> User:
     """Verify an email verification code.
 
-    Marks is_verified=True. Account remains inactive until admin approves.
+    Marks is_verified=True. If REGISTRATION_AUTO_ACTIVATE_AFTER_EMAIL_VERIFICATION
+    is True and the account does not require admin approval, also sets
+    is_active=True so the user can log in immediately.
+
     Raises AuthError on invalid/expired code.
     """
     user = await get_user_by_email(db, email)
@@ -133,7 +157,21 @@ async def verify_email_code(db: AsyncSession, email: str, code: str) -> User:
         raise AuthError("No account found for this email address.")
 
     if user.is_verified:
-        return user  # already verified — idempotent
+        # Idempotent: already verified. Re-apply activation only when:
+        #   - account is still inactive
+        #   - approval_status is 'approved' (not 'pending' — an admin may have
+        #     previously set it and not yet acted on it)
+        #   - admin approval is not required by current config
+        if (
+            not user.is_active
+            and getattr(user, "approval_status", "pending") == "approved"
+            and not settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
+            and settings.REGISTRATION_AUTO_ACTIVATE_AFTER_EMAIL_VERIFICATION
+        ):
+            user.is_active = True
+            await db.commit()
+            await db.refresh(user)
+        return user
 
     now = datetime.now(tz=timezone.utc)
     if (
@@ -148,14 +186,24 @@ async def verify_email_code(db: AsyncSession, email: str, code: str) -> User:
     user.verification_code = None
     user.verification_code_expires_at = None
 
-    # If auto-approve is on, activate immediately after verification
-    auto_approve = getattr(settings, "REGISTRATION_AUTO_APPROVE", False)
-    if auto_approve:
+    # Auto-activate when admin approval is not required.
+    if (
+        not settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
+        and settings.REGISTRATION_AUTO_ACTIVATE_AFTER_EMAIL_VERIFICATION
+    ):
         user.is_active = True
-        user.approval_status = "approved"
+        # Ensure approval_status is 'approved' (it should already be, but be explicit).
+        if user.approval_status == "pending":
+            user.approval_status = "approved"
 
     await db.commit()
     await db.refresh(user)
+    logger.info(
+        "Email verified: %s is_active=%s approval_status=%s",
+        user.email,
+        user.is_active,
+        user.approval_status,
+    )
     return user
 
 
@@ -232,11 +280,14 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> User
     if user is None or not password_ok:
         raise AuthError("Invalid email or password.")
 
-    if not getattr(user, "is_verified", True):
+    if settings.EMAIL_VERIFICATION_REQUIRED and not getattr(user, "is_verified", True):
         raise AuthError("Email address not verified. Please check your inbox for the verification code.")
 
     if getattr(user, "approval_status", "approved") == "pending":
-        raise AuthError("Your account is awaiting administrator approval.")
+        if settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL:
+            raise AuthError("Your account is awaiting administrator approval.")
+        # pending + admin approval not required = verification not yet completed
+        raise AuthError("Email address not verified. Please check your inbox for the verification code.")
 
     if getattr(user, "approval_status", "approved") == "rejected":
         raise AuthError("Your account registration was not approved. Contact your QA office.")

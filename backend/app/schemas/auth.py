@@ -61,20 +61,36 @@ class RefreshRequest(BaseModel):
 class PublicRegisterRequest(BaseModel):
     """Payload for public self-registration (POST /auth/public-register).
 
-    Password is NOT accepted at registration time.  The user sets their
-    password after admin approval via the activation link flow.
+    Security constraints enforced server-side (not here):
+      - role is always forced to STUDENT regardless of any submitted value.
+      - institution_id is never accepted; tenant is assigned by an administrator.
+
+    The password field is accepted here for the self-service flow where the
+    user creates their account and password in one step. The service validates
+    password strength.
     """
 
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
+    password: str = Field(..., min_length=8, description="At least 8 characters, 1 uppercase, 1 digit")
     institution_name: str = Field(..., min_length=2, max_length=255, description="Name of your institution")
-    role_requested: UserRole = Field(default=UserRole.LECTURER)
     reason_for_access: str | None = Field(default=None, max_length=500)
 
     @field_validator("full_name")
     @classmethod
     def _strip_name(cls, v: str) -> str:
         return v.strip()
+
+    @field_validator("password")
+    @classmethod
+    def _validate_password(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters.")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one digit.")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter.")
+        return v
 
 
 class VerifyEmailRequest(BaseModel):
@@ -96,7 +112,7 @@ class RegistrationResponse(BaseModel):
     message: str
     email: str
     requires_verification: bool = True
-    requires_approval: bool = True
+    requires_approval: bool = False
 
 
 class VerificationResponse(BaseModel):

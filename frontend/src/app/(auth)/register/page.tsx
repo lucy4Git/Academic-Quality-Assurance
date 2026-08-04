@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
-export const metadata: Metadata = { title: "Request Access — AQAA" };
+export const metadata: Metadata = { title: "Create Account — AQAA" };
 
 export default function RegisterPage() {
   return (
@@ -11,9 +11,9 @@ export default function RegisterPage() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
           <span className="text-3xl font-bold text-white tracking-tight">AQ</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">Request Access</h1>
+        <h1 className="text-2xl font-bold text-white">Create Account</h1>
         <p className="text-white/60 text-sm mt-1">
-          Academic Quality Assurance Agent — Institution Portal
+          Academic Quality Assurance Agent — Verify your email to get started
         </p>
       </div>
 

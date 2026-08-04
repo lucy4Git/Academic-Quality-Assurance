@@ -231,15 +231,21 @@ async def public_register(
     data: PublicRegisterRequest,
     db: AsyncSession = Depends(get_db),
 ) -> RegistrationResponse:
-    """Register a new user via the public sign-up form.
+    """Register a new user via the public self-service sign-up form.
 
-    - Account starts as unverified and pending admin approval.
-    - A 6-digit verification code is sent to the email (or logged in console mode).
-    - Login is blocked until email is verified AND admin approves the account.
-    - Raises 409 if email already registered.
-    - Raises 403 if REGISTRATION_OPEN=false.
+    Security guarantees:
+      - Assigned role is always STUDENT regardless of request body.
+      - institution_id is always None; tenant is assigned by an admin.
+      - A 6-digit verification code is sent to the email address.
+      - When REGISTRATION_REQUIRES_ADMIN_APPROVAL=False (default), the account
+        activates automatically after email verification — no admin step needed.
+      - When REGISTRATION_REQUIRES_ADMIN_APPROVAL=True, the account stays
+        inactive until an administrator explicitly approves it.
+
+    Raises 409 if email already registered.
+    Raises 403 if REGISTRATION_OPEN=false.
     """
-    if not getattr(settings, "REGISTRATION_OPEN", True):
+    if not settings.REGISTRATION_OPEN:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Public registration is currently closed. Contact your administrator.",
@@ -251,18 +257,28 @@ async def public_register(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
 
     from app.services.email_service import send_verification_email
+    # NOTE: verification_code is logged only at DEBUG level by email_service in
+    # console mode. It is never written to a response body or application logs
+    # at INFO or above.
     send_verification_email(user.email, user.full_name, user.verification_code or "")
 
-    auto_approve = getattr(settings, "REGISTRATION_AUTO_APPROVE", False)
+    requires_approval = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
+    if requires_approval:
+        msg = (
+            "Registration successful. Please check your email for a verification code. "
+            "After verifying your email, your account will be reviewed by an administrator."
+        )
+    else:
+        msg = (
+            "Registration successful. Please check your email for a 6-digit verification "
+            "code. Your account will be activated as soon as you verify your email."
+        )
+
     return RegistrationResponse(
-        message=(
-            "Registration successful. Please check your email for the verification code."
-            if not auto_approve
-            else "Registration successful. Check your email for the verification code. You will be activated after verification."
-        ),
+        message=msg,
         email=user.email,
         requires_verification=True,
-        requires_approval=not auto_approve,
+        requires_approval=requires_approval,
     )
 
 
@@ -286,11 +302,15 @@ async def verify_email(
     except AuthError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
 
-    message = "Email verified successfully."
     if user.is_active:
-        message += " Your account is now active. You can sign in."
+        message = "Email verified. Your account is now active — you can sign in."
+    elif user.approval_status == "pending":
+        message = (
+            "Email verified. Your account is pending administrator approval. "
+            "You will be notified by email once approved."
+        )
     else:
-        message += " Your account is pending administrator approval. You will be notified when approved."
+        message = "Email verified. Your account will be activated shortly."
 
     return VerificationResponse(
         message=message,

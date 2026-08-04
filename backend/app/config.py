@@ -154,6 +154,9 @@ class Settings(BaseSettings):
     SMTP_FROM: str | None = None
     SMTP_TLS: bool = True
 
+    # --- Frontend ---
+    FRONTEND_BASE_URL: str = "http://localhost:3000"  # used in activation/verification email links
+
     # --- Registration ---
     REGISTRATION_OPEN: bool = True          # allow public self-registration
     REGISTRATION_AUTO_APPROVE: bool = False  # require admin approval if False

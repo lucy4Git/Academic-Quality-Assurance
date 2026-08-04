@@ -108,7 +108,7 @@ def send_verification_email(to: str, full_name: str, code: str) -> None:
 
 def send_activation_email(to: str, full_name: str, raw_token: str) -> None:
     """Send an activation link containing the one-time token."""
-    frontend_base = getattr(settings, "FRONTEND_BASE_URL", "http://localhost:3000")
+    frontend_base = settings.FRONTEND_BASE_URL
     activation_url = f"{frontend_base}/activate?token={raw_token}"
     subject = "AQAA — Activate your account"
     body_text = (

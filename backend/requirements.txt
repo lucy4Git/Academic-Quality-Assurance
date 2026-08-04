@@ -13,7 +13,7 @@ PyJWT>=2.9,<3.0                # JWT encode/decode
 bcrypt>=4.0,<5.0               # password hashing (no passlib wrapper — avoids compat issues)
 
 # --- Document parsing (existing AI agents) ---
-pypdf>=4.0,<6.0                    # PDF text extraction (pure Python)
+pypdf>=6.13.1,<7.0                 # PDF text extraction (pure Python); <6.13.1 has 61 PYSEC advisories
 python-docx>=1.1,<2.0              # DOCX text and table extraction
 openpyxl>=3.1,<4.0                 # XLSX cell extraction
 python-pptx>=1.0,<2.0              # PPTX slide text extraction

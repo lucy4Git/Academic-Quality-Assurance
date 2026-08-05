@@ -19,6 +19,33 @@ class UserRole(str, enum.Enum):
     STUDENT = "student"
 
 
+class InvitationType(str, enum.Enum):
+    """Discriminator for secure institutional invitations.
+
+    Each value maps to a specific role/access pattern enforced by
+    invitation_service.  Public users never select an invitation type —
+    it is embedded in the invitation record created by an authorised admin.
+    """
+
+    STUDENT_ONBOARDING = "student_onboarding"       # link personal-email student to institution
+    STAFF_LECTURER = "staff_lecturer"               # → role=lecturer
+    STAFF_COORDINATOR = "staff_coordinator"         # → role=programme_coordinator
+    STAFF_HOD = "staff_hod"                         # → role=head_of_department
+    STAFF_DEAN = "staff_dean"                       # → role=faculty_dean
+    QA_OFFICER = "qa_officer"                       # → role=quality_assurance_officer
+    EXTERNAL_MODERATOR = "external_moderator"       # scoped external access (role=lecturer)
+    INSTITUTION_ADMIN = "institution_admin"         # system-admin–only; not public
+
+
+class InvitationStatus(str, enum.Enum):
+    """Lifecycle status of an invitation record."""
+
+    PENDING = "pending"
+    CONSUMED = "consumed"   # max_uses reached
+    EXPIRED = "expired"     # past expires_at
+    REVOKED = "revoked"     # manually cancelled by admin
+
+
 class ProgrammeLevel(str, enum.Enum):
     """Academic level of a programme, used for reporting and audit scoping."""
 

@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.models.faculty import Faculty
     from app.models.graduate_attribute import GraduateAttribute
     from app.models.institution_document import InstitutionDocument
+    from app.models.institution_domain import InstitutionDomain
     from app.models.policy import Policy
     from app.models.user import User
 
@@ -64,6 +65,9 @@ class Institution(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         back_populates="institution", cascade="all, delete-orphan"
     )
     contacts: Mapped[list["Contact"]] = relationship(
+        back_populates="institution", cascade="all, delete-orphan"
+    )
+    domains: Mapped[list["InstitutionDomain"]] = relationship(
         back_populates="institution", cascade="all, delete-orphan"
     )
 

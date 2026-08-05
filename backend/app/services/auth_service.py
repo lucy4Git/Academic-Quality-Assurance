@@ -186,6 +186,18 @@ async def verify_email_code(db: AsyncSession, email: str, code: str) -> User:
     user.verification_code = None
     user.verification_code_expires_at = None
 
+    # Domain-based institution auto-assignment for students with no institution yet.
+    if user.institution_id is None:
+        from app.services.invitation_service import get_institution_by_email_domain
+        domain_record = await get_institution_by_email_domain(db, user.email)
+        if domain_record is not None:
+            user.institution_id = domain_record.institution_id
+            logger.info(
+                "Domain-based institution assignment: %s → institution_id=%s",
+                user.email,
+                domain_record.institution_id,
+            )
+
     # Auto-activate when admin approval is not required.
     if (
         not settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
@@ -296,3 +308,71 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> User
         raise AuthError("This account has been disabled.")
 
     return user
+
+
+async def register_with_invitation(
+    db: AsyncSession,
+    data: "InvitationRegisterRequest",  # type: ignore[name-defined]
+) -> tuple[User, bool]:
+    """Register a new user using a valid invitation token.
+
+    Returns (user, requires_email_verification).
+
+    Security invariants:
+      - Role and institution_id are taken from the invitation; browser values ignored.
+      - The invitation is consumed atomically with the user creation.
+      - A second call with the same token fails because the invitation is consumed.
+    """
+    from app.models.enums import UserRole
+    from app.schemas.invitation import InvitationRegisterRequest
+    from app.services.invitation_service import validate_invitation, consume_invitation
+
+    invitation = await validate_invitation(db, data.token, email=data.email)
+
+    existing = await get_user_by_email(db, data.email)
+    if existing is not None:
+        raise AuthError("A user with this email address already exists.")
+
+    role_str = invitation.role or UserRole.LECTURER.value
+    try:
+        role = UserRole(role_str)
+    except ValueError:
+        role = UserRole.LECTURER
+
+    expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
+    requires_verification = invitation.requires_email_verification
+
+    code: str | None = None
+    expires: datetime | None = None
+    if requires_verification:
+        code = _generate_verification_code()
+        expires = datetime.now(tz=timezone.utc) + timedelta(hours=expire_hours)
+
+    user = User(
+        email=data.email,
+        full_name=data.full_name,
+        hashed_password=hash_password(data.password),
+        role=role,
+        institution_id=invitation.institution_id,
+        is_active=not requires_verification,
+        is_verified=not requires_verification,
+        verification_code=code,
+        verification_code_expires_at=expires,
+        approval_status="approved",
+        invitation_id=invitation.id,
+    )
+    db.add(user)
+    await db.flush()
+
+    await consume_invitation(db, invitation)
+
+    await db.commit()
+    await db.refresh(user)
+    logger.info(
+        "Invitation-based registration: %s role=%s institution_id=%s invitation_id=%s",
+        user.email,
+        role_str,
+        invitation.institution_id,
+        invitation.id,
+    )
+    return user, requires_verification

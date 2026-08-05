@@ -32,6 +32,8 @@ from app.models.enums import (
     FindingSeverity,
     FindingStatus,
     FindingType,
+    InvitationStatus,
+    InvitationType,
     ModuleAuditStatus,
     NotificationType,
     ProcessingStatus,
@@ -48,6 +50,8 @@ from app.models.file_version import FileVersion
 from app.models.graduate_attribute import GraduateAttribute
 from app.models.institution import Institution
 from app.models.institution_document import InstitutionDocument
+from app.models.institution_domain import InstitutionDomain
+from app.models.invitation import Invitation
 from app.models.institution_qualification import Qualification
 from app.models.learning_outcome import LearningOutcome
 from app.models.module import Module
@@ -120,6 +124,10 @@ __all__ = [
     "FindingStatusHistory",
     "FindingType",
     "Institution",
+    "InstitutionDomain",
+    "Invitation",
+    "InvitationStatus",
+    "InvitationType",
     "KnowledgeReviewBatch",
     "KnowledgeReviewItem",
     "Module",

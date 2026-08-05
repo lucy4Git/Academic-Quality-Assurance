@@ -19,6 +19,7 @@ from app.models.enums import UserRole
 
 if TYPE_CHECKING:
     from app.models.institution import Institution
+    from app.models.invitation import Invitation
     from app.models.user_activation_token import UserActivationToken
 
 
@@ -68,7 +69,18 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     reason_for_access: Mapped[str | None] = mapped_column(String(500), nullable=True)
     institution_name_requested: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
+    # FK to the invitation used to register (null for self-service students)
+    invitation_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("invitations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
     institution: Mapped["Institution | None"] = relationship(back_populates="users")
+    invitation: Mapped["Invitation | None"] = relationship(
+        "Invitation", foreign_keys=[invitation_id], lazy="selectin"
+    )
     activation_tokens: Mapped[list["UserActivationToken"]] = relationship(
         "UserActivationToken",
         foreign_keys="UserActivationToken.user_id",

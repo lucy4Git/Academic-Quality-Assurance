@@ -1,29 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Loader2, GraduationCap, Briefcase, UserCheck } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { InvitationRegisterForm } from "./InvitationRegisterForm";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Path = "student" | "invitation";
-
 interface Fields {
+  token: string;
   full_name: string;
   email: string;
   password: string;
-  institution_name: string;
 }
 
 interface FieldErrors extends Partial<Record<keyof Fields, string>> {}
 
 function validate(f: Fields): FieldErrors {
   const e: FieldErrors = {};
+  if (!f.token.trim()) e.token = "Invitation code is required.";
   if (!f.full_name.trim() || f.full_name.trim().length < 2)
     e.full_name = "Full name must be at least 2 characters.";
   if (!f.email.trim() || !EMAIL_RE.test(f.email.trim()))
@@ -34,59 +32,19 @@ function validate(f: Fields): FieldErrors {
     e.password = "Password must contain at least one digit.";
   else if (!/[A-Z]/.test(f.password))
     e.password = "Password must contain at least one uppercase letter.";
-  if (!f.institution_name.trim())
-    e.institution_name = "Institution name is required.";
   return e;
 }
 
-function PathSelector({ selected, onSelect }: { selected: Path; onSelect: (p: Path) => void }) {
-  const paths: { id: Path; icon: React.ReactNode; label: string; sub: string }[] = [
-    {
-      id: "student",
-      icon: <GraduationCap className="h-5 w-5" />,
-      label: "Student",
-      sub: "Register with your institutional or personal email",
-    },
-    {
-      id: "invitation",
-      icon: <Briefcase className="h-5 w-5" />,
-      label: "Staff / External",
-      sub: "I have an invitation code from my institution",
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-2 gap-2 mb-4">
-      {paths.map((p) => (
-        <button
-          key={p.id}
-          type="button"
-          onClick={() => onSelect(p.id)}
-          className={[
-            "flex flex-col items-start gap-1 rounded-lg border p-3 text-left transition-colors",
-            selected === p.id
-              ? "border-primary bg-primary/5 text-primary"
-              : "border-border bg-white text-foreground hover:border-primary/40",
-          ].join(" ")}
-        >
-          <span className={selected === p.id ? "text-primary" : "text-muted-foreground"}>
-            {p.icon}
-          </span>
-          <span className="text-sm font-medium leading-none">{p.label}</span>
-          <span className="text-[11px] text-muted-foreground leading-tight">{p.sub}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function StudentForm() {
+export function InvitationRegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const prefillToken = searchParams?.get("token") ?? "";
+
   const [fields, setFields] = useState<Fields>({
+    token: prefillToken,
     full_name: "",
     email: "",
     password: "",
-    institution_name: "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -109,35 +67,49 @@ function StudentForm() {
     setErrors({});
     setIsSubmitting(true);
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("/api/auth/register-with-invitation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          token: fields.token.trim(),
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
           password: fields.password,
-          institution_name: fields.institution_name.trim(),
         }),
       });
 
-      const data = await res.json() as { message?: string; email?: string; detail?: string };
+      const data = await res.json() as {
+        message?: string;
+        email?: string;
+        requires_email_verification?: boolean;
+        detail?: string;
+      };
 
       if (!res.ok) {
-        if (res.status === 409) {
+        if (res.status === 404) {
+          toast.error("Invalid invitation", {
+            description: "This invitation code is invalid, expired, or has already been used.",
+          });
+        } else if (res.status === 409) {
           toast.error("Email already registered", {
             description: "An account with this email already exists. Sign in instead.",
           });
         } else if (res.status === 403) {
-          toast.error("Registration closed", {
-            description: data.detail ?? "Public registration is currently closed.",
+          toast.error("Invitation restricted", {
+            description: data.detail ?? "Your email address does not match this invitation's restriction.",
           });
         } else {
-          toast.error("Registration failed", { description: data.detail });
+          toast.error("Registration failed", { description: data.detail ?? "Please try again." });
         }
         return;
       }
 
-      router.push(`/verify-email?email=${encodeURIComponent(fields.email.trim())}`);
+      if (data.requires_email_verification) {
+        router.push(`/verify-email?email=${encodeURIComponent(fields.email.trim())}`);
+      } else {
+        toast.success("Account created", { description: "You can now sign in." });
+        router.push("/login");
+      }
     } catch {
       toast.error("Connection error", {
         description: "Unable to connect to the server. Please try again.",
@@ -178,25 +150,36 @@ function StudentForm() {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="space-y-4">
-        <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm text-blue-800">
-          <p className="font-medium mb-1">How it works</p>
-          <ol className="list-decimal list-inside space-y-0.5 text-xs text-blue-700">
-            <li>Create your account below</li>
-            <li>Check your email for a 6-digit verification code</li>
-            <li>Enter the code to activate your account</li>
-            <li>Sign in immediately — no waiting for approval</li>
-          </ol>
+        <div className="rounded-lg border border-amber-100 bg-amber-50 p-3 text-sm text-amber-800">
+          <p className="font-medium mb-1">Staff &amp; External invitation</p>
+          <p className="text-xs text-amber-700">
+            Your institution administrator sent you an invitation code. Enter it below along with your details
+            to create your account with the correct role and permissions.
+          </p>
         </div>
 
-        {field("full_name", "Full name", { autoFocus: true, placeholder: "Dr. Jane Smith", autoComplete: "name" })}
-        {field("email", "Email address", { type: "text", inputMode: "email", placeholder: "you@institution.ac.za", autoComplete: "email" })}
-        {field("password", "Password", { type: "password", placeholder: "Min. 8 chars, 1 uppercase, 1 digit", autoComplete: "new-password" })}
-        {field("institution_name", "Institution name", { placeholder: "e.g. Tshwane University of Technology" })}
-
-        <p className="text-xs text-muted-foreground">
-          Your account will be created with student access. If you are staff, use the
-          {" "}<strong>Staff / External</strong> tab and enter your invitation code.
-        </p>
+        {field("token", "Invitation code", {
+          autoFocus: !prefillToken,
+          placeholder: "Paste your invitation code here",
+          autoComplete: "off",
+          spellCheck: false,
+        })}
+        {field("full_name", "Full name", {
+          autoFocus: !!prefillToken,
+          placeholder: "Dr. Jane Smith",
+          autoComplete: "name",
+        })}
+        {field("email", "Email address", {
+          type: "text",
+          inputMode: "email",
+          placeholder: "your@institution.ac.za",
+          autoComplete: "email",
+        })}
+        {field("password", "Password", {
+          type: "password",
+          placeholder: "Min. 8 chars, 1 uppercase, 1 digit",
+          autoComplete: "new-password",
+        })}
 
         <Button type="submit" className="w-full h-10 font-medium" disabled={isSubmitting}>
           {isSubmitting ? (
@@ -211,20 +194,11 @@ function StudentForm() {
 
         <p className="text-center text-xs text-muted-foreground">
           Already have an account?{" "}
-          <a href="/login" className="text-primary hover:underline">Sign in</a>
+          <a href="/login" className="text-primary hover:underline">
+            Sign in
+          </a>
         </p>
       </div>
     </form>
-  );
-}
-
-export function RegisterForm() {
-  const [path, setPath] = useState<Path>("student");
-
-  return (
-    <div>
-      <PathSelector selected={path} onSelect={setPath} />
-      {path === "student" ? <StudentForm /> : <InvitationRegisterForm />}
-    </div>
   );
 }

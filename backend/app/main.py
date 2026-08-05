@@ -88,6 +88,7 @@ from app.routes.artifacts import router as artifacts_router
 from app.routes.corrective_actions import router as corrective_actions_router
 from app.routes.admin_users import router as admin_users_router
 from app.routes.invitations import router as invitations_router
+from app.routes.institution_domains import router as institution_domains_router
 
 logger = get_logger(__name__)
 
@@ -341,6 +342,7 @@ def create_app() -> FastAPI:
     app.include_router(admin_users_router, prefix=prefix)
     # Registration Architecture — Invitations
     app.include_router(invitations_router, prefix=prefix)
+    app.include_router(institution_domains_router, prefix=prefix)
 
     return app
 

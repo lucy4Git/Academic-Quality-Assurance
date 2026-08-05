@@ -140,15 +140,25 @@ AdminRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
 )
 
+# Institution administrators and above can manage a single institution's users,
+# invitations, and domain mappings. INSTITUTION_ADMIN cannot access other
+# institutions or create SYSTEM_ADMIN accounts.
+InstitutionAdminRequired = require_roles(
+    UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
+)
+
 # QA officers and above can perform institution-wide quality operations.
 QAOfficerRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
     UserRole.QUALITY_ASSURANCE_OFFICER,
 )
 
 # Deans and above can act at faculty level.
 DeanRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
     UserRole.QUALITY_ASSURANCE_OFFICER,
     UserRole.FACULTY_DEAN,
 )
@@ -156,6 +166,7 @@ DeanRequired = require_roles(
 # Heads of Department and above can manage departments.
 HODRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
     UserRole.QUALITY_ASSURANCE_OFFICER,
     UserRole.FACULTY_DEAN,
     UserRole.HEAD_OF_DEPARTMENT,
@@ -164,6 +175,7 @@ HODRequired = require_roles(
 # Programme coordinators and above can manage programmes and their modules.
 CoordinatorRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
     UserRole.QUALITY_ASSURANCE_OFFICER,
     UserRole.FACULTY_DEAN,
     UserRole.HEAD_OF_DEPARTMENT,
@@ -173,6 +185,7 @@ CoordinatorRequired = require_roles(
 # Any teaching staff can upload module evidence.
 LecturerRequired = require_roles(
     UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
     UserRole.QUALITY_ASSURANCE_OFFICER,
     UserRole.FACULTY_DEAN,
     UserRole.HEAD_OF_DEPARTMENT,

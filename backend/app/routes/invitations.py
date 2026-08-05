@@ -8,10 +8,10 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dependencies import get_db, get_current_user, AdminRequired, QAOfficerRequired
+from app.dependencies import get_db, get_current_user, AdminRequired, InstitutionAdminRequired, QAOfficerRequired
 from app.models.user import User
 from app.schemas.invitation import (
     InvitationBrief,
@@ -39,7 +39,7 @@ router = APIRouter(prefix="/invitations", tags=["invitations"])
 async def create_invitation_endpoint(
     data: InvitationCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = QAOfficerRequired,
+    current_user: User = InstitutionAdminRequired,
 ):
     """Create a new invitation. QA officer and above only."""
     invitation, token = await create_invitation(db, data, current_user)
@@ -56,7 +56,7 @@ async def list_invitations_endpoint(
     limit: int = Query(default=50, ge=1, le=200),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
-    current_user: User = QAOfficerRequired,
+    current_user: User = InstitutionAdminRequired,
 ):
     invitations = await list_invitations(
         db, current_user, status=status, invitation_type=invitation_type,
@@ -69,7 +69,7 @@ async def list_invitations_endpoint(
 async def get_invitation(
     invitation_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = QAOfficerRequired,
+    current_user: User = InstitutionAdminRequired,
 ):
     from sqlalchemy import select
     from app.models.invitation import Invitation
@@ -84,7 +84,7 @@ async def get_invitation(
 async def revoke_invitation_endpoint(
     invitation_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = QAOfficerRequired,
+    current_user: User = InstitutionAdminRequired,
 ):
     invitation = await revoke_invitation(db, invitation_id, current_user)
     return InvitationRead.model_validate(invitation)
@@ -114,6 +114,7 @@ async def validate_invitation_endpoint(
 @router.post("/register", status_code=201)
 async def register_with_invitation_endpoint(
     data: InvitationRegisterRequest,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ):
     """Register a new account using an invitation token. Public endpoint."""
@@ -122,6 +123,12 @@ async def register_with_invitation_endpoint(
     except AuthError as exc:
         from fastapi import HTTPException
         raise HTTPException(status_code=409, detail=str(exc))
+
+    if requires_verification:
+        from app.services.email_service import send_verification_email
+        background_tasks.add_task(
+            send_verification_email, user.email, user.full_name, user.verification_code or ""
+        )
 
     return {
         "id": str(user.id),

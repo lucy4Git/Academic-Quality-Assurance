@@ -9,7 +9,11 @@ GET  /api/v1/auth/me        — return the caller's profile
 """
 
 from pydantic import BaseModel
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+import logging
+import time
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
+
+logger = logging.getLogger(__name__)
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -229,6 +233,7 @@ async def get_me(current_user: User = Depends(get_current_user)) -> User:
 )
 async def public_register(
     data: PublicRegisterRequest,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ) -> RegistrationResponse:
     """Register a new user via the public self-service sign-up form.
@@ -251,16 +256,19 @@ async def public_register(
             detail="Public registration is currently closed. Contact your administrator.",
         )
 
+    t0 = time.monotonic()
     try:
         user = await public_register_user(db, data)
     except AuthError as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    db_ms = int((time.monotonic() - t0) * 1000)
+    logger.info("public_register db_ms=%d email=%s", db_ms, user.email[:3] + "***")
 
     from app.services.email_service import send_verification_email
-    # NOTE: verification_code is logged only at DEBUG level by email_service in
-    # console mode. It is never written to a response body or application logs
-    # at INFO or above.
-    send_verification_email(user.email, user.full_name, user.verification_code or "")
+    # Email is dispatched as a background task so the HTTP response returns
+    # immediately. The SMTP connection to Brevo was blocking the request
+    # thread for 55+ seconds, causing Render gateway 502s.
+    background_tasks.add_task(send_verification_email, user.email, user.full_name, user.verification_code or "")
 
     requires_approval = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
     if requires_approval:
@@ -327,6 +335,7 @@ async def verify_email(
 )
 async def resend_verification(
     data: ResendVerificationRequest,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ) -> dict:
     """Generate a new verification code and re-send the email.
@@ -336,7 +345,7 @@ async def resend_verification(
     try:
         user = await resend_verification_code(db, data.email)
         from app.services.email_service import send_verification_email
-        send_verification_email(user.email, user.full_name, user.verification_code or "")
+        background_tasks.add_task(send_verification_email, user.email, user.full_name, user.verification_code or "")
     except AuthError:
         pass  # Silent — don't reveal whether email exists
     return {"message": "If this email is registered and unverified, a new code has been sent."}

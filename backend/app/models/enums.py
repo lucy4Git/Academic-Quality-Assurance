@@ -11,6 +11,7 @@ class UserRole(str, enum.Enum):
     """
 
     SYSTEM_ADMIN = "system_admin"
+    INSTITUTION_ADMIN = "institution_admin"
     QUALITY_ASSURANCE_OFFICER = "quality_assurance_officer"
     FACULTY_DEAN = "faculty_dean"
     HEAD_OF_DEPARTMENT = "head_of_department"

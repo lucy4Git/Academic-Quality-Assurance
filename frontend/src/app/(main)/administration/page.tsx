@@ -12,12 +12,15 @@ import {
   FileText,
   Settings2,
   ArrowRight,
+  Globe,
+  Mail,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/types";
 
 const SA_ONLY: UserRole[] = ["system_admin"];
+const ADMIN_AND_SA: UserRole[] = ["system_admin", "institution_admin"];
 
 interface WorkspaceCard {
   label: string;
@@ -30,6 +33,24 @@ interface WorkspaceCard {
 }
 
 const CARDS: WorkspaceCard[] = [
+  {
+    label: "Invitations",
+    description: "Create and manage secure one-time registration tokens for staff, students and external users",
+    href: "/administration/invitations",
+    icon: Mail,
+    iconColor: "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50",
+    badge: "Onboarding",
+    roles: ADMIN_AND_SA,
+  },
+  {
+    label: "Domains",
+    description: "Map institutional email domains and configure automatic student assignment rules",
+    href: "/administration/domains",
+    icon: Globe,
+    iconColor: "text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/50",
+    badge: "Email",
+    roles: ADMIN_AND_SA,
+  },
   {
     label: "Institutions",
     description: "Manage institution records, codes, types, and hierarchy configurations",

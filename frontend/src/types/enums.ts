@@ -2,6 +2,7 @@
 
 export type UserRole =
   | "system_admin"
+  | "institution_admin"
   | "quality_assurance_officer"
   | "faculty_dean"
   | "head_of_department"

@@ -2,6 +2,7 @@ import type { UserRole, FileCategory, AgentType } from "@/types";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   system_admin: "System Admin",
+  institution_admin: "Institution Admin",
   quality_assurance_officer: "QA Officer",
   faculty_dean: "Faculty Dean",
   head_of_department: "Head of Department",

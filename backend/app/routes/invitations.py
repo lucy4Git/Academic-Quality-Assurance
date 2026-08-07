@@ -43,6 +43,7 @@ async def create_invitation_endpoint(
 ):
     """Create a new invitation. QA officer and above only."""
     invitation, token = await create_invitation(db, data, current_user)
+    await db.commit()
     return InvitationCreateResponse(
         invitation=InvitationRead.model_validate(invitation),
         token=token,
@@ -87,6 +88,7 @@ async def revoke_invitation_endpoint(
     current_user: User = InstitutionAdminRequired,
 ):
     invitation = await revoke_invitation(db, invitation_id, current_user)
+    await db.commit()
     return InvitationRead.model_validate(invitation)
 
 

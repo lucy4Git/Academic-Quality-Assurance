@@ -24,6 +24,20 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ConflictError, DomainPermissionError, NotFoundError
+from app.core.exceptions import DomainError
+
+# Public email providers that must never be mapped to an institution.
+# Mapping them would auto-assign ANY holder of a Gmail/Outlook/Yahoo address
+# to a tenant, which is a critical security misconfiguration.
+_PUBLIC_DOMAINS: frozenset[str] = frozenset({
+    "gmail.com", "googlemail.com",
+    "outlook.com", "hotmail.com", "hotmail.co.uk", "live.com", "msn.com",
+    "yahoo.com", "yahoo.co.uk", "yahoo.co.za",
+    "icloud.com", "me.com", "mac.com",
+    "protonmail.com", "proton.me",
+    "aol.com",
+    "zoho.com",
+})
 from app.dependencies import InstitutionAdminRequired, get_db
 from app.models.enums import UserRole
 from app.models.institution_domain import InstitutionDomain
@@ -65,6 +79,9 @@ async def create_domain(
 
     normalised = data.domain.lower().lstrip("@").strip()
 
+    if normalised in _PUBLIC_DOMAINS:
+        raise DomainError(f"'{normalised}' is a public email provider and cannot be registered as an institutional domain.")
+
     existing = await db.execute(
         select(InstitutionDomain).where(InstitutionDomain.domain == normalised)
     )
@@ -82,6 +99,7 @@ async def create_domain(
     db.add(record)
     await db.flush()
     await db.refresh(record)
+    await db.commit()
     return InstitutionDomainRead.model_validate(record)
 
 
@@ -152,6 +170,7 @@ async def patch_domain(
 
     await db.flush()
     await db.refresh(record)
+    await db.commit()
     return InstitutionDomainRead.model_validate(record)
 
 
@@ -170,3 +189,4 @@ async def delete_domain(
     _assert_domain_access(current_user, record)
     await db.delete(record)
     await db.flush()
+    await db.commit()

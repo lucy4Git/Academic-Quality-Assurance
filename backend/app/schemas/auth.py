@@ -73,7 +73,9 @@ class PublicRegisterRequest(BaseModel):
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
     password: str = Field(..., min_length=8, description="At least 8 characters, 1 uppercase, 1 digit")
-    institution_name: str = Field(..., min_length=2, max_length=255, description="Name of your institution")
+    # Informational only — never used for tenant assignment. The server
+    # always sets institution_id=None; an admin links the account later.
+    institution_name: str | None = Field(default=None, max_length=255, description="Optional: name of your institution (informational only, not used for access)")
     reason_for_access: str | None = Field(default=None, max_length=500)
 
     @field_validator("full_name")

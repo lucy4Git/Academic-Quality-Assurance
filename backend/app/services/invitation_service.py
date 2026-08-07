@@ -132,9 +132,35 @@ async def validate_invitation(
 
 
 async def consume_invitation(db: AsyncSession, invitation: Invitation) -> None:
-    """Increment use_count and update status if max_uses is reached."""
-    invitation.use_count += 1
-    invitation.used_at = datetime.now(tz=timezone.utc)
+    """Increment use_count atomically using a conditional UPDATE.
+
+    Uses a single UPDATE with a WHERE predicate on status='pending' AND
+    use_count < max_uses, so concurrent requests cannot both succeed for a
+    one-time invitation: only the first UPDATE wins, the second sees 0
+    affected rows and raises ConflictError.
+    """
+    from sqlalchemy import update
+
+    stmt = (
+        update(Invitation)
+        .where(
+            Invitation.id == invitation.id,
+            Invitation.status == "pending",
+            Invitation.use_count < Invitation.max_uses,
+        )
+        .values(
+            use_count=Invitation.use_count + 1,
+            used_at=datetime.now(tz=timezone.utc),
+        )
+        .execution_options(synchronize_session="fetch")
+    )
+    result = await db.execute(stmt)
+    if result.rowcount == 0:
+        raise ConflictError("Invitation has already been used or revoked.")
+
+    # If max_uses reached after this increment, mark consumed.
+    # Re-read the current count from the UPDATE result.
+    await db.refresh(invitation)
     if invitation.use_count >= invitation.max_uses:
         invitation.status = "consumed"
     await db.flush()

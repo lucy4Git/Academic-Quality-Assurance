@@ -267,7 +267,18 @@ class TestConsumeInvitation:
     async def test_increments_use_count(self, mock_db):
         from app.services.invitation_service import consume_invitation
 
+        # consume_invitation now uses conditional UPDATE; mock execute to return rowcount=1
+        update_result = MagicMock()
+        update_result.rowcount = 1
+        mock_db.execute = AsyncMock(return_value=update_result)
+
         inv = _invitation(use_count=0, max_uses=2, status="pending")
+
+        # After the UPDATE the service calls db.refresh; simulate the DB returning use_count=1
+        async def _refresh(obj):
+            obj.use_count = 1
+        mock_db.refresh = _refresh
+
         await consume_invitation(mock_db, inv)
 
         assert inv.use_count == 1
@@ -277,7 +288,17 @@ class TestConsumeInvitation:
     async def test_marks_consumed_when_max_reached(self, mock_db):
         from app.services.invitation_service import consume_invitation
 
+        update_result = MagicMock()
+        update_result.rowcount = 1
+        mock_db.execute = AsyncMock(return_value=update_result)
+
         inv = _invitation(use_count=0, max_uses=1, status="pending")
+
+        # Simulate use_count reaching max after UPDATE
+        async def _refresh(obj):
+            obj.use_count = 1  # now equals max_uses
+        mock_db.refresh = _refresh
+
         await consume_invitation(mock_db, inv)
 
         assert inv.use_count == 1

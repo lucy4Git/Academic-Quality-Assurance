@@ -21,7 +21,9 @@ from app.dependencies import (
     CoordinatorRequired,
     LecturerRequired,
     QAOfficerRequired,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.enums import ModuleAuditStatus, UserRole
 from app.models.user import User
 from app.schemas.module_audit import (
@@ -85,7 +87,13 @@ async def list_audits(
     limit: int = Query(default=50, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[ModuleAuditBrief]:
+    if ext_scope is not None:
+        if ext_scope.module_id is None:
+            deny_external_access(ext_scope, "tenant-wide audit listing")
+        module_id = ext_scope.module_id  # force filter to scoped module
+
     audits = await module_audit_service.list_audits(
         db, current_user,
         module_id=module_id,
@@ -105,9 +113,11 @@ async def get_audit(
     audit_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> ModuleAuditRead:
     audit = await module_audit_service.get_audit(db, audit_id)
     _assert_access(audit, current_user)
+    assert_module_scope(ext_scope, audit.module_id)
     return ModuleAuditRead.model_validate(audit)
 
 
@@ -156,7 +166,9 @@ async def list_module_audits(
     module_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[ModuleAuditBrief]:
+    assert_module_scope(ext_scope, module_id)
     audits = await module_audit_service.list_audits(
         db, current_user, module_id=module_id
     )

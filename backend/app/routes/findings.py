@@ -141,9 +141,14 @@ async def get_finding_history(
     finding_id: uuid.UUID,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[FindingStatusHistoryRead]:
     finding = await finding_service.get_finding(db, finding_id, with_history=False)
     _assert_tenant(current_user, finding.audit_run.institution_id)
+    if ext_scope is not None and finding.audit_run.module_id is not None:
+        assert_module_scope(ext_scope, finding.audit_run.module_id)
+    elif ext_scope is not None:
+        deny_external_access(ext_scope, "this finding")
     history = await finding_service.get_finding_history(db, finding_id)
     return [FindingStatusHistoryRead.model_validate(h) for h in history]
 
@@ -201,7 +206,9 @@ async def acknowledge(
 async def start_progress(
     finding_id: uuid.UUID, body: FindingTransitionRequest = FindingTransitionRequest(to_status=FindingStatus.IN_PROGRESS),
     current_user: User = LecturerRequired, db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditFindingRead:
+    deny_external_access(ext_scope, "finding state transitions")
     return await _do_transition(db, finding_id, FindingStatus.IN_PROGRESS, body.note, current_user)
 
 
@@ -210,7 +217,9 @@ async def start_progress(
 async def submit_resolution(
     finding_id: uuid.UUID, body: FindingTransitionRequest,
     current_user: User = LecturerRequired, db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditFindingRead:
+    deny_external_access(ext_scope, "finding state transitions")
     return await _do_transition(db, finding_id, FindingStatus.RESOLUTION_SUBMITTED, body.note, current_user)
 
 
@@ -291,7 +300,9 @@ async def patch_finding(
     body: FindingPatchRequest,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditFindingRead:
+    deny_external_access(ext_scope, "finding mutations")
     finding = await finding_service.get_finding(db, finding_id, with_history=False)
     _assert_tenant(current_user, finding.audit_run.institution_id)
     updates = body.model_dump(exclude_none=True)

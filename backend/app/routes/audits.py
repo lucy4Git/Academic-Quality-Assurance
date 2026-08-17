@@ -76,7 +76,10 @@ async def trigger_audit(
     background_tasks: BackgroundTasks,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditTriggerResponse:
+    # External moderators are read-only — they review audit results, never trigger them.
+    deny_external_access(ext_scope, "audit triggers")
     """Enqueue a full audit for *module_id*.
 
     The audit runs asynchronously. Poll ``GET /audits/modules/{id}/latest``

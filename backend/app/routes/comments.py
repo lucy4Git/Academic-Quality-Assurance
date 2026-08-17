@@ -15,7 +15,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.dependencies import AnyAuthenticatedUser, QAOfficerRequired
+from app.dependencies import AnyAuthenticatedUser, QAOfficerRequired, get_external_scope
+from app.core.external_scope import ExternalScope, deny_external_access
 from app.models.user import User
 from app.schemas.comment import CommentCreate, CommentRead, CommentUpdate
 from app.services import comment_service
@@ -28,8 +29,11 @@ async def create_comment(
     data: CommentCreate,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> CommentRead:
     """Post a comment on a module audit."""
+    # External moderators are read-only — commenting is a staff-only action.
+    deny_external_access(ext_scope, "comments (external reviewers are read-only)")
     comment = await comment_service.create_comment(db, data, current_user)
     return CommentRead.model_validate(comment)
 
@@ -51,8 +55,10 @@ async def update_comment(
     data: CommentUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> CommentRead:
     """Edit a comment body. Only the original author or SA can update."""
+    deny_external_access(ext_scope, "comments (external reviewers are read-only)")
     comment = await comment_service.get_comment(db, comment_id)
     updated = await comment_service.update_comment(db, comment, data.body, current_user)
     return CommentRead.model_validate(updated)
@@ -75,7 +81,9 @@ async def delete_comment(
     comment_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> None:
     """Delete a comment. Only the original author or SA can delete."""
+    deny_external_access(ext_scope, "comments (external reviewers are read-only)")
     comment = await comment_service.get_comment(db, comment_id)
     await comment_service.delete_comment(db, comment, current_user)

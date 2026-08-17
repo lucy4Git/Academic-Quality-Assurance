@@ -121,7 +121,10 @@ async def upload_file(
     description: Annotated[str | None, Form(description="Optional description.")] = None,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FileRead:
+    # External moderators are read-only — they review uploaded evidence, never upload it.
+    deny_external_access(ext_scope, "file uploads")
     content = await file.read()
     try:
         db_file = await file_service.upload_file(
@@ -155,7 +158,9 @@ async def bulk_upload(
     files: Annotated[list[UploadFile], File(description="Files to upload.")],
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> BulkUploadResponse:
+    deny_external_access(ext_scope, "file uploads")
     if not files:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -446,12 +451,14 @@ async def delete_file(
 async def upload_zip(
     file: UploadFile = File(..., description="ZIP archive (max 50 MB compressed)"),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict:
     """Accept a ZIP, validate, extract, and auto-classify each file via ADIP heuristics.
 
     Returns a manifest the client can display for the user to review / correct before
     committing.  No files are written to storage yet — that happens at /files/upload-zip/confirm.
     """
+    deny_external_access(ext_scope, "file uploads")
     from app.services.zip_upload_service import ZipUploadError, extract_and_classify, validate_zip
     from app.config import settings as _settings
 
@@ -483,7 +490,9 @@ async def confirm_zip_mapping(
     body: dict,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict:
+    deny_external_access(ext_scope, "file uploads")
     """Accept the user-corrected mapping produced by /upload-zip.
 
     Expected body::

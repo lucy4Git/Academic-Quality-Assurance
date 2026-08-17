@@ -198,6 +198,36 @@ AnyAuthenticatedUser = require_roles(*list(UserRole))
 
 
 # ---------------------------------------------------------------------------
+# External-scope dependencies
+# ---------------------------------------------------------------------------
+# These wrap core/external_scope.py so route handlers receive the
+# ExternalScope object (or None) as a typed FastAPI dependency.
+
+
+from app.core.external_scope import (  # noqa: E402
+    ExternalScope,
+    resolve_external_scope,
+    assert_module_scope,
+    assert_programme_scope,
+    assert_faculty_scope,
+    assert_institution_scope,
+    deny_external_access,
+)
+
+
+async def get_external_scope(
+    current_user: User = Depends(get_current_user),
+) -> ExternalScope | None:
+    """Dependency: resolve the external scope for the current user.
+
+    Returns ``ExternalScope`` for external_moderator invitation users (and
+    raises 403 immediately if the invitation is revoked/expired).
+    Returns ``None`` for all other roles.
+    """
+    return resolve_external_scope(current_user)
+
+
+# ---------------------------------------------------------------------------
 # Pagination
 # ---------------------------------------------------------------------------
 

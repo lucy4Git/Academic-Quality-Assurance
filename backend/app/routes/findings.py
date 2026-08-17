@@ -33,7 +33,9 @@ from app.dependencies import (
     LecturerRequired,
     PaginationParams,
     QAOfficerRequired,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.enums import FindingStatus, UserRole
 from app.models.user import User
 from app.schemas.audit import (
@@ -76,14 +78,22 @@ async def list_findings(
     pagination: PaginationParams = Depends(PaginationParams),
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[AuditFindingRead]:
     institution_id = (
         None if current_user.role == UserRole.SYSTEM_ADMIN
         else current_user.institution_id
     )
+    # External moderators are scoped to their invited module only.
+    scoped_module_id = ext_scope.module_id if ext_scope is not None else None
+    if ext_scope is not None and ext_scope.module_id is None:
+        # Institution-scoped external access: block tenant-wide listing
+        deny_external_access(ext_scope, "tenant-wide findings listing")
+
     findings = await finding_service.list_findings(
         db,
         institution_id=institution_id,
+        module_id=scoped_module_id,
         audit_run_id=audit_run_id,
         status=status,
         severity=severity,
@@ -105,9 +115,15 @@ async def get_finding(
     finding_id: uuid.UUID,
     current_user: User = LecturerRequired,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditFindingRead:
     finding = await finding_service.get_finding(db, finding_id, with_history=False)
     _assert_tenant(current_user, finding.audit_run.institution_id)
+    # External moderators may only access findings for their scoped module.
+    if ext_scope is not None and finding.audit_run.module_id is not None:
+        assert_module_scope(ext_scope, finding.audit_run.module_id)
+    elif ext_scope is not None:
+        deny_external_access(ext_scope, "this finding")
     return AuditFindingRead.model_validate(finding)
 
 

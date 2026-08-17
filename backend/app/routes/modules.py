@@ -20,7 +20,9 @@ from app.dependencies import (
     CoordinatorRequired,
     PaginationParams,
     assert_institution_access,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.enums import UserRole
 from app.models.user import User
 from app.schemas.module import ModuleCreate, ModuleRead, ModuleUpdate
@@ -60,7 +62,21 @@ async def list_modules(
     pagination: PaginationParams = Depends(PaginationParams),
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[ModuleRead]:
+    # External moderators may only view their explicitly-scoped module.
+    # Override any programme_id filter with their module scope.
+    if ext_scope is not None and ext_scope.module_id is not None:
+        modules = await module_service.list_modules(
+            db, current_user,
+            programme_id=programme_id,
+            academic_year=academic_year,
+            skip=pagination.skip,
+            limit=pagination.limit,
+            include_archived=False,
+        )
+        return [m for m in modules if m.id == ext_scope.module_id]
+
     effective_archived = include_archived and current_user.role == UserRole.SYSTEM_ADMIN
     modules = await module_service.list_modules(
         db, current_user,
@@ -82,12 +98,14 @@ async def get_module(
     module_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> ModuleRead:
     module = await module_service.get_module(db, module_id)
     assert_institution_access(
         current_user,
         module.programme.department.faculty.institution_id,
     )
+    assert_module_scope(ext_scope, module_id)
     return module
 
 

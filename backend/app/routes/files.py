@@ -47,7 +47,9 @@ from app.dependencies import (
     CoordinatorRequired,
     LecturerRequired,
     PaginationParams,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.enums import FileCategory, UploadState
 from app.models.user import User
 from app.schemas.file import (
@@ -199,7 +201,14 @@ async def list_files(
     pagination: PaginationParams = Depends(PaginationParams),
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[FileRead]:
+    # External moderators are restricted to their invited module only.
+    if ext_scope is not None:
+        if ext_scope.module_id is None:
+            deny_external_access(ext_scope, "tenant-wide file listing")
+        module_id = ext_scope.module_id  # force filter to scoped module
+
     files = await file_service.list_files(
         db=db,
         current_user=current_user,
@@ -226,9 +235,15 @@ async def get_file(
     file_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FileRead:
     db_file = await file_service.get_file(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
+    if ext_scope is not None:
+        if db_file.module_id is not None:
+            assert_module_scope(ext_scope, db_file.module_id)
+        else:
+            deny_external_access(ext_scope, "this file")
     return FileRead.model_validate(db_file)
 
 
@@ -246,9 +261,15 @@ async def download_file(
     file_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
     db_file, content = await file_service.get_file_content(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
+    if ext_scope is not None:
+        if db_file.module_id is not None:
+            assert_module_scope(ext_scope, db_file.module_id)
+        else:
+            deny_external_access(ext_scope, "this file")
     return Response(
         content=content,
         media_type=db_file.mime_type,
@@ -276,9 +297,15 @@ async def preview_file(
     file_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FilePreviewResponse:
     db_file = await file_service.get_file(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
+    if ext_scope is not None:
+        if db_file.module_id is not None:
+            assert_module_scope(ext_scope, db_file.module_id)
+        else:
+            deny_external_access(ext_scope, "this file")
 
     is_previewable = db_file.mime_type in _PREVIEWABLE_MIMES
     download_url = f"/api/v1/files/{file_id}/download"
@@ -311,9 +338,15 @@ async def list_versions(
     file_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[FileVersionRead]:
     db_file = await file_service.get_file(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
+    if ext_scope is not None:
+        if db_file.module_id is not None:
+            assert_module_scope(ext_scope, db_file.module_id)
+        else:
+            deny_external_access(ext_scope, "this file")
     versions = await file_service.list_versions(db, file_id)
     return [FileVersionRead.model_validate(v) for v in versions]
 
@@ -333,9 +366,15 @@ async def download_version(
     version_number: int,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
     db_file = await file_service.get_file(db, file_id)
     _assert_tenant(current_user, db_file.institution_id)
+    if ext_scope is not None:
+        if db_file.module_id is not None:
+            assert_module_scope(ext_scope, db_file.module_id)
+        else:
+            deny_external_access(ext_scope, "this file")
 
     version, content = await file_service.get_version_content(db, file_id, version_number)
     return Response(

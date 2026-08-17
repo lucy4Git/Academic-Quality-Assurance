@@ -35,7 +35,9 @@ from app.dependencies import (
     HODRequired,
     LecturerRequired,
     QAOfficerRequired,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope
 from app.models.user import User
 from app.reporting import export_service, report_service
 from app.schemas.reporting import (
@@ -148,7 +150,9 @@ async def get_module_summary(
     module_id: uuid.UUID = Query(...),
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> ModuleSummaryResponse:
+    assert_module_scope(ext_scope, module_id)
     try:
         return await report_service.get_module_summary(db, module_id, current_user)
     except PermissionError as exc:

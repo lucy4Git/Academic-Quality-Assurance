@@ -165,6 +165,7 @@ async def list_findings(
     db: AsyncSession,
     *,
     institution_id: uuid.UUID | None = None,
+    module_id: uuid.UUID | None = None,
     audit_run_id: uuid.UUID | None = None,
     status: str | None = None,
     severity: str | None = None,
@@ -180,6 +181,8 @@ async def list_findings(
     )
     if institution_id is not None:
         q = q.where(AuditRun.institution_id == institution_id)
+    if module_id is not None:
+        q = q.where(AuditRun.module_id == module_id)
     if audit_run_id is not None:
         q = q.where(AuditFinding.audit_run_id == audit_run_id)
     if status is not None:

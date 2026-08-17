@@ -20,7 +20,8 @@ from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.dependencies import AnyAuthenticatedUser, CoordinatorRequired, QAOfficerRequired
+from app.dependencies import AnyAuthenticatedUser, CoordinatorRequired, QAOfficerRequired, get_external_scope
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.user import User
 from app.schemas.audit_evidence import AuditEvidenceCreate, AuditEvidenceRead
 from app.schemas.audit_history import AuditHistoryRead
@@ -68,7 +69,13 @@ async def list_evidence(
     limit: int = Query(default=100, ge=1, le=500),
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[AuditEvidenceRead]:
+    if ext_scope is not None:
+        if ext_scope.module_id is None:
+            deny_external_access(ext_scope, "tenant-wide evidence listing")
+        module_id = ext_scope.module_id  # force filter to scoped module
+
     items = await audit_evidence_service.list_evidence(
         db, current_user,
         audit_id=audit_id, checklist_item_id=checklist_item_id,
@@ -86,8 +93,11 @@ async def get_evidence(
     evidence_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditEvidenceRead:
     ev = await audit_evidence_service.get_evidence(db, evidence_id)
+    if ext_scope is not None:
+        assert_module_scope(ext_scope, ev.module_id)
     return AuditEvidenceRead.model_validate(ev)
 
 
@@ -99,8 +109,11 @@ async def download_evidence(
     evidence_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
     ev, data = await audit_evidence_service.get_evidence_content(db, evidence_id)
+    if ext_scope is not None:
+        assert_module_scope(ext_scope, ev.module_id)
     return Response(
         content=data,
         media_type=ev.mime_type,
@@ -126,8 +139,11 @@ async def preview_evidence(
     evidence_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = AnyAuthenticatedUser,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
     ev, data = await audit_evidence_service.get_evidence_content(db, evidence_id)
+    if ext_scope is not None:
+        assert_module_scope(ext_scope, ev.module_id)
     if ev.mime_type not in _PREVIEWABLE:
         from fastapi import HTTPException
         raise HTTPException(

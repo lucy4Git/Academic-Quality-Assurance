@@ -25,7 +25,9 @@ from app.dependencies import (
     LecturerRequired,
     PaginationParams,
     QAOfficerRequired,
+    get_external_scope,
 )
+from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
 from app.models.enums import AuditRunStatus
 from app.models.user import User
 from app.schemas.audit import (
@@ -144,7 +146,9 @@ async def get_latest_audit(
     module_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditRunRead:
+    assert_module_scope(ext_scope, module_id)
     run = await audit_service.get_latest_for_module(db, module_id)
     if run is None:
         raise HTTPException(
@@ -170,7 +174,9 @@ async def get_audit_history(
     pagination: PaginationParams = Depends(PaginationParams),
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[AuditRunBrief]:
+    assert_module_scope(ext_scope, module_id)
     runs = await audit_service.get_history_for_module(
         db, module_id, skip=pagination.skip, limit=pagination.limit
     )
@@ -193,9 +199,15 @@ async def get_audit_run(
     audit_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditRunRead:
     run = await audit_service.get_run(db, audit_id)
     _assert_tenant(current_user, run.institution_id)
+    if ext_scope is not None:
+        if run.module_id is not None:
+            assert_module_scope(ext_scope, run.module_id)
+        else:
+            deny_external_access(ext_scope, "this audit run")
     return AuditRunRead.model_validate(run)
 
 
@@ -213,10 +225,16 @@ async def get_audit_report(
     audit_id: uuid.UUID,
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> AuditReport:
     # Load run first for tenant check.
     run = await audit_service.get_run(db, audit_id)
     _assert_tenant(current_user, run.institution_id)
+    if ext_scope is not None:
+        if run.module_id is not None:
+            assert_module_scope(ext_scope, run.module_id)
+        else:
+            deny_external_access(ext_scope, "this audit report")
 
     if run.run_status != AuditRunStatus.COMPLETED:
         raise HTTPException(

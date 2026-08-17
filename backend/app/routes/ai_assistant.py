@@ -45,7 +45,8 @@ from app.ai_providers.manager import get_provider_manager
 from app.rag.advanced_rag_service import advanced_ask
 from app.ai_providers.provider_factory import get_provider
 from app.database import get_db
-from app.dependencies import LecturerRequired
+from app.dependencies import LecturerRequired, get_external_scope
+from app.core.external_scope import ExternalScope, deny_external_access
 from app.knowledge_indexing.embedding_service import embedding_service
 from app.knowledge_indexing.search_service import ACTIVE_INSTITUTION_CODES
 from app.models.ai_chat import AiChatMessage, AiChatSession
@@ -228,7 +229,13 @@ async def ask_assistant(
     body: AskRequest,
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict[str, Any]:
+    # External moderators cannot access the tenant-wide AI workspace.
+    # The RAG pipeline has no module-level scope; granting access would expose
+    # other modules' evidence from the same institution's knowledge index.
+    if ext_scope is not None:
+        deny_external_access(ext_scope, "the AI assistant (tenant-wide RAG access is unavailable to external reviewers)")
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
     try:
@@ -530,6 +537,7 @@ async def ask_assistant_stream(
     body: AskRequest,
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ):
     """POST /ai-assistant/ask-stream
 
@@ -544,6 +552,8 @@ async def ask_assistant_stream(
         });
         const reader = res.body.getReader();
     """
+    if ext_scope is not None:
+        deny_external_access(ext_scope, "the AI assistant (tenant-wide RAG access is unavailable to external reviewers)")
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
     effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
 
@@ -881,7 +891,10 @@ async def create_session(
     body: ChatSessionCreate,
     db: AsyncSession = Depends(get_db),
     current_user: User = LecturerRequired,
+    ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> ChatSessionBrief:
+    if ext_scope is not None:
+        deny_external_access(ext_scope, "AI chat sessions (tenant-wide RAG access is unavailable to external reviewers)")
     institution_id: uuid.UUID | None = None
 
     if body.institution_code:

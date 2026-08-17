@@ -58,6 +58,10 @@ async def create_invitation(
     if data.invitation_type in _SYSTEM_ONLY_TYPES and creator_role != UserRole.SYSTEM_ADMIN.value:
         raise DomainPermissionError("Only system administrators may create institution-admin invitations.")
 
+    # No invitation may grant SYSTEM_ADMIN role — SA accounts are seeded only
+    if data.role is not None and data.role == UserRole.SYSTEM_ADMIN.value:
+        raise DomainPermissionError("SYSTEM_ADMIN accounts cannot be created via invitation.")
+
     # Institution admins are restricted to their own institution
     if creator_role == UserRole.QUALITY_ASSURANCE_OFFICER.value or creator_role not in (
         UserRole.SYSTEM_ADMIN.value,

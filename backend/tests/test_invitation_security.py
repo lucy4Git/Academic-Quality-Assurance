@@ -328,6 +328,48 @@ class TestInvitationAuthority:
             await create_invitation(db, data, actor)
 
     @pytest.mark.asyncio
+    async def test_no_invitation_may_grant_system_admin_role(self):
+        """Even a SYSTEM_ADMIN cannot create an invitation with role=system_admin.
+
+        SA accounts must be seeded directly — never created via invitation.
+        This closes the privilege-escalation vector where an attacker with a
+        stolen SA token could issue a SYSTEM_ADMIN invitation for self-registration.
+        """
+        from app.services.invitation_service import create_invitation
+        from app.schemas.invitation import InvitationCreate
+        from app.core.exceptions import DomainPermissionError
+
+        db = AsyncMock()
+        actor = self._actor(UserRole.SYSTEM_ADMIN, None)
+        data = InvitationCreate(
+            invitation_type=InvitationType.STAFF_LECTURER.value,
+            role=UserRole.SYSTEM_ADMIN.value,  # attacker-supplied privileged role
+            institution_id=uuid.uuid4(),
+        )
+
+        with pytest.raises(DomainPermissionError) as exc:
+            await create_invitation(db, data, actor)
+        assert "SYSTEM_ADMIN" in str(exc.value) or "cannot be created via invitation" in str(exc.value).lower()
+
+    @pytest.mark.asyncio
+    async def test_institution_admin_cannot_grant_system_admin_role(self):
+        """An INSTITUTION_ADMIN issuing a staff invitation with role=system_admin must fail."""
+        from app.services.invitation_service import create_invitation
+        from app.schemas.invitation import InvitationCreate
+        from app.core.exceptions import DomainPermissionError
+
+        db = AsyncMock()
+        actor = self._actor(UserRole.INSTITUTION_ADMIN)
+        data = InvitationCreate(
+            invitation_type=InvitationType.STAFF_LECTURER.value,
+            role=UserRole.SYSTEM_ADMIN.value,
+            institution_id=actor.institution_id,
+        )
+
+        with pytest.raises(DomainPermissionError):
+            await create_invitation(db, data, actor)
+
+    @pytest.mark.asyncio
     async def test_system_admin_can_create_any_institution_invitation(self):
         from app.services.invitation_service import create_invitation
         from app.schemas.invitation import InvitationCreate

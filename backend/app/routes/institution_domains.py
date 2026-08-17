@@ -98,8 +98,8 @@ async def create_domain(
     )
     db.add(record)
     await db.flush()
-    await db.refresh(record)
     await db.commit()
+    await db.refresh(record)
     return InstitutionDomainRead.model_validate(record)
 
 
@@ -169,8 +169,8 @@ async def patch_domain(
         record.is_verified = data.is_verified
 
     await db.flush()
-    await db.refresh(record)
     await db.commit()
+    await db.refresh(record)
     return InstitutionDomainRead.model_validate(record)
 
 

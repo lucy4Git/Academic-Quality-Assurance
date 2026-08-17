@@ -187,8 +187,11 @@ async def revoke_invitation(
         if invitation.institution_id != actor.institution_id:
             raise DomainPermissionError("You may only revoke invitations for your own institution.")
 
-    if invitation.status != "pending":
-        raise ConflictError(f"Invitation is already {invitation.status}.")
+    # Allow revoking both "pending" and "consumed" invitations.
+    # "consumed" invitations are used by external moderators who are still active;
+    # revoking a consumed invitation immediately blocks their scope enforcement.
+    if invitation.status == "revoked":
+        raise ConflictError("Invitation is already revoked.")
 
     invitation.status = "revoked"
     invitation.revoked_at = datetime.now(tz=timezone.utc)

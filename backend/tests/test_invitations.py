@@ -337,10 +337,25 @@ class TestRevokeInvitation:
             await revoke_invitation(mock_db, inv.id, actor)
 
     @pytest.mark.asyncio
-    async def test_revoking_already_consumed_raises_conflict(self, mock_db):
+    async def test_revoking_consumed_invitation_succeeds(self, mock_db):
+        """Consumed external_moderator invitations must be revokeable to cut access."""
         from app.services.invitation_service import revoke_invitation
 
         inv = _invitation(status="consumed")
+        result = MagicMock()
+        result.scalar_one_or_none.return_value = inv
+        mock_db.execute = AsyncMock(return_value=result)
+        mock_db.flush = AsyncMock()
+
+        actor = _user(role=UserRole.SYSTEM_ADMIN)
+        returned = await revoke_invitation(mock_db, inv.id, actor)
+        assert returned.status == "revoked"
+
+    async def test_revoking_already_revoked_raises_conflict(self, mock_db):
+        """Double-revoke raises ConflictError."""
+        from app.services.invitation_service import revoke_invitation
+
+        inv = _invitation(status="revoked")
         result = MagicMock()
         result.scalar_one_or_none.return_value = inv
         mock_db.execute = AsyncMock(return_value=result)

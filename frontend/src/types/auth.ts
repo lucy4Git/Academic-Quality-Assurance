@@ -7,6 +7,7 @@ export interface User {
   role: UserRole;
   institution_id: string | null;
   is_active: boolean;
+  persona?: "quality_assurance_officer" | "lecturer" | null;
   created_at: string;
   updated_at: string;
 }

@@ -115,7 +115,7 @@ export default function OnboardingPage() {
       <div className="bg-white rounded-xl shadow-lg p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to AQAA</h1>
-          <p className="text-gray-600">Let's personalize your experience</p>
+          <p className="text-gray-600">Let&apos;s personalize your experience</p>
           <div className="mt-4 flex gap-2">
             {[1, 2, 3].map((s) => (
               <div
@@ -133,7 +133,7 @@ export default function OnboardingPage() {
             <h2 className="text-xl font-semibold mb-4">How do you work with academic quality?</h2>
             <p className="text-gray-600 mb-4">Your role: <strong>{user.persona === "quality_assurance_officer" ? "Quality Assurance Officer" : "Lecturer"}</strong></p>
             <p className="text-sm text-gray-500 mb-6">
-              This determines which tools and recommendations you'll see first in your workspace.
+              This determines which tools and recommendations you&apos;ll see first in your workspace.
             </p>
             <div className="flex gap-4">
               <Button variant="outline" onClick={() => setStep(2)} className="flex-1">

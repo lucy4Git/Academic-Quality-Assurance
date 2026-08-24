@@ -216,6 +216,30 @@ class Settings(BaseSettings):
                 )
         return self
 
+    @model_validator(mode="after")
+    def _validate_registration_config(self) -> "Settings":
+        """Catch contradictory or unsafe registration configuration at startup.
+
+        Staging/pilot SAFE:  EMAIL_VERIFICATION_REQUIRED=false + REGISTRATION_REQUIRES_ADMIN_APPROVAL=false
+        Production REQUIRED: EMAIL_VERIFICATION_REQUIRED=true
+        NEVER ALLOWED:       EMAIL_VERIFICATION_REQUIRED=false in a strict env without
+                             explicit acknowledgement via APP_ENV != production.
+        """
+        if not self.EMAIL_VERIFICATION_REQUIRED and self.APP_ENV == "production":
+            raise ValueError(
+                "EMAIL_VERIFICATION_REQUIRED=false is not permitted in APP_ENV=production. "
+                "Email ownership verification must be enabled before production launch."
+            )
+        # Warn at startup when verification is disabled so it is never silently overlooked.
+        if not self.EMAIL_VERIFICATION_REQUIRED:
+            import warnings
+            warnings.warn(
+                "EMAIL_VERIFICATION_REQUIRED=false: email ownership is NOT verified on "
+                f"registration (APP_ENV={self.APP_ENV!r}). Suitable for staging/pilot only.",
+                stacklevel=2,
+            )
+        return self
+
 
 @lru_cache
 def get_settings() -> Settings:

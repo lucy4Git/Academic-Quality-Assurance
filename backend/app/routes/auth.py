@@ -264,28 +264,37 @@ async def public_register(
     db_ms = int((time.monotonic() - t0) * 1000)
     logger.info("public_register db_ms=%d email=%s", db_ms, user.email[:3] + "***")
 
-    from app.services.email_service import send_verification_email
-    # Email is dispatched as a background task so the HTTP response returns
-    # immediately. The SMTP connection to Brevo was blocking the request
-    # thread for 55+ seconds, causing Render gateway 502s.
-    background_tasks.add_task(send_verification_email, user.email, user.full_name, user.verification_code or "")
-
     requires_approval = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
-    if requires_approval:
-        msg = (
-            "Registration successful. Please check your email for a verification code. "
-            "After verifying your email, your account will be reviewed by an administrator."
+    verification_required = settings.EMAIL_VERIFICATION_REQUIRED
+
+    if verification_required and user.verification_code:
+        from app.services.email_service import send_verification_email
+        # Dispatched as background task to avoid blocking the HTTP response.
+        background_tasks.add_task(
+            send_verification_email, user.email, user.full_name, user.verification_code
         )
+        if requires_approval:
+            msg = (
+                "Registration successful. Please check your email for a verification code. "
+                "After verifying your email, your account will be reviewed by an administrator."
+            )
+        else:
+            msg = (
+                "Registration successful. Please check your email for a 6-digit verification "
+                "code. Your account will be activated as soon as you verify your email."
+            )
     else:
-        msg = (
-            "Registration successful. Please check your email for a 6-digit verification "
-            "code. Your account will be activated as soon as you verify your email."
-        )
+        # Email verification disabled (staging/pilot mode).
+        # Account is active immediately — no email dependency.
+        if requires_approval:
+            msg = "Registration successful. Your account is pending administrator approval."
+        else:
+            msg = "Your account has been created. You can now sign in."
 
     return RegistrationResponse(
         message=msg,
         email=user.email,
-        requires_verification=True,
+        requires_verification=verification_required,
         requires_approval=requires_approval,
     )
 

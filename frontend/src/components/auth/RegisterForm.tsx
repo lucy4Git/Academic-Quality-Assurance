@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, GraduationCap, Briefcase, UserCheck } from "lucide-react";
+import { Loader2, GraduationCap, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ interface Fields {
   full_name: string;
   email: string;
   password: string;
-  institution_name: string;
+  confirm_password: string;
 }
 
 interface FieldErrors extends Partial<Record<keyof Fields, string>> {}
@@ -34,8 +34,8 @@ function validate(f: Fields): FieldErrors {
     e.password = "Password must contain at least one digit.";
   else if (!/[A-Z]/.test(f.password))
     e.password = "Password must contain at least one uppercase letter.";
-  if (!f.institution_name.trim())
-    e.institution_name = "Institution name is required.";
+  if (f.confirm_password !== f.password)
+    e.confirm_password = "Passwords do not match.";
   return e;
 }
 
@@ -44,8 +44,8 @@ function PathSelector({ selected, onSelect }: { selected: Path; onSelect: (p: Pa
     {
       id: "student",
       icon: <GraduationCap className="h-5 w-5" />,
-      label: "Student",
-      sub: "Register with your institutional or personal email",
+      label: "New Account",
+      sub: "Register with your email address",
     },
     {
       id: "invitation",
@@ -86,7 +86,7 @@ function StudentForm() {
     full_name: "",
     email: "",
     password: "",
-    institution_name: "",
+    confirm_password: "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -116,11 +116,10 @@ function StudentForm() {
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
           password: fields.password,
-          institution_name: fields.institution_name.trim(),
         }),
       });
 
-      const data = await res.json() as { message?: string; email?: string; detail?: string };
+      const data = await res.json() as { message?: string; email?: string; detail?: string; requires_verification?: boolean };
 
       if (!res.ok) {
         if (res.status === 409) {
@@ -137,7 +136,16 @@ function StudentForm() {
         return;
       }
 
-      router.push(`/verify-email?email=${encodeURIComponent(fields.email.trim())}`);
+      if (data.requires_verification) {
+        // Verification mode active (production) — redirect to verify page
+        router.push(`/verify-email?email=${encodeURIComponent(fields.email.trim())}`);
+      } else {
+        // Staging/pilot: account active immediately
+        toast.success("Account created", {
+          description: "Your account has been created. You can now sign in.",
+        });
+        router.push("/login");
+      }
     } catch {
       toast.error("Connection error", {
         description: "Unable to connect to the server. Please try again.",
@@ -178,24 +186,15 @@ function StudentForm() {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="space-y-4">
-        <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm text-blue-800">
-          <p className="font-medium mb-1">How it works</p>
-          <ol className="list-decimal list-inside space-y-0.5 text-xs text-blue-700">
-            <li>Create your account below</li>
-            <li>Check your email for a 6-digit verification code</li>
-            <li>Enter the code to activate your account</li>
-            <li>Sign in immediately — no waiting for approval</li>
-          </ol>
-        </div>
-
-        {field("full_name", "Full name", { autoFocus: true, placeholder: "Dr. Jane Smith", autoComplete: "name" })}
-        {field("email", "Email address", { type: "text", inputMode: "email", placeholder: "you@institution.ac.za", autoComplete: "email" })}
+        {field("full_name", "Full name", { autoFocus: true, placeholder: "Jane Smith", autoComplete: "name" })}
+        {field("email", "Email address", { type: "text", inputMode: "email", placeholder: "you@example.com", autoComplete: "email" })}
         {field("password", "Password", { type: "password", placeholder: "Min. 8 chars, 1 uppercase, 1 digit", autoComplete: "new-password" })}
-        {field("institution_name", "Institution name", { placeholder: "e.g. Tshwane University of Technology" })}
+        {field("confirm_password", "Confirm password", { type: "password", placeholder: "Re-enter your password", autoComplete: "new-password" })}
 
         <p className="text-xs text-muted-foreground">
-          Your account will be created with student access. If you are staff, use the
-          {" "}<strong>Staff / External</strong> tab and enter your invitation code.
+          Your account will be created with student access. Institution-linked or privileged
+          access requires an invitation — use the{" "}
+          <strong>Staff / External</strong> tab.
         </p>
 
         <Button type="submit" className="w-full h-10 font-medium" disabled={isSubmitting}>

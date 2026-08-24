@@ -103,18 +103,26 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     if existing is not None:
         raise AuthError("A user with this email address already exists.")
 
-    expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
-    code = _generate_verification_code()
-    expires = datetime.now(tz=timezone.utc) + timedelta(hours=expire_hours)
-
     requires_admin = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
+    verification_required = settings.EMAIL_VERIFICATION_REQUIRED
+
+    # When email verification is disabled (staging/pilot), activate immediately.
+    # is_verified stays False — truthfully, no email ownership was confirmed.
+    # The login gate reads EMAIL_VERIFICATION_REQUIRED, not is_verified directly,
+    # so False here does not block login while verification is disabled.
+    if verification_required:
+        expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
+        code: str | None = _generate_verification_code()
+        expires: "datetime | None" = datetime.now(tz=timezone.utc) + timedelta(hours=expire_hours)
+        activate = False
+    else:
+        code = None
+        expires = None
+        activate = not requires_admin  # immediate unless admin approval also required
 
     user = User(
         email=data.email,
         full_name=data.full_name,
-        # Unusable placeholder — account password is set either via activation
-        # link (admin-managed flow) or implicitly in the self-service flow where
-        # the user logs in with the password they chose at registration.
         hashed_password=hash_password(data.password) if getattr(data, "password", None) else hash_password(secrets.token_hex(32)),
         # SECURITY: always STUDENT for public self-registration. Browser-submitted
         # role is never trusted; admins assign privileged roles separately.
@@ -122,7 +130,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         # SECURITY: institution_id is never accepted from the browser. Tenant
         # membership is set only by an administrator after identity is verified.
         institution_id=None,
-        is_active=False,  # activated after email verification (or admin approval)
+        is_active=activate,
+        # is_verified reflects actual email confirmation — never set True here
+        # because no verification email was sent (or has been confirmed).
         is_verified=False,
         verification_code=code,
         verification_code_expires_at=expires,

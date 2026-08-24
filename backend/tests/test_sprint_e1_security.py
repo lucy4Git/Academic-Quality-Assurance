@@ -78,6 +78,9 @@ class TestWeakSecretRejection:
             SECRET_KEY="a" * 64,
             DATABASE_URL="postgresql+asyncpg://x:x@localhost/x",
             METRICS_API_KEY="my-secure-metrics-key",
+            # EMAIL_VERIFICATION_REQUIRED must be True in production (explicit here
+            # so the .env EMAIL_VERIFICATION_REQUIRED=false override doesn't bleed in)
+            EMAIL_VERIFICATION_REQUIRED=True,
         )
         assert s.APP_ENV == "production"
 

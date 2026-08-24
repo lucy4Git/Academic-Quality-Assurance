@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from app.models.institution import Institution
     from app.models.invitation import Invitation
     from app.models.user_activation_token import UserActivationToken
+    from app.models.user_workspace_module import UserWorkspaceModule
 
 
 class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
@@ -87,6 +88,12 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         back_populates="user",
         cascade="all, delete-orphan",
         lazy="dynamic",
+    )
+    workspace_modules: Mapped[list["UserWorkspaceModule"]] = relationship(
+        "UserWorkspaceModule",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="selectin",
     )
 
     def __repr__(self) -> str:

@@ -265,3 +265,30 @@ def assert_institution_access(current_user: User, institution_id: uuid.UUID) -> 
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have access to resources in this institution.",
         )
+
+
+def assert_ownership_access(current_user: User, resource: Any) -> None:
+    """Raise HTTP 403 if *current_user* does not own *resource*.
+
+    Used for generic users (institution_id=null) to enforce personal ownership.
+    Checks: uploaded_by_id, triggered_by_id, created_by_id, or user_id fields.
+
+    Raises:
+        HTTPException(403) if resource is not owned by current_user.
+    """
+    if current_user.role == UserRole.SYSTEM_ADMIN:
+        return  # Admin can access any resource
+
+    # Extract owner_id from resource via field priority
+    owner_id = (
+        getattr(resource, "uploaded_by_id", None)
+        or getattr(resource, "triggered_by_id", None)
+        or getattr(resource, "created_by_id", None)
+        or getattr(resource, "user_id", None)
+    )
+
+    if owner_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have access to this resource.",
+        )

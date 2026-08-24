@@ -87,12 +87,12 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     """Register a new user via the public self-service sign-up flow.
 
     Security invariants (enforced here, never by the caller):
-      - Role is always STUDENT regardless of any field submitted by the browser.
-      - institution_id is always None; tenant membership is assigned only by
-        an administrator after secure verification.
+      - For generic users (institution_id=None): role is set from role_requested persona.
+        Valid personas: quality_assurance_officer | lecturer. Defaults to lecturer if missing.
+      - For institutional users: would require admin invitation; public flow always creates generic.
+      - institution_id is never accepted from browser — always None for public self-signup.
       - approval_status is 'pending' only when REGISTRATION_REQUIRES_ADMIN_APPROVAL
-        is True; otherwise 'approved' so the account activates after email
-        verification without administrator intervention.
+        is True; otherwise 'approved' so the account activates immediately.
 
     Raises:
         AuthError: if the email is already registered.
@@ -106,10 +106,18 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     requires_admin = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
     verification_required = settings.EMAIL_VERIFICATION_REQUIRED
 
-    # When email verification is disabled (staging/pilot), activate immediately.
-    # is_verified stays False — truthfully, no email ownership was confirmed.
-    # The login gate reads EMAIL_VERIFICATION_REQUIRED, not is_verified directly,
-    # so False here does not block login while verification is disabled.
+    # Determine persona/role from request. Generic users self-select a persona.
+    # Valid personas are QUALITY_ASSURANCE_OFFICER or LECTURER.
+    role_requested = getattr(data, "role_requested", None)
+    if role_requested == UserRole.QUALITY_ASSURANCE_OFFICER.value:
+        role = UserRole.QUALITY_ASSURANCE_OFFICER
+    elif role_requested == UserRole.LECTURER.value:
+        role = UserRole.LECTURER
+    else:
+        # Default to LECTURER if not specified or invalid
+        role = UserRole.LECTURER
+
+    # Email verification handling
     if verification_required:
         expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
         code: str | None = _generate_verification_code()
@@ -124,11 +132,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         email=data.email,
         full_name=data.full_name,
         hashed_password=hash_password(data.password) if getattr(data, "password", None) else hash_password(secrets.token_hex(32)),
-        # SECURITY: always STUDENT for public self-registration. Browser-submitted
-        # role is never trusted; admins assign privileged roles separately.
-        role=UserRole.STUDENT,
-        # SECURITY: institution_id is never accepted from the browser. Tenant
-        # membership is set only by an administrator after identity is verified.
+        # Generic user role: set from persona selection
+        role=role,
+        # SECURITY: institution_id is never accepted from the browser — always null for generic.
         institution_id=None,
         is_active=activate,
         # is_verified reflects actual email confirmation — never set True here
@@ -138,7 +144,7 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         verification_code_expires_at=expires,
         # 'approved' = no admin step required; 'pending' = needs admin action.
         approval_status="pending" if requires_admin else "approved",
-        role_requested=str(data.role_requested.value) if getattr(data, "role_requested", None) else None,
+        role_requested=str(role_requested) if role_requested else None,
         reason_for_access=getattr(data, "reason_for_access", None),
         institution_name_requested=getattr(data, "institution_name", None),
     )
@@ -146,8 +152,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     await db.commit()
     await db.refresh(user)
     logger.info(
-        "Public registration: %s role=student approval_status=%s",
+        "Public registration: %s role=%s approval_status=%s",
         user.email,
+        role.value,
         user.approval_status,
     )
     return user

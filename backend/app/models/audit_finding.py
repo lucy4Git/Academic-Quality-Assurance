@@ -76,6 +76,14 @@ class AuditFinding(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         index=True,
     )
 
+    # Who created/discovered this finding (audit agent or manual entry).
+    created_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
     # Optional user assigned to action this finding.
     assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),

@@ -61,20 +61,21 @@ class RefreshRequest(BaseModel):
 class PublicRegisterRequest(BaseModel):
     """Payload for public self-registration (POST /auth/public-register).
 
-    Security constraints enforced server-side (not here):
-      - role is always forced to STUDENT regardless of any submitted value.
-      - institution_id is never accepted; tenant is assigned by an administrator.
+    For generic users: accepted role_requested determines persona (QA_OFFICER | LECTURER).
+    For institutional users: institution_id is set by admin; role_requested is informational.
 
-    The password field is accepted here for the self-service flow where the
-    user creates their account and password in one step. The service validates
-    password strength.
+    Security constraints enforced server-side (not here):
+      - For generic (institution_id=null): role forced to submitted role_requested or defaults.
+      - For institutional: role always forced to STUDENT regardless of any submitted value.
+      - institution_id is never accepted from browser; always null for generic or set by admin.
     """
 
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
     password: str = Field(..., min_length=8, description="At least 8 characters, 1 uppercase, 1 digit")
-    # Informational only — never used for tenant assignment. The server
-    # always sets institution_id=None; an admin links the account later.
+    # Generic users submit: quality_assurance_officer or lecturer
+    role_requested: str | None = Field(default=None, max_length=50, description="Generic persona: quality_assurance_officer or lecturer")
+    # Informational only — never used for tenant assignment.
     institution_name: str | None = Field(default=None, max_length=255, description="Optional: name of your institution (informational only, not used for access)")
     reason_for_access: str | None = Field(default=None, max_length=500)
 

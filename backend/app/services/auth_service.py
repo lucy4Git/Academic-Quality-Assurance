@@ -111,7 +111,7 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     role = UserRole.GENERIC_USER
 
     # Extract and validate persona from request
-    persona_requested = getattr(data, "role_requested", None)
+    persona_requested = getattr(data, "persona", None)
     if persona_requested not in ("quality_assurance_officer", "lecturer"):
         # Default to lecturer if not specified or invalid
         persona_requested = "lecturer"

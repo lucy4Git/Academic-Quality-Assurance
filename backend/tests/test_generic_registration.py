@@ -52,7 +52,7 @@ class TestGenericRegistrationPersonaSelection:
             full_name="Jane QA",
             email="jane.qa@test.com",
             password="Password123",
-            role_requested="quality_assurance_officer",
+            persona="quality_assurance_officer",
         )
 
         mock_settings = MagicMock()
@@ -278,7 +278,7 @@ class TestOwnershipAccess:
 
     @pytest.mark.asyncio
     async def test_9_persona_persists(self):
-        """Persona/role_requested persists in database."""
+        """Persona persists in database."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -293,7 +293,7 @@ class TestOwnershipAccess:
             full_name="Persist Persona",
             email="persist@test.com",
             password="Password123",
-            role_requested="quality_assurance_officer",
+            persona="quality_assurance_officer",
         )
 
         mock_settings = MagicMock()
@@ -303,7 +303,7 @@ class TestOwnershipAccess:
         with patch("app.services.auth_service.settings", mock_settings):
             user = await public_register_user(db, data)
 
-        assert captured[0].role_requested == "quality_assurance_officer"
+        assert captured[0].persona == "quality_assurance_officer"
 
     @pytest.mark.asyncio
     async def test_10_qa_officer_cannot_access_other_users_files(self):

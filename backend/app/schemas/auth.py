@@ -61,20 +61,18 @@ class RefreshRequest(BaseModel):
 class PublicRegisterRequest(BaseModel):
     """Payload for public self-registration (POST /auth/public-register).
 
-    For generic users: accepted role_requested determines persona (QA_OFFICER | LECTURER).
-    For institutional users: institution_id is set by admin; role_requested is informational.
-
-    Security constraints enforced server-side (not here):
-      - For generic (institution_id=null): role forced to submitted role_requested or defaults.
-      - For institutional: role always forced to STUDENT regardless of any submitted value.
-      - institution_id is never accepted from browser; always null for generic or set by admin.
+    For generic users: persona determines UX workflow (quality_assurance_officer | lecturer).
+    Security constraints enforced server-side (not in schema):
+      - role is always GENERIC_USER (no institutional authority)
+      - institution_id is always null (no tenant assignment)
+      - Persona is UX-only, never used for authorization.
     """
 
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
     password: str = Field(..., min_length=8, description="At least 8 characters, 1 uppercase, 1 digit")
-    # Generic users submit: quality_assurance_officer or lecturer
-    role_requested: str | None = Field(default=None, max_length=50, description="Generic persona: quality_assurance_officer or lecturer")
+    # Generic user UX persona: quality_assurance_officer or lecturer
+    persona: str | None = Field(default=None, max_length=50, description="Persona: quality_assurance_officer or lecturer")
     # Informational only — never used for tenant assignment.
     institution_name: str | None = Field(default=None, max_length=255, description="Optional: name of your institution (informational only, not used for access)")
     reason_for_access: str | None = Field(default=None, max_length=500)

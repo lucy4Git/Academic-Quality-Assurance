@@ -141,7 +141,7 @@ export function GenericRegisterForm() {
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
           password: fields.password,
-          role_requested: fields.persona,
+          persona: fields.persona,
         }),
       });
 

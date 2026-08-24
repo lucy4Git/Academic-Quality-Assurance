@@ -51,6 +51,7 @@ from app.routes.outcome_alignment_audits import router as outcome_alignment_audi
 from app.routes.accreditation_readiness_audits import router as accreditation_readiness_audits_router
 from app.routes.programme_review_audits import router as programme_review_audits_router
 from app.routes.auth import router as auth_router
+from app.routes.onboarding import router as onboarding_router
 from app.routes.departments import router as departments_router
 from app.routes.faculties import router as faculties_router
 from app.routes.institutions import router as institutions_router
@@ -293,6 +294,7 @@ def create_app() -> FastAPI:
     # --- Routers ---
     prefix = settings.API_V1_PREFIX
     app.include_router(auth_router, prefix=prefix)
+    app.include_router(onboarding_router, prefix=prefix)
     app.include_router(audit_evidence_router, prefix=prefix)
     app.include_router(dashboard_router, prefix=prefix)
     app.include_router(module_audits_router, prefix=f"{prefix}/module-folder")

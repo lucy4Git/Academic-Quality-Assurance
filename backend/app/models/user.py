@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, JSON, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -72,6 +72,16 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     role_requested: Mapped[str | None] = mapped_column(String(50), nullable=True)
     reason_for_access: Mapped[str | None] = mapped_column(String(500), nullable=True)
     institution_name_requested: Mapped[str | None] = mapped_column(String(255), nullable=True)
+
+    # --- Onboarding preferences (generic users only) ---
+    # JSON array of primary QA tasks (e.g., ["review_module", "find_missing_documents"])
+    qa_interests: Mapped[list[str] | None] = mapped_column(
+        JSON(), nullable=True, default=None
+    )
+    # JSON array of evidence types (e.g., ["module_guides", "assessments"])
+    evidence_types: Mapped[list[str] | None] = mapped_column(
+        JSON(), nullable=True, default=None
+    )
 
     # FK to the invitation used to register (null for self-service students)
     invitation_id: Mapped[uuid.UUID | None] = mapped_column(

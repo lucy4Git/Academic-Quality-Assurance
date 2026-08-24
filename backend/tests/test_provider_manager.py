@@ -233,6 +233,13 @@ class TestProviderManager:
         assert provider.provider_name == "local_dev"
 
     async def test_get_healthy_provider_falls_back_on_failure(self) -> None:
+        import httpx
+        mock_client = AsyncMock()
+        mock_client.__aenter__ = AsyncMock(return_value=mock_client)
+        mock_client.__aexit__ = AsyncMock(return_value=False)
+        mock_client.get = AsyncMock(side_effect=httpx.ConnectError("refused"))
+
+        # Mock all external providers to fail → should cascade to LOCAL_DEV
         with patch("app.ai_providers.manager.settings") as mock_settings:
             mock_settings.AI_PROVIDER = "OPENAI"
             mock_settings.OPENAI_API_KEY = "sk-test"
@@ -241,28 +248,15 @@ class TestProviderManager:
             mock_settings.AI_MAX_TOKENS = 1024
             mock_settings.OLLAMA_BASE_URL = "http://localhost:11434"
             mock_settings.OLLAMA_MODEL = "llama3"
-            mock_settings.ANTHROPIC_API_KEY = None
+            mock_settings.ANTHROPIC_API_KEY = None  # Disable Anthropic
             mock_settings.GEMINI_API_KEY = None
-            manager = ProviderManager()
 
-        # Make OpenAI health check fail
-        import httpx
-        mock_client = AsyncMock()
-        mock_client.__aenter__ = AsyncMock(return_value=mock_client)
-        mock_client.__aexit__ = AsyncMock(return_value=False)
-        mock_client.get = AsyncMock(side_effect=httpx.ConnectError("refused"))
-
-        # Make Ollama health check also fail → should cascade to LOCAL_DEV
-        mock_ollama_client = AsyncMock()
-        mock_ollama_client.__aenter__ = AsyncMock(return_value=mock_ollama_client)
-        mock_ollama_client.__aexit__ = AsyncMock(return_value=False)
-        mock_ollama_client.get = AsyncMock(side_effect=httpx.ConnectError("refused"))
-
-        with (
-            patch("app.ai_providers.openai_provider.httpx.AsyncClient", return_value=mock_client),
-            patch("app.ai_providers.ollama_provider.httpx.AsyncClient", return_value=mock_ollama_client),
-        ):
-            provider = await manager.get_healthy_provider()
+            with (
+                patch("app.ai_providers.openai_provider.httpx.AsyncClient", return_value=mock_client),
+                patch("app.ai_providers.ollama_provider.httpx.AsyncClient", return_value=mock_client),
+            ):
+                manager = ProviderManager()
+                provider = await manager.get_healthy_provider()
 
         # LOCAL_DEV is always the final fallback
         assert provider.provider_name == "local_dev"

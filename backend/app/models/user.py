@@ -46,6 +46,9 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         default=UserRole.LECTURER,
     )
+    # For GENERIC_USER role only: determines UX/workspace (quality_assurance_officer|lecturer).
+    # For institutional users: null. Never used for authorization.
+    persona: Mapped[str | None] = mapped_column(String(50), nullable=True, index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     institution_id: Mapped[uuid.UUID | None] = mapped_column(

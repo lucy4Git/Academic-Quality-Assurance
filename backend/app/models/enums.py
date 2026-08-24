@@ -8,6 +8,13 @@ class UserRole(str, enum.Enum):
 
     Stored as a native PostgreSQL enum. Inherits `str` so values serialize
     cleanly through Pydantic schemas and JSON responses without extra coercion.
+
+    Hierarchy (cumulative, for institutional users):
+      SYSTEM_ADMIN → INSTITUTION_ADMIN → QUALITY_ASSURANCE_OFFICER → FACULTY_DEAN
+      → HEAD_OF_DEPARTMENT → PROGRAMME_COORDINATOR → LECTURER → STUDENT
+
+    Generic (self-registered, non-institutional) users:
+      GENERIC_USER (no institutional hierarchy; persona field determines UX)
     """
 
     SYSTEM_ADMIN = "system_admin"
@@ -18,6 +25,8 @@ class UserRole(str, enum.Enum):
     PROGRAMME_COORDINATOR = "programme_coordinator"
     LECTURER = "lecturer"
     STUDENT = "student"
+    # Generic (non-institutional) self-registered user. Persona field determines UX.
+    GENERIC_USER = "generic_user"
 
 
 class InvitationType(str, enum.Enum):

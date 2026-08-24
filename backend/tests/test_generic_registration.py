@@ -37,7 +37,7 @@ class TestGenericRegistrationPersonaSelection:
 
     @pytest.mark.asyncio
     async def test_1_qa_officer_persona_can_register(self):
-        """QA Officer persona can self-register."""
+        """QA Officer persona can self-register as GENERIC_USER."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -64,12 +64,15 @@ class TestGenericRegistrationPersonaSelection:
             user = await public_register_user(db, data)
 
         assert len(captured) == 1
-        assert captured[0].role == UserRole.QUALITY_ASSURANCE_OFFICER
+        # SECURITY: Always GENERIC_USER role (no institutional authority)
+        assert captured[0].role == UserRole.GENERIC_USER
+        # Persona stored separately (for UX only, not authorization)
+        assert captured[0].persona == "quality_assurance_officer"
         assert captured[0].institution_id is None
 
     @pytest.mark.asyncio
     async def test_2_lecturer_persona_can_register(self):
-        """Lecturer persona can self-register."""
+        """Lecturer persona can self-register as GENERIC_USER."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -96,12 +99,15 @@ class TestGenericRegistrationPersonaSelection:
             user = await public_register_user(db, data)
 
         assert len(captured) == 1
-        assert captured[0].role == UserRole.LECTURER
+        # SECURITY: Always GENERIC_USER role
+        assert captured[0].role == UserRole.GENERIC_USER
+        # Persona stored separately
+        assert captured[0].persona == "lecturer"
         assert captured[0].institution_id is None
 
     @pytest.mark.asyncio
     async def test_3_admin_role_cannot_be_self_selected(self):
-        """Admin (SYSTEM_ADMIN) cannot be self-selected during registration."""
+        """Admin (system_admin) cannot be self-selected; defaults to lecturer."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -127,9 +133,11 @@ class TestGenericRegistrationPersonaSelection:
         with patch("app.services.auth_service.settings", mock_settings):
             user = await public_register_user(db, data)
 
-        # Should NOT be system_admin — defaults to lecturer or rejects
+        # SECURITY: Always GENERIC_USER, never SYSTEM_ADMIN
         assert len(captured) == 1
-        assert captured[0].role != UserRole.SYSTEM_ADMIN
+        assert captured[0].role == UserRole.GENERIC_USER
+        # Invalid persona defaults to lecturer
+        assert captured[0].persona == "lecturer"
 
 
 class TestGenericRegistrationSecurity:

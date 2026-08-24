@@ -106,16 +106,15 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     requires_admin = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
     verification_required = settings.EMAIL_VERIFICATION_REQUIRED
 
-    # Determine persona/role from request. Generic users self-select a persona.
-    # Valid personas are QUALITY_ASSURANCE_OFFICER or LECTURER.
-    role_requested = getattr(data, "role_requested", None)
-    if role_requested == UserRole.QUALITY_ASSURANCE_OFFICER.value:
-        role = UserRole.QUALITY_ASSURANCE_OFFICER
-    elif role_requested == UserRole.LECTURER.value:
-        role = UserRole.LECTURER
-    else:
-        # Default to LECTURER if not specified or invalid
-        role = UserRole.LECTURER
+    # Generic users always get GENERIC_USER security role (no institutional authority).
+    # Persona (quality_assurance_officer | lecturer) determines UX, not authorization.
+    role = UserRole.GENERIC_USER
+
+    # Extract and validate persona from request
+    persona_requested = getattr(data, "role_requested", None)
+    if persona_requested not in ("quality_assurance_officer", "lecturer"):
+        # Default to lecturer if not specified or invalid
+        persona_requested = "lecturer"
 
     # Email verification handling
     if verification_required:
@@ -132,8 +131,10 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         email=data.email,
         full_name=data.full_name,
         hashed_password=hash_password(data.password) if getattr(data, "password", None) else hash_password(secrets.token_hex(32)),
-        # Generic user role: set from persona selection
+        # SECURITY: Generic users always get GENERIC_USER security role (no institutional authority)
         role=role,
+        # Persona determines UX/workspace; not used for authorization
+        persona=persona_requested,
         # SECURITY: institution_id is never accepted from the browser — always null for generic.
         institution_id=None,
         is_active=activate,
@@ -144,7 +145,7 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         verification_code_expires_at=expires,
         # 'approved' = no admin step required; 'pending' = needs admin action.
         approval_status="pending" if requires_admin else "approved",
-        role_requested=str(role_requested) if role_requested else None,
+        role_requested=persona_requested,  # Store original persona request
         reason_for_access=getattr(data, "reason_for_access", None),
         institution_name_requested=getattr(data, "institution_name", None),
     )
@@ -152,9 +153,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     await db.commit()
     await db.refresh(user)
     logger.info(
-        "Public registration: %s role=%s approval_status=%s",
+        "Generic registration: %s role=generic_user persona=%s approval_status=%s",
         user.email,
-        role.value,
+        persona_requested,
         user.approval_status,
     )
     return user

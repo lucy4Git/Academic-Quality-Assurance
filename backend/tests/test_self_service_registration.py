@@ -121,8 +121,8 @@ def _public_register_request(
 
 
 @pytest.mark.asyncio
-async def test_self_registration_assigns_student_role():
-    """Registered user always gets STUDENT regardless of any submitted role."""
+async def test_self_registration_assigns_generic_user_role():
+    """Registered user always gets GENERIC_USER regardless of any submitted role."""
     db = _mock_db_for_register()
 
     with patch("app.services.auth_service.get_user_by_email", return_value=None):
@@ -134,12 +134,12 @@ async def test_self_registration_assigns_student_role():
                 await public_register_user(db, _public_register_request())
 
     added_user = db.add.call_args[0][0]
-    assert added_user.role == UserRole.STUDENT
+    assert added_user.role == UserRole.GENERIC_USER
 
 
 @pytest.mark.asyncio
 async def test_privileged_role_self_assignment_rejected():
-    """Even if caller passes a privileged role, STUDENT is assigned."""
+    """Even if caller passes a privileged role, GENERIC_USER is assigned."""
     db = _mock_db_for_register()
 
     with patch("app.services.auth_service.get_user_by_email", return_value=None):
@@ -154,7 +154,7 @@ async def test_privileged_role_self_assignment_rejected():
                 )
 
     added_user = db.add.call_args[0][0]
-    assert added_user.role == UserRole.STUDENT
+    assert added_user.role == UserRole.GENERIC_USER
 
 
 @pytest.mark.asyncio
@@ -488,7 +488,7 @@ async def test_verification_code_not_in_verify_response():
 ])
 @pytest.mark.asyncio
 async def test_all_privileged_roles_blocked_in_self_registration(attempted_role):
-    """Every privileged role is rejected at the service layer."""
+    """Every privileged role is rejected at the service layer (GENERIC_USER assigned)."""
     db = _mock_db_for_register()
 
     with patch("app.services.auth_service.get_user_by_email", return_value=None):
@@ -502,8 +502,8 @@ async def test_all_privileged_roles_blocked_in_self_registration(attempted_role)
                 )
 
     added_user = db.add.call_args[0][0]
-    assert added_user.role == UserRole.STUDENT, (
-        f"Expected STUDENT but got {added_user.role} when attempting {attempted_role}"
+    assert added_user.role == UserRole.GENERIC_USER, (
+        f"Expected GENERIC_USER but got {added_user.role} when attempting {attempted_role}"
     )
 
 

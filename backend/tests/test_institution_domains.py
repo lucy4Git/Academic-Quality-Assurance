@@ -208,8 +208,9 @@ class TestInstitutionAdminRoleEnum:
         idx_qa = members.index(UserRole.QUALITY_ASSURANCE_OFFICER)
         assert idx_sys < idx_inst < idx_qa
 
-    def test_all_eight_roles_present(self):
-        assert len(UserRole) == 8
+    def test_all_nine_roles_present(self):
+        # 8 institutional roles + 1 generic role = 9
+        assert len(UserRole) == 9
         values = {r.value for r in UserRole}
         assert "institution_admin" in values
         assert "system_admin" in values

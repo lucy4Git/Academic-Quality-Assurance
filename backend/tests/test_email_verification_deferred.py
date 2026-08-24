@@ -164,8 +164,8 @@ class TestEmailVerificationDeferred:
         assert created.is_verified is False
 
     @pytest.mark.asyncio
-    async def test_role_always_student(self):
-        """Role is always STUDENT regardless of request payload."""
+    async def test_role_always_generic_user(self):
+        """Role is always GENERIC_USER regardless of request payload."""
         from app.schemas.auth import PublicRegisterRequest
         from app.services.auth_service import public_register_user
 
@@ -189,7 +189,7 @@ class TestEmailVerificationDeferred:
             await public_register_user(db, data)
 
         created = captured[0]
-        assert created.role == UserRole.STUDENT
+        assert created.role == UserRole.GENERIC_USER
 
     @pytest.mark.asyncio
     async def test_institution_id_always_none(self):

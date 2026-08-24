@@ -38,6 +38,13 @@ def upgrade() -> None:
     op.add_column('users', sa.Column('persona', sa.String(length=50), nullable=True))
     op.create_index(op.f('ix_users_persona'), 'users', ['persona'], unique=False)
 
+    # 2b. Add onboarding preference columns to users table
+    # qa_interests: JSON array of primary QA tasks
+    # evidence_types: JSON array of evidence types
+    # Both nullable, default to null (not set until onboarding completes)
+    op.add_column('users', sa.Column('qa_interests', sa.JSON(), nullable=True))
+    op.add_column('users', sa.Column('evidence_types', sa.JSON(), nullable=True))
+
     # 3. Create user_workspace_modules table (personal module workspace for generic users)
     op.create_table(
         'user_workspace_modules',
@@ -65,6 +72,10 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_user_workspace_modules_is_deleted'), table_name='user_workspace_modules')
     op.drop_index(op.f('ix_user_workspace_modules_user_id'), table_name='user_workspace_modules')
     op.drop_table('user_workspace_modules')
+
+    # Remove preference columns
+    op.drop_column('users', 'qa_interests')
+    op.drop_column('users', 'evidence_types')
 
     # Remove persona column
     op.drop_index(op.f('ix_users_persona'), table_name='users')

@@ -131,7 +131,13 @@ export default function OnboardingPage() {
         {step === 1 && (
           <div>
             <h2 className="text-xl font-semibold mb-4">How do you work with academic quality?</h2>
-            <p className="text-gray-600 mb-4">Your role: <strong>{user.persona === "quality_assurance_officer" ? "Quality Assurance Officer" : "Lecturer"}</strong></p>
+            <p className="text-gray-600 mb-4">Your focus: <strong>{
+              user.persona === "quality_assurance_officer"
+                ? "Quality Assurance Officer"
+                : user.persona === "lecturer"
+                ? "Lecturer"
+                : "Unknown"
+            }</strong></p>
             <p className="text-sm text-gray-500 mb-6">
               This determines which tools and recommendations you&apos;ll see first in your workspace.
             </p>

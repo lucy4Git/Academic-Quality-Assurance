@@ -19,6 +19,7 @@ class UserRead(BaseModel):
     role: UserRole
     is_active: bool
     institution_id: uuid.UUID | None
+    persona: str | None = None
     created_at: datetime
     updated_at: datetime
 

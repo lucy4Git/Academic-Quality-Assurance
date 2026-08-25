@@ -208,9 +208,9 @@ class TestGenericRegistrationSecurity:
         with patch("app.services.auth_service.settings", mock_settings):
             user = await public_register_user(db, data)
 
-        # Generic users bypass email verification (self-service, non-institutional)
+        # Generic users bypass email verification codes but is_verified remains False
         assert captured[0].verification_code is None
-        assert captured[0].is_verified is True  # Account is immediately usable for generic users
+        assert captured[0].is_verified is False  # No email was actually verified
 
     @pytest.mark.asyncio
     async def test_7_no_admin_approval_required(self):

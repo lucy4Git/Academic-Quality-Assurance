@@ -140,9 +140,10 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         # SECURITY: institution_id is never accepted from the browser — always null for generic.
         institution_id=None,
         is_active=activate,
-        # Generic users bypass email verification (self-service, non-institutional)
-        # Set is_verified=True so login doesn't require verification code
-        is_verified=True,
+        # Generic users bypass email verification for immediate login
+        # is_verified stays False (truthful — no email was actually verified)
+        # authenticate_user will allow login if EMAIL_VERIFICATION_REQUIRED is False
+        is_verified=False,
         verification_code=code,
         verification_code_expires_at=expires,
         # 'approved' = no admin step required; 'pending' = needs admin action.

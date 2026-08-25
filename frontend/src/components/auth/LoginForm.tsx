@@ -132,8 +132,9 @@ export function LoginForm() {
       // the very next request. router.push() alone can race against
       // router.refresh(); window.location.href guarantees a clean reload
       // that middleware and AppShell both see with the fresh token.
-      const redirect = searchParams.get("redirect") ?? "/dashboard";
-      const safePath = redirect.startsWith("/") ? redirect : "/dashboard";
+      const defaultDest = data.user?.role === "generic_user" ? "/workspace" : "/dashboard";
+      const redirect = searchParams.get("redirect") ?? defaultDest;
+      const safePath = redirect.startsWith("/") ? redirect : defaultDest;
       window.location.href = safePath;
     } catch {
       toast.error("Connection error", {

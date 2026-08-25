@@ -193,6 +193,18 @@ LecturerRequired = require_roles(
     UserRole.LECTURER,
 )
 
+# Conversation/AI Assistant access — institutional teaching staff + generic users.
+ConversationAccessRequired = require_roles(
+    UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
+    UserRole.QUALITY_ASSURANCE_OFFICER,
+    UserRole.FACULTY_DEAN,
+    UserRole.HEAD_OF_DEPARTMENT,
+    UserRole.PROGRAMME_COORDINATOR,
+    UserRole.LECTURER,
+    UserRole.GENERIC_USER,
+)
+
 # Every authenticated user (including students viewing their own data).
 AnyAuthenticatedUser = require_roles(*list(UserRole))
 

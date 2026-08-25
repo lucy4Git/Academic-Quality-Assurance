@@ -45,7 +45,7 @@ from app.ai_providers.manager import get_provider_manager
 from app.rag.advanced_rag_service import advanced_ask
 from app.ai_providers.provider_factory import get_provider
 from app.database import get_db
-from app.dependencies import LecturerRequired, get_external_scope
+from app.dependencies import LecturerRequired, ConversationAccessRequired, get_external_scope
 from app.core.external_scope import ExternalScope, deny_external_access
 from app.knowledge_indexing.embedding_service import embedding_service
 from app.knowledge_indexing.search_service import ACTIVE_INSTITUTION_CODES
@@ -228,7 +228,7 @@ async def list_modes(
 async def ask_assistant(
     body: AskRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict[str, Any]:
     # External moderators cannot access the tenant-wide AI workspace.
@@ -536,7 +536,7 @@ async def _stream_ask(
 async def ask_assistant_stream(
     body: AskRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ):
     """POST /ai-assistant/ask-stream
@@ -890,7 +890,7 @@ async def get_suggested_prompts(
 async def create_session(
     body: ChatSessionCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> ChatSessionBrief:
     if ext_scope is not None:
@@ -953,7 +953,7 @@ async def list_sessions(
     skip: int = 0,
     limit: int = 50,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> list[ChatSessionBrief]:
     stmt = select(AiChatSession).where(
         AiChatSession.user_id == current_user.id,
@@ -1004,7 +1004,7 @@ async def list_sessions(
 async def get_session(
     session_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> ChatSessionDetail:
     session = await db.get(AiChatSession, session_id)
     if session is None or not session.is_active:
@@ -1058,7 +1058,7 @@ async def ask_in_session(
     session_id: uuid.UUID,
     body: AskRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> dict[str, Any]:
     session = await db.get(AiChatSession, session_id)
     if session is None or not session.is_active:
@@ -1089,7 +1089,7 @@ async def ask_in_session(
 async def search_sessions(
     q: str | None = None,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> list[ChatSessionBrief]:
     """Search the current user's conversation history by title keyword."""
     stmt = (
@@ -1274,7 +1274,7 @@ async def execute_conversational_action(
 async def delete_session(
     session_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> None:
     session = await db.get(AiChatSession, session_id)
     if session is None:
@@ -1299,7 +1299,7 @@ async def rename_session(
     session_id: uuid.UUID,
     body: SessionRenameRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> ChatSessionBrief:
     session = await db.get(AiChatSession, session_id)
     if session is None or session.is_deleted:
@@ -1326,7 +1326,7 @@ async def rename_session(
 async def pin_session(
     session_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> ChatSessionBrief:
     session = await db.get(AiChatSession, session_id)
     if session is None or session.is_deleted:
@@ -1353,7 +1353,7 @@ async def pin_session(
 async def archive_session(
     session_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = LecturerRequired,
+    current_user: User = ConversationAccessRequired,
 ) -> ChatSessionBrief:
     session = await db.get(AiChatSession, session_id)
     if session is None or session.is_deleted:

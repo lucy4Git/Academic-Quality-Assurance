@@ -191,7 +191,7 @@ async def test_duplicate_registration_raises():
 
 @pytest.mark.asyncio
 async def test_registration_approval_status_when_no_admin_required():
-    """approval_status must be 'approved' so account activates after email verification."""
+    """Generic self-service: approval_status='approved', immediate activation, no email verification."""
     db = _mock_db_for_register()
 
     with patch("app.services.auth_service.get_user_by_email", return_value=None):
@@ -203,9 +203,11 @@ async def test_registration_approval_status_when_no_admin_required():
                 await public_register_user(db, _public_register_request())
 
     added_user = db.add.call_args[0][0]
+    # Generic users: immediate activation (no admin approval required)
     assert added_user.approval_status == "approved"
-    assert added_user.is_active is False      # not yet active until email verified
-    assert added_user.is_verified is False
+    assert added_user.is_active is True       # Generic users activate immediately
+    assert added_user.is_verified is False    # No email actually verified (truthful)
+    assert added_user.verification_code is None  # No verification code for Generic
 
 
 @pytest.mark.asyncio
@@ -547,7 +549,7 @@ def test_assert_institution_access_allows_system_admin():
 
 @pytest.mark.asyncio
 async def test_verification_email_sent_on_registration():
-    """send_verification_email is called exactly once with the correct address."""
+    """Generic users: no verification email sent, no verification code generated."""
     db = _mock_db_for_register()
 
     with patch("app.services.auth_service.get_user_by_email", return_value=None):
@@ -556,15 +558,13 @@ async def test_verification_email_sent_on_registration():
                 mock_settings.VERIFICATION_CODE_EXPIRE_HOURS = 24
                 mock_settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL = False
 
-                # We do not test send_verification_email here — the route layer
-                # calls it. This test confirms the user object has a code ready.
+                # Generic users bypass email verification entirely.
                 user_obj = await public_register_user(
                     db, _public_register_request(email="sendtest@example.com")
                 )
 
-    # The refreshed user is returned by db.refresh, which is a mock.
-    # Verify that db.add received a user with a verification_code field.
+    # Verify that db.add received a user with NO verification_code (Generic users don't need it).
     added_user = db.add.call_args[0][0]
-    assert added_user.verification_code is not None
-    assert added_user.verification_code.isdigit()
-    assert len(added_user.verification_code) == 6
+    assert added_user.verification_code is None
+    assert added_user.is_verified is False  # Truthful: no email was verified
+    assert added_user.is_active is True     # But login is allowed immediately

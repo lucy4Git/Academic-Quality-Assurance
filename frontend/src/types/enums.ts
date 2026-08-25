@@ -8,7 +8,8 @@ export type UserRole =
   | "head_of_department"
   | "programme_coordinator"
   | "lecturer"
-  | "student";
+  | "student"
+  | "generic_user";
 
 export type ProgrammeLevel = "undergraduate" | "postgraduate" | "doctoral";
 

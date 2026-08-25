@@ -26,6 +26,7 @@ const ALL: UserRole[] = [
   "programme_coordinator",
   "lecturer",
   "student",
+  "generic_user",
 ];
 
 const STAFF: UserRole[] = [
@@ -35,6 +36,7 @@ const STAFF: UserRole[] = [
   "head_of_department",
   "programme_coordinator",
   "lecturer",
+  "generic_user",
 ];
 
 const QA_AND_ABOVE: UserRole[] = [

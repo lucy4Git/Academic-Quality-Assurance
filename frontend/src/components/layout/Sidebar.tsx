@@ -20,7 +20,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useUIStore } from "@/store/ui.store";
 import { useAuthStore } from "@/store/auth.store";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { NAV_SECTIONS } from "@/lib/rbac";
+import { getNavSections } from "@/lib/rbac";
 import { ROLE_LABELS } from "@/lib/constants";
 import { useInstitutions } from "@/hooks/useInstitutions";
 import type { UserRole } from "@/types";
@@ -102,7 +102,8 @@ export function Sidebar() {
         .toUpperCase()
     : "?";
 
-  const visibleItems = NAV_SECTIONS.flatMap((s) =>
+  const navSections = getNavSections(role);
+  const visibleItems = navSections.flatMap((s) =>
     s.items.filter((item) => !role || item.roles.includes(role))
   );
 
@@ -209,7 +210,13 @@ export function Sidebar() {
                   {user?.full_name ?? "User"}
                 </p>
                 <p className="text-[10.5px] text-sidebar-foreground/40 truncate leading-tight mt-0.5">
-                  {isSystemAdmin
+                  {role === "generic_user" && user?.persona
+                    ? user.persona === "quality_assurance_officer"
+                      ? "Quality Assurance Officer"
+                      : user.persona === "lecturer"
+                      ? "Lecturer"
+                      : "User"
+                    : isSystemAdmin
                     ? "All Institutions"
                     : userInstitution
                     ? `${userInstitution.code}`

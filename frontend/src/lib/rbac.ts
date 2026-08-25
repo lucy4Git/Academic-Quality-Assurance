@@ -38,6 +38,8 @@ const STAFF: UserRole[] = [
   "lecturer",
 ];
 
+const GENERIC_STAFF: UserRole[] = ["generic_user"];
+
 const QA_AND_ABOVE: UserRole[] = [
   "system_admin",
   "quality_assurance_officer",
@@ -78,17 +80,21 @@ const GENERIC_ONLY: UserRole[] = ["generic_user"];
  */
 export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   // ── Always accessible (authenticated) ────────────────────────────────────
-  "/dashboard":           ALL,
+  "/dashboard":           [...STAFF, "student"],
   "/settings/profile":    ALL,
   "/settings/security":   ALL,
   "/settings/notifications": ALL,
+
+  // ── Generic user (conversation-first workspace) ──────────────────────────
+  "/workspace":           [...STAFF, "student", "generic_user"],
+  "/onboarding":          ALL,
 
   // ── Institution hierarchy ─────────────────────────────────────────────────
   "/institutions":        QA_AND_ABOVE,       // create/edit/delete gated inside component
   "/faculties":           DEAN_AND_ABOVE,
   "/departments":         HOD_AND_ABOVE,
-  "/programmes":          ALL,                // students can view their own programme (read-only)
-  "/modules":             ALL,                // students can view their own modules (read-only)
+  "/programmes":          [...STAFF, "student"],                // students can view their own programme (read-only)
+  "/modules":             [...STAFF, "student"],                // students can view their own modules (read-only)
 
   // ── Knowledge Base ────────────────────────────────────────────────────────
   "/knowledge-review":    QA_AND_ABOVE,
@@ -128,7 +134,6 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/quality":             COORDINATOR_AND_ABOVE,
   "/knowledge":           STAFF,
   "/ai":                  STAFF,
-  "/workspace":           STAFF,           // AI Workspace landing (Phase 4)
   "/administration":      SA_ONLY,
 
   // ── Administration (SA only) ───────────────────────────────────────────────
@@ -184,14 +189,29 @@ export interface NavSection {
 }
 
 /**
- * Primary navigation — exactly 5 workspaces.
- * Everything else lives inside each workspace.
+ * Primary navigation — Generic user conversation-first shell.
+ * Generic users see only: New conversation → Search → Library → Files → Saved outputs → Recent
+ * Institutional users see traditional 5-workspace layout.
  */
-export const NAV_SECTIONS: NavSection[] = [
+export const GENERIC_NAV_SECTIONS: NavSection[] = [
   {
     title: "",
     items: [
-      { label: "Home",           href: "/dashboard",      icon: "Home",          roles: ALL },
+      { label: "New conversation", href: "/workspace",     icon: "LayoutGrid",    roles: GENERIC_ONLY },
+      { label: "Search",           href: "/search",        icon: "Library",       roles: GENERIC_ONLY },
+      { label: "Library",          href: "/library",       icon: "BookOpen",      roles: GENERIC_ONLY },
+      { label: "Files",            href: "/files",         icon: "ShieldCheck",   roles: GENERIC_ONLY },
+      { label: "Saved outputs",    href: "/saved",         icon: "Home",          roles: GENERIC_ONLY },
+      { label: "Recent",           href: "/recent",        icon: "Library",       roles: GENERIC_ONLY },
+    ],
+  },
+];
+
+export const INSTITUTIONAL_NAV_SECTIONS: NavSection[] = [
+  {
+    title: "",
+    items: [
+      { label: "Home",           href: "/dashboard",      icon: "Home",          roles: STAFF },
       { label: "Workspace",      href: "/workspace",      icon: "LayoutGrid",    roles: STAFF },
       { label: "Library",        href: "/library",        icon: "Library",       roles: STAFF },
       { label: "Knowledge",      href: "/knowledge",      icon: "BookOpen",      roles: STAFF },
@@ -200,3 +220,10 @@ export const NAV_SECTIONS: NavSection[] = [
     ],
   },
 ];
+
+export const NAV_SECTIONS: NavSection[] = INSTITUTIONAL_NAV_SECTIONS;
+
+export function getNavSections(role?: UserRole): NavSection[] {
+  if (role === "generic_user") return GENERIC_NAV_SECTIONS;
+  return INSTITUTIONAL_NAV_SECTIONS;
+}

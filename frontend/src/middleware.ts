@@ -62,9 +62,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Authenticated user on /login → go to dashboard
+  // Authenticated user on /login → route based on role
   if (pathname === "/login") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    const role = decodeRole(accessToken);
+    const destination = role === "generic_user" ? "/workspace" : "/dashboard";
+    return NextResponse.redirect(new URL(destination, request.url));
   }
 
   // Decode the role claim from the JWT (no signature check — that's FastAPI's job)

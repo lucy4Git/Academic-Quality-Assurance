@@ -101,7 +101,8 @@ export default function OnboardingPage() {
       }
 
       toast.success("Setup complete!");
-      router.push("/dashboard");
+      const destination = user?.role === "generic_user" ? "/workspace" : "/dashboard";
+      router.push(destination);
     } catch (err) {
       console.error("Onboarding error:", err);
       toast.error(err instanceof Error ? err.message : "Failed to save preferences");

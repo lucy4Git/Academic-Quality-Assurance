@@ -8,9 +8,10 @@ audit runs, and findings specific to that module/course.
 """
 
 import uuid
+from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -32,11 +33,7 @@ class UserWorkspaceModule(Base, UUIDPrimaryKeyMixin, TimestampMixin):
 
     __tablename__ = "user_workspace_modules"
 
-    __table_args__ = (
-        UniqueConstraint("user_id", "name", name="uq_user_workspace_module_name"),
-    )
-
-    # Ownership
+    # Ownership (user_id = workspace owner)
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),
@@ -44,21 +41,21 @@ class UserWorkspaceModule(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         index=True,
     )
 
-    # Identity
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    # Identity and metadata (matches applied migration schema 36b103a/a0b1c2d3e4f5)
+    module_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    module_code: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    level: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    credits: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    academic_period: Mapped[str | None] = mapped_column(String(50), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    # Optional metadata (not mandatory for MVP, but useful for future UI)
-    code: Mapped[str | None] = mapped_column(String(50), nullable=True)  # e.g., "CS101", "BIOL201"
-    level: Mapped[str | None] = mapped_column(String(50), nullable=True)  # e.g., "undergraduate", "postgraduate"
-    credits: Mapped[int | None] = mapped_column(nullable=True)
-    academic_year: Mapped[str | None] = mapped_column(String(20), nullable=True)  # e.g., "2026"
+    # Soft delete (timestamp-based; null = active, non-null = deleted)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, index=True)
 
-    # Soft delete
-    is_deleted: Mapped[bool] = mapped_column(default=False, nullable=False, index=True)
+    # Timestamps (created_at, updated_at inherited from TimestampMixin)
 
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="workspace_modules")
 
     def __repr__(self) -> str:
-        return f"<UserWorkspaceModule user_id={self.user_id!r} name={self.name!r}>"
+        return f"<UserWorkspaceModule user_id={self.user_id!r} module_name={self.module_name!r}>"

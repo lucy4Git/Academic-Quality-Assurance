@@ -104,7 +104,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         raise AuthError("A user with this email address already exists.")
 
     requires_admin = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
-    verification_required = settings.EMAIL_VERIFICATION_REQUIRED
+    # Generic users bypass email verification (self-service, non-institutional)
+    # Institutional registrations preserve EMAIL_VERIFICATION_REQUIRED via the normal register_user() path
+    verification_required = False
 
     # Generic users always get GENERIC_USER security role (no institutional authority).
     # Persona (quality_assurance_officer | lecturer) determines UX, not authorization.
@@ -116,7 +118,7 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         # Default to lecturer if not specified or invalid
         persona_requested = "lecturer"
 
-    # Email verification handling
+    # Email verification handling (skipped for generic users)
     if verification_required:
         expire_hours = settings.VERIFICATION_CODE_EXPIRE_HOURS
         code: str | None = _generate_verification_code()
@@ -138,9 +140,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         # SECURITY: institution_id is never accepted from the browser — always null for generic.
         institution_id=None,
         is_active=activate,
-        # is_verified reflects actual email confirmation — never set True here
-        # because no verification email was sent (or has been confirmed).
-        is_verified=False,
+        # Generic users bypass email verification (self-service, non-institutional)
+        # Set is_verified=True so login doesn't require verification code
+        is_verified=True,
         verification_code=code,
         verification_code_expires_at=expires,
         # 'approved' = no admin step required; 'pending' = needs admin action.

@@ -265,7 +265,9 @@ async def public_register(
     logger.info("public_register db_ms=%d email=%s", db_ms, user.email[:3] + "***")
 
     requires_approval = settings.REGISTRATION_REQUIRES_ADMIN_APPROVAL
-    verification_required = settings.EMAIL_VERIFICATION_REQUIRED
+    # Generic users (institution_id=None) never require verification
+    # Institutional users (invitation-based) go through normal register_user() path
+    verification_required = settings.EMAIL_VERIFICATION_REQUIRED if user.institution_id else False
 
     if verification_required and user.verification_code:
         from app.services.email_service import send_verification_email

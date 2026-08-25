@@ -39,18 +39,152 @@ export function GenericWorkspaceView() {
   const [query, setQuery] = useState("");
   const prompts = getPromptsForPersona(user?.persona);
 
-  const handleAsk = (e: React.FormEvent) => {
+  const handleAsk = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    // Wave 2 will implement actual conversation routing
-    // For Wave 1, just acknowledge the intent
+
+    try {
+      const userMessage = query.trim();
+      setQuery("");
+
+      // Create session if needed
+      let sessionId = activeSessionId;
+      if (!sessionId) {
+        const sessionTitle = userMessage.substring(0, 50);
+        const res = await fetch("/api/proxy/ai-assistant/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: sessionTitle,
+            mode: "qa_assistant"
+          }),
+        });
+        if (!res.ok) throw new Error("Failed to create session");
+        const session = (await res.json()) as { id: string };
+        sessionId = session.id;
+        setActiveSessionId(session.id);
+      }
+
+      // Add user message to UI
+      const userMsg = {
+        id: `user-${Date.now()}`,
+        role: "user" as const,
+        content: userMessage,
+      };
+      setMessages(prev => [...prev, userMsg]);
+
+      // Stream response
+      const res = await fetch(`/api/proxy/ai-assistant/sessions/${sessionId}/ask-stream`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: userMessage }),
+      });
+
+      if (!res.ok) throw new Error("Failed to get response");
+      if (!res.body) throw new Error("No response body");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let streamingText = "";
+
+      setMessages(prev => [...prev, {
+        id: `assistant-${Date.now()}`,
+        role: "assistant" as const,
+        content: streamingText
+      }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const event = JSON.parse(line.slice("data: ".length));
+            if (event.type === "token") {
+              streamingText += event.content || "";
+              setMessages(prev => {
+                const updated = [...prev];
+                const lastMsg = updated[updated.length - 1];
+                if (lastMsg?.role === "assistant") {
+                  lastMsg.content = streamingText;
+                }
+                return updated;
+              });
+            }
+          } catch {
+            // Ignore parse errors
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Ask failed:", err);
+    }
   };
+
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Array<{ id: string; role: "user" | "assistant"; content: string }>>([]);
 
   const personaLabel = user?.persona === "quality_assurance_officer"
     ? "Quality Assurance Officer"
     : user?.persona === "lecturer"
     ? "Lecturer"
     : "User";
+
+  // Show conversation thread if messages exist
+  if (messages.length > 0) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-2xl px-4 py-3 rounded-lg ${
+                  msg.role === "user"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t px-6 py-4 bg-background">
+          <form onSubmit={handleAsk} className="max-w-2xl mx-auto">
+            <div className="flex items-center gap-3 rounded-2xl border-2 border-border bg-card px-5 py-4">
+              <Brain className="h-5 w-5 text-primary flex-shrink-0" aria-hidden="true" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ask a follow-up question…"
+                className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground/40 outline-none"
+              />
+              <button
+                type="submit"
+                disabled={!query.trim()}
+                className={cn(
+                  "flex-shrink-0 flex items-center justify-center h-9 w-9 rounded-xl transition-all",
+                  query.trim()
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : "bg-muted text-muted-foreground/30 cursor-not-allowed"
+                )}
+              >
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">

@@ -1081,6 +1081,108 @@ async def ask_in_session(
     return result
 
 
+@router.post(
+    "/sessions/{session_id}/ask-stream",
+    summary="Ask a question within a session with streaming response",
+)
+async def ask_in_session_stream(
+    session_id: uuid.UUID,
+    body: AskRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = ConversationAccessRequired,
+):
+    """POST /ai-assistant/sessions/{session_id}/ask-stream
+
+    Session-aware streaming endpoint combining persistent messaging with
+    real-time response streaming.
+
+    Flow:
+    1. Verify session ownership
+    2. Persist user message immediately
+    3. Stream assistant response via existing _stream_ask generator
+    4. Accumulate full response
+    5. Persist assistant message on completion
+    """
+    # Verify session exists and user owns it
+    session = await db.get(AiChatSession, session_id)
+    if session is None or not session.is_active:
+        raise HTTPException(status_code=404, detail="Session not found.")
+    if session.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Access denied.")
+
+    institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
+
+    # Persist user message immediately
+    from app.models.ai_chat import AiChatMessage
+    user_message = AiChatMessage(
+        id=uuid.uuid4(),
+        session_id=session_id,
+        role="user",
+        content=body.question,
+        provider=session.provider,
+        query_mode=session.mode,
+        intent=None,
+        confidence_score=None,
+        sources=None,
+        attached_file_ids=body.attached_file_ids if hasattr(body, 'attached_file_ids') else None,
+    )
+    db.add(user_message)
+    await db.flush()
+
+    # Stream response
+    async def stream_response_generator():
+        assistant_content = ""
+        try:
+            async for event_line in _stream_ask(
+                question=body.question,
+                institution_code=institution_code,
+                context_limit=body.context_limit,
+                mode=session.mode,
+                db=db,
+                current_user=current_user,
+            ):
+                # Accumulate token content
+                try:
+                    event_data = json.loads(event_line.replace("data: ", ""))
+                    if event_data.get("type") == "token":
+                        assistant_content += event_data.get("content", "")
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+
+                yield event_line + "\n"
+
+            # Persist completed assistant message
+            if assistant_content.strip():
+                assistant_message = AiChatMessage(
+                    id=uuid.uuid4(),
+                    session_id=session_id,
+                    role="assistant",
+                    content=assistant_content,
+                    provider=session.provider,
+                    query_mode=session.mode,
+                    intent=None,
+                    confidence_score=None,
+                    sources=None,
+                )
+                db.add(assistant_message)
+                await db.commit()
+
+                # Update session timestamp
+                session.updated_at = datetime.now(tz=timezone.utc)
+                await db.commit()
+
+        except Exception as e:
+            import logging as _log
+            _logger = _log.getLogger(__name__)
+            _logger.error(f"ask_in_session_stream error: {e}")
+            yield _sse("error", {"message": str(e)}) + "\n"
+
+    return StreamingResponse(
+        stream_response_generator(),
+        media_type="text/event-stream",
+    )
+
+
 @router.get(
     "/sessions/search",
     response_model=list[ChatSessionBrief],

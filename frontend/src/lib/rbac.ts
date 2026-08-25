@@ -77,9 +77,6 @@ const GENERIC_ONLY: UserRole[] = ["generic_user"];
  * Order does not matter; the lookup function uses the LONGEST matching prefix.
  */
 export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
-  // ── Generic AQAA only ──────────────────────────────────────────────────────
-  "/onboarding":          GENERIC_ONLY,
-
   // ── Always accessible (authenticated) ────────────────────────────────────
   "/dashboard":           ALL,
   "/settings/profile":    ALL,

@@ -9,6 +9,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   programme_coordinator: "Programme Coordinator",
   lecturer: "Lecturer",
   student: "Student",
+  generic_user: "Generic User",
 };
 
 export const AGENT_LABELS: Record<AgentType, string> = {

@@ -36,7 +36,6 @@ const STAFF: UserRole[] = [
   "head_of_department",
   "programme_coordinator",
   "lecturer",
-  "generic_user",
 ];
 
 const QA_AND_ABOVE: UserRole[] = [
@@ -67,6 +66,8 @@ const COORDINATOR_AND_ABOVE: UserRole[] = [
 
 const SA_ONLY: UserRole[] = ["system_admin"];
 
+const GENERIC_ONLY: UserRole[] = ["generic_user"];
+
 /**
  * Route permission map.
  *
@@ -76,6 +77,9 @@ const SA_ONLY: UserRole[] = ["system_admin"];
  * Order does not matter; the lookup function uses the LONGEST matching prefix.
  */
 export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
+  // ── Generic AQAA only ──────────────────────────────────────────────────────
+  "/onboarding":          GENERIC_ONLY,
+
   // ── Always accessible (authenticated) ────────────────────────────────────
   "/dashboard":           ALL,
   "/settings/profile":    ALL,

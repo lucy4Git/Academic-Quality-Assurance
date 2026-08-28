@@ -608,6 +608,14 @@ async def ask_assistant_stream(
     """
     if ext_scope is not None:
         deny_external_access(ext_scope, "the AI assistant (tenant-wide RAG access is unavailable to external reviewers)")
+    if current_user.role == UserRole.GENERIC_USER and body.attached_file_ids:
+        # Reject before resolving or creating a session.  Until Phase C owner
+        # checks are complete, an invalid attachment request must be entirely
+        # side-effect free for both new and existing conversations.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Generic workspace attachments are unavailable until user-owned evidence access is enabled.",
+        )
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
     effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
 
@@ -635,12 +643,6 @@ async def ask_assistant_stream(
         session_id = new_session.id
 
     attached_ids = [str(fid) for fid in body.attached_file_ids] if body.attached_file_ids else None
-
-    if current_user.role == UserRole.GENERIC_USER and body.attached_file_ids:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Generic workspace attachments are unavailable until user-owned evidence access is enabled.",
-        )
 
     history_result = await db.execute(
         select(AiChatMessage)
@@ -1088,8 +1090,13 @@ async def get_session(
     session = await db.get(AiChatSession, session_id)
     if session is None or not session.is_active:
         raise HTTPException(status_code=404, detail="Session not found.")
-    if session.user_id != current_user.id and current_user.role != UserRole.SYSTEM_ADMIN:
-        raise HTTPException(status_code=403, detail="Access denied.")
+    if session.user_id != current_user.id:
+        admin_can_read_institutional = (
+            current_user.role == UserRole.SYSTEM_ADMIN
+            and session.institution_id is not None
+        )
+        if not admin_can_read_institutional:
+            raise HTTPException(status_code=403, detail="Access denied.")
 
     result = await db.execute(
         select(AiChatMessage)
@@ -1364,8 +1371,13 @@ async def delete_session(
     session = await db.get(AiChatSession, session_id)
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found.")
-    if session.user_id != current_user.id and current_user.role != UserRole.SYSTEM_ADMIN:
-        raise HTTPException(status_code=403, detail="Access denied.")
+    if session.user_id != current_user.id:
+        admin_can_delete_institutional = (
+            current_user.role == UserRole.SYSTEM_ADMIN
+            and session.institution_id is not None
+        )
+        if not admin_can_delete_institutional:
+            raise HTTPException(status_code=403, detail="Access denied.")
     session.is_active = False
     session.is_deleted = True
     await db.commit()

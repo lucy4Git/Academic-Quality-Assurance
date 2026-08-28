@@ -100,7 +100,22 @@ class ImageParser(DocumentParser):
                 },
             )
         except Exception as exc:
-            raise ParserError(f"OCR failed for '{filename}': {exc}") from exc
+            # A decodable image can still be rejected by an OCR dependency
+            # (for example, a truncated scan accepted by Pillow's header
+            # parser). Treat that as unavailable OCR rather than allowing one
+            # problematic image to fail the whole evidence-processing job.
+            return ExtractionResult(
+                text="",
+                word_count=0,
+                parser_name="image",
+                page_count=1,
+                metadata={
+                    "ocr_available": False,
+                    "note": f"OCR could not process this image: {type(exc).__name__}.",
+                    "width": width,
+                    "height": height,
+                },
+            )
 
         return ExtractionResult(
             text=text,

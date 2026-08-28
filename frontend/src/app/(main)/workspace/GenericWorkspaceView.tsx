@@ -2,14 +2,15 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Brain, ChevronRight, Copy, Pencil, RefreshCw, Square, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, ChevronRight, Copy, Paperclip, Pencil, RefreshCw, Square, Sparkles, X } from "lucide-react";
 import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
-import { askStream } from "@/lib/api/ai-assistant";
+import { askStream, StreamSource } from "@/lib/api/ai-assistant";
+import { GenericFile, genericEvidenceApi } from "@/lib/api/generic-evidence";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 type PromptItem = { category: string; emoji: string; prompt: string };
-type Message = { id: string; role: "user" | "assistant"; content: string; created_at?: string };
+type Message = { id: string; role: "user" | "assistant"; content: string; created_at?: string; sources?: StreamSource[] };
 
 const QA_OFFICER_PROMPTS: PromptItem[] = [
   { category: "Evidence", emoji: "📂", prompt: "Review a module or course folder" },
@@ -34,8 +35,17 @@ export function GenericWorkspaceView() {
   const [query, setQuery] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [availableFiles, setAvailableFiles] = useState<GenericFile[]>([]);
+  const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
+  const [showAttachments, setShowAttachments] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const prompts = user?.persona === "lecturer" ? LECTURER_PROMPTS : QA_OFFICER_PROMPTS;
+
+  useEffect(() => {
+    void genericEvidenceApi.listFiles(false)
+      .then((items) => setAvailableFiles(items.filter((item) => item.upload_state === "ready")))
+      .catch(() => setAvailableFiles([]));
+  }, []);
 
   useEffect(() => {
     setActiveSessionId(routeSessionId);
@@ -66,14 +76,17 @@ export function GenericWorkspaceView() {
     setQuery(""); setError(null); setIsGenerating(true);
     const controller = new AbortController(); abortRef.current = controller;
     try {
-      for await (const event of askStream({ question, session_id: activeSessionId }, controller.signal)) {
+      for await (const event of askStream({ question, session_id: activeSessionId, attached_file_ids: selectedFileIds }, controller.signal)) {
         if (event.type === "token") {
           setMessages((current) => current.map((message) => message.id === assistantId ? { ...message, content: message.content + event.content } : message));
         } else if (event.type === "session") {
           setActiveSessionId(event.session_id);
           router.replace(`/workspace?session=${event.session_id}`);
+        } else if (event.type === "sources") {
+          setMessages((current) => current.map((message) => message.id === assistantId ? { ...message, sources: event.sources } : message));
         } else if (event.type === "error") throw new Error(event.message);
       }
+      setSelectedFileIds([]);
     } catch (reason) {
       if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "AQAA could not complete the response. Please try again.");
       setMessages((current) => current.filter((message) => message.id !== assistantId || message.content.length > 0));
@@ -109,15 +122,18 @@ export function GenericWorkspaceView() {
           </div>
         ) : (
           <div className="mx-auto max-w-3xl space-y-6" aria-live="polite">
-            {messages.map((message, index) => <article key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}><div className={cn("group max-w-[90%] rounded-2xl px-4 py-3 sm:max-w-[80%]", message.role === "user" ? "bg-primary text-primary-foreground" : "border bg-card")}>{message.role === "assistant" ? <MarkdownMessage content={message.content || "…"} /> : <p className="whitespace-pre-wrap text-sm">{message.content}</p>}<div className={cn("mt-2 flex items-center gap-3 text-xs", message.role === "user" ? "text-primary-foreground/75" : "text-muted-foreground")}>{message.created_at && <time dateTime={message.created_at}>{new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time>}{message.role === "assistant" && message.content && <><button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100" aria-label="Copy response"><Copy className="h-3.5 w-3.5" /> Copy</button><button type="button" disabled={isGenerating} onClick={() => retryResponse(index)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Retry response"><RefreshCw className="h-3.5 w-3.5" /> Retry</button></>}{message.role === "user" && <button type="button" disabled={isGenerating} onClick={() => setQuery(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Edit and resend message"><Pencil className="h-3.5 w-3.5" /> Edit & resend</button>}</div></div></article>)}
+            {messages.map((message, index) => <article key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}><div className={cn("group max-w-[90%] rounded-2xl px-4 py-3 sm:max-w-[80%]", message.role === "user" ? "bg-primary text-primary-foreground" : "border bg-card")}>{message.role === "assistant" ? <MarkdownMessage content={message.content || "…"} /> : <p className="whitespace-pre-wrap text-sm">{message.content}</p>}{message.role === "assistant" && message.sources && message.sources.length > 0 && <div className="mt-3 border-t pt-2"><p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Sources</p><div className="flex flex-wrap gap-1.5">{message.sources.map((source, sourceIndex) => <span key={`${source.entity_key || source.title}-${sourceIndex}`} className="rounded-full border bg-muted/50 px-2 py-1 text-xs text-muted-foreground">{source.source_document || source.title || "Attached evidence"}</span>)}</div></div>}<div className={cn("mt-2 flex items-center gap-3 text-xs", message.role === "user" ? "text-primary-foreground/75" : "text-muted-foreground")}>{message.created_at && <time dateTime={message.created_at}>{new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time>}{message.role === "assistant" && message.content && <><button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100" aria-label="Copy response"><Copy className="h-3.5 w-3.5" /> Copy</button><button type="button" disabled={isGenerating} onClick={() => retryResponse(index)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Retry response"><RefreshCw className="h-3.5 w-3.5" /> Retry</button></>}{message.role === "user" && <button type="button" disabled={isGenerating} onClick={() => setQuery(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Edit and resend message"><Pencil className="h-3.5 w-3.5" /> Edit & resend</button>}</div></div></article>)}
           </div>
         )}
       </div>
       <div className="border-t bg-background px-4 py-4 sm:px-6">
         <form onSubmit={handleSubmit} className="mx-auto max-w-3xl">
           {error && <p className="mb-2 text-sm text-destructive" role="alert">{error}</p>}
+          {showAttachments && <div className="mb-2 rounded-xl border bg-card p-3"><div className="mb-2 flex items-center justify-between"><p className="text-sm font-medium">Attach owned evidence</p><button type="button" onClick={() => setShowAttachments(false)} aria-label="Close attachment picker"><X className="h-4 w-4" /></button></div>{availableFiles.length === 0 ? <p className="text-sm text-muted-foreground">Upload a processed evidence file from Files first.</p> : <div className="max-h-36 space-y-1 overflow-y-auto">{availableFiles.map((file) => <label key={file.id} className="flex cursor-pointer items-center gap-2 rounded p-2 text-sm hover:bg-muted"><input type="checkbox" checked={selectedFileIds.includes(file.id)} onChange={(event) => setSelectedFileIds((current) => event.target.checked ? [...current, file.id] : current.filter((id) => id !== file.id))} /><span className="truncate">{file.original_filename}</span></label>)}</div>}</div>}
+          {selectedFileIds.length > 0 && <div className="mb-2 flex flex-wrap gap-1.5">{selectedFileIds.map((id) => { const file = availableFiles.find((item) => item.id === id); return <span key={id} className="inline-flex items-center gap-1 rounded-full border bg-muted px-2 py-1 text-xs">{file?.original_filename || "Evidence"}<button type="button" onClick={() => setSelectedFileIds((current) => current.filter((value) => value !== id))} aria-label={`Remove ${file?.original_filename || "attachment"}`}><X className="h-3 w-3" /></button></span>; })}</div>}
           <div className="flex items-end gap-3 rounded-2xl border-2 bg-card px-4 py-3 focus-within:border-primary/40">
             <Brain className="mb-2 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+            <button type="button" onClick={() => setShowAttachments((current) => !current)} disabled={isGenerating} className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted disabled:opacity-40" aria-label="Attach evidence"><Paperclip className="h-4 w-4" /></button>
             <textarea value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={handleKeyDown} rows={1} placeholder="Ask AQAA anything about academic quality…" className="max-h-40 min-h-10 flex-1 resize-none bg-transparent py-2 outline-none" aria-label="Ask AQAA" disabled={isGenerating} />
             {isGenerating ? <button type="button" onClick={() => abortRef.current?.abort()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-muted" aria-label="Stop response"><Square className="h-4 w-4" /></button> : <button type="submit" disabled={!query.trim()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white disabled:cursor-not-allowed disabled:opacity-40" aria-label="Send message"><ArrowRight className="h-4 w-4" /></button>}
           </div>

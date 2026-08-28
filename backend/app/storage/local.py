@@ -54,6 +54,18 @@ class LocalStorageBackend(StorageBackend):
         safe_name = _sanitize_filename(filename)
         return f"{institution_id}/{module_id}/{category}/{file_uuid}_{safe_name}"
 
+    def build_personal_path(
+        self,
+        owner_user_id: uuid.UUID,
+        workspace_module_id: uuid.UUID | None,
+        category: str,
+        file_uuid: uuid.UUID,
+        filename: str,
+    ) -> str:
+        safe_name = _sanitize_filename(filename)
+        workspace = str(workspace_module_id) if workspace_module_id else "library"
+        return f"users/{owner_user_id}/{workspace}/{category}/{file_uuid}_{safe_name}"
+
     async def save(self, data: bytes, relative_path: str) -> str:
         """Write *data* to disk, creating parent directories as needed."""
         full_path = self._base / relative_path

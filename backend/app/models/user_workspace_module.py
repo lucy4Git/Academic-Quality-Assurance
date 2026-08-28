@@ -18,6 +18,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
+    from app.models.file import File
     from app.models.user import User
 
 
@@ -56,6 +57,9 @@ class UserWorkspaceModule(Base, UUIDPrimaryKeyMixin, TimestampMixin):
 
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="workspace_modules")
+    files: Mapped[list["File"]] = relationship(
+        "File", back_populates="workspace_module", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<UserWorkspaceModule user_id={self.user_id!r} module_name={self.module_name!r}>"

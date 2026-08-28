@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from unittest.mock import AsyncMock, MagicMock
 
 from app.ai_providers.base_provider import AIMessage
+from app.core.exceptions import NotFoundError
 from app.models.enums import UserRole
 from app.routes import ai_assistant
 from app.schemas.ai_assistant import AskRequest
@@ -80,7 +81,7 @@ def test_conversation_search_route_does_not_collide_with_uuid_detail_route():
 
 
 @pytest.mark.asyncio
-async def test_denied_generic_attachment_does_not_create_or_mutate_session():
+async def test_denied_generic_attachment_does_not_create_or_mutate_session(monkeypatch):
     db = AsyncMock()
     user = SimpleNamespace(
         id=uuid.uuid4(), role=UserRole.GENERIC_USER, institution_id=None
@@ -90,15 +91,41 @@ async def test_denied_generic_attachment_does_not_create_or_mutate_session():
         attached_file_ids=[uuid.uuid4()],
     )
 
-    with pytest.raises(HTTPException) as exc_info:
+    async def deny_file(*_args, **_kwargs):
+        raise NotFoundError("File", request.attached_file_ids[0])
+
+    monkeypatch.setattr("app.services.file_service.get_file_for_user", deny_file)
+
+    with pytest.raises(NotFoundError):
         await ai_assistant.ask_assistant_stream(
             body=request, db=db, current_user=user, ext_scope=None
         )
 
-    assert exc_info.value.status_code == 403
-    db.get.assert_not_awaited()
     db.commit.assert_not_awaited()
     db.add.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_generic_attached_evidence_is_passed_to_provider_with_source(monkeypatch):
+    provider = _RecordingProvider()
+    manager = SimpleNamespace(get_healthy_provider=AsyncMock(return_value=provider))
+    monkeypatch.setattr(ai_assistant, "get_provider_manager", lambda: manager)
+    user = SimpleNamespace(role=UserRole.GENERIC_USER)
+    chunks = [{
+        "entity_id": str(uuid.uuid4()),
+        "title": "module-guide.pdf",
+        "source_document": "module-guide.pdf",
+        "text": "The module has four learning outcomes.",
+    }]
+
+    events = [event async for event in ai_assistant._stream_ask(
+        "What evidence is present?", None, 5, "qa_assistant",
+        current_user=user, file_chunks=chunks,
+    )]
+
+    assert any("module-guide.pdf" in message.content for message in provider.messages)
+    assert any('"type": "metadata"' in event for event in events)
+    assert any('"grounding_status": "grounded"' in event for event in events)
 
 
 @pytest.mark.asyncio

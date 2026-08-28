@@ -24,6 +24,8 @@ import { useEvidence, useDeleteEvidence } from "@/hooks/useEvidence";
 import { useAudits } from "@/hooks/useModuleAudits";
 import { useRole } from "@/hooks/useRole";
 import { evidenceDownloadUrl } from "@/lib/api/evidence";
+import { useAuth } from "@/hooks/useAuth";
+import { GenericEvidenceManager } from "@/components/generic/GenericEvidenceManager";
 import { EVIDENCE_CATEGORIES, type AuditEvidence } from "@/types";
 
 function FileSizeLabel({ bytes }: { bytes: number }) {
@@ -61,6 +63,11 @@ function TableSkeleton() {
 }
 
 export function FileLibrary() {
+  const { user } = useAuth();
+  return user?.role === "generic_user" ? <GenericEvidenceManager /> : <InstitutionalFileLibrary />;
+}
+
+function InstitutionalFileLibrary() {
   const { isQAOfficer, isSysAdmin, isCoordinator } = useRole();
   const { data: evidence, isLoading, isError, refetch } = useEvidence();
   const { data: audits } = useAudits();

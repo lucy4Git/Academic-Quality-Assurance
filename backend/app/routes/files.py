@@ -44,8 +44,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import (
     AnyAuthenticatedUser,
-    CoordinatorRequired,
-    LecturerRequired,
+    EvidenceContributorRequired,
+    EvidenceManagerRequired,
     PaginationParams,
     get_external_scope,
 )
@@ -115,11 +115,13 @@ def _assert_tenant(current_user: User, file_institution_id: uuid.UUID) -> None:
     summary="Upload a single file to a module folder",
 )
 async def upload_file(
-    module_id: Annotated[uuid.UUID, Form(description="Target module UUID.")],
     category: Annotated[FileCategory, Form(description="Document category.")],
     file: Annotated[UploadFile, File(description="File to upload.")],
+    module_id: Annotated[uuid.UUID | None, Form(description="Institutional module UUID.")] = None,
+    workspace_module_id: Annotated[uuid.UUID | None, Form(description="Personal workspace module UUID.")] = None,
+    is_library_item: Annotated[bool, Form(description="Also include in the personal Library.")] = False,
     description: Annotated[str | None, Form(description="Optional description.")] = None,
-    current_user: User = LecturerRequired,
+    current_user: User = EvidenceContributorRequired,
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FileRead:
@@ -135,6 +137,8 @@ async def upload_file(
             content=content,
             current_user=current_user,
             description=description,
+            workspace_module_id=workspace_module_id,
+            is_library_item=is_library_item,
         )
     except UploadValidationError as exc:
         raise _validation_error_to_422(exc)
@@ -153,10 +157,11 @@ async def upload_file(
     summary="Upload multiple files in one request (partial success allowed)",
 )
 async def bulk_upload(
-    module_id: Annotated[uuid.UUID, Form(description="Target module UUID.")],
     category: Annotated[FileCategory, Form(description="Document category for all files.")],
     files: Annotated[list[UploadFile], File(description="Files to upload.")],
-    current_user: User = LecturerRequired,
+    module_id: Annotated[uuid.UUID | None, Form(description="Institutional module UUID.")] = None,
+    workspace_module_id: Annotated[uuid.UUID | None, Form(description="Personal workspace module UUID.")] = None,
+    current_user: User = EvidenceContributorRequired,
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> BulkUploadResponse:
@@ -178,6 +183,7 @@ async def bulk_upload(
         category=category,
         files=file_data,
         current_user=current_user,
+        workspace_module_id=workspace_module_id,
     )
 
     return BulkUploadResponse(
@@ -201,6 +207,8 @@ async def bulk_upload(
 )
 async def list_files(
     module_id: uuid.UUID | None = Query(default=None, description="Filter by module."),
+    workspace_module_id: uuid.UUID | None = Query(default=None, description="Filter by personal workspace module."),
+    library_only: bool = Query(default=False, description="Return reusable Library items only."),
     category: FileCategory | None = Query(default=None, description="Filter by category."),
     upload_state: UploadState | None = Query(default=None, description="Filter by upload state."),
     pagination: PaginationParams = Depends(PaginationParams),
@@ -218,6 +226,8 @@ async def list_files(
         db=db,
         current_user=current_user,
         module_id=module_id,
+        workspace_module_id=workspace_module_id,
+        library_only=library_only,
         category=category,
         upload_state=upload_state,
         skip=pagination.skip,
@@ -242,8 +252,7 @@ async def get_file(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FileRead:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     if ext_scope is not None:
         if db_file.module_id is not None:
             assert_module_scope(ext_scope, db_file.module_id)
@@ -268,8 +277,7 @@ async def download_file(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
-    db_file, content = await file_service.get_file_content(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file, content = await file_service.get_file_content_for_user(db, file_id, current_user)
     if ext_scope is not None:
         if db_file.module_id is not None:
             assert_module_scope(ext_scope, db_file.module_id)
@@ -304,8 +312,7 @@ async def preview_file(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> FilePreviewResponse:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     if ext_scope is not None:
         if db_file.module_id is not None:
             assert_module_scope(ext_scope, db_file.module_id)
@@ -345,8 +352,7 @@ async def list_versions(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> list[FileVersionRead]:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     if ext_scope is not None:
         if db_file.module_id is not None:
             assert_module_scope(ext_scope, db_file.module_id)
@@ -373,8 +379,7 @@ async def download_version(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> Response:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     if ext_scope is not None:
         if db_file.module_id is not None:
             assert_module_scope(ext_scope, db_file.module_id)
@@ -409,11 +414,10 @@ async def download_version(
 async def update_file_metadata(
     file_id: uuid.UUID,
     data: FileMetadataUpdate,
-    current_user: User = CoordinatorRequired,
+    current_user: User = EvidenceManagerRequired,
     db: AsyncSession = Depends(get_db),
 ) -> FileRead:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     updated = await file_service.update_file_metadata(db, db_file, data)
     return FileRead.model_validate(updated)
 
@@ -429,11 +433,10 @@ async def update_file_metadata(
 )
 async def delete_file(
     file_id: uuid.UUID,
-    current_user: User = CoordinatorRequired,
+    current_user: User = EvidenceManagerRequired,
     db: AsyncSession = Depends(get_db),
 ) -> Response:
-    db_file = await file_service.get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await file_service.get_file_for_user(db, file_id, current_user)
     await file_service.delete_file(db, db_file)
     return Response(status_code=204)
 
@@ -450,7 +453,7 @@ async def delete_file(
 )
 async def upload_zip(
     file: UploadFile = File(..., description="ZIP archive (max 50 MB compressed)"),
-    current_user: User = LecturerRequired,
+    current_user: User = EvidenceContributorRequired,
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict:
     """Accept a ZIP, validate, extract, and auto-classify each file via ADIP heuristics.
@@ -488,7 +491,7 @@ async def upload_zip(
 )
 async def confirm_zip_mapping(
     body: dict,
-    current_user: User = LecturerRequired,
+    current_user: User = EvidenceContributorRequired,
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict:

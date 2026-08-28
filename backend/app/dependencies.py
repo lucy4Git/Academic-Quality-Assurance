@@ -193,6 +193,31 @@ LecturerRequired = require_roles(
     UserRole.LECTURER,
 )
 
+# Institutional teaching staff and Generic personal-workspace users may
+# contribute evidence. Ownership/tenant checks remain service responsibilities.
+EvidenceContributorRequired = require_roles(
+    UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
+    UserRole.QUALITY_ASSURANCE_OFFICER,
+    UserRole.FACULTY_DEAN,
+    UserRole.HEAD_OF_DEPARTMENT,
+    UserRole.PROGRAMME_COORDINATOR,
+    UserRole.LECTURER,
+    UserRole.GENERIC_USER,
+)
+
+EvidenceManagerRequired = require_roles(
+    UserRole.SYSTEM_ADMIN,
+    UserRole.INSTITUTION_ADMIN,
+    UserRole.QUALITY_ASSURANCE_OFFICER,
+    UserRole.FACULTY_DEAN,
+    UserRole.HEAD_OF_DEPARTMENT,
+    UserRole.PROGRAMME_COORDINATOR,
+    UserRole.GENERIC_USER,
+)
+
+GenericUserRequired = require_roles(UserRole.GENERIC_USER)
+
 # Conversation/AI Assistant access — institutional teaching staff + generic users.
 ConversationAccessRequired = require_roles(
     UserRole.SYSTEM_ADMIN,

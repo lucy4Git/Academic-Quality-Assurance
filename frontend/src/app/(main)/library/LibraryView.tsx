@@ -29,6 +29,8 @@ import { useRole } from "@/hooks/useRole";
 import { evidenceDownloadUrl } from "@/lib/api/evidence";
 import { listFrameworks, type QualityFramework } from "@/lib/api/regulatoryFramework";
 import { EVIDENCE_CATEGORIES, type AuditEvidence } from "@/types";
+import { useAuth } from "@/hooks/useAuth";
+import { GenericEvidenceManager } from "@/components/generic/GenericEvidenceManager";
 
 // ---------------------------------------------------------------------------
 // Tab types
@@ -271,6 +273,11 @@ function FrameworkList({ search }: { search: string }) {
 // ---------------------------------------------------------------------------
 
 export function LibraryView() {
+  const { user } = useAuth();
+  return user?.role === "generic_user" ? <GenericEvidenceManager library /> : <InstitutionalLibraryView />;
+}
+
+function InstitutionalLibraryView() {
   const [tab, setTab] = useState<Tab>("evidence");
   const [search, setSearch] = useState("");
   const { isCoordinator } = useRole();

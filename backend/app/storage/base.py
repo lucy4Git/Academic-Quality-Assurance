@@ -66,6 +66,18 @@ class StorageBackend(ABC):
         """
         ...
 
+    @abstractmethod
+    def build_personal_path(
+        self,
+        owner_user_id: uuid.UUID,
+        workspace_module_id: uuid.UUID | None,
+        category: str,
+        file_uuid: uuid.UUID,
+        filename: str,
+    ) -> str:
+        """Build an owner-isolated path for a Generic personal file."""
+        ...
+
     # ------------------------------------------------------------------
     # Metadata
     # ------------------------------------------------------------------

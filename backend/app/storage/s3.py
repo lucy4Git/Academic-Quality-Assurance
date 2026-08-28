@@ -66,6 +66,18 @@ class S3StorageBackend(StorageBackend):
         suffix = PurePosixPath(filename).suffix.lower()
         return f"{institution_id}/{module_id}/{category}/{file_uuid}{suffix}"
 
+    def build_personal_path(
+        self,
+        owner_user_id: uuid.UUID,
+        workspace_module_id: uuid.UUID | None,
+        category: str,
+        file_uuid: uuid.UUID,
+        filename: str,
+    ) -> str:
+        suffix = PurePosixPath(filename).suffix.lower()
+        workspace = str(workspace_module_id) if workspace_module_id else "library"
+        return f"users/{owner_user_id}/{workspace}/{category}/{file_uuid}{suffix}"
+
     async def save(self, data: bytes, relative_path: str) -> str:
         await asyncio.to_thread(
             self._client.put_object,

@@ -341,6 +341,25 @@ async def _stream_ask(
             )
             messages = [AIMessage(role="system", content=system_prompt)]
             messages.extend(conversation_history or [])
+            if file_chunks:
+                evidence_sections: list[str] = []
+                remaining = 16000
+                for chunk in file_chunks:
+                    excerpt = str(chunk.get("text") or "")[:remaining]
+                    evidence_sections.append(
+                        f"SOURCE: {chunk.get('source_document') or chunk.get('title')}\n{excerpt}"
+                    )
+                    remaining -= len(excerpt)
+                    if remaining <= 0:
+                        break
+                messages.append(AIMessage(
+                    role="system",
+                    content=(
+                        "The following evidence was retrieved from files owned by this user. "
+                        "Ground claims only in these excerpts, cite source filenames, and say "
+                        "when extraction is insufficient.\n\n" + "\n\n".join(evidence_sections)
+                    ),
+                ))
             messages.append(AIMessage(role="user", content=question))
             answer = await provider.complete(messages, temperature=0.2, max_tokens=1400)
             yield _sse("start", {
@@ -352,10 +371,36 @@ async def _stream_ask(
                 content = " ".join(words[i:i + 6])
                 yield _sse("token", {"content": content if i == 0 else " " + content})
                 await asyncio.sleep(0.02)
+            sources = [
+                {
+                    "entity_type": "attached_file",
+                    "entity_key": chunk.get("entity_id"),
+                    "title": chunk.get("title"),
+                    "source_document": chunk.get("source_document"),
+                    "relevance_score": 1.0,
+                }
+                for chunk in (file_chunks or [])
+            ]
             yield _sse("sources", {
-                "sources": [], "confidence_score": 0.0, "suggested_followups": [],
+                "sources": sources, "confidence_score": 1.0 if sources else 0.0, "suggested_followups": [],
                 "suggested_next_actions": [], "follow_up_questions": [],
             })
+            if sources:
+                yield _sse("metadata", {
+                    "citations": [
+                        {
+                            "source_id": source["entity_key"],
+                            "title": source["title"],
+                            "entity_type": "attached_file",
+                            "snippet": "User-owned attached evidence",
+                            "relevance_score": 1.0,
+                            "source_document": source["source_document"],
+                        }
+                        for source in sources
+                    ],
+                    "unsupported_claims": [],
+                    "grounding_status": "grounded",
+                })
             yield _sse("done", {
                 "provider": provider.provider_name, "model": provider.model_name,
                 "query_mode": "generic_qa", "is_placeholder_mode": provider.is_local_dev,
@@ -608,14 +653,12 @@ async def ask_assistant_stream(
     """
     if ext_scope is not None:
         deny_external_access(ext_scope, "the AI assistant (tenant-wide RAG access is unavailable to external reviewers)")
-    if current_user.role == UserRole.GENERIC_USER and body.attached_file_ids:
-        # Reject before resolving or creating a session.  Until Phase C owner
-        # checks are complete, an invalid attachment request must be entirely
-        # side-effect free for both new and existing conversations.
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Generic workspace attachments are unavailable until user-owned evidence access is enabled.",
-        )
+    # Authorize every attachment before resolving or creating a session. This
+    # makes guessed IDs side-effect free and prevents partial mixed-owner use.
+    if body.attached_file_ids:
+        from app.services.file_service import get_file_for_user
+        for file_id in body.attached_file_ids:
+            await get_file_for_user(db, file_id, current_user)
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
     effective_mode = body.mode if body.mode in AGENT_MODES else "qa_assistant"
 
@@ -665,7 +708,7 @@ async def ask_assistant_stream(
     # also bypassed — the assistant must not silently query the knowledge base
     # when the user pinned scope to specific files.
     # ---------------------------------------------------------------------------
-    from app.services.file_service import get_file_content
+    from app.services.file_service import get_file_content_for_user
     from app.parsers.factory import get_parser, is_supported
 
     file_chunks: list[dict] | None = None
@@ -690,7 +733,7 @@ async def ask_assistant_stream(
             }
             try:
                 # FOUND — fetch DB record and raw bytes from storage
-                db_file, raw_bytes = await get_file_content(db, fid)
+                db_file, raw_bytes = await get_file_content_for_user(db, fid, current_user)
                 file_status["filename"] = db_file.original_filename
                 file_status["stage"] = _STAGE_FOUND
 
@@ -718,6 +761,9 @@ async def ask_assistant_stream(
                     "combined_score": 1.0,
                     "institution_id": (
                         str(db_file.institution_id) if db_file.institution_id else None
+                    ),
+                    "owner_user_id": (
+                        str(db_file.owner_user_id) if db_file.owner_user_id else None
                     ),
                 })
                 file_status["stage"] = _STAGE_USED

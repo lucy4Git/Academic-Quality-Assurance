@@ -57,6 +57,7 @@ from app.routes.faculties import router as faculties_router
 from app.routes.institutions import router as institutions_router
 from app.routes.audits import router as audits_router
 from app.routes.files import router as files_router
+from app.routes.personal_workspaces import router as personal_workspaces_router
 from app.routes.processing import router as processing_router
 from app.routes.audit_evidence import router as audit_evidence_router
 from app.routes.dashboard import router as dashboard_router
@@ -304,6 +305,7 @@ def create_app() -> FastAPI:
     app.include_router(programmes_router, prefix=prefix)
     app.include_router(modules_router, prefix=prefix)
     app.include_router(files_router, prefix=prefix)
+    app.include_router(personal_workspaces_router, prefix=prefix)
     app.include_router(processing_router, prefix=prefix)
     app.include_router(audits_router, prefix=prefix)
     app.include_router(assessment_audits_router, prefix=prefix)

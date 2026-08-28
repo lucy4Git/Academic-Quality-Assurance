@@ -10,7 +10,7 @@ after the physical file is removed.
 import uuid
 from typing import TYPE_CHECKING
 
-from sqlalchemy import BigInteger, Boolean, Enum, ForeignKey, Integer, String, Text
+from sqlalchemy import BigInteger, Boolean, CheckConstraint, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from app.models.institution import Institution
     from app.models.module import Module
     from app.models.user import User
+    from app.models.user_workspace_module import UserWorkspaceModule
 
 
 class File(Base, UUIDPrimaryKeyMixin, TimestampMixin):
@@ -32,18 +33,37 @@ class File(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     """
 
     __tablename__ = "files"
+    __table_args__ = (
+        CheckConstraint(
+            "(institution_id IS NOT NULL AND module_id IS NOT NULL AND owner_user_id IS NULL AND workspace_module_id IS NULL) OR "
+            "(institution_id IS NULL AND module_id IS NULL AND owner_user_id IS NOT NULL)",
+            name="ck_files_exactly_one_ownership_scope",
+        ),
+    )
 
     # --- Tenant / owner scope ---
-    institution_id: Mapped[uuid.UUID] = mapped_column(
+    institution_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("institutions.id", ondelete="CASCADE"),
-        nullable=False,
+        nullable=True,
         index=True,
     )
-    module_id: Mapped[uuid.UUID] = mapped_column(
+    module_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("modules.id", ondelete="CASCADE"),
-        nullable=False,
+        nullable=True,
+        index=True,
+    )
+    owner_user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
+    workspace_module_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("user_workspace_modules.id", ondelete="CASCADE"),
+        nullable=True,
         index=True,
     )
 
@@ -94,13 +114,18 @@ class File(Base, UUIDPrimaryKeyMixin, TimestampMixin):
 
     # --- Optional metadata ---
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    is_library_item: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, index=True
+    )
 
     # --- Soft delete (preserve row for audit trail) ---
     is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, index=True)
 
     # --- Relationships ---
-    institution: Mapped["Institution"] = relationship()
-    module: Mapped["Module"] = relationship(back_populates="files")
+    institution: Mapped["Institution | None"] = relationship()
+    module: Mapped["Module | None"] = relationship(back_populates="files")
+    owner: Mapped["User | None"] = relationship(foreign_keys=[owner_user_id])
+    workspace_module: Mapped["UserWorkspaceModule | None"] = relationship(back_populates="files")
     uploaded_by: Mapped["User | None"] = relationship(foreign_keys=[uploaded_by_id])
     versions: Mapped[list["FileVersion"]] = relationship(
         back_populates="file",

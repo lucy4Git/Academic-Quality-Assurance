@@ -28,8 +28,10 @@ class FileRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
-    institution_id: uuid.UUID
-    module_id: uuid.UUID
+    institution_id: uuid.UUID | None
+    module_id: uuid.UUID | None
+    owner_user_id: uuid.UUID | None
+    workspace_module_id: uuid.UUID | None
     original_filename: str
     mime_type: str
     extension: str
@@ -40,6 +42,7 @@ class FileRead(BaseModel):
     upload_state: UploadState
     uploaded_by_id: uuid.UUID | None
     description: str | None
+    is_library_item: bool
     is_deleted: bool
     created_at: datetime
     updated_at: datetime
@@ -50,6 +53,7 @@ class FileMetadataUpdate(BaseModel):
 
     category: FileCategory | None = None
     description: str | None = Field(default=None, max_length=1000)
+    is_library_item: bool | None = None
 
 
 class FileUploadError(BaseModel):

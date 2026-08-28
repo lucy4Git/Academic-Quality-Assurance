@@ -26,6 +26,7 @@ from app.models.enums import FileCategory, UploadState
 from app.models.file import File
 from app.models.file_version import FileVersion
 from app.models.user import User
+from app.models.user_workspace_module import UserWorkspaceModule
 from app.schemas.file import FileMetadataUpdate
 from app.services.scan_service import scan_file
 from app.services.validation_service import validate_upload
@@ -68,19 +69,54 @@ async def _resolve_module_institution(
 
 async def _find_existing_file(
     db: AsyncSession,
-    module_id: uuid.UUID,
+    module_id: uuid.UUID | None,
+    workspace_module_id: uuid.UUID | None,
+    owner_user_id: uuid.UUID | None,
     category: FileCategory,
     original_filename: str,
 ) -> File | None:
     result = await db.execute(
         select(File).where(
             File.module_id == module_id,
+            File.workspace_module_id == workspace_module_id,
+            File.owner_user_id == owner_user_id,
             File.category == category,
             File.original_filename == original_filename,
             File.is_deleted.is_(False),
         )
     )
     return result.scalar_one_or_none()
+
+
+async def _resolve_upload_scope(
+    db: AsyncSession,
+    current_user: User,
+    module_id: uuid.UUID | None,
+    workspace_module_id: uuid.UUID | None,
+) -> tuple[uuid.UUID | None, uuid.UUID | None, uuid.UUID | None, uuid.UUID | None]:
+    """Resolve exactly one institutional or personal ownership scope."""
+    from app.models.enums import UserRole
+
+    if current_user.role == UserRole.GENERIC_USER:
+        if module_id is not None or workspace_module_id is None:
+            raise NotFoundError("Personal workspace module", workspace_module_id or module_id)
+        result = await db.execute(
+            select(UserWorkspaceModule).where(
+                UserWorkspaceModule.id == workspace_module_id,
+                UserWorkspaceModule.user_id == current_user.id,
+                UserWorkspaceModule.deleted_at.is_(None),
+            )
+        )
+        if result.scalar_one_or_none() is None:
+            raise NotFoundError("Personal workspace module", workspace_module_id)
+        return None, None, current_user.id, workspace_module_id
+
+    if module_id is None or workspace_module_id is not None:
+        raise NotFoundError("Module", module_id or workspace_module_id)
+    institution_id = await _resolve_module_institution(db, module_id)
+    if current_user.role != UserRole.SYSTEM_ADMIN and current_user.institution_id != institution_id:
+        raise NotFoundError("Module", module_id)
+    return institution_id, module_id, None, None
 
 
 # ---------------------------------------------------------------------------
@@ -90,12 +126,14 @@ async def _find_existing_file(
 
 async def upload_file(
     db: AsyncSession,
-    module_id: uuid.UUID,
+    module_id: uuid.UUID | None,
     category: FileCategory,
     original_filename: str,
     content: bytes,
     current_user: User,
     description: str | None = None,
+    workspace_module_id: uuid.UUID | None = None,
+    is_library_item: bool = False,
 ) -> File:
     """Validate, scan, store, and persist *content* as a new file or new version.
 
@@ -104,15 +142,9 @@ async def upload_file(
         UploadValidationError: file content fails a validation check.
         ConflictError: an existing version of this file is currently quarantined.
     """
-    institution_id = await _resolve_module_institution(db, module_id)
-
-    # Tenant isolation: non-admin users may only upload to their own institution's modules
-    from app.models.enums import UserRole as _Role
-    from app.core.exceptions import NotFoundError as _NF
-    if current_user.role != _Role.SYSTEM_ADMIN:
-        if current_user.institution_id != institution_id:
-            # Return 404 (not 403) to avoid leaking cross-tenant module existence
-            raise _NF("Module", module_id)
+    institution_id, module_id, owner_user_id, workspace_module_id = await _resolve_upload_scope(
+        db, current_user, module_id, workspace_module_id
+    )
 
     ext, mime_type = validate_upload(original_filename, content)
     checksum = _sha256(content)
@@ -120,7 +152,9 @@ async def upload_file(
     scan_result = await scan_file(content)
     final_state = UploadState.READY if scan_result.is_clean else UploadState.QUARANTINED
 
-    existing_file = await _find_existing_file(db, module_id, category, original_filename)
+    existing_file = await _find_existing_file(
+        db, module_id, workspace_module_id, owner_user_id, category, original_filename
+    )
 
     if existing_file is not None and existing_file.upload_state == UploadState.QUARANTINED:
         raise ConflictError(
@@ -132,13 +166,23 @@ async def upload_file(
     file_uuid = existing_file.id if existing_file is not None else uuid.uuid4()
     new_version = (existing_file.version + 1) if existing_file is not None else 1
 
-    stored_path = storage.build_path(
-        institution_id=institution_id,
-        module_id=module_id,
-        category=category.value,
-        file_uuid=file_uuid,
-        filename=f"v{new_version}_{original_filename}",
-    )
+    if owner_user_id is not None:
+        stored_path = storage.build_personal_path(
+            owner_user_id=owner_user_id,
+            workspace_module_id=workspace_module_id,
+            category=category.value,
+            file_uuid=file_uuid,
+            filename=f"v{new_version}_{original_filename}",
+        )
+    else:
+        assert institution_id is not None and module_id is not None
+        stored_path = storage.build_path(
+            institution_id=institution_id,
+            module_id=module_id,
+            category=category.value,
+            file_uuid=file_uuid,
+            filename=f"v{new_version}_{original_filename}",
+        )
     await storage.save(content, stored_path)
 
     if existing_file is None:
@@ -146,6 +190,8 @@ async def upload_file(
             id=file_uuid,
             institution_id=institution_id,
             module_id=module_id,
+            owner_user_id=owner_user_id,
+            workspace_module_id=workspace_module_id,
             original_filename=original_filename,
             stored_path=stored_path,
             mime_type=mime_type,
@@ -157,6 +203,7 @@ async def upload_file(
             upload_state=final_state,
             uploaded_by_id=current_user.id,
             description=description,
+            is_library_item=is_library_item,
         )
         db.add(db_file)
     else:
@@ -170,6 +217,7 @@ async def upload_file(
         existing_file.uploaded_by_id = current_user.id
         if description is not None:
             existing_file.description = description
+        existing_file.is_library_item = is_library_item
         db_file = existing_file
 
     db_version = FileVersion(
@@ -205,10 +253,11 @@ async def upload_file(
 
 async def bulk_upload(
     db: AsyncSession,
-    module_id: uuid.UUID,
+    module_id: uuid.UUID | None,
     category: FileCategory,
     files: list[tuple[str, bytes]],
     current_user: User,
+    workspace_module_id: uuid.UUID | None = None,
 ) -> tuple[list[File], list[tuple[str, str]]]:
     """Upload multiple files independently; partial success is allowed.
 
@@ -227,6 +276,7 @@ async def bulk_upload(
                 original_filename=filename,
                 content=content,
                 current_user=current_user,
+                workspace_module_id=workspace_module_id,
             )
             uploaded.append(db_file)
         except Exception as exc:
@@ -258,6 +308,8 @@ async def list_files(
     module_id: uuid.UUID | None = None,
     category: FileCategory | None = None,
     upload_state: UploadState | None = None,
+    workspace_module_id: uuid.UUID | None = None,
+    library_only: bool = False,
     skip: int = 0,
     limit: int = 50,
 ) -> list[File]:
@@ -270,13 +322,24 @@ async def list_files(
         .order_by(File.created_at.desc())
     )
 
-    if current_user.role != UserRole.SYSTEM_ADMIN:
+    if current_user.role == UserRole.GENERIC_USER:
+        query = query.where(File.owner_user_id == current_user.id)
+    elif current_user.role == UserRole.SYSTEM_ADMIN:
+        # Platform privilege does not imply access to private personal files.
+        query = query.where(
+            (File.institution_id.is_not(None)) | (File.owner_user_id == current_user.id)
+        )
+    else:
         if current_user.institution_id is None:
             return []
         query = query.where(File.institution_id == current_user.institution_id)
 
     if module_id is not None:
         query = query.where(File.module_id == module_id)
+    if workspace_module_id is not None:
+        query = query.where(File.workspace_module_id == workspace_module_id)
+    if library_only:
+        query = query.where(File.is_library_item.is_(True))
     if category is not None:
         query = query.where(File.category == category)
     if upload_state is not None:
@@ -284,6 +347,43 @@ async def list_files(
 
     result = await db.execute(query.offset(skip).limit(limit))
     return list(result.scalars().all())
+
+
+async def get_file_for_user(
+    db: AsyncSession, file_id: uuid.UUID, current_user: User
+) -> File:
+    """Return one file through its enforced tenant or owner boundary."""
+    from app.models.enums import UserRole
+
+    query = select(File).where(File.id == file_id, File.is_deleted.is_(False))
+    if current_user.role == UserRole.GENERIC_USER:
+        query = query.where(File.owner_user_id == current_user.id)
+    elif current_user.role == UserRole.SYSTEM_ADMIN:
+        query = query.where(
+            (File.institution_id.is_not(None)) | (File.owner_user_id == current_user.id)
+        )
+    else:
+        query = query.where(File.institution_id == current_user.institution_id)
+    result = await db.execute(query)
+    db_file = result.scalar_one_or_none()
+    if db_file is None:
+        raise NotFoundError("File", file_id)
+    return db_file
+
+
+async def get_file_content_for_user(
+    db: AsyncSession, file_id: uuid.UUID, current_user: User
+) -> tuple[File, bytes]:
+    from app.core.exceptions import PermissionError as DomainPermissionError
+
+    db_file = await get_file_for_user(db, file_id, current_user)
+    if db_file.upload_state == UploadState.QUARANTINED:
+        raise DomainPermissionError("This file has been quarantined and cannot be downloaded.")
+    try:
+        content = await get_storage().read(db_file.stored_path)
+    except FileNotFoundError:
+        raise NotFoundError("File content", file_id)
+    return db_file, content
 
 
 async def get_file_content(db: AsyncSession, file_id: uuid.UUID) -> tuple[File, bytes]:

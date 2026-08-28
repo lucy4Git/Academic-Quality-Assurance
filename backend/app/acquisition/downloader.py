@@ -9,6 +9,7 @@ import httpx
 from .checksum import compute_sha256
 from .document_detector import detect_file_type
 from .robots import USER_AGENT, is_allowed
+from .url_safety import UnsafeUrlError, assert_public_http_url, safe_get
 
 logger = logging.getLogger(__name__)
 MAX_CONTENT_BYTES = 10 * 1024 * 1024  # 10 MB safety cap
@@ -62,6 +63,14 @@ def download_metadata(url: str) -> DownloadResult:
     Returns metadata + checksum; does not persist bytes. Never raises — all
     errors are captured in the returned ``DownloadResult``.
     """
+    try:
+        assert_public_http_url(url)
+    except UnsafeUrlError as exc:
+        return DownloadResult(
+            url=url, success=False, status_code=None, content_type=None,
+            file_type="unknown", content_length=None, checksum=None,
+            error=str(exc), robots_blocked=False,
+        )
     if not is_allowed(url):
         logger.info("robots.txt blocks %s", url)
         return DownloadResult(
@@ -72,20 +81,17 @@ def download_metadata(url: str) -> DownloadResult:
         )
     try:
         headers = {"User-Agent": USER_AGENT}
-        with httpx.Client(
-            timeout=REQUEST_TIMEOUT, follow_redirects=True, headers=headers
-        ) as client:
-            response = client.get(url)
-            response.raise_for_status()
-            content_type = response.headers.get("content-type")
-            file_type = detect_file_type(content_type)
-            content = response.content[:MAX_CONTENT_BYTES]
-            checksum = compute_sha256(content)
-            title = _extract_title(content) if file_type == "html" else None
-            return DownloadResult(
-                url=url,
+        final_url, status_code, response_headers, content = safe_get(
+            url, headers=headers, timeout=REQUEST_TIMEOUT, max_bytes=MAX_CONTENT_BYTES
+        )
+        content_type = response_headers.get("content-type")
+        file_type = detect_file_type(content_type)
+        checksum = compute_sha256(content)
+        title = _extract_title(content) if file_type == "html" else None
+        return DownloadResult(
+                url=final_url,
                 success=True,
-                status_code=response.status_code,
+                status_code=status_code,
                 content_type=content_type,
                 file_type=file_type,
                 content_length=len(content),
@@ -114,6 +120,14 @@ def download_with_content(url: str) -> tuple[DownloadResult, bytes | None]:
 
     Returns (DownloadResult, content_bytes). content_bytes is None on failure.
     """
+    try:
+        assert_public_http_url(url)
+    except UnsafeUrlError as exc:
+        return DownloadResult(
+            url=url, success=False, status_code=None, content_type=None,
+            file_type="unknown", content_length=None, checksum=None,
+            error=str(exc), robots_blocked=False,
+        ), None
     if not is_allowed(url):
         logger.info("robots.txt blocks %s", url)
         result = DownloadResult(
@@ -125,28 +139,25 @@ def download_with_content(url: str) -> tuple[DownloadResult, bytes | None]:
         return result, None
     try:
         headers = {"User-Agent": USER_AGENT}
-        with httpx.Client(
-            timeout=REQUEST_TIMEOUT, follow_redirects=True, headers=headers
-        ) as client:
-            response = client.get(url)
-            response.raise_for_status()
-            content_type = response.headers.get("content-type")
-            file_type = detect_file_type(content_type)
-            content = response.content[:MAX_CONTENT_BYTES]
-            checksum = compute_sha256(content)
-            title = _extract_title(content) if file_type == "html" else None
-            result = DownloadResult(
-                url=url,
-                success=True,
-                status_code=response.status_code,
-                content_type=content_type,
-                file_type=file_type,
-                content_length=len(content),
-                checksum=checksum,
-                error=None,
-                title=title,
-            )
-            return result, content
+        final_url, status_code, response_headers, content = safe_get(
+            url, headers=headers, timeout=REQUEST_TIMEOUT, max_bytes=MAX_CONTENT_BYTES
+        )
+        content_type = response_headers.get("content-type")
+        file_type = detect_file_type(content_type)
+        checksum = compute_sha256(content)
+        title = _extract_title(content) if file_type == "html" else None
+        result = DownloadResult(
+            url=final_url,
+            success=True,
+            status_code=status_code,
+            content_type=content_type,
+            file_type=file_type,
+            content_length=len(content),
+            checksum=checksum,
+            error=None,
+            title=title,
+        )
+        return result, content
     except httpx.HTTPStatusError as exc:
         result = DownloadResult(
             url=url, success=False, status_code=exc.response.status_code,

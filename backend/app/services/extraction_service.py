@@ -63,15 +63,27 @@ async def get_record(db: AsyncSession, file_id: uuid.UUID) -> DocumentRecord | N
 async def list_records(
     db: AsyncSession,
     institution_id: uuid.UUID | None = None,
+    owner_user_id: uuid.UUID | None = None,
+    exclude_personal: bool = False,
     status: ProcessingStatus | None = None,
     file_ids: list[uuid.UUID] | None = None,
     skip: int = 0,
     limit: int = 50,
 ) -> list[DocumentRecord]:
-    """Return DocumentRecords filtered by institution, status, or file list."""
+    """Return DocumentRecords through an explicit tenant or personal-owner scope."""
     query = select(DocumentRecord).order_by(DocumentRecord.created_at.desc())
     if institution_id is not None:
         query = query.where(DocumentRecord.institution_id == institution_id)
+    if owner_user_id is not None:
+        query = query.join(File, DocumentRecord.file_id == File.id).where(
+            File.owner_user_id == owner_user_id,
+            File.is_deleted.is_(False),
+        )
+    elif exclude_personal:
+        query = query.join(File, DocumentRecord.file_id == File.id).where(
+            File.institution_id.is_not(None),
+            File.is_deleted.is_(False),
+        )
     if status is not None:
         query = query.where(DocumentRecord.status == status)
     if file_ids is not None:

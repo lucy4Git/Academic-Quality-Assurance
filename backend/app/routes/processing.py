@@ -30,7 +30,7 @@ from app.dependencies import (
     LecturerRequired,
     PaginationParams,
 )
-from app.models.enums import ProcessingStatus
+from app.models.enums import ProcessingStatus, UserRole
 from app.models.user import User
 from app.schemas.document_record import (
     DocumentRecordBrief,
@@ -40,7 +40,7 @@ from app.schemas.document_record import (
     ReclassifyResponse,
 )
 from app.services import extraction_service, processing_service
-from app.services.file_service import get_file
+from app.services.file_service import get_file_for_user
 
 router = APIRouter(prefix="/processing", tags=["Document Processing"])
 
@@ -48,18 +48,6 @@ router = APIRouter(prefix="/processing", tags=["Document Processing"])
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-
-def _assert_tenant(current_user: User, record_institution_id: uuid.UUID) -> None:
-    from app.models.enums import UserRole
-
-    if current_user.role == UserRole.SYSTEM_ADMIN:
-        return
-    if current_user.institution_id != record_institution_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have access to this processing record.",
-        )
 
 
 # ---------------------------------------------------------------------------
@@ -85,8 +73,7 @@ async def trigger_processing(
     completion.  If the file is already COMPLETED or PROCESSING the call
     is a no-op and returns the current status.
     """
-    db_file = await get_file(db, file_id)
-    _assert_tenant(current_user, db_file.institution_id)
+    db_file = await get_file_for_user(db, file_id, current_user)
 
     record = await extraction_service.get_or_create_record(db, db_file)
     await db.commit()
@@ -125,13 +112,13 @@ async def get_processing_record(
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
 ) -> DocumentRecordRead:
+    await get_file_for_user(db, file_id, current_user)
     record = await extraction_service.get_record(db, file_id)
     if record is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No processing record found for file {file_id}.",
         )
-    _assert_tenant(current_user, record.institution_id)
     return DocumentRecordRead.model_validate(record)
 
 
@@ -150,13 +137,13 @@ async def get_processing_record_with_text(
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
 ) -> DocumentRecordWithText:
+    await get_file_for_user(db, file_id, current_user)
     record = await extraction_service.get_record(db, file_id)
     if record is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No processing record found for file {file_id}.",
         )
-    _assert_tenant(current_user, record.institution_id)
     return DocumentRecordWithText.model_validate(record)
 
 
@@ -178,17 +165,17 @@ async def list_processing_records(
     current_user: User = AnyAuthenticatedUser,
     db: AsyncSession = Depends(get_db),
 ) -> list[DocumentRecordBrief]:
-    from app.models.enums import UserRole
-
-    institution_id = (
-        None
-        if current_user.role == UserRole.SYSTEM_ADMIN
-        else current_user.institution_id
-    )
-
     records = await extraction_service.list_records(
         db=db,
-        institution_id=institution_id,
+        institution_id=(
+            current_user.institution_id
+            if current_user.role not in (UserRole.GENERIC_USER, UserRole.SYSTEM_ADMIN)
+            else None
+        ),
+        owner_user_id=(
+            current_user.id if current_user.role == UserRole.GENERIC_USER else None
+        ),
+        exclude_personal=current_user.role == UserRole.SYSTEM_ADMIN,
         status=status_filter,
         skip=pagination.skip,
         limit=pagination.limit,
@@ -211,14 +198,13 @@ async def reclassify(
     current_user: User = CoordinatorRequired,
     db: AsyncSession = Depends(get_db),
 ) -> ReclassifyResponse:
+    await get_file_for_user(db, file_id, current_user)
     record = await extraction_service.get_record(db, file_id)
     if record is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No processing record found for file {file_id}.",
         )
-    _assert_tenant(current_user, record.institution_id)
-
     try:
         prev, new_cat, confidence = await processing_service.reclassify_file(db, file_id)
     except ValueError as exc:
@@ -250,11 +236,11 @@ async def reset_processing(
     current_user: User = CoordinatorRequired,
     db: AsyncSession = Depends(get_db),
 ) -> None:
+    await get_file_for_user(db, file_id, current_user)
     record = await extraction_service.get_record(db, file_id)
     if record is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No processing record found for file {file_id}.",
         )
-    _assert_tenant(current_user, record.institution_id)
     await processing_service.reset_record(db, file_id)

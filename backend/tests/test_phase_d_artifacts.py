@@ -214,3 +214,47 @@ class TestArtifactRouterRegistration:
         from app.routes.artifacts import router as artifacts_router
         routes = {r.path: getattr(r, "methods", set()) for r in artifacts_router.routes if hasattr(r, "path")}
         assert len(routes) > 0
+
+
+class TestPersonalArtifactOwnership:
+    def test_generic_user_cannot_read_another_users_personal_artifact(self):
+        from app.routes.artifacts import _check_access
+
+        owner = _make_user(UserRole.GENERIC_USER)
+        owner.institution_id = None
+        attacker = _make_user(UserRole.GENERIC_USER)
+        attacker.institution_id = None
+        artifact = _make_artifact(owner)
+        artifact.institution_id = None
+        artifact.tenant_id = None
+
+        with pytest.raises(Exception) as exc_info:
+            _check_access(artifact, attacker)
+
+        assert exc_info.value.status_code == 404
+
+    def test_system_admin_has_no_implicit_personal_artifact_access(self):
+        from app.routes.artifacts import _check_access
+
+        owner = _make_user(UserRole.GENERIC_USER)
+        owner.institution_id = None
+        admin = _make_user(UserRole.SYSTEM_ADMIN)
+        artifact = _make_artifact(owner)
+        artifact.institution_id = None
+        artifact.tenant_id = None
+
+        with pytest.raises(Exception) as exc_info:
+            _check_access(artifact, admin)
+
+        assert exc_info.value.status_code == 404
+
+    def test_personal_artifact_owner_retains_access(self):
+        from app.routes.artifacts import _check_access
+
+        owner = _make_user(UserRole.GENERIC_USER)
+        owner.institution_id = None
+        artifact = _make_artifact(owner)
+        artifact.institution_id = None
+        artifact.tenant_id = None
+
+        _check_access(artifact, owner)

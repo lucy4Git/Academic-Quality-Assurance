@@ -50,7 +50,7 @@ from app.dependencies import (
     get_external_scope,
 )
 from app.core.external_scope import ExternalScope, assert_module_scope, deny_external_access
-from app.models.enums import FileCategory, UploadState
+from app.models.enums import FileCategory, UploadState, UserRole
 from app.models.user import User
 from app.schemas.file import (
     BulkUploadResponse,
@@ -462,6 +462,14 @@ async def upload_zip(
     committing.  No files are written to storage yet — that happens at /files/upload-zip/confirm.
     """
     deny_external_access(ext_scope, "file uploads")
+    if current_user.role == UserRole.GENERIC_USER:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "ZIP upload is not available for personal workspaces yet. "
+                "Upload evidence files individually so each file is validated, scanned, and stored securely."
+            ),
+        )
     from app.services.zip_upload_service import ZipUploadError, extract_and_classify, validate_zip
     from app.config import settings as _settings
 
@@ -495,23 +503,16 @@ async def confirm_zip_mapping(
     db: AsyncSession = Depends(get_db),
     ext_scope: ExternalScope | None = Depends(get_external_scope),
 ) -> dict:
+    """Accept a corrected ZIP file-to-category mapping and enqueue uploads."""
     deny_external_access(ext_scope, "file uploads")
-    """Accept the user-corrected mapping produced by /upload-zip.
-
-    Expected body::
-
-        {
-          "module_id": "<uuid>",
-          "files": [
-            {"original_path": "...", "filename": "...", "category": "assessment", ...},
-            ...
-          ]
-        }
-
-    Each file must supply a valid FileCategory value. Files are queued for
-    standard single-file upload processing (virus scan → storage → DB record).
-    This endpoint returns immediately with a count — actual processing is async.
-    """
+    if current_user.role == UserRole.GENERIC_USER:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "ZIP upload is not available for personal workspaces yet. "
+                "No files were queued or persisted."
+            ),
+        )
     module_id_raw = body.get("module_id")
     files = body.get("files", [])
 

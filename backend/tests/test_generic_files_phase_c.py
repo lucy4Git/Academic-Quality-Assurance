@@ -1,16 +1,20 @@
 """Security and schema regressions for Generic personal evidence ownership."""
 
 import uuid
+from io import BytesIO
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from fastapi import HTTPException, UploadFile
 from sqlalchemy import inspect
 
 from app.core.exceptions import NotFoundError
 from app.models.enums import UserRole
 from app.models.file import File
 from app.services import file_service
+from app.routes import files as files_routes
+from app.routes import processing as processing_routes
 from app.storage.local import LocalStorageBackend
 
 
@@ -95,3 +99,71 @@ async def test_system_admin_does_not_gain_arbitrary_personal_file_access():
     statement = str(db.execute.await_args.args[0])
     assert "files.institution_id IS NOT NULL" in statement
     assert "files.owner_user_id" in statement
+
+
+@pytest.mark.asyncio
+async def test_generic_zip_manifest_is_explicitly_denied():
+    upload = UploadFile(filename="module-folder.zip", file=BytesIO(b"not-read"))
+
+    with pytest.raises(HTTPException) as exc_info:
+        await files_routes.upload_zip(upload, current_user=_user(), ext_scope=None)
+
+    assert exc_info.value.status_code == 403
+    assert "not available for personal workspaces" in exc_info.value.detail
+
+
+@pytest.mark.asyncio
+async def test_generic_zip_confirm_never_claims_files_were_queued():
+    with pytest.raises(HTTPException) as exc_info:
+        await files_routes.confirm_zip_mapping(
+            {"module_id": str(uuid.uuid4()), "files": [{"category": "other"}]},
+            current_user=_user(),
+            db=AsyncMock(),
+            ext_scope=None,
+        )
+
+    assert exc_info.value.status_code == 403
+    assert "No files were queued or persisted" in exc_info.value.detail
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "route",
+    [
+        processing_routes.get_processing_record,
+        processing_routes.get_processing_record_with_text,
+        processing_routes.reclassify,
+        processing_routes.reset_processing,
+    ],
+)
+async def test_processing_direct_access_checks_file_ownership_first(monkeypatch, route):
+    hidden = uuid.uuid4()
+    ownership_check = AsyncMock(side_effect=NotFoundError("File", hidden))
+    record_lookup = AsyncMock()
+    monkeypatch.setattr(processing_routes, "get_file_for_user", ownership_check)
+    monkeypatch.setattr(processing_routes.extraction_service, "get_record", record_lookup)
+
+    with pytest.raises(NotFoundError):
+        await route(hidden, current_user=_user(), db=AsyncMock())
+
+    ownership_check.assert_awaited_once()
+    record_lookup.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_generic_processing_list_is_owner_scoped(monkeypatch):
+    user = _user()
+    list_records = AsyncMock(return_value=[])
+    monkeypatch.setattr(processing_routes.extraction_service, "list_records", list_records)
+
+    result = await processing_routes.list_processing_records(
+        status_filter=None,
+        pagination=SimpleNamespace(skip=0, limit=50),
+        current_user=user,
+        db=AsyncMock(),
+    )
+
+    assert result == []
+    assert list_records.await_args.kwargs["owner_user_id"] == user.id
+    assert list_records.await_args.kwargs["institution_id"] is None
+    assert list_records.await_args.kwargs["exclude_personal"] is False

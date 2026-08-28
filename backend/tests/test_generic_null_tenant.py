@@ -142,3 +142,13 @@ class TestNullTenantIsolation:
 
         assert personal_workspace_owner is not None
         assert generic.institution_id is None
+
+    @pytest.mark.asyncio
+    async def test_generic_user_cannot_receive_platform_dashboard_totals(self):
+        from fastapi import HTTPException
+        from app.routes.dashboard import get_summary
+
+        with pytest.raises(HTTPException) as exc_info:
+            await get_summary(db=AsyncMock(), current_user=make_generic_user_no_tenant())
+
+        assert exc_info.value.status_code == 403

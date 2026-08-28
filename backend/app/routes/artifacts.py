@@ -54,11 +54,15 @@ def _tenant_filter(user: User):
 
 
 def _check_access(artifact: AiArtifact, user: User) -> None:
-    """Raise 403 if user cannot access this artifact."""
+    """Enforce institutional tenancy or exact personal ownership."""
+    if artifact.institution_id is None:
+        if artifact.created_by != user.id:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artifact not found.")
+        return
     if user.role == UserRole.SYSTEM_ADMIN:
         return
-    if artifact.institution_id and artifact.institution_id != user.institution_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied.")
+    if artifact.institution_id != user.institution_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artifact not found.")
 
 
 def _check_write(artifact: AiArtifact, user: User) -> None:
@@ -133,7 +137,6 @@ async def list_artifacts(
     if institution_id:
         stmt = stmt.where(AiArtifact.institution_id == institution_id)
     else:
-        # SA — list own artifacts only unless scoped by conversation
         stmt = stmt.where(AiArtifact.created_by == user.id)
 
     if conversation_id:
@@ -168,6 +171,8 @@ async def list_conversation_artifacts(
     institution_id = _tenant_filter(user)
     if institution_id:
         stmt = stmt.where(AiArtifact.institution_id == institution_id)
+    else:
+        stmt = stmt.where(AiArtifact.created_by == user.id)
     result = await db.execute(stmt)
     return [ArtifactBrief.model_validate(a) for a in result.scalars().all()]
 

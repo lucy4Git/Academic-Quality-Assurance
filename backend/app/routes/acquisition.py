@@ -42,6 +42,11 @@ def _scope_to_institution(
     """Return the institution_id to filter by, or None for System Admin seeing all."""
     if current_user.role == UserRole.SYSTEM_ADMIN:
         return institution_id  # SA can see all or filter by param
+    if current_user.role == UserRole.GENERIC_USER or current_user.institution_id is None:
+        raise HTTPException(
+            status_code=403,
+            detail="Institutional acquisition data is not available to personal workspaces.",
+        )
     return current_user.institution_id
 
 

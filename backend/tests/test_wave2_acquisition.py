@@ -2,7 +2,13 @@
 from __future__ import annotations
 
 import json
+import uuid
 from pathlib import Path
+
+import pytest
+from fastapi import HTTPException
+
+from app.models.enums import UserRole
 
 # ── utility tests ──────────────────────────────────────────────────────────────
 
@@ -148,6 +154,32 @@ def test_acquisition_routes_registered():
     assert any("downloads" in p for p in paths)
 
 
+def test_generic_user_cannot_turn_null_institution_into_unscoped_acquisition_access():
+    from app.routes.acquisition import _scope_to_institution
+
+    user = type("User", (), {
+        "id": uuid.uuid4(),
+        "role": UserRole.GENERIC_USER,
+        "institution_id": None,
+    })()
+    with pytest.raises(HTTPException) as exc_info:
+        _scope_to_institution(user)
+
+    assert exc_info.value.status_code == 403
+
+
+def test_system_admin_retains_explicit_platform_acquisition_scope():
+    from app.routes.acquisition import _scope_to_institution
+
+    target = uuid.uuid4()
+    user = type("User", (), {
+        "id": uuid.uuid4(),
+        "role": UserRole.SYSTEM_ADMIN,
+        "institution_id": None,
+    })()
+    assert _scope_to_institution(user, target) == target
+
+
 # ── acquisition package tests ────────────────────────────────────────────────────
 
 
@@ -168,6 +200,22 @@ def test_downloader_network_failure_returns_result():
     assert result.success is False
     assert result.error is not None
     assert result.checksum is None
+
+
+@pytest.mark.parametrize("url", [
+    "http://127.0.0.1/admin",
+    "http://[::1]/metrics",
+    "http://169.254.169.254/latest/meta-data/",
+    "file:///etc/passwd",
+    "http://localhost/internal",
+])
+def test_downloader_blocks_private_and_non_http_destinations(url):
+    from app.acquisition.downloader import download_with_content
+
+    result, content = download_with_content(url)
+    assert result.success is False
+    assert content is None
+    assert "allowed" in (result.error or "").lower()
 
 
 # ── frontend file tests ──────────────────────────────────────────────────────────

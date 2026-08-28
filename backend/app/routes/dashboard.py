@@ -5,7 +5,7 @@ Endpoint
 GET /api/v1/dashboard/summary  — entity counts (scoped by role/institution)
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -30,6 +30,13 @@ async def get_summary(
     System Admins receive platform-wide totals.
     All other roles receive counts scoped to their institution.
     """
+    if current_user.role == UserRole.GENERIC_USER or (
+        current_user.role != UserRole.SYSTEM_ADMIN and current_user.institution_id is None
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Institutional dashboard data is not available to personal workspaces.",
+        )
     institution_id = (
         None
         if current_user.role == UserRole.SYSTEM_ADMIN

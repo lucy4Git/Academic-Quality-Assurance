@@ -118,9 +118,8 @@ export function GenericRegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function update(key: keyof Fields, value: string | Persona | null) {
-    const next = { ...fields, [key]: value };
-    setFields(next as Fields);
-    if (submitted) setErrors(validate(next as Fields));
+    setFields((current) => ({ ...current, [key]: value } as Fields));
+    if (submitted) setErrors((current) => ({ ...current, [key]: undefined }));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -148,9 +147,12 @@ export function GenericRegisterForm() {
       const data = await res.json() as {
         message?: string;
         email?: string;
-        detail?: string;
+        detail?: string | Array<{ msg?: string }>;
         requires_verification?: boolean;
       };
+      const detail = typeof data.detail === "string"
+        ? data.detail
+        : data.detail?.map((item) => item.msg).filter(Boolean).join(" ");
 
       if (!res.ok) {
         if (res.status === 409) {
@@ -159,10 +161,10 @@ export function GenericRegisterForm() {
           });
         } else if (res.status === 403) {
           toast.error("Registration closed", {
-            description: data.detail ?? "Public registration is currently closed.",
+            description: detail ?? "Public registration is currently closed.",
           });
         } else {
-          toast.error("Registration failed", { description: data.detail });
+          toast.error("Registration failed", { description: detail });
         }
         return;
       }

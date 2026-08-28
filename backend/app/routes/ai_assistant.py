@@ -373,7 +373,7 @@ async def _stream_ask(
                 await asyncio.sleep(0.02)
             sources = [
                 {
-                    "entity_type": "attached_file",
+                    "entity_type": chunk.get("entity_type", "owned_file"),
                     "entity_key": chunk.get("entity_id"),
                     "title": chunk.get("title"),
                     "source_document": chunk.get("source_document"),
@@ -391,8 +391,8 @@ async def _stream_ask(
                         {
                             "source_id": source["entity_key"],
                             "title": source["title"],
-                            "entity_type": "attached_file",
-                            "snippet": "User-owned attached evidence",
+                            "entity_type": source["entity_type"],
+                            "snippet": "User-owned retrieved evidence",
                             "relevance_score": 1.0,
                             "source_document": source["source_document"],
                         }
@@ -795,6 +795,14 @@ async def ask_assistant_stream(
             attachment_report["attachment_grounding_status"] = "partial"
         else:
             attachment_report["attachment_grounding_status"] = "success"
+
+    # Generic personal workspaces may retrieve only from the signed-in user's
+    # own ready files. Explicit attachments remain authoritative; automatic
+    # retrieval runs only when the user has not pinned the scope.
+    if current_user.role == UserRole.GENERIC_USER and file_chunks is None:
+        from app.services.generic_retrieval_service import retrieve_owned_chunks
+
+        file_chunks = await retrieve_owned_chunks(db, current_user, body.question)
 
     async def _persist_and_stream():
         # Emit attachment status before the LLM stream begins so the client

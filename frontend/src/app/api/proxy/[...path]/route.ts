@@ -40,11 +40,16 @@ async function handler(
       body,
     });
 
-    const responseBody = await upstream.text();
+    const contentType = upstream.headers.get("content-type") ?? "application/json";
+    const isEventStream = contentType.toLowerCase().includes("text/event-stream");
+    const responseBody = isEventStream ? upstream.body : await upstream.text();
     return new NextResponse(responseBody, {
       status: upstream.status,
       headers: {
-        "Content-Type": upstream.headers.get("content-type") ?? "application/json",
+        "Content-Type": contentType,
+        ...(isEventStream
+          ? { "Cache-Control": "no-cache", "X-Accel-Buffering": "no" }
+          : {}),
       },
     });
   } catch (error) {

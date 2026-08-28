@@ -204,6 +204,7 @@ export interface WorkspaceContextHint {
 
 export interface AskStreamRequest {
   question: string;
+  session_id?: string | null;
   institution_code?: string | null;
   context_limit?: number;
   mode?: string;
@@ -230,6 +231,7 @@ export async function* askStream(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       question: body.question,
+      session_id: body.session_id ?? null,
       institution_code: body.institution_code ?? null,
       context_limit: body.context_limit ?? 5,
       mode: body.mode ?? "qa_assistant",

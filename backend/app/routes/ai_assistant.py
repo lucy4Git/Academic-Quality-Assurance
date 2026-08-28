@@ -42,6 +42,7 @@ from app.ai_assistant.llm_router_service import llm_route_prompt
 from app.ai_assistant.prompt_templates import AGENT_MODE_LABELS, AGENT_MODES
 from app.ai_assistant.recommendation_engine import get_recommendations
 from app.ai_providers.manager import get_provider_manager
+from app.ai_providers.base_provider import AIMessage
 from app.rag.advanced_rag_service import advanced_ask
 from app.ai_providers.provider_factory import get_provider
 from app.database import get_db
@@ -96,7 +97,7 @@ async def _resolve_institution_code(
     db: AsyncSession,
     current_user: User,
     requested_code: str | None,
-) -> str:
+) -> str | None:
     if current_user.role == UserRole.SYSTEM_ADMIN:
         if not requested_code:
             raise HTTPException(
@@ -113,6 +114,9 @@ async def _resolve_institution_code(
                 ),
             )
         return code
+
+    if current_user.role == UserRole.GENERIC_USER:
+        return None
 
     if current_user.institution_id is None:
         raise HTTPException(
@@ -236,6 +240,11 @@ async def ask_assistant(
     # other modules' evidence from the same institution's knowledge index.
     if ext_scope is not None:
         deny_external_access(ext_scope, "the AI assistant (tenant-wide RAG access is unavailable to external reviewers)")
+    if current_user.role == UserRole.GENERIC_USER:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Generic conversations must use /ai-assistant/ask-stream.",
+        )
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
     try:
@@ -286,13 +295,14 @@ def _sse(event_type: str, data: dict[str, Any]) -> str:
 
 async def _stream_ask(
     question: str,
-    institution_code: str,
+    institution_code: str | None,
     context_limit: int,
     mode: str,
     db: AsyncSession | None = None,
     current_user: User | None = None,
     workspace_context: WorkspaceContextHint | None = None,
     file_chunks: list[dict] | None = None,
+    conversation_history: list[AIMessage] | None = None,
 ) -> Any:
     """Async generator that yields SSE lines for one ask-stream request.
 
@@ -310,6 +320,50 @@ async def _stream_ask(
     """
     import logging as _log
     _logger = _log.getLogger(__name__)
+
+    # Generic users have personal workspaces, not a null/global institution.
+    # They deliberately bypass institution-scoped context, orchestration and RAG.
+    if current_user is not None and current_user.role == UserRole.GENERIC_USER:
+        try:
+            manager = get_provider_manager()
+            provider = await manager.get_healthy_provider()
+            system_prompt = (
+                "You are AQAA, an Academic Quality Assurance Agent for a personal, "
+                "non-institutional workspace. Help with module/course folders, learning "
+                "outcomes, teaching plans and content, assessments, memoranda, marking "
+                "guides, rubrics, moderation, attendance, results, QA findings, remediation, "
+                "readiness and reporting. Use only these evidence statuses: PRESENT, MISSING, "
+                "INCOMPLETE, NON-COMPLIANT, NOT APPLICABLE, UNABLE TO DETERMINE. Clearly "
+                "distinguish general QA knowledge, facts stated by the user, actually retrieved "
+                "evidence, and unknown or insufficient evidence. Never claim to have inspected "
+                "evidence unless it was genuinely retrieved. Never invent the user's institution "
+                "or institution-specific requirements."
+            )
+            messages = [AIMessage(role="system", content=system_prompt)]
+            messages.extend(conversation_history or [])
+            messages.append(AIMessage(role="user", content=question))
+            answer = await provider.complete(messages, temperature=0.2, max_tokens=1400)
+            yield _sse("start", {
+                "intent": "qa_general", "agents": ["AQAA"], "confidence": 1.0,
+                "routing_reason": "Generic personal workspace", "used_llm": not provider.is_local_dev,
+            })
+            words = answer.split(" ")
+            for i in range(0, len(words), 6):
+                content = " ".join(words[i:i + 6])
+                yield _sse("token", {"content": content if i == 0 else " " + content})
+                await asyncio.sleep(0.02)
+            yield _sse("sources", {
+                "sources": [], "confidence_score": 0.0, "suggested_followups": [],
+                "suggested_next_actions": [], "follow_up_questions": [],
+            })
+            yield _sse("done", {
+                "provider": provider.provider_name, "model": provider.model_name,
+                "query_mode": "generic_qa", "is_placeholder_mode": provider.is_local_dev,
+            })
+        except Exception as exc:
+            _logger.error("generic ask-stream failed: %s", exc)
+            yield _sse("error", {"message": "The AI service could not complete the request. Please try again."})
+        return
 
     # D1 — Resolve context
     resolved_ctx = None
@@ -561,7 +615,12 @@ async def ask_assistant_stream(
     session_id: uuid.UUID
     if body.session_id is not None:
         existing = await db.get(AiChatSession, body.session_id)
-        if existing is None or existing.user_id != current_user.id:
+        if (
+            existing is None
+            or existing.user_id != current_user.id
+            or not existing.is_active
+            or existing.is_deleted
+        ):
             raise HTTPException(status_code=404, detail="Session not found.")
         session_id = existing.id
     else:
@@ -576,6 +635,25 @@ async def ask_assistant_stream(
         session_id = new_session.id
 
     attached_ids = [str(fid) for fid in body.attached_file_ids] if body.attached_file_ids else None
+
+    if current_user.role == UserRole.GENERIC_USER and body.attached_file_ids:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Generic workspace attachments are unavailable until user-owned evidence access is enabled.",
+        )
+
+    history_result = await db.execute(
+        select(AiChatMessage)
+        .where(AiChatMessage.session_id == session_id)
+        .order_by(AiChatMessage.created_at.desc())
+        .limit(20)
+    )
+    prior_messages = list(reversed(history_result.scalars().all()))
+    conversation_history = [
+        AIMessage(role=message.role, content=message.content)
+        for message in prior_messages
+        if message.role in {"user", "assistant"}
+    ]
 
     # ---------------------------------------------------------------------------
     # Attachment grounding pipeline
@@ -692,6 +770,7 @@ async def ask_assistant_stream(
             current_user=current_user,
             workspace_context=body.workspace_context,
             file_chunks=file_chunks,
+            conversation_history=conversation_history,
         ):
             # Accumulate tokens and metadata for persistence
             try:
@@ -1065,6 +1144,11 @@ async def ask_in_session(
         raise HTTPException(status_code=404, detail="Session not found.")
     if session.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Access denied.")
+    if current_user.role == UserRole.GENERIC_USER:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Generic conversations must use /ai-assistant/ask-stream.",
+        )
 
     institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
 
@@ -1079,108 +1163,6 @@ async def ask_in_session(
     await _persist_message_pair(db, session_id, body.question, result)
     result["session_id"] = str(session_id)
     return result
-
-
-@router.post(
-    "/sessions/{session_id}/ask-stream",
-    summary="Ask a question within a session with streaming response",
-)
-async def ask_in_session_stream(
-    session_id: uuid.UUID,
-    body: AskRequest,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = ConversationAccessRequired,
-):
-    """POST /ai-assistant/sessions/{session_id}/ask-stream
-
-    Session-aware streaming endpoint combining persistent messaging with
-    real-time response streaming.
-
-    Flow:
-    1. Verify session ownership
-    2. Persist user message immediately
-    3. Stream assistant response via existing _stream_ask generator
-    4. Accumulate full response
-    5. Persist assistant message on completion
-    """
-    # Verify session exists and user owns it
-    session = await db.get(AiChatSession, session_id)
-    if session is None or not session.is_active:
-        raise HTTPException(status_code=404, detail="Session not found.")
-    if session.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Access denied.")
-
-    institution_code = await _resolve_institution_code(db, current_user, body.institution_code)
-
-    # Persist user message immediately
-    from app.models.ai_chat import AiChatMessage
-    user_message = AiChatMessage(
-        id=uuid.uuid4(),
-        session_id=session_id,
-        role="user",
-        content=body.question,
-        provider=session.provider,
-        query_mode=session.mode,
-        intent=None,
-        confidence_score=None,
-        sources=None,
-        attached_file_ids=body.attached_file_ids if hasattr(body, 'attached_file_ids') else None,
-    )
-    db.add(user_message)
-    await db.flush()
-
-    # Stream response
-    async def stream_response_generator():
-        assistant_content = ""
-        try:
-            async for event_line in _stream_ask(
-                question=body.question,
-                institution_code=institution_code,
-                context_limit=body.context_limit,
-                mode=session.mode,
-                db=db,
-                current_user=current_user,
-            ):
-                # Accumulate token content
-                try:
-                    event_data = json.loads(event_line.replace("data: ", ""))
-                    if event_data.get("type") == "token":
-                        assistant_content += event_data.get("content", "")
-                except (json.JSONDecodeError, AttributeError):
-                    pass
-
-                yield event_line + "\n"
-
-            # Persist completed assistant message
-            if assistant_content.strip():
-                assistant_message = AiChatMessage(
-                    id=uuid.uuid4(),
-                    session_id=session_id,
-                    role="assistant",
-                    content=assistant_content,
-                    provider=session.provider,
-                    query_mode=session.mode,
-                    intent=None,
-                    confidence_score=None,
-                    sources=None,
-                )
-                db.add(assistant_message)
-                await db.commit()
-
-                # Update session timestamp
-                session.updated_at = datetime.now(tz=timezone.utc)
-                await db.commit()
-
-        except Exception as e:
-            import logging as _log
-            _logger = _log.getLogger(__name__)
-            _logger.error(f"ask_in_session_stream error: {e}")
-            yield _sse("error", {"message": str(e)}) + "\n"
-
-    return StreamingResponse(
-        stream_response_generator(),
-        media_type="text/event-stream",
-    )
 
 
 @router.get(

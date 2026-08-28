@@ -1,269 +1,123 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  ArrowRight,
-  Brain,
-  Sparkles,
-  ChevronRight,
-} from "lucide-react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowRight, Brain, ChevronRight, Copy, Square, Sparkles } from "lucide-react";
+import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
+import { askStream } from "@/lib/api/ai-assistant";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 type PromptItem = { category: string; emoji: string; prompt: string };
+type Message = { id: string; role: "user" | "assistant"; content: string };
 
 const QA_OFFICER_PROMPTS: PromptItem[] = [
-  { category: "Evidence",    emoji: "📂", prompt: "What evidence needs to be uploaded for this module?" },
-  { category: "Audit",       emoji: "✅", prompt: "Summarize the key audit findings for my module" },
-  { category: "Compliance",  emoji: "📋", prompt: "What is the compliance status of my modules?" },
-  { category: "Findings",    emoji: "🔍", prompt: "Show me the most recent QA findings" },
+  { category: "Evidence", emoji: "📂", prompt: "Review a module or course folder" },
+  { category: "Completeness", emoji: "✅", prompt: "Find missing QA evidence" },
+  { category: "Assessment", emoji: "📝", prompt: "Review assessment and moderation evidence" },
+  { category: "Reporting", emoji: "📋", prompt: "Generate a QA report" },
 ];
-
 const LECTURER_PROMPTS: PromptItem[] = [
-  { category: "Evidence",    emoji: "📂", prompt: "What evidence do I need to upload for my modules?" },
-  { category: "Audit",       emoji: "✅", prompt: "Summarize my module's audit findings this semester" },
-  { category: "Compliance",  emoji: "📋", prompt: "What is the compliance status of my modules?" },
-  { category: "Assessment",  emoji: "📝", prompt: "Explain the assessment policy for my level" },
+  { category: "Module folder", emoji: "📂", prompt: "Check my module or course folder" },
+  { category: "Documents", emoji: "✅", prompt: "Find missing documents" },
+  { category: "Assessment", emoji: "📝", prompt: "Review my assessment evidence" },
+  { category: "Remediation", emoji: "🔍", prompt: "Help me resolve QA findings" },
 ];
-
-function getPromptsForPersona(persona?: string | null): PromptItem[] {
-  if (persona === "quality_assurance_officer") return QA_OFFICER_PROMPTS;
-  if (persona === "lecturer") return LECTURER_PROMPTS;
-  return QA_OFFICER_PROMPTS;
-}
 
 export function GenericWorkspaceView() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
+  const routeSessionId = searchParams.get("session");
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(routeSessionId);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [query, setQuery] = useState("");
-  const prompts = getPromptsForPersona(user?.persona);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const prompts = user?.persona === "lecturer" ? LECTURER_PROMPTS : QA_OFFICER_PROMPTS;
 
-  const handleAsk = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    try {
-      const userMessage = query.trim();
-      setQuery("");
-
-      // Create session if needed
-      let sessionId = activeSessionId;
-      if (!sessionId) {
-        const sessionTitle = userMessage.substring(0, 50);
-        const res = await fetch("/api/proxy/ai-assistant/sessions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: sessionTitle,
-            mode: "qa_assistant"
-          }),
-        });
-        if (!res.ok) throw new Error("Failed to create session");
-        const session = (await res.json()) as { id: string };
-        sessionId = session.id;
-        setActiveSessionId(session.id);
-      }
-
-      // Add user message to UI
-      const userMsg = {
-        id: `user-${Date.now()}`,
-        role: "user" as const,
-        content: userMessage,
-      };
-      setMessages(prev => [...prev, userMsg]);
-
-      // Stream response
-      const res = await fetch(`/api/proxy/ai-assistant/sessions/${sessionId}/ask-stream`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: userMessage }),
+  useEffect(() => {
+    setActiveSessionId(routeSessionId);
+    setMessages([]);
+    setError(null);
+    if (!routeSessionId) return;
+    let cancelled = false;
+    void fetch(`/api/proxy/ai-assistant/sessions/${routeSessionId}`, { credentials: "include" })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(response.status === 404 ? "Conversation not found." : "Could not load this conversation.");
+        return response.json() as Promise<{ messages: Message[] }>;
+      })
+      .then((session) => {
+        if (!cancelled) setMessages(session.messages.map((message) => ({ ...message, id: String(message.id) })));
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) setError(reason instanceof Error ? reason.message : "Could not load this conversation.");
       });
+    return () => { cancelled = true; };
+  }, [routeSessionId]);
 
-      if (!res.ok) throw new Error("Failed to get response");
-      if (!res.body) throw new Error("No response body");
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let streamingText = "";
-
-      setMessages(prev => [...prev, {
-        id: `assistant-${Date.now()}`,
-        role: "assistant" as const,
-        content: streamingText
-      }]);
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n");
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          try {
-            const event = JSON.parse(line.slice("data: ".length));
-            if (event.type === "token") {
-              streamingText += event.content || "";
-              setMessages(prev => {
-                const updated = [...prev];
-                const lastMsg = updated[updated.length - 1];
-                if (lastMsg?.role === "assistant") {
-                  lastMsg.content = streamingText;
-                }
-                return updated;
-              });
-            }
-          } catch {
-            // Ignore parse errors
-          }
-        }
+  const send = async () => {
+    const question = query.trim();
+    if (!question || isGenerating) return;
+    const userMessage: Message = { id: `user-${Date.now()}`, role: "user", content: question };
+    const assistantId = `assistant-${Date.now()}`;
+    setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", content: "" }]);
+    setQuery(""); setError(null); setIsGenerating(true);
+    const controller = new AbortController(); abortRef.current = controller;
+    try {
+      for await (const event of askStream({ question, session_id: activeSessionId }, controller.signal)) {
+        if (event.type === "token") {
+          setMessages((current) => current.map((message) => message.id === assistantId ? { ...message, content: message.content + event.content } : message));
+        } else if (event.type === "session") {
+          setActiveSessionId(event.session_id);
+          router.replace(`/workspace?session=${event.session_id}`);
+        } else if (event.type === "error") throw new Error(event.message);
       }
-    } catch (err) {
-      console.error("Ask failed:", err);
-    }
+    } catch (reason) {
+      if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "AQAA could not complete the response. Please try again.");
+      setMessages((current) => current.filter((message) => message.id !== assistantId || message.content.length > 0));
+    } finally { abortRef.current = null; setIsGenerating(false); }
   };
-
-  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Array<{ id: string; role: "user" | "assistant"; content: string }>>([]);
-
-  const personaLabel = user?.persona === "quality_assurance_officer"
-    ? "Quality Assurance Officer"
-    : user?.persona === "lecturer"
-    ? "Lecturer"
-    : "User";
-
-  // Show conversation thread if messages exist
-  if (messages.length > 0) {
-    return (
-      <div className="flex flex-col h-full">
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-2xl px-4 py-3 rounded-lg ${
-                  msg.role === "user"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-900"
-                }`}
-              >
-                <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t px-6 py-4 bg-background">
-          <form onSubmit={handleAsk} className="max-w-2xl mx-auto">
-            <div className="flex items-center gap-3 rounded-2xl border-2 border-border bg-card px-5 py-4">
-              <Brain className="h-5 w-5 text-primary flex-shrink-0" aria-hidden="true" />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ask a follow-up question…"
-                className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground/40 outline-none"
-              />
-              <button
-                type="submit"
-                disabled={!query.trim()}
-                className={cn(
-                  "flex-shrink-0 flex items-center justify-center h-9 w-9 rounded-xl transition-all",
-                  query.trim()
-                    ? "bg-primary text-white hover:bg-primary/90"
-                    : "bg-muted text-muted-foreground/30 cursor-not-allowed"
-                )}
-              >
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  const handleSubmit = (event: FormEvent) => { event.preventDefault(); void send(); };
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void send(); }
+  };
+  const personaLabel = user?.persona === "lecturer" ? "Lecturer" : "Quality Assurance Officer";
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div className="text-center space-y-3 pt-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/6 border border-primary/15 text-xs font-semibold text-primary">
-          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          AQAA Workspace
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight text-foreground">
-          What would you like to review?
-        </h1>
-        <p className="text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          Ask AQAA about academic quality, evidence, compliance, and audits.
-        </p>
-      </div>
-
-      {/* ── Composer ──────────────────────────────────────────────────────── */}
-      <form onSubmit={handleAsk} className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-3 rounded-2xl border-2 border-border bg-card px-5 py-4 shadow-sm focus-within:border-primary/40 focus-within:shadow-lg focus-within:shadow-primary/5 transition-all duration-200">
-          <Brain className="h-5 w-5 text-primary flex-shrink-0" aria-hidden="true" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask AQAA anything about academic quality…"
-            className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground/40 outline-none"
-            aria-label="Ask AQAA"
-          />
-          <button
-            type="submit"
-            disabled={!query.trim()}
-            aria-label="Submit"
-            className={cn(
-              "flex-shrink-0 flex items-center justify-center h-9 w-9 rounded-xl transition-all duration-150",
-              query.trim()
-                ? "bg-primary text-white hover:bg-primary/90 shadow-md shadow-primary/25"
-                : "bg-muted text-muted-foreground/30 cursor-not-allowed"
-            )}
-          >
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-      </form>
-
-      {/* ── Suggested prompts ──────────────────────────────────────────────── */}
-      <div className="max-w-2xl mx-auto">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 text-center">
-          Suggested for {personaLabel}
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {prompts.map((p) => (
-            <button
-              key={p.prompt}
-              type="button"
-              onClick={() => setQuery(p.prompt)}
-              className="flex items-start gap-2.5 p-3 rounded-xl border border-border/60 bg-card/50 hover:bg-card hover:border-border hover:shadow-sm text-left transition-all group cursor-pointer"
-            >
-              <span className="text-base leading-none mt-0.5 flex-shrink-0" aria-hidden="true">
-                {p.emoji}
-              </span>
-              <div className="min-w-0 flex-1">
-                <span className="text-[10.5px] font-semibold text-primary uppercase tracking-wide block mb-0.5">
-                  {p.category}
-                </span>
-                <p className="text-[12.5px] text-foreground/80 leading-snug line-clamp-2">
-                  {p.prompt}
-                </p>
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+        {messages.length === 0 ? (
+          <div className="mx-auto max-w-3xl space-y-8 pt-4 text-center sm:pt-8">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> AQAA Workspace</div>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">What would you like to review?</h1>
+              <p className="text-muted-foreground">Ask about academic quality, evidence, compliance, and remediation.</p>
+            </div>
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Suggested for {personaLabel}</p>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {prompts.map((prompt) => <button key={prompt.prompt} type="button" onClick={() => setQuery(prompt.prompt)} className="group flex items-start gap-2.5 rounded-xl border bg-card/50 p-3 text-left transition hover:bg-card"><span aria-hidden="true">{prompt.emoji}</span><span className="min-w-0 flex-1"><span className="block text-[10.5px] font-semibold uppercase text-primary">{prompt.category}</span><span className="text-sm">{prompt.prompt}</span></span><ChevronRight className="mt-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" /></button>)}
               </div>
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/30 group-hover:text-muted-foreground flex-shrink-0 mt-1 ml-auto transition-colors" aria-hidden="true" />
-            </button>
-          ))}
-        </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mx-auto max-w-3xl space-y-6" aria-live="polite">
+            {messages.map((message) => <article key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}><div className={cn("group max-w-[90%] rounded-2xl px-4 py-3 sm:max-w-[80%]", message.role === "user" ? "bg-primary text-primary-foreground" : "border bg-card")}>{message.role === "assistant" ? <MarkdownMessage content={message.content || "…"} /> : <p className="whitespace-pre-wrap text-sm">{message.content}</p>}{message.role === "assistant" && message.content && <button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground opacity-0 transition group-hover:opacity-100 focus:opacity-100" aria-label="Copy response"><Copy className="h-3.5 w-3.5" /> Copy</button>}</div></article>)}
+          </div>
+        )}
       </div>
-
-      {/* ── Empty state message ────────────────────────────────────────────── */}
-      <div className="max-w-2xl mx-auto text-center">
-        <p className="text-sm text-muted-foreground">
-          Start a conversation to get personalized guidance on quality assurance, compliance, and evidence management.
-        </p>
+      <div className="border-t bg-background px-4 py-4 sm:px-6">
+        <form onSubmit={handleSubmit} className="mx-auto max-w-3xl">
+          {error && <p className="mb-2 text-sm text-destructive" role="alert">{error}</p>}
+          <div className="flex items-end gap-3 rounded-2xl border-2 bg-card px-4 py-3 focus-within:border-primary/40">
+            <Brain className="mb-2 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+            <textarea value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={handleKeyDown} rows={1} placeholder="Ask AQAA anything about academic quality…" className="max-h-40 min-h-10 flex-1 resize-none bg-transparent py-2 outline-none" aria-label="Ask AQAA" disabled={isGenerating} />
+            {isGenerating ? <button type="button" onClick={() => abortRef.current?.abort()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-muted" aria-label="Stop response"><Square className="h-4 w-4" /></button> : <button type="submit" disabled={!query.trim()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white disabled:cursor-not-allowed disabled:opacity-40" aria-label="Send message"><ArrowRight className="h-4 w-4" /></button>}
+          </div>
+          <p className="mt-2 text-center text-xs text-muted-foreground">Enter to send · Shift+Enter for a new line</p>
+        </form>
       </div>
     </div>
   );

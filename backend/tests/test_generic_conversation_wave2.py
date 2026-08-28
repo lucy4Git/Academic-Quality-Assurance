@@ -67,3 +67,9 @@ def test_only_canonical_streaming_route_is_registered():
     paths = {route.path for route in ai_assistant.router.routes}
     assert "/ai-assistant/ask-stream" in paths
     assert "/ai-assistant/sessions/{session_id}/ask-stream" not in paths
+
+
+def test_conversation_search_route_does_not_collide_with_uuid_detail_route():
+    paths = {route.path for route in ai_assistant.router.routes}
+    assert "/ai-assistant/session-search" in paths
+    assert "/ai-assistant/sessions/search" not in paths

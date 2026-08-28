@@ -2,14 +2,14 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Brain, ChevronRight, Copy, Square, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, ChevronRight, Copy, Pencil, RefreshCw, Square, Sparkles } from "lucide-react";
 import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
 import { askStream } from "@/lib/api/ai-assistant";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 type PromptItem = { category: string; emoji: string; prompt: string };
-type Message = { id: string; role: "user" | "assistant"; content: string };
+type Message = { id: string; role: "user" | "assistant"; content: string; created_at?: string };
 
 const QA_OFFICER_PROMPTS: PromptItem[] = [
   { category: "Evidence", emoji: "📂", prompt: "Review a module or course folder" },
@@ -57,12 +57,12 @@ export function GenericWorkspaceView() {
     return () => { cancelled = true; };
   }, [routeSessionId]);
 
-  const send = async () => {
-    const question = query.trim();
+  const send = async (promptOverride?: string) => {
+    const question = (promptOverride ?? query).trim();
     if (!question || isGenerating) return;
-    const userMessage: Message = { id: `user-${Date.now()}`, role: "user", content: question };
+    const userMessage: Message = { id: `user-${Date.now()}`, role: "user", content: question, created_at: new Date().toISOString() };
     const assistantId = `assistant-${Date.now()}`;
-    setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", content: "" }]);
+    setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", content: "", created_at: new Date().toISOString() }]);
     setQuery(""); setError(null); setIsGenerating(true);
     const controller = new AbortController(); abortRef.current = controller;
     try {
@@ -84,6 +84,11 @@ export function GenericWorkspaceView() {
     if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void send(); }
   };
   const personaLabel = user?.persona === "lecturer" ? "Lecturer" : "Quality Assurance Officer";
+  const retryResponse = (index: number) => {
+    for (let candidate = index - 1; candidate >= 0; candidate -= 1) {
+      if (messages[candidate].role === "user") { void send(messages[candidate].content); return; }
+    }
+  };
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -104,7 +109,7 @@ export function GenericWorkspaceView() {
           </div>
         ) : (
           <div className="mx-auto max-w-3xl space-y-6" aria-live="polite">
-            {messages.map((message) => <article key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}><div className={cn("group max-w-[90%] rounded-2xl px-4 py-3 sm:max-w-[80%]", message.role === "user" ? "bg-primary text-primary-foreground" : "border bg-card")}>{message.role === "assistant" ? <MarkdownMessage content={message.content || "…"} /> : <p className="whitespace-pre-wrap text-sm">{message.content}</p>}{message.role === "assistant" && message.content && <button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground opacity-0 transition group-hover:opacity-100 focus:opacity-100" aria-label="Copy response"><Copy className="h-3.5 w-3.5" /> Copy</button>}</div></article>)}
+            {messages.map((message, index) => <article key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}><div className={cn("group max-w-[90%] rounded-2xl px-4 py-3 sm:max-w-[80%]", message.role === "user" ? "bg-primary text-primary-foreground" : "border bg-card")}>{message.role === "assistant" ? <MarkdownMessage content={message.content || "…"} /> : <p className="whitespace-pre-wrap text-sm">{message.content}</p>}<div className={cn("mt-2 flex items-center gap-3 text-xs", message.role === "user" ? "text-primary-foreground/75" : "text-muted-foreground")}>{message.created_at && <time dateTime={message.created_at}>{new Date(message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time>}{message.role === "assistant" && message.content && <><button type="button" onClick={() => void navigator.clipboard.writeText(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100" aria-label="Copy response"><Copy className="h-3.5 w-3.5" /> Copy</button><button type="button" disabled={isGenerating} onClick={() => retryResponse(index)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Retry response"><RefreshCw className="h-3.5 w-3.5" /> Retry</button></>}{message.role === "user" && <button type="button" disabled={isGenerating} onClick={() => setQuery(message.content)} className="inline-flex items-center gap-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100 disabled:opacity-40" aria-label="Edit and resend message"><Pencil className="h-3.5 w-3.5" /> Edit & resend</button>}</div></div></article>)}
           </div>
         )}
       </div>

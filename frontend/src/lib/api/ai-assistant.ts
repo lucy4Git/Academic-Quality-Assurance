@@ -212,6 +212,36 @@ export interface AskStreamRequest {
   attached_file_ids?: string[];
 }
 
+export interface ChatSessionSummary {
+  id: string;
+  title: string | null;
+  created_at: string;
+  message_count: number;
+  is_pinned: boolean;
+  is_archived: boolean;
+}
+
+async function sessionRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${PROXY}/ai-assistant${path}`, {
+    credentials: "include",
+    ...init,
+    headers: { "Content-Type": "application/json", ...init?.headers },
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null) as { detail?: string } | null;
+    throw new Error(body?.detail || "Conversation action failed.");
+  }
+  return response.status === 204 ? undefined as T : response.json() as Promise<T>;
+}
+
+export const conversationApi = {
+  list: (archived = false) => sessionRequest<ChatSessionSummary[]>(`/sessions?archived=${archived}`),
+  search: (query: string) => sessionRequest<ChatSessionSummary[]>(`/session-search?q=${encodeURIComponent(query)}`),
+  rename: (id: string, title: string) => sessionRequest<ChatSessionSummary>(`/sessions/${id}/rename`, { method: "PATCH", body: JSON.stringify({ title }) }),
+  archive: (id: string) => sessionRequest<ChatSessionSummary>(`/sessions/${id}/archive`, { method: "POST" }),
+  remove: (id: string) => sessionRequest<void>(`/sessions/${id}`, { method: "DELETE" }),
+};
+
 /**
  * POST /ai-assistant/ask-stream
  *

@@ -1166,7 +1166,7 @@ async def ask_in_session(
 
 
 @router.get(
-    "/sessions/search",
+    "/session-search",
     response_model=list[ChatSessionBrief],
     summary="Search conversation history (D12)",
 )
@@ -1175,12 +1175,13 @@ async def search_sessions(
     db: AsyncSession = Depends(get_db),
     current_user: User = ConversationAccessRequired,
 ) -> list[ChatSessionBrief]:
-    """Search the current user's conversation history by title keyword."""
+    """Search the current user's active, non-deleted conversation history by title."""
     stmt = (
         select(AiChatSession)
         .where(
             AiChatSession.user_id == current_user.id,
             AiChatSession.is_active.is_(True),
+            AiChatSession.is_deleted.is_(False),
         )
         .order_by(AiChatSession.created_at.desc())
         .limit(100)

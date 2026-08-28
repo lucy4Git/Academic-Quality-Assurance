@@ -15,7 +15,7 @@ const password = process.env.E2E_ADMIN_PASSWORD || "ChangeMe123!";
 async function login(page: Page) {
   await page.goto("/login");
   await page.getByLabel(/email/i).fill(email);
-  await page.getByLabel(/password/i).fill(password);
+  await page.getByRole("textbox", { name: "Password", exact: true }).fill(password);
   await page.getByRole("button", { name: /sign in/i }).click();
   await expect(page).not.toHaveURL(/\/login/, { timeout: 8_000 });
 }

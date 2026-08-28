@@ -17,13 +17,13 @@ const password = process.env.E2E_ADMIN_PASSWORD || "ChangeMe123!";
 test.describe("Authentication", () => {
   test("login page renders", async ({ page }) => {
     await page.goto("/login");
-    await expect(page.getByRole("heading", { name: /sign in/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /academic quality assurance/i })).toBeVisible();
   });
 
   test("invalid credentials shows error", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel(/email/i).fill("bad@example.com");
-    await page.getByLabel(/password/i).fill("wrongpassword");
+    await page.getByRole("textbox", { name: "Password", exact: true }).fill("wrongpassword");
     await page.getByRole("button", { name: /sign in/i }).click();
     await expect(page.getByText(/invalid|incorrect|unauthorized/i)).toBeVisible({
       timeout: 5_000,
@@ -33,7 +33,7 @@ test.describe("Authentication", () => {
   test("valid credentials redirect to dashboard", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel(/email/i).fill(email);
-    await page.getByLabel(/password/i).fill(password);
+    await page.getByRole("textbox", { name: "Password", exact: true }).fill(password);
     await page.getByRole("button", { name: /sign in/i }).click();
 
     // Should leave /login after successful auth

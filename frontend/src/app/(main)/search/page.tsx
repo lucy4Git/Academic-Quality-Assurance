@@ -1,8 +1,15 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { BookOpen, FileText, FolderSearch, MessageSquare, Search } from "lucide-react";
+
+type Result = { id: string; kind: "conversation" | "file" | "library" | "saved_output"; title: string; snippet: string | null; href: string; updated_at: string };
+const icons = { conversation: MessageSquare, file: FileText, library: BookOpen, saved_output: FolderSearch };
+const labels = { conversation: "Conversation", file: "File", library: "Library", saved_output: "Saved Output" };
+
 export default function SearchPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Search</h1>
-      <p className="text-muted-foreground">Search conversations and documents. Coming in a future update.</p>
-    </div>
-  );
+  const [query, setQuery] = useState(""); const [results, setResults] = useState<Result[]>([]); const [busy, setBusy] = useState(false); const [searched, setSearched] = useState(false); const [error, setError] = useState<string | null>(null);
+  const submit = async (event: FormEvent) => { event.preventDefault(); const value = query.trim(); if (!value || busy) return; setBusy(true); setError(null); try { const response = await fetch(`/api/proxy/search?q=${encodeURIComponent(value)}`, { credentials: "include" }); if (!response.ok) throw new Error("Search is temporarily unavailable."); setResults(await response.json()); setSearched(true); } catch (reason) { setError(reason instanceof Error ? reason.message : "Search failed."); } finally { setBusy(false); } };
+  return <div className="mx-auto max-w-4xl space-y-6"><header><h1 className="text-3xl font-bold">Search</h1><p className="mt-1 text-muted-foreground">Find your conversations, files, Library references, and Saved Outputs.</p></header><form onSubmit={submit} role="search" className="flex gap-2"><label className="relative flex-1"><Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"/><span className="sr-only">Search your AQAA workspace</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search your AQAA workspace" maxLength={200} className="w-full rounded-xl border bg-background py-3 pl-10 pr-3"/></label><button disabled={!query.trim() || busy} className="rounded-xl bg-primary px-5 font-medium text-primary-foreground disabled:opacity-50">{busy ? "Searching…" : "Search"}</button></form>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}{searched && results.length === 0 && <div className="rounded-2xl border border-dashed p-12 text-center text-muted-foreground">No matching items in your workspace.</div>}<div className="divide-y overflow-hidden rounded-2xl border bg-card">{results.map((result) => { const Icon = icons[result.kind]; return <Link key={`${result.kind}-${result.id}`} href={result.href} className="flex gap-3 p-4 transition hover:bg-muted/50"><span className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary"><Icon className="h-4 w-4"/></span><span className="min-w-0 flex-1"><span className="text-xs font-semibold uppercase tracking-wide text-primary">{labels[result.kind]}</span><span className="block truncate font-semibold">{result.title}</span>{result.snippet && <span className="mt-0.5 block line-clamp-2 text-sm text-muted-foreground">{result.snippet}</span>}</span><time className="shrink-0 text-xs text-muted-foreground" dateTime={result.updated_at}>{new Date(result.updated_at).toLocaleDateString()}</time></Link>; })}</div></div>;
 }

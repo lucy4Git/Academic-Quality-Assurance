@@ -16,7 +16,7 @@ from app.models.enums import UserRole
 from app.models.user import User
 from app.schemas.onboarding import OnboardingPreferencesRequest, OnboardingPreferencesResponse
 
-router = APIRouter(prefix="/api/v1/onboarding", tags=["onboarding"])
+router = APIRouter(prefix="/onboarding", tags=["onboarding"])
 
 
 @router.post("/preferences", response_model=OnboardingPreferencesResponse)

@@ -29,7 +29,7 @@ from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.dependencies import LecturerRequired
+from app.dependencies import ConversationAccessRequired, LecturerRequired
 from app.models.ai_chat import AiArtifact
 from app.models.enums import UserRole
 from app.models.user import User
@@ -91,7 +91,7 @@ async def _get_artifact(artifact_id: uuid.UUID, db: AsyncSession, user: User) ->
 @router.post("", response_model=ArtifactRead, status_code=status.HTTP_201_CREATED)
 async def create_artifact(
     body: ArtifactCreate,
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> ArtifactRead:
     art = AiArtifact(
@@ -128,7 +128,7 @@ async def list_artifacts(
     status_filter: str | None = Query(None, alias="status"),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> list[ArtifactBrief]:
     stmt = select(AiArtifact).where(AiArtifact.status != "deleted")
@@ -155,7 +155,7 @@ async def list_artifacts(
 @router.get("/conversation/{conversation_id}", response_model=list[ArtifactBrief])
 async def list_conversation_artifacts(
     conversation_id: uuid.UUID,
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> list[ArtifactBrief]:
     stmt = (
@@ -180,7 +180,7 @@ async def list_conversation_artifacts(
 @router.get("/{artifact_id}", response_model=ArtifactRead)
 async def get_artifact(
     artifact_id: uuid.UUID,
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> ArtifactRead:
     art = await _get_artifact(artifact_id, db, user)
@@ -280,7 +280,7 @@ async def restore_artifact(
 @router.delete("/{artifact_id}", status_code=status.HTTP_200_OK)
 async def delete_artifact(
     artifact_id: uuid.UUID,
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> dict:
     art = await _get_artifact(artifact_id, db, user)
@@ -294,7 +294,7 @@ async def delete_artifact(
 async def export_artifact(
     artifact_id: uuid.UUID,
     format: str = Query("json", pattern="^(json|markdown)$"),
-    user: User = LecturerRequired,
+    user: User = ConversationAccessRequired,
     db: AsyncSession = Depends(get_db),
 ) -> Response:
     art = await _get_artifact(artifact_id, db, user)

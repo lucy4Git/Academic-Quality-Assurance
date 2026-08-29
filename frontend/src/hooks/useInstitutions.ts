@@ -102,7 +102,11 @@ export function useInstitutions(includeArchived = false) {
       const current = await getCurrentInstitution();
       return [current];
     },
-    enabled: Boolean(user),
+    // Generic personal-workspace users are intentionally institutionless.
+    // Avoid requesting /institutions/current for that persona: the endpoint
+    // correctly returns 404, but the expected miss pollutes browser consoles
+    // and provides no data any Generic surface can use.
+    enabled: Boolean(user && user.role !== "generic_user"),
     staleTime: 2 * 60 * 1000,
     retry: false,
   });

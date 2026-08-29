@@ -2,7 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Brain, ChevronRight, Copy, Paperclip, Pencil, RefreshCw, Square, Sparkles, X } from "lucide-react";
+import { ArrowRight, Brain, ChevronRight, Copy, Paperclip, Pencil, RefreshCw, Save, Square, Sparkles, X } from "lucide-react";
 import { MarkdownMessage } from "@/components/ai/MarkdownMessage";
 import { askStream, StreamSource } from "@/lib/api/ai-assistant";
 import { GenericFile, genericEvidenceApi } from "@/lib/api/generic-evidence";
@@ -38,7 +38,9 @@ export function GenericWorkspaceView() {
   const [availableFiles, setAvailableFiles] = useState<GenericFile[]>([]);
   const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const createdSessionRef = useRef<string | null>(null);
   const prompts = user?.persona === "lecturer" ? LECTURER_PROMPTS : QA_OFFICER_PROMPTS;
 
   useEffect(() => {
@@ -48,6 +50,10 @@ export function GenericWorkspaceView() {
   }, []);
 
   useEffect(() => {
+    if (routeSessionId && createdSessionRef.current === routeSessionId) {
+      createdSessionRef.current = null;
+      return;
+    }
     setActiveSessionId(routeSessionId);
     setMessages([]);
     setError(null);
@@ -81,6 +87,7 @@ export function GenericWorkspaceView() {
           setMessages((current) => current.map((message) => message.id === assistantId ? { ...message, content: message.content + event.content } : message));
         } else if (event.type === "session") {
           setActiveSessionId(event.session_id);
+          createdSessionRef.current = event.session_id;
           router.replace(`/workspace?session=${event.session_id}`);
         } else if (event.type === "sources") {
           setMessages((current) => current.map((message) => message.id === assistantId ? { ...message, sources: event.sources } : message));
@@ -101,6 +108,25 @@ export function GenericWorkspaceView() {
     for (let candidate = index - 1; candidate >= 0; candidate -= 1) {
       if (messages[candidate].role === "user") { void send(messages[candidate].content); return; }
     }
+  };
+  const saveOutput = async (message: Message, index: number) => {
+    setSavingMessageId(message.id); setError(null);
+    const question = [...messages.slice(0, index)].reverse().find((item) => item.role === "user")?.content;
+    try {
+      const response = await fetch("/api/proxy/artifacts", {
+        method: "POST", credentials: "include", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          artifact_type: "qa_review",
+          title: (question || "AQAA QA review").slice(0, 120),
+          description: "Saved from the personal AQAA conversation workspace.",
+          rendered_content: message.content,
+          conversation_id: activeSessionId,
+          source_evidence: message.sources?.map((source) => source.entity_key).filter(Boolean) ?? [],
+        }),
+      });
+      if (!response.ok) throw new Error("Could not save this output.");
+    } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not save this output."); }
+    finally { setSavingMessageId(null); }
   };
 
   return (
@@ -131,6 +157,11 @@ export function GenericWorkspaceView() {
           {error && <p className="mb-2 text-sm text-destructive" role="alert">{error}</p>}
           {showAttachments && <div className="mb-2 rounded-xl border bg-card p-3"><div className="mb-2 flex items-center justify-between"><p className="text-sm font-medium">Attach owned evidence</p><button type="button" onClick={() => setShowAttachments(false)} aria-label="Close attachment picker"><X className="h-4 w-4" /></button></div>{availableFiles.length === 0 ? <p className="text-sm text-muted-foreground">Upload a processed evidence file from Files first.</p> : <div className="max-h-36 space-y-1 overflow-y-auto">{availableFiles.map((file) => <label key={file.id} className="flex cursor-pointer items-center gap-2 rounded p-2 text-sm hover:bg-muted"><input type="checkbox" checked={selectedFileIds.includes(file.id)} onChange={(event) => setSelectedFileIds((current) => event.target.checked ? [...current, file.id] : current.filter((id) => id !== file.id))} /><span className="truncate">{file.original_filename}</span></label>)}</div>}</div>}
           {selectedFileIds.length > 0 && <div className="mb-2 flex flex-wrap gap-1.5">{selectedFileIds.map((id) => { const file = availableFiles.find((item) => item.id === id); return <span key={id} className="inline-flex items-center gap-1 rounded-full border bg-muted px-2 py-1 text-xs">{file?.original_filename || "Evidence"}<button type="button" onClick={() => setSelectedFileIds((current) => current.filter((value) => value !== id))} aria-label={`Remove ${file?.original_filename || "attachment"}`}><X className="h-3 w-3" /></button></span>; })}</div>}
+          {(() => {
+            const latestIndex = messages.findLastIndex((message) => message.role === "assistant" && !!message.content);
+            const latest = latestIndex >= 0 ? messages[latestIndex] : null;
+            return latest ? <div className="mb-2 flex justify-end"><button type="button" disabled={savingMessageId === latest.id} onClick={() => void saveOutput(latest, latestIndex)} className="inline-flex min-h-10 items-center gap-2 rounded-lg border bg-card px-3 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"><Save className="h-4 w-4" />{savingMessageId === latest.id ? "Saving…" : "Save latest response"}</button></div> : null;
+          })()}
           <div className="flex items-end gap-3 rounded-2xl border-2 bg-card px-4 py-3 focus-within:border-primary/40">
             <Brain className="mb-2 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
             <button type="button" onClick={() => setShowAttachments((current) => !current)} disabled={isGenerating} className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted disabled:opacity-40" aria-label="Attach evidence"><Paperclip className="h-4 w-4" /></button>

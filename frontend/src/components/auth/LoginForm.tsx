@@ -35,7 +35,7 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const setUser = useAuthStore((s) => s.setUser);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(() => searchParams.get("email") ?? "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

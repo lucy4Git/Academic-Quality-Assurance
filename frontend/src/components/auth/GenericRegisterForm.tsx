@@ -172,8 +172,12 @@ export function GenericRegisterForm() {
       toast.success("Account created", {
         description: "Your account has been created. Proceeding to setup...",
       });
-      // For now, redirect to login; later redirect to onboarding questionnaire
-      router.push("/onboarding?email=" + encodeURIComponent(fields.email.trim()));
+      const params = new URLSearchParams({
+        registered: "1",
+        email: fields.email.trim(),
+        redirect: "/onboarding",
+      });
+      router.push(`/login?${params.toString()}`);
     } catch {
       toast.error("Connection error", {
         description: "Unable to connect to the server. Please try again.",

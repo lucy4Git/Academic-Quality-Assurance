@@ -105,10 +105,10 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
   "/institution/profile":  STAFF,
 
   // ── Library ───────────────────────────────────────────────────────────────
-  "/library":             STAFF,
+  "/library":             [...STAFF, "generic_user"],
 
   // ── Quality / Evidence / Audit ────────────────────────────────────────────
-  "/files":               STAFF,
+  "/files":               [...STAFF, "generic_user"],
   "/audits":              COORDINATOR_AND_ABOVE,
   "/findings":            STAFF,
 

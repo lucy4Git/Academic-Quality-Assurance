@@ -21,6 +21,10 @@ class OnboardingPreferencesRequest(BaseModel):
         default_factory=list,
         description="Evidence types (e.g., module_guides, assessments)",
     )
+    work_focus_signals: list[str] = Field(
+        default_factory=list,
+        description="Deterministic workflow signals used to infer presentation persona",
+    )
 
 
 class OnboardingPreferencesResponse(BaseModel):
@@ -34,6 +38,7 @@ class OnboardingPreferencesResponse(BaseModel):
     qa_interests: list[str]
     evidence_types: list[str]
     completed: bool
+    classification_reason: Optional[str] = None
 
     class Config:
         from_attributes = True

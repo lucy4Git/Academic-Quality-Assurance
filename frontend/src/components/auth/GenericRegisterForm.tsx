@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, GraduationCap, Briefcase, ShieldCheck } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,14 +10,11 @@ import { Label } from "@/components/ui/label";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Persona = "quality_assurance_officer" | "lecturer";
-
 interface Fields {
   full_name: string;
   email: string;
   password: string;
   confirm_password: string;
-  persona: Persona | null;
 }
 
 interface FieldErrors extends Partial<Record<keyof Fields, string>> {}
@@ -36,72 +33,7 @@ function validate(f: Fields): FieldErrors {
     e.password = "Password must contain at least one uppercase letter.";
   if (f.confirm_password !== f.password)
     e.confirm_password = "Passwords do not match.";
-  if (!f.persona)
-    e.persona = "Please select your role.";
   return e;
-}
-
-function PersonaSelector({
-  selected,
-  onSelect,
-}: {
-  selected: Persona | null;
-  onSelect: (p: Persona) => void;
-}) {
-  const personas: {
-    id: Persona;
-    icon: React.ReactNode;
-    title: string;
-    desc: string;
-  }[] = [
-    {
-      id: "quality_assurance_officer",
-      icon: <ShieldCheck className="h-5 w-5" />,
-      title: "QA Officer",
-      desc: "Review modules, check compliance",
-    },
-    {
-      id: "lecturer",
-      icon: <GraduationCap className="h-5 w-5" />,
-      title: "Lecturer",
-      desc: "Upload evidence, check findings",
-    },
-  ];
-
-  return (
-    <div>
-      <Label className="text-sm font-medium text-foreground mb-2 block">
-        What best describes your work?
-      </Label>
-      <div className="grid grid-cols-2 gap-3">
-        {personas.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            onClick={() => onSelect(p.id)}
-            className={[
-              "flex flex-col items-start gap-2 rounded-lg border-2 p-3 text-left transition-all",
-              selected === p.id
-                ? "border-primary bg-primary/5"
-                : "border-border bg-white hover:border-primary/40",
-            ].join(" ")}
-          >
-            <span className={selected === p.id ? "text-primary" : "text-muted-foreground"}>
-              {p.icon}
-            </span>
-            <div>
-              <span className="text-sm font-medium leading-none text-foreground">
-                {p.title}
-              </span>
-              <span className="text-[11px] text-muted-foreground mt-0.5 block">
-                {p.desc}
-              </span>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 export function GenericRegisterForm() {
@@ -111,13 +43,12 @@ export function GenericRegisterForm() {
     email: "",
     password: "",
     confirm_password: "",
-    persona: null,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function update(key: keyof Fields, value: string | Persona | null) {
+  function update(key: keyof Fields, value: string) {
     setFields((current) => ({ ...current, [key]: value } as Fields));
     if (submitted) setErrors((current) => ({ ...current, [key]: undefined }));
   }
@@ -140,7 +71,6 @@ export function GenericRegisterForm() {
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
           password: fields.password,
-          persona: fields.persona,
         }),
       });
 
@@ -188,7 +118,7 @@ export function GenericRegisterForm() {
   }
 
   function field(
-    id: keyof Omit<Fields, "persona">,
+    id: keyof Fields,
     label: string,
     props: Partial<React.ComponentProps<typeof Input>> = {}
   ) {
@@ -240,13 +170,6 @@ export function GenericRegisterForm() {
             placeholder: "Re-enter your password",
             autoComplete: "new-password",
           })}
-        </div>
-
-        <div className="border-t pt-4">
-          <PersonaSelector selected={fields.persona} onSelect={(p) => update("persona", p)} />
-          {errors.persona && (
-            <p className="text-xs text-destructive mt-2">{errors.persona}</p>
-          )}
         </div>
 
         <Button type="submit" className="w-full h-10 font-medium" disabled={isSubmitting}>

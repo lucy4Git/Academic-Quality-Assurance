@@ -87,8 +87,8 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     """Register a new user via the public self-service sign-up flow.
 
     Security invariants (enforced here, never by the caller):
-      - For generic users (institution_id=None): role is set from role_requested persona.
-        Valid personas: quality_assurance_officer | lecturer. Defaults to lecturer if missing.
+      - Public registration creates only the GENERIC_USER security role.
+      - Presentation persona remains unset until deterministic onboarding.
       - For institutional users: would require admin invitation; public flow always creates generic.
       - institution_id is never accepted from browser — always None for public self-signup.
       - approval_status is 'pending' only when REGISTRATION_REQUIRES_ADMIN_APPROVAL
@@ -112,11 +112,9 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     # Persona (quality_assurance_officer | lecturer) determines UX, not authorization.
     role = UserRole.GENERIC_USER
 
-    # Extract and validate persona from request
-    persona_requested = getattr(data, "persona", None)
-    if persona_requested not in ("quality_assurance_officer", "lecturer"):
-        # Default to lecturer if not specified or invalid
-        persona_requested = "lecturer"
+    # Persona is deliberately not accepted from public registration. It is a
+    # workflow preference inferred from onboarding and never an RBAC role.
+    persona_requested = None
 
     # Email verification handling (skipped for generic users)
     if verification_required:
@@ -148,7 +146,7 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         verification_code_expires_at=expires,
         # 'approved' = no admin step required; 'pending' = needs admin action.
         approval_status="pending" if requires_admin else "approved",
-        role_requested=persona_requested,  # Store original persona request
+        role_requested=None,
         reason_for_access=getattr(data, "reason_for_access", None),
         institution_name_requested=getattr(data, "institution_name", None),
     )

@@ -18,6 +18,29 @@ from app.schemas.onboarding import OnboardingPreferencesRequest, OnboardingPrefe
 
 router = APIRouter(prefix="/onboarding", tags=["onboarding"])
 
+QA_REVIEW_SIGNALS = {
+    "review_evidence", "check_compliance", "review_others", "identify_missing",
+    "verify_moderation", "conduct_review", "find_gaps", "make_findings",
+}
+LECTURER_SIGNALS = {
+    "prepare_evidence", "module_owner", "upload_documents", "prepare_assessment",
+    "respond_findings", "prepare_folder", "resolve_findings", "teaching_evidence",
+}
+
+
+def infer_persona(signals: list[str]) -> tuple[str, str]:
+    unique = set(signals)
+    qa_score = len(unique & QA_REVIEW_SIGNALS)
+    lecturer_score = len(unique & LECTURER_SIGNALS)
+    if qa_score == lecturer_score:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Your work focus is balanced. Choose whether you mainly review quality evidence or prepare evidence and respond to findings.",
+        )
+    if qa_score > lecturer_score:
+        return "quality_assurance_officer", f"Quality review signals {qa_score}; preparation signals {lecturer_score}."
+    return "lecturer", f"Preparation signals {lecturer_score}; quality review signals {qa_score}."
+
 
 @router.post("/preferences", response_model=OnboardingPreferencesResponse)
 async def save_onboarding_preferences(
@@ -48,7 +71,9 @@ async def save_onboarding_preferences(
             detail="Only generic users need to complete onboarding.",
         )
 
-    # Update user preferences
+    persona, classification_reason = infer_persona(preferences.work_focus_signals)
+    # Update presentation preferences. Security role remains GENERIC_USER.
+    current_user.persona = persona
     current_user.qa_interests = preferences.qa_interests
     current_user.evidence_types = preferences.evidence_types
 
@@ -63,6 +88,7 @@ async def save_onboarding_preferences(
         qa_interests=current_user.qa_interests or [],
         evidence_types=current_user.evidence_types or [],
         completed=True,
+        classification_reason=classification_reason,
     )
 
 
@@ -87,4 +113,5 @@ async def get_onboarding_preferences(
         qa_interests=current_user.qa_interests or [],
         evidence_types=current_user.evidence_types or [],
         completed=bool(current_user.qa_interests or current_user.evidence_types),
+        classification_reason=None,
     )

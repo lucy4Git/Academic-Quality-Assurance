@@ -1,7 +1,7 @@
 """Tests for generic public registration (Checkpoint B).
 
 Verifies that:
-  1. Generic users can self-register with role selection
+  1. Generic users self-register without selecting a persona
   2. No institutional access is granted
   3. Ownership model prevents cross-user access
   4. Admin role cannot be self-selected
@@ -33,11 +33,11 @@ def _make_user(
 
 
 class TestGenericRegistrationPersonaSelection:
-    """Tests 1-3: Persona selection and validation."""
+    """Tests 1-3: Registration cannot self-assign a persona or privileged role."""
 
     @pytest.mark.asyncio
-    async def test_1_qa_officer_persona_can_register(self):
-        """QA Officer persona can self-register as GENERIC_USER."""
+    async def test_1_registration_leaves_persona_unset(self):
+        """A new account is GENERIC_USER and remains unclassified."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -52,7 +52,6 @@ class TestGenericRegistrationPersonaSelection:
             full_name="Jane QA",
             email="jane.qa@test.com",
             password="Password123",
-            persona="quality_assurance_officer",
         )
 
         mock_settings = MagicMock()
@@ -66,13 +65,13 @@ class TestGenericRegistrationPersonaSelection:
         assert len(captured) == 1
         # SECURITY: Always GENERIC_USER role (no institutional authority)
         assert captured[0].role == UserRole.GENERIC_USER
-        # Persona stored separately (for UX only, not authorization)
-        assert captured[0].persona == "quality_assurance_officer"
+        assert captured[0].persona is None
+        assert captured[0].role_requested is None
         assert captured[0].institution_id is None
 
     @pytest.mark.asyncio
-    async def test_2_lecturer_persona_can_register(self):
-        """Lecturer persona can self-register as GENERIC_USER."""
+    async def test_2_legacy_persona_input_is_ignored(self):
+        """Legacy role-like input cannot classify a public account."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -101,13 +100,13 @@ class TestGenericRegistrationPersonaSelection:
         assert len(captured) == 1
         # SECURITY: Always GENERIC_USER role
         assert captured[0].role == UserRole.GENERIC_USER
-        # Persona stored separately
-        assert captured[0].persona == "lecturer"
+        assert captured[0].persona is None
+        assert captured[0].role_requested is None
         assert captured[0].institution_id is None
 
     @pytest.mark.asyncio
     async def test_3_admin_role_cannot_be_self_selected(self):
-        """Admin (system_admin) cannot be self-selected; defaults to lecturer."""
+        """Admin (system_admin) cannot be self-selected or mapped to a persona."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -136,8 +135,8 @@ class TestGenericRegistrationPersonaSelection:
         # SECURITY: Always GENERIC_USER, never SYSTEM_ADMIN
         assert len(captured) == 1
         assert captured[0].role == UserRole.GENERIC_USER
-        # Invalid persona defaults to lecturer
-        assert captured[0].persona == "lecturer"
+        assert captured[0].persona is None
+        assert captured[0].role_requested is None
 
 
 class TestGenericRegistrationSecurity:
@@ -278,8 +277,8 @@ class TestOwnershipAccess:
     """Tests 9-12: Ownership prevents cross-user access."""
 
     @pytest.mark.asyncio
-    async def test_9_persona_persists(self):
-        """Persona persists in database."""
+    async def test_9_persona_requires_onboarding(self):
+        """Registration never persists a browser-selected persona."""
         from app.schemas.auth import PublicRegisterRequest
 
         db = AsyncMock()
@@ -294,7 +293,6 @@ class TestOwnershipAccess:
             full_name="Persist Persona",
             email="persist@test.com",
             password="Password123",
-            persona="quality_assurance_officer",
         )
 
         mock_settings = MagicMock()
@@ -304,7 +302,8 @@ class TestOwnershipAccess:
         with patch("app.services.auth_service.settings", mock_settings):
             user = await public_register_user(db, data)
 
-        assert captured[0].persona == "quality_assurance_officer"
+        assert captured[0].persona is None
+        assert captured[0].role_requested is None
 
     @pytest.mark.asyncio
     async def test_10_qa_officer_cannot_access_other_users_files(self):

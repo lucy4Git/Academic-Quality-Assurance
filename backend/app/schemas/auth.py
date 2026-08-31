@@ -61,18 +61,17 @@ class RefreshRequest(BaseModel):
 class PublicRegisterRequest(BaseModel):
     """Payload for public self-registration (POST /auth/public-register).
 
-    For generic users: persona determines UX workflow (quality_assurance_officer | lecturer).
+    Public registration creates an unclassified Generic user. Onboarding later
+    infers the UX persona from workflow answers.
     Security constraints enforced server-side (not in schema):
       - role is always GENERIC_USER (no institutional authority)
       - institution_id is always null (no tenant assignment)
-      - Persona is UX-only, never used for authorization.
+      - Persona is UX-only, inferred after registration, and never used for authorization.
     """
 
     email: EmailStr
     full_name: str = Field(..., min_length=2, max_length=255)
     password: str = Field(..., min_length=8, description="At least 8 characters, 1 uppercase, 1 digit")
-    # Generic user UX persona: quality_assurance_officer or lecturer
-    persona: str | None = Field(default=None, max_length=50, description="Persona: quality_assurance_officer or lecturer")
     # Informational only — never used for tenant assignment.
     institution_name: str | None = Field(default=None, max_length=255, description="Optional: name of your institution (informational only, not used for access)")
     reason_for_access: str | None = Field(default=None, max_length=500)

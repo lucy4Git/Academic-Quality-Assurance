@@ -16,11 +16,12 @@ const PUBLIC_PATHS = [
 ];
 
 function isPublicPath(pathname: string) {
-  return PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+  return PUBLIC_PATHS.some((p) => p === "/" ? pathname === "/" : pathname === p || pathname.startsWith(p + "/"));
 }
 
 function isInternalPath(pathname: string) {
   return (
+    pathname.startsWith("/api/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/favicon") ||
     pathname.includes(".")
@@ -77,6 +78,15 @@ export function middleware(request: NextRequest) {
     const url = new URL("/login", request.url);
     url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
+  }
+
+  if (
+    role === "generic_user" &&
+    ["/dashboard", "/ai-workspace", "/ai-assistant", "/ai", "/knowledge", "/qualification-intelligence", "/institution", "/notifications"].some(
+      (prefix) => pathname === prefix || pathname.startsWith(prefix + "/")
+    )
+  ) {
+    return NextResponse.redirect(new URL("/workspace", request.url));
   }
 
   // Role-based access check

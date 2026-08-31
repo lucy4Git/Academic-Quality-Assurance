@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
-import { getAllowedRoles } from "@/lib/rbac";
+import { canAccess } from "@/lib/rbac";
 import type { UserRole } from "@/types";
 import { ShieldX } from "lucide-react";
 import Link from "next/link";
@@ -26,10 +26,9 @@ export function PageRoleGuard({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);
 
   // While the auth store is hydrating, render nothing (AppShell shows skeleton)
-  if (!user) return null;
+  if (!user || !user.role) return null;
 
-  const allowed = getAllowedRoles(pathname);
-  if (!allowed.includes(user.role as UserRole)) {
+  if (!canAccess(pathname, user.role as UserRole)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
         <div className="rounded-full bg-destructive/10 p-6 mb-6">
@@ -45,10 +44,10 @@ export function PageRoleGuard({ children }: { children: React.ReactNode }) {
         </p>
         <div className="flex gap-3">
           <Link
-            href="/dashboard"
+            href={user.role === "generic_user" ? "/workspace" : "/dashboard"}
             className={cn(buttonVariants({ variant: "default" }))}
           >
-            Go to Dashboard
+            {user.role === "generic_user" ? "Return to AQAA" : "Go to Dashboard"}
           </Link>
         </div>
       </div>

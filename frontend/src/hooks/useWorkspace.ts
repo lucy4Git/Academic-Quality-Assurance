@@ -104,7 +104,7 @@ export function useTimeline(limit = 30) {
   });
 }
 
-export function useUnreadCount() {
+export function useUnreadCount(enabled = true) {
   return useQuery<{ unread: number }>({
     queryKey: ["notifications-unread-count"],
     queryFn: async () => {
@@ -115,6 +115,7 @@ export function useUnreadCount() {
     },
     refetchInterval: 30_000,
     staleTime: 10_000,
+    enabled,
   });
 }
 

@@ -10,6 +10,11 @@ import {
   BookOpen,
   ShieldCheck,
   Settings2,
+  Search,
+  Files,
+  Bookmark,
+  Clock3,
+  MessageSquarePlus,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -32,6 +37,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   BookOpen,
   ShieldCheck,
   Settings2,
+  Search,
+  Files,
+  Bookmark,
+  Clock3,
+  MessageSquarePlus,
 };
 
 function NavItem({
@@ -144,7 +154,7 @@ export function Sidebar() {
                 AQAA
               </p>
               <p className="text-sidebar-foreground/30 text-[10px] truncate">
-                Quality OS
+                Evidence workspace
               </p>
             </div>
           )}
@@ -243,11 +253,6 @@ export function Sidebar() {
             {!collapsed && <span>Sign out</span>}
           </button>
 
-          {!collapsed && (
-            <p className="px-2 pt-1 text-[10px] text-sidebar-foreground/20 tabular-nums">
-              v4.0 · Phase 4
-            </p>
-          )}
         </div>
       </aside>
     </Fragment>

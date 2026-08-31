@@ -40,7 +40,8 @@ export function Topbar() {
   const { logout } = useAuth();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const { data: unreadData } = useUnreadCount();
+  const isGeneric = user?.role === "generic_user";
+  const { data: unreadData } = useUnreadCount(Boolean(user) && !isGeneric);
   const unreadCount = unreadData?.unread ?? 0;
   const { data: institutions } = useInstitutions();
   const userInstitution = institutions?.find((i) => i.id === user?.institution_id);
@@ -54,6 +55,21 @@ export function Topbar() {
   const institutionLabel = isSystemAdmin
     ? "AQAA Platform"
     : userInstitution?.code ?? "AQAA";
+
+  if (isGeneric) {
+    return (
+      <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border/50 bg-background/90 px-3 backdrop-blur-md sm:px-4" role="banner">
+        <button type="button" onClick={toggleSidebar} aria-label="Toggle navigation" className="grid h-10 w-10 place-items-center rounded-xl text-muted-foreground hover:bg-muted md:hidden"><Menu className="h-5 w-5" /></button>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold">AQAA conversation</p>
+          <p className="truncate text-[11px] text-muted-foreground">Academic quality assurance AI</p>
+        </div>
+        <span className="hidden items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-800 sm:inline-flex dark:bg-emerald-950/40 dark:text-emerald-300">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" /> Evidence aware
+        </span>
+      </header>
+    );
+  }
 
   return (
     <header

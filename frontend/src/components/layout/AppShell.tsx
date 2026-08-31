@@ -6,6 +6,7 @@ import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { CommandPalette } from "./CommandPalette";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/auth.store";
 import { useUIStore } from "@/store/ui.store";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
   const { sidebarOpen, toggleCommandPalette, setSidebarOpen } = useUIStore();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const isGeneric = user?.role === "generic_user";
 
   // Close sidebar on mobile by default
   useEffect(() => {
@@ -88,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           className={cn("flex-1 overflow-y-auto focus:outline-none")}
           tabIndex={-1}
         >
-          <div className="max-w-[1440px] mx-auto px-6 py-8">
+          <div className={cn(isGeneric ? "h-full" : "max-w-[1440px] mx-auto px-6 py-8")}>
             {children}
           </div>
         </main>

@@ -9,22 +9,26 @@ async function registerAndOnboard(page: Page, persona: "QA Officer" | "Lecturer"
   await page.getByLabel("Email address").fill(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByLabel("Confirm password").fill(password);
-  const personaButton = page.getByRole("button", { name: persona, exact: false });
-  await personaButton.click();
-  await expect(personaButton).toHaveClass(/border-primary/);
   await page.getByRole("button", { name: "Create Account" }).click();
   await expect(page).toHaveURL(/\/login\?.*redirect=%2Fonboarding/);
   await expect(page.getByLabel("Email address")).toHaveValue(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: /sign in/i }).click();
-  await expect(page).toHaveURL(/\/onboarding$/);
-  const personaLabel = persona === "QA Officer" ? "Quality Assurance Officer" : persona;
-  await expect(page.getByRole("strong").filter({ hasText: personaLabel })).toBeVisible();
-  await page.getByRole("button", { name: "Next" }).click();
-  await page.getByLabel("Review module/course folders").click();
-  await page.getByRole("button", { name: "Next" }).click();
-  await page.getByLabel("Module guides").click();
-  await page.getByRole("button", { name: "Finish Setup" }).click();
+  await expect(page).toHaveURL(/\/onboarding$/, { timeout: 30_000 });
+  const meResponse = await page.request.get("/api/proxy/auth/me");
+  expect(meResponse.headers()["content-type"]).toContain("application/json");
+  expect((await meResponse.json()).role).toBe("generic_user");
+  const answers = persona === "QA Officer"
+    ? ["Reviewing module or course evidence", "Review other people's quality evidence", "Conduct a quality review", "I review quality evidence and make findings"]
+    : ["Preparing my own module or course evidence", "Prepare teaching and module evidence", "Prepare a complete module folder", "I prepare evidence and respond to findings"];
+  for (const [index, answer] of answers.entries()) {
+    await expect(page.getByRole("radio", { name: answer })).toBeVisible({ timeout: 15_000 });
+    await page.getByRole("radio", { name: answer }).click();
+    await page.getByRole("button", { name: index === answers.length - 1 ? "Tailor workspace" : "Continue" }).click();
+  }
+  const personaLabel = persona === "QA Officer" ? "Quality Assurance Officer" : "Lecturer";
+  await expect(page.getByText(personaLabel, { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Start with AQAA" }).click();
   await expect(page).toHaveURL(/\/workspace$/, { timeout: 15_000 });
 }
 
@@ -45,9 +49,13 @@ test("QA Officer and Lecturer live journeys remain owner isolated", async ({ bro
   const qaContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const qa = await qaContext.newPage();
   qa.on("console", (message) => { if (message.type() === "error") consoleErrors.push(message.text()); });
-  qa.on("pageerror", (error) => pageErrors.push(error.message));
+  qa.on("pageerror", (error) => {
+    pageErrors.push(error.message);
+    console.error(`[browser page error] ${error.message}`);
+  });
   await registerAndOnboard(qa, "QA Officer", qaEmail);
 
+  await expect(qa.getByRole("link", { name: "New conversation" })).toBeVisible({ timeout: 15_000 });
   const navLabels = await qa.getByRole("navigation", { name: "Primary navigation" }).getByRole("link").allTextContents();
   expect(navLabels).toEqual(["New conversation", "Search", "Library", "Files", "Saved outputs", "Recent"]);
   await expect(qa.getByLabel("Main navigation").getByText("Quality Assurance Officer", { exact: true })).toBeVisible();
@@ -113,7 +121,7 @@ test("QA Officer and Lecturer live journeys remain owner isolated", async ({ bro
   await qa.getByTitle("Sign out").click();
   await expect(qa).toHaveURL(new RegExp("/login"));
   await qa.goto("/login");
-  await expect(qa.getByRole("heading", { name: "Academic Quality Assurance" })).toBeVisible();
+  await expect(qa.getByRole("heading", { name: "Welcome back" })).toBeVisible();
   await qa.getByLabel("Email address").fill(qaEmail);
   await qa.getByLabel("Password", { exact: true }).fill(password);
   await qa.getByRole("button", { name: /sign in/i }).click();

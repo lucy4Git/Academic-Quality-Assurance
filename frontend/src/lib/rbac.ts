@@ -169,6 +169,10 @@ export function getAllowedRoles(pathname: string): UserRole[] {
  * Return true when `role` is allowed to access `pathname`.
  */
 export function canAccess(pathname: string, role: UserRole): boolean {
+  if (role === "generic_user") {
+    const genericPaths = ["/workspace", "/onboarding", "/search", "/library", "/files", "/saved", "/recent", "/settings/profile", "/settings/security"];
+    return genericPaths.some((prefix) => pathname === prefix || pathname.startsWith(prefix + "/"));
+  }
   return getAllowedRoles(pathname).includes(role);
 }
 
@@ -197,12 +201,12 @@ export const GENERIC_NAV_SECTIONS: NavSection[] = [
   {
     title: "",
     items: [
-      { label: "New conversation", href: "/workspace",     icon: "LayoutGrid",    roles: GENERIC_ONLY },
-      { label: "Search",           href: "/search",        icon: "Library",       roles: GENERIC_ONLY },
-      { label: "Library",          href: "/library",       icon: "BookOpen",      roles: GENERIC_ONLY },
-      { label: "Files",            href: "/files",         icon: "ShieldCheck",   roles: GENERIC_ONLY },
-      { label: "Saved outputs",    href: "/saved",         icon: "Home",          roles: GENERIC_ONLY },
-      { label: "Recent",           href: "/recent",        icon: "Library",       roles: GENERIC_ONLY },
+      { label: "New conversation", href: "/workspace",     icon: "MessageSquarePlus", roles: GENERIC_ONLY },
+      { label: "Search",           href: "/search",        icon: "Search",            roles: GENERIC_ONLY },
+      { label: "Library",          href: "/library",       icon: "Library",           roles: GENERIC_ONLY },
+      { label: "Files",            href: "/files",         icon: "Files",             roles: GENERIC_ONLY },
+      { label: "Saved outputs",    href: "/saved",         icon: "Bookmark",          roles: GENERIC_ONLY },
+      { label: "Recent",           href: "/recent",        icon: "Clock3",            roles: GENERIC_ONLY },
     ],
   },
 ];

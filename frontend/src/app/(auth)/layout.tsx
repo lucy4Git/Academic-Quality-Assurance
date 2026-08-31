@@ -1,11 +1,14 @@
 /**
  * Auth route group layout.
- * Centred card on a navy gradient background — no sidebar, no topbar.
+ * Focused Generic AQAA authentication surface — no application chrome.
  */
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1E3A5F] via-[#1a3258] to-[#0f2340] p-4">
-      {children}
+    <div className="relative min-h-screen overflow-hidden bg-[#f6f7f4] px-4 py-10 text-[#171815]">
+      <div className="absolute left-1/2 top-[-18rem] h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-[#dce8e1] blur-3xl" aria-hidden="true" />
+      <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,8 @@ import {
   User,
   Settings,
   Menu,
+  CircleHelp,
+  SlidersHorizontal,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -67,6 +69,21 @@ export function Topbar() {
         <span className="hidden items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-800 sm:inline-flex dark:bg-emerald-950/40 dark:text-emerald-300">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" /> Evidence aware
         </span>
+        <DropdownMenu>
+          <DropdownMenuTrigger aria-label="Profile menu" className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <Avatar className="h-9 w-9"><AvatarFallback className="bg-primary text-xs font-semibold text-white">{initials}</AvatarFallback></Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-64">
+            <div className="px-2 py-2"><p className="truncate text-sm font-semibold">{user?.full_name}</p><p className="truncate text-xs text-muted-foreground">{user?.email}</p></div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => router.push("/settings/profile")}><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/onboarding")}><SlidersHorizontal className="mr-2 h-4 w-4" />Personalization / Work focus</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/settings")}><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/help")}><CircleHelp className="mr-2 h-4 w-4" />Help</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={logout}><LogOut className="mr-2 h-4 w-4" />Sign out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
     );
   }

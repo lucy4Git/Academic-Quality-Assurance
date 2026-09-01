@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 type PromptItem = { category: string; emoji: string; prompt: string };
+type UploadItem = { key: string; file: File; status: "uploading" | "processing" | "ready" | "error"; fileId?: string; error?: string };
 type Message = { id: string; role: "user" | "assistant"; content: string; created_at?: string; sources?: StreamSource[] };
 
 const QA_OFFICER_PROMPTS: PromptItem[] = [
@@ -17,12 +18,14 @@ const QA_OFFICER_PROMPTS: PromptItem[] = [
   { category: "Completeness", emoji: "✅", prompt: "Find missing QA evidence" },
   { category: "Assessment", emoji: "📝", prompt: "Review assessment and moderation evidence" },
   { category: "Reporting", emoji: "📋", prompt: "Generate a QA report" },
+  { category: "Credentials", emoji: "🎓", prompt: "Review an academic certificate or credential" },
 ];
 const LECTURER_PROMPTS: PromptItem[] = [
   { category: "Module folder", emoji: "📂", prompt: "Check my module or course folder" },
   { category: "Documents", emoji: "✅", prompt: "Find missing documents" },
   { category: "Assessment", emoji: "📝", prompt: "Review my assessment evidence" },
   { category: "Remediation", emoji: "🔍", prompt: "Help me resolve QA findings" },
+  { category: "Credentials", emoji: "🎓", prompt: "Review an academic certificate or credential" },
 ];
 
 export function GenericWorkspaceView() {
@@ -38,16 +41,40 @@ export function GenericWorkspaceView() {
   const [availableFiles, setAvailableFiles] = useState<GenericFile[]>([]);
   const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [workspaceId, setWorkspaceId] = useState<string | null>(null);
+  const [uploads, setUploads] = useState<UploadItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
+  const [reviewingCredential, setReviewingCredential] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const createdSessionRef = useRef<string | null>(null);
   const prompts = user?.persona === "lecturer" ? LECTURER_PROMPTS : QA_OFFICER_PROMPTS;
 
   useEffect(() => {
-    void genericEvidenceApi.listFiles(false)
-      .then((items) => setAvailableFiles(items.filter((item) => item.upload_state === "ready")))
+    void Promise.all([genericEvidenceApi.listFiles(false), genericEvidenceApi.listWorkspaces()])
+      .then(async ([items, workspaces]) => {
+        setAvailableFiles(items.filter((item) => item.upload_state === "ready"));
+        const workspace = workspaces[0] ?? await genericEvidenceApi.createWorkspace({ module_name: "My QA workspace" });
+        setWorkspaceId(workspace.id);
+      })
       .catch(() => setAvailableFiles([]));
   }, []);
+
+  const uploadFiles = async (files: File[]) => {
+    if (!workspaceId || files.length === 0) return;
+    for (const file of files) {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      setUploads((current) => [...current.filter((item) => item.key !== key), { key, file, status: "uploading" }]);
+      try {
+        const uploaded = await genericEvidenceApi.upload({ file, workspaceId, category: "course_outline", description: "Attached directly from the AQAA composer.", library: false });
+        setUploads((current) => current.map((item) => item.key === key ? { ...item, fileId: uploaded.id, status: uploaded.upload_state === "ready" ? "ready" : "processing" } : item));
+        setAvailableFiles((current) => [...current.filter((item) => item.id !== uploaded.id), uploaded]);
+        setSelectedFileIds((current) => current.includes(uploaded.id) ? current : [...current, uploaded.id]);
+      } catch (reason) {
+        setUploads((current) => current.map((item) => item.key === key ? { ...item, status: "error", error: reason instanceof Error ? reason.message : "Upload failed." } : item));
+      }
+    }
+  };
 
   useEffect(() => {
     if (routeSessionId && createdSessionRef.current === routeSessionId) {
@@ -73,6 +100,20 @@ export function GenericWorkspaceView() {
     return () => { cancelled = true; };
   }, [routeSessionId]);
 
+  const reviewCredential = async () => {
+    const fileId = selectedFileIds[0];
+    if (!fileId || reviewingCredential) return;
+    setReviewingCredential(true); setError(null);
+    try {
+      const response = await fetch(`/api/proxy/credentials/${fileId}/review`, { method: "POST", credentials: "include" });
+      const report = await response.json() as Record<string, unknown> & { detail?: string; verification_note?: string };
+      if (!response.ok) throw new Error(report.detail || "Credential review failed.");
+      const field = (name: string) => { const value = report[name] as { value?: string; status?: string; basis?: string } | undefined; return `- **${name.replaceAll("_", " ")}**: ${value?.value || "UNABLE TO DETERMINE"} (${value?.status}; basis: ${value?.basis})`; };
+      const content = `## Credential review\n\n${["holder_name", "qualification", "institution", "award_date", "credential_number"].map(field).join("\n")}\n\n- **Authenticity**: ${report.authenticity_status}\n- **Originality**: ${report.originality_status}\n- **Source**: ${report.source_status}\n\n${report.verification_note}`;
+      setMessages((current) => [...current, { id: `user-${Date.now()}`, role: "user", content: "Review this academic credential.", created_at: new Date().toISOString() }, { id: `credential-${Date.now()}`, role: "assistant", content, created_at: new Date().toISOString(), sources: [{ entity_key: fileId, title: availableFiles.find((file) => file.id === fileId)?.original_filename || "Owned credential" }] }]);
+    } catch (reason) { setError(reason instanceof Error ? reason.message : "Credential review failed."); }
+    finally { setReviewingCredential(false); }
+  };
   const send = async (promptOverride?: string) => {
     const question = (promptOverride ?? query).trim();
     if (!question || isGenerating) return;
@@ -153,9 +194,12 @@ export function GenericWorkspaceView() {
         )}
       </div>
       <div className="border-t bg-background px-4 py-4 sm:px-6">
-        <form onSubmit={handleSubmit} className="mx-auto max-w-3xl">
+        <form onSubmit={handleSubmit} className="mx-auto max-w-3xl" onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); void uploadFiles(Array.from(event.dataTransfer.files)); }}>
           {error && <p className="mb-2 text-sm text-destructive" role="alert">{error}</p>}
+          <input ref={fileInputRef} type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.docx,.xlsx,.pptx,.txt" className="sr-only" onChange={(event) => { void uploadFiles(Array.from(event.target.files ?? [])); event.currentTarget.value = ""; }} />
+          {uploads.length > 0 && <div className="mb-2 space-y-1 rounded-xl border bg-card p-2" aria-live="polite">{uploads.map((item) => <div key={item.key} className="flex min-h-10 items-center gap-2 rounded-lg px-2 text-xs"><span className="min-w-0 flex-1 truncate">{item.file.name}</span><span className={item.status === "error" ? "text-destructive" : "text-muted-foreground"}>{item.status === "uploading" ? "Uploading…" : item.status === "processing" ? "Processing…" : item.status === "ready" ? "Ready" : item.error}</span>{item.status === "error" && <button type="button" className="font-medium text-primary" onClick={() => void uploadFiles([item.file])}>Retry</button>}<button type="button" aria-label={`Remove ${item.file.name}`} onClick={() => { setUploads((current) => current.filter((value) => value.key !== item.key)); if (item.fileId) setSelectedFileIds((current) => current.filter((id) => id !== item.fileId)); }}><X className="h-3.5 w-3.5" /></button></div>)}</div>}
           {showAttachments && <div className="mb-2 rounded-xl border bg-card p-3"><div className="mb-2 flex items-center justify-between"><p className="text-sm font-medium">Attach owned evidence</p><button type="button" onClick={() => setShowAttachments(false)} aria-label="Close attachment picker"><X className="h-4 w-4" /></button></div>{availableFiles.length === 0 ? <p className="text-sm text-muted-foreground">Upload a processed evidence file from Files first.</p> : <div className="max-h-36 space-y-1 overflow-y-auto">{availableFiles.map((file) => <label key={file.id} className="flex cursor-pointer items-center gap-2 rounded p-2 text-sm hover:bg-muted"><input type="checkbox" checked={selectedFileIds.includes(file.id)} onChange={(event) => setSelectedFileIds((current) => event.target.checked ? [...current, file.id] : current.filter((id) => id !== file.id))} /><span className="truncate">{file.original_filename}</span></label>)}</div>}</div>}
+<button type="button" disabled={reviewingCredential} onClick={() => void reviewCredential()} className="mb-2 inline-flex min-h-10 items-center gap-2 rounded-lg border bg-card px-3 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50">🎓 {reviewingCredential ? "Reviewing credential…" : "Review selected credential"}</button>
           {selectedFileIds.length > 0 && <div className="mb-2 flex flex-wrap gap-1.5">{selectedFileIds.map((id) => { const file = availableFiles.find((item) => item.id === id); return <span key={id} className="inline-flex items-center gap-1 rounded-full border bg-muted px-2 py-1 text-xs">{file?.original_filename || "Evidence"}<button type="button" onClick={() => setSelectedFileIds((current) => current.filter((value) => value !== id))} aria-label={`Remove ${file?.original_filename || "attachment"}`}><X className="h-3 w-3" /></button></span>; })}</div>}
           {(() => {
             const latestIndex = messages.findLastIndex((message) => message.role === "assistant" && !!message.content);
@@ -164,7 +208,7 @@ export function GenericWorkspaceView() {
           })()}
           <div className="flex items-end gap-3 rounded-2xl border-2 bg-card px-4 py-3 focus-within:border-primary/40">
             <Brain className="mb-2 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-            <button type="button" onClick={() => setShowAttachments((current) => !current)} disabled={isGenerating} className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted disabled:opacity-40" aria-label="Attach evidence"><Paperclip className="h-4 w-4" /></button>
+            <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isGenerating || !workspaceId} className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted disabled:opacity-40" aria-label="Attach files from this device"><Paperclip className="h-4 w-4" /></button>
             <textarea value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={handleKeyDown} rows={1} placeholder="Ask AQAA anything about academic quality…" className="max-h-40 min-h-10 flex-1 resize-none bg-transparent py-2 outline-none" aria-label="Ask AQAA" disabled={isGenerating} />
             {isGenerating ? <button type="button" onClick={() => abortRef.current?.abort()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-muted" aria-label="Stop response"><Square className="h-4 w-4" /></button> : <button type="submit" disabled={!query.trim()} className="mb-1 flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white disabled:cursor-not-allowed disabled:opacity-40" aria-label="Send message"><ArrowRight className="h-4 w-4" /></button>}
           </div>

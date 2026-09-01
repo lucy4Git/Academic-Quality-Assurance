@@ -238,6 +238,7 @@ export const conversationApi = {
   list: (archived = false) => sessionRequest<ChatSessionSummary[]>(`/sessions?archived=${archived}`),
   search: (query: string) => sessionRequest<ChatSessionSummary[]>(`/session-search?q=${encodeURIComponent(query)}`),
   rename: (id: string, title: string) => sessionRequest<ChatSessionSummary>(`/sessions/${id}/rename`, { method: "PATCH", body: JSON.stringify({ title }) }),
+  pin: (id: string) => sessionRequest<ChatSessionSummary>(`/sessions/${id}/pin`, { method: "POST" }),
   archive: (id: string) => sessionRequest<ChatSessionSummary>(`/sessions/${id}/archive`, { method: "POST" }),
   remove: (id: string) => sessionRequest<void>(`/sessions/${id}`, { method: "DELETE" }),
 };

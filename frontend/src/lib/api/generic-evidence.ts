@@ -37,10 +37,10 @@ export const genericEvidenceApi = {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
     }),
   listFiles: (libraryOnly: boolean) => request<GenericFile[]>(`/files?library_only=${libraryOnly}`),
-  upload: (body: { file: File; workspaceId: string; category: string; description: string; library: boolean }) => {
+  upload: (body: { file: File; workspaceId?: string; category: string; description: string; library: boolean }) => {
     const form = new FormData();
     form.append("file", body.file);
-    form.append("workspace_module_id", body.workspaceId);
+    if (body.workspaceId) form.append("workspace_module_id", body.workspaceId);
     form.append("category", body.category);
     form.append("description", body.description);
     form.append("is_library_item", String(body.library));

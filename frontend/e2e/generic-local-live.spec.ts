@@ -5,31 +5,22 @@ const password = "AQAA-Live-2026!";
 
 async function registerAndOnboard(page: Page, persona: "QA Officer" | "Lecturer", email: string) {
   await page.goto("/register");
+  await page.getByRole("radio", { name: persona === "QA Officer" ? "I review quality evidence and identify gaps" : "I prepare evidence and respond to findings" }).click();
   await page.getByLabel("Full name").fill(`Synthetic ${persona} ${runId}`);
   await page.getByLabel("Email address").fill(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByLabel("Confirm password").fill(password);
   await page.getByRole("button", { name: "Create Account" }).click();
-  await expect(page).toHaveURL(/\/login\?.*redirect=%2Fonboarding/);
+  await expect(page).toHaveURL(/\/login\?.*redirect=%2Fworkspace/);
   await expect(page.getByLabel("Email address")).toHaveValue(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: /sign in/i }).click();
-  await expect(page).toHaveURL(/\/onboarding$/, { timeout: 30_000 });
+  await expect(page).toHaveURL(/\/workspace$/, { timeout: 30_000 });
   const meResponse = await page.request.get("/api/proxy/auth/me");
   expect(meResponse.headers()["content-type"]).toContain("application/json");
-  expect((await meResponse.json()).role).toBe("generic_user");
-  const answers = persona === "QA Officer"
-    ? ["Reviewing module or course evidence", "Review other people's quality evidence", "Conduct a quality review", "I review quality evidence and make findings"]
-    : ["Preparing my own module or course evidence", "Prepare teaching and module evidence", "Prepare a complete module folder", "I prepare evidence and respond to findings"];
-  for (const [index, answer] of answers.entries()) {
-    await expect(page.getByRole("radio", { name: answer })).toBeVisible({ timeout: 15_000 });
-    await page.getByRole("radio", { name: answer }).click();
-    await page.getByRole("button", { name: index === answers.length - 1 ? "Tailor workspace" : "Continue" }).click();
-  }
-  const personaLabel = persona === "QA Officer" ? "Quality Assurance Officer" : "Lecturer";
-  await expect(page.getByText(personaLabel, { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Start with AQAA" }).click();
-  await expect(page).toHaveURL(/\/workspace$/, { timeout: 15_000 });
+  const profile = await meResponse.json();
+  expect(profile.role).toBe("generic_user");
+  expect(profile.persona).toBe(persona === "QA Officer" ? "quality_assurance_officer" : "lecturer");
 }
 
 async function send(page: Page, prompt: string, expected: RegExp) {

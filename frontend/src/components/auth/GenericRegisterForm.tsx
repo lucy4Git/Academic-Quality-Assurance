@@ -15,6 +15,7 @@ interface Fields {
   email: string;
   password: string;
   confirm_password: string;
+  work_focus: "review" | "prepare" | "";
 }
 
 interface FieldErrors extends Partial<Record<keyof Fields, string>> {}
@@ -43,6 +44,7 @@ export function GenericRegisterForm() {
     email: "",
     password: "",
     confirm_password: "",
+    work_focus: "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -57,6 +59,10 @@ export function GenericRegisterForm() {
     e.preventDefault();
     setSubmitted(true);
     const errs = validate(fields);
+    if (!fields.work_focus) {
+      toast.error("Tell us about your work focus", { description: "Choose the option that best describes your day-to-day QA work." });
+      return;
+    }
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
@@ -71,6 +77,9 @@ export function GenericRegisterForm() {
           full_name: fields.full_name.trim(),
           email: fields.email.trim(),
           password: fields.password,
+          qa_interests: fields.work_focus === "review" ? ["review_evidence", "identify_missing"] : ["prepare_evidence", "respond_findings"],
+          evidence_types: ["module_guides", "assessments"],
+          work_focus_signals: fields.work_focus === "review" ? ["review_evidence", "identify_missing"] : ["prepare_evidence", "module_owner"],
         }),
       });
 
@@ -100,12 +109,12 @@ export function GenericRegisterForm() {
       }
 
       toast.success("Account created", {
-        description: "Your account has been created. Proceeding to setup...",
+        description: "Your account and private workspace are ready. Sign in to continue.",
       });
       const params = new URLSearchParams({
         registered: "1",
         email: fields.email.trim(),
-        redirect: "/onboarding",
+        redirect: "/workspace",
       });
       router.push(`/login?${params.toString()}`);
     } catch {
@@ -149,7 +158,16 @@ export function GenericRegisterForm() {
     <form onSubmit={handleSubmit} noValidate>
       <div className="space-y-4">
         <div className="space-y-3">
-          {field("full_name", "Full name", {
+          <fieldset className="space-y-2">
+            <legend className="text-sm font-medium text-foreground">What best describes your work?</legend>
+            <p className="text-xs text-muted-foreground">This tailors your workspace and never changes permissions.</p>
+            {([["review", "I review quality evidence and identify gaps"], ["prepare", "I prepare evidence and respond to findings"]] as const).map(([value, label]) => (
+              <label key={value} className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm hover:bg-muted/50">
+                <input type="radio" name="work_focus" value={value} checked={fields.work_focus === value} onChange={() => update("work_focus", value)} className="mt-0.5" />
+                <span>{label}</span>
+              </label>
+            ))}
+          </fieldset>          {field("full_name", "Full name", {
             autoFocus: true,
             placeholder: "Your name",
             autoComplete: "name",

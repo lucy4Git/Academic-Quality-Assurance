@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import Annotated, Any
@@ -293,6 +294,47 @@ def _sse(event_type: str, data: dict[str, Any]) -> str:
     return f"data: {json.dumps({'type': event_type, **data})}\n\n"
 
 
+_EVIDENCE_DETERMINATION_RE = re.compile(
+    r"\b(review|check|determine|identify|assess|tell\s+me|which|what)\b.*"
+    r"\b(evidence|documents?|files?|module\s+folder|course\s+folder|present|missing|"
+    r"complete|incomplete|compliant|non-compliant)\b|"
+    r"\b(present|missing|complete|incomplete|compliant|non-compliant)\b.*"
+    r"\b(evidence|documents?|files?|module\s+folder|course\s+folder)\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_USER_STATED_FACT_RE = re.compile(
+    r"\b(?:i|we)\s+(?:currently\s+)?(?:have|do\s+not\s+have|don't\s+have|lack|"
+    r"uploaded|attached|provided)\b|"
+    r"\b(?:my|our)\s+(?:[\w-]+\s+){0,4}[\w-]+\s+(?:is|are)\s+"
+    r"(?:present|missing|complete|incomplete|compliant|non-compliant)\b|"
+    r"\bassume\s+(?:that\s+)?(?:i|we)\b",
+    re.IGNORECASE,
+)
+
+
+def _generic_evidence_basis(
+    question: str,
+    file_chunks: list[dict] | None,
+    conversation_history: list[AIMessage] | None,
+) -> str:
+    """Classify the evidence basis without granting access or retrieving data."""
+    if file_chunks:
+        return "retrieved_evidence"
+    user_text = "\n".join(
+        [message.content for message in (conversation_history or []) if message.role == "user"]
+        + [question]
+    )
+    if _USER_STATED_FACT_RE.search(user_text):
+        return "user_stated_facts"
+    return "none"
+
+
+def _requires_evidence_determination(question: str) -> bool:
+    """Return true only for requests that ask AQAA to classify evidence state."""
+    return bool(_EVIDENCE_DETERMINATION_RE.search(question))
+
+
 async def _stream_ask(
     question: str,
     institution_code: str | None,
@@ -325,6 +367,37 @@ async def _stream_ask(
     # They deliberately bypass institution-scoped context, orchestration and RAG.
     if current_user is not None and current_user.role == UserRole.GENERIC_USER:
         try:
+            evidence_basis = _generic_evidence_basis(
+                question, file_chunks, conversation_history
+            )
+            if evidence_basis == "none" and _requires_evidence_determination(question):
+                answer = (
+                    "## Evidence status: UNABLE TO DETERMINE\n\n"
+                    "No evidence was attached or retrieved, and you did not provide "
+                    "sufficient facts about which documents are present or missing. "
+                    "AQAA cannot truthfully classify evidence as PRESENT, MISSING, "
+                    "INCOMPLETE, or NON-COMPLIANT without an evidence basis."
+                )
+                yield _sse("start", {
+                    "intent": "evidence_determination", "agents": ["AQAA"],
+                    "confidence": 1.0, "routing_reason": "No evidence basis",
+                    "used_llm": False,
+                })
+                yield _sse("token", {"content": answer})
+                yield _sse("sources", {
+                    "sources": [], "confidence_score": 0.0,
+                    "suggested_followups": [], "suggested_next_actions": [],
+                    "follow_up_questions": [],
+                })
+                yield _sse("metadata", {
+                    "citations": [], "unsupported_claims": [],
+                    "grounding_status": "no_source_found",
+                })
+                yield _sse("done", {
+                    "provider": "grounding_guard", "model": "deterministic",
+                    "query_mode": "generic_qa", "is_placeholder_mode": False,
+                })
+                return
             manager = get_provider_manager()
             provider = await manager.get_healthy_provider()
             system_prompt = (
@@ -340,6 +413,12 @@ async def _stream_ask(
                 "or institution-specific requirements."
             )
             messages = [AIMessage(role="system", content=system_prompt)]
+            if evidence_basis == "user_stated_facts":
+                messages.append(AIMessage(
+                    role="system",
+                    content=("Evidence basis: USER-STATED FACTS only. These statements "
+                             "were not retrieved or independently verified."),
+                ))
             messages.extend(conversation_history or [])
             if file_chunks:
                 evidence_sections: list[str] = []
@@ -362,6 +441,10 @@ async def _stream_ask(
                 ))
             messages.append(AIMessage(role="user", content=question))
             answer = await provider.complete(messages, temperature=0.2, max_tokens=1400)
+            if evidence_basis == "user_stated_facts":
+                answer = "## Evidence basis: USER-STATED FACTS (not retrieved evidence)\n\n" + answer
+            elif evidence_basis == "retrieved_evidence":
+                answer = "## Evidence basis: RETRIEVED EVIDENCE\n\n" + answer
             yield _sse("start", {
                 "intent": "qa_general", "agents": ["AQAA"], "confidence": 1.0,
                 "routing_reason": "Generic personal workspace", "used_llm": not provider.is_local_dev,

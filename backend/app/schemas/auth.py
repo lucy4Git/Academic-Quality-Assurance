@@ -75,6 +75,9 @@ class PublicRegisterRequest(BaseModel):
     # Informational only — never used for tenant assignment.
     institution_name: str | None = Field(default=None, max_length=255, description="Optional: name of your institution (informational only, not used for access)")
     reason_for_access: str | None = Field(default=None, max_length=500)
+    qa_interests: list[str] = Field(default_factory=list, max_length=20)
+    evidence_types: list[str] = Field(default_factory=list, max_length=20)
+    work_focus_signals: list[str] = Field(default_factory=list, max_length=20)
 
     @field_validator("full_name")
     @classmethod

@@ -112,9 +112,10 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
     # Persona (quality_assurance_officer | lecturer) determines UX, not authorization.
     role = UserRole.GENERIC_USER
 
-    # Persona is deliberately not accepted from public registration. It is a
-    # workflow preference inferred from onboarding and never an RBAC role.
-    persona_requested = None
+    # Persona is inferred deterministically from workflow answers; it is UX-only.
+    from app.routes.onboarding import infer_persona
+    onboarding_signals = data.work_focus_signals if isinstance(data.work_focus_signals, list) else []
+    persona_requested = infer_persona(onboarding_signals)[0] if onboarding_signals else None
 
     # Email verification handling (skipped for generic users)
     if verification_required:
@@ -149,8 +150,17 @@ async def public_register_user(db: AsyncSession, data: "PublicRegisterRequest") 
         role_requested=None,
         reason_for_access=getattr(data, "reason_for_access", None),
         institution_name_requested=getattr(data, "institution_name", None),
+        qa_interests=list(data.qa_interests),
+        evidence_types=list(data.evidence_types),
     )
     db.add(user)
+    if onboarding_signals:
+        await db.flush()
+        from app.models.user_workspace_module import UserWorkspaceModule
+        db.add(UserWorkspaceModule(
+            user_id=user.id, module_name="My QA workspace",
+            description="Private evidence workspace created during signup.",
+        ))
     await db.commit()
     await db.refresh(user)
     logger.info(

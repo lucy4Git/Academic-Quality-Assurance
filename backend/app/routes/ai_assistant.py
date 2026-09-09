@@ -1549,6 +1549,7 @@ async def rename_session(
         id=session.id, mode=session.mode, title=session.title, provider=session.provider,
         model_name=session.model_name, is_active=session.is_active, created_at=session.created_at,
         message_count=count_result.scalar_one() or 0,
+        is_pinned=session.is_pinned, is_archived=session.is_archived,
     )
 
 
@@ -1576,6 +1577,7 @@ async def pin_session(
         id=session.id, mode=session.mode, title=session.title, provider=session.provider,
         model_name=session.model_name, is_active=session.is_active, created_at=session.created_at,
         message_count=count_result.scalar_one() or 0,
+        is_pinned=session.is_pinned, is_archived=session.is_archived,
     )
 
 
@@ -1603,6 +1605,7 @@ async def archive_session(
         id=session.id, mode=session.mode, title=session.title, provider=session.provider,
         model_name=session.model_name, is_active=session.is_active, created_at=session.created_at,
         message_count=count_result.scalar_one() or 0,
+        is_pinned=session.is_pinned, is_archived=session.is_archived,
     )
 
 

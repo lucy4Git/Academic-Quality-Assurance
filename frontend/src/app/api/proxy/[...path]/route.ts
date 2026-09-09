@@ -28,9 +28,12 @@ async function handler(
     headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  let body: string | undefined;
+  let body: ArrayBuffer | undefined;
   if (!["GET", "HEAD"].includes(request.method)) {
-    body = await request.text();
+    // Preserve the request byte-for-byte. In particular, multipart bodies
+    // contain binary file content and boundary delimiters that are corrupted
+    // if they are decoded to text before being forwarded.
+    body = await request.arrayBuffer();
   }
 
   try {
@@ -42,8 +45,7 @@ async function handler(
 
     const contentType = upstream.headers.get("content-type") ?? "application/json";
     const isEventStream = contentType.toLowerCase().includes("text/event-stream");
-    const responseBody = isEventStream ? upstream.body : await upstream.text();
-    return new NextResponse(responseBody, {
+    return new NextResponse(upstream.body, {
       status: upstream.status,
       headers: {
         "Content-Type": contentType,

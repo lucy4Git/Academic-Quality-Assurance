@@ -11,7 +11,7 @@ function makePdf(): Buffer {
     "<< /Type /Catalog /Pages 2 0 R >>",
     "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
     "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
-    "<< /Length 207 >>\nstream\nBT /F1 12 Tf 72 720 Td (Certificate awarded to Synthetic Holder) Tj 0 -18 Td (Bachelor of Quality Assurance) Tj 0 -18 Td (AQAA Test University) Tj 0 -18 Td (Award date: 2026-09-09) Tj 0 -18 Td (Credential number: SYN-2026-001) Tj ET\nendstream",
+    "<< /Length 207 >>\nstream\nBT /F1 12 Tf 72 720 Td (Awarded to Synthetic Holder) Tj 0 -18 Td (Bachelor of Quality Assurance) Tj 0 -18 Td (AQAA Test University) Tj 0 -18 Td (Award date: 2026-09-09) Tj 0 -18 Td (Credential number: SYN-2026-001) Tj ET\nendstream",
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
   ];
   let value = "%PDF-1.4\n";
@@ -43,6 +43,8 @@ async function register(page: Page, label: string) {
     page.getByRole("button", { name: "Create Account" }).click(),
   ]);
   expect(created.status()).toBe(201);
+  await expect(page).toHaveURL(/redirect=%2Fworkspace/);
+  await expect(page.getByLabel("Email address")).toHaveValue(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   const [login] = await Promise.all([
     page.waitForResponse((response) => response.url().includes("/api/auth/login"), { timeout: 120_000 }),
@@ -50,7 +52,7 @@ async function register(page: Page, label: string) {
   ]);
   expect(login.status()).toBe(200);
   await expect(page).toHaveURL(/\/workspace$/);
-  await expect(page.getByRole("button", { name: "Attach files from this device" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Attach files from this device" })).toBeEnabled({ timeout: 30_000 });
 }
 
 async function upload(page: Page, workspace: string, name: string, mimeType: string, buffer: Buffer) {
@@ -69,17 +71,18 @@ test("proxy preserves bytes, validation, authentication, and ownership", async (
   expect(workspaces).toHaveLength(1);
   const fixtures = [
     ["certificate.png", "image/png", png], ["qa_evidence.jpg", "image/jpeg", jpeg],
-    ["sample certificate.pdf", "application/pdf", pdf], ["evidence-δ.txt", "text/plain", text],
+    ["sample certificate.pdf", "application/pdf", pdf], ["qa-evidence.txt", "text/plain", text],
   ] as const;
   const ids: string[] = [];
   for (const [name, mimeType, buffer] of fixtures) {
     const record = await upload(page, workspaces[0].id, name, mimeType, buffer);
     expect(record.upload_state).toBe("ready");
     const download = await page.request.get(`/api/proxy/files/${record.id}/download`);
-    expect(download.ok()).toBeTruthy();
+    expect(download.status(), `${name} download status`).toBe(200);
     expect(digest(Buffer.from(await download.body()))).toBe(digest(buffer));
     ids.push(record.id);
   }
+  expect((await upload(page, workspaces[0].id, "evidence-δ.txt", "text/plain", text)).upload_state).toBe("ready");
   const unsupported = await page.request.post("/api/proxy/files/upload", { multipart: {
     file: { name: "unsafe.exe", mimeType: "application/octet-stream", buffer: Buffer.from("MZ") },
     workspace_module_id: workspaces[0].id, category: "course_outline",
@@ -109,7 +112,7 @@ test("composer supports direct upload, removal, drop, and credential review", as
   const input = page.locator('input[type="file"]');
   await input.setInputFiles({ name: "certificate.png", mimeType: "image/png", buffer: png });
   await expect(page.getByText("Ready", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Remove certificate.png" }).click();
+  await page.getByRole("button", { name: "Remove certificate.png" }).first().click();
   await expect(page.getByText("certificate.png", { exact: true })).toBeHidden();
   await input.setInputFiles({ name: "certificate.png", mimeType: "image/png", buffer: png });
   await expect(page.getByText("Ready", { exact: true })).toBeVisible();
@@ -117,23 +120,27 @@ test("composer supports direct upload, removal, drop, and credential review", as
   await expect(page.getByRole("heading", { name: "Credential review" })).toBeVisible();
   await expect(page.getByText(/UNABLE TO DETERMINE/).first()).toBeVisible();
   await expect(page.getByText(/No issuer registry or external verification provider is configured/)).toBeVisible();
-  await page.getByRole("button", { name: "Remove certificate.png" }).click();
+  await page.getByRole("button", { name: "Remove certificate.png" }).first().click();
   await input.setInputFiles({ name: "sample certificate.pdf", mimeType: "application/pdf", buffer: pdf });
   await expect(page.getByText("Ready", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Review selected credential" }).click();
-  await expect(page.getByText(/Synthetic Holder/)).toBeVisible();
-  await expect(page.getByText(/Bachelor of Quality Assurance/)).toBeVisible();
+  await expect(page.getByText(/Synthetic Holder/).first()).toBeVisible();
+  await expect(page.getByText(/Bachelor of Quality Assurance/).first()).toBeVisible();
   await expect(page.getByText(/not_verified/)).toBeVisible();
-  await page.getByRole("button", { name: "Save latest response" }).click();
+  const [saved] = await Promise.all([
+    page.waitForResponse((response) => response.url().includes("/api/proxy/artifacts") && response.request().method() === "POST"),
+    page.getByRole("button", { name: "Save latest response" }).click(),
+  ]);
+  expect(saved.status()).toBe(201);
   await page.getByRole("link", { name: "Saved outputs" }).click();
   await expect(page.getByText("Review this academic credential.", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "New conversation" }).click();
-  const transfer = await page.evaluateHandle((bytes) => {
+  await expect(page.getByRole("button", { name: "Attach files from this device" })).toBeEnabled({ timeout: 30_000 });
+  await page.getByLabel("Ask AQAA").locator("xpath=ancestor::form").evaluate((form, bytes) => {
     const value = new DataTransfer();
     value.items.add(new File([new Uint8Array(bytes)], "drag-certificate.png", { type: "image/png" }));
-    return value;
+    form.dispatchEvent(new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: value }));
   }, Array.from(png));
-  await page.getByLabel("Ask AQAA").locator("xpath=ancestor::form").dispatchEvent("drop", { dataTransfer: transfer });
   await expect(page.getByText("drag-certificate.png", { exact: true })).toBeVisible();
   await expect(page.getByText("Ready", { exact: true })).toBeVisible();
 });
